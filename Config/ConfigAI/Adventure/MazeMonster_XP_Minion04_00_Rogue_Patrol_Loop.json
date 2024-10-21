@@ -1,0 +1,134 @@
+{
+  "AIName": "MazeMonster_Patrol_Loop",
+  "VariableList": [],
+  "DecisionList": [
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Patrol",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.AdvSetNpcVisionsConfig",
+            "VisionsByName": [
+              "GlobalVisionConfig_XP_Minion04"
+            ]
+          },
+          {
+            "$type": "RPG.GameCore.AdvNPCPatrol",
+            "StayOnWaypoint": true,
+            "StayOnWaypointDuration": 2
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAnd",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByAlertValueInRange",
+                "AlertValueMax": 5
+              }
+            ]
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Chase",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.AdvSetNpcVisionsConfig",
+            "VisionsByName": [
+              "GlobalVisionConfig_RunAway"
+            ]
+          },
+          {
+            "$type": "RPG.GameCore.TriggerEffect",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "Caster"
+            },
+            "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_XP_Minion04_02_Rogue/Eff_Monster_XP_Minion04_02_Rogue_Sweat.prefab"
+          },
+          {
+            "$type": "RPG.GameCore.AdvSetNpcAlertConfig",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+            },
+            "AlertLimitMax": 45,
+            "AlertGuardLimitMin": 5,
+            "AlertGuardLimitMax": 25,
+            "AlertDeclineSpeed": 0
+          },
+          {
+            "$type": "RPG.GameCore.AdvNPCRunAwayPlayer",
+            "Radius": 8,
+            "MoveRadius": 5,
+            "Angle": 250,
+            "CandiatePoint": 8,
+            "Pow": 10,
+            "MaxRunAwayDistance": 40,
+            "MaxRunAwayTime": 8,
+            "OnFinishRunAway": [
+              {
+                "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                "AnimStateName": "DieBS",
+                "NormalizedTransitionDuration": 0,
+                "NormalizedTimeWait": 0.99
+              },
+              {
+                "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                "AnimStateName": "Die",
+                "NormalizedTransitionDuration": 0,
+                "NormalizedTimeWait": 1
+              },
+              {
+                "$type": "RPG.GameCore.AdvNPCUseMazeSkill"
+              }
+            ]
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "Weight": {
+        "Value": 3
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAnd",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByAlertValueInRange",
+                "AlertValueMin": 25,
+                "AlertValueMax": 45
+              },
+              {
+                "$type": "RPG.GameCore.ByNPCStatus",
+                "NPCStatus": "RunAwayPlayer",
+                "Inverse": true
+              }
+            ]
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    }
+  ],
+  "OnDisable": {
+    "$type": "RPG.GameCore.AdvNPCIdle"
+  }
+}

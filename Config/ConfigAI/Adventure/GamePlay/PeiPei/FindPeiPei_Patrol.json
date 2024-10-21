@@ -1,0 +1,164 @@
+{
+  "AIName": "BoomRobot_Monster_Patrol_Loop",
+  "VariableList": [],
+  "DecisionList": [
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Patrol",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.AdvSetNpcVisionsConfig",
+            "VisionsByName": [],
+            "Visions": [
+              {
+                "$type": "RPG.GameCore.VisionConfig",
+                "DistanceRange": 3,
+                "YawAngleRange": 360,
+                "PitchAngleLimitMin": -90,
+                "PitchAngleLimitMax": 90,
+                "AlertIntervalRightValue": 5,
+                "ExcludeEntityTags": [],
+                "VisionID": "default01"
+              },
+              {
+                "$type": "RPG.GameCore.VisionConfig",
+                "DistanceRange": 7,
+                "YawAngleRange": 60,
+                "PitchAngleLimitMin": -90,
+                "PitchAngleLimitMax": 90,
+                "AlertIntervalRightValue": 100,
+                "ExcludeEntityTags": []
+              },
+              {
+                "$type": "RPG.GameCore.VisionConfig",
+                "DistanceRange": 12,
+                "PitchAngleLimitMin": -90,
+                "PitchAngleLimitMax": 90,
+                "AlertIntervalRightValue": 20,
+                "ExcludeEntityTags": [],
+                "VisionID": "default02"
+              }
+            ]
+          },
+          {
+            "$type": "RPG.GameCore.AdvNPCPatrol",
+            "StayOnWaypoint": true,
+            "StayOnWaypointDuration": 3
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "AdventureDefaultDSE",
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAlertValueInRange",
+            "AlertValueMax": 5
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Guarding",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.AdvSetNpcVisionsConfig",
+            "VisionsByName": [],
+            "Visions": [
+              {
+                "$type": "RPG.GameCore.VisionConfig",
+                "DistanceRange": 5,
+                "PitchAngleLimitMin": -90,
+                "PitchAngleLimitMax": 90,
+                "AlertIntervalRightValue": 50,
+                "ExcludeEntityTags": [],
+                "VisionID": "default01"
+              },
+              {
+                "$type": "RPG.GameCore.VisionConfig",
+                "DistanceRange": 12,
+                "PitchAngleLimitMin": -90,
+                "PitchAngleLimitMax": 90,
+                "AlertIntervalRightValue": 20,
+                "ExcludeEntityTags": []
+              }
+            ]
+          },
+          {
+            "$type": "RPG.GameCore.AdvNPCGuarding"
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "AdventureDefaultDSE",
+      "Weight": {
+        "Value": 2
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAlertValueInRange",
+            "AlertValueMin": 5,
+            "AlertValueMax": 25
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Guarding",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.TriggerCustomString",
+            "CustomString": {
+              "Value": "PeiPeiWasFound"
+            }
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "AdventureDefaultDSE",
+      "Weight": {
+        "Value": 2
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAlertValueInRange",
+            "AlertValueMin": 25,
+            "AlertValueMax": 50
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    }
+  ],
+  "OnDisable": {
+    "$type": "RPG.GameCore.AdvNPCIdle"
+  },
+  "OnInit": {
+    "$type": "RPG.GameCore.AdvSetNpcAlertConfig",
+    "TargetType": {
+      "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+    },
+    "AlertLimitMax": 45,
+    "AlertGuardLimitMin": 5,
+    "AlertGuardLimitMax": 25,
+    "AlertDeclineSpeed": 5
+  }
+}

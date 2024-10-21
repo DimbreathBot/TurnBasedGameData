@@ -1,0 +1,258 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": []
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropInitPuzzle",
+          "BoardPath": {
+            "Custom": true,
+            "Key": "BoardPath"
+          },
+          "LocalPosition": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+          },
+          "LOD": true,
+          "AutoPlayFinishSound": false
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.SelectorConfig",
+          "TaskList": [
+            {
+              "$type": "RPG.GameCore.PropStateExecute",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "Execute": [
+                {
+                  "$type": "RPG.GameCore.TriggerCustomString",
+                  "CustomString": {
+                    "Value": "PuzzleCompass_TriggerHint"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerCustomString",
+                  "CustomString": {
+                    "Custom": true,
+                    "Key": "PuzzleCompass_IsClosed"
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.PropStateExecute",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "State": "Open",
+              "Execute": [
+                {
+                  "$type": "RPG.GameCore.TriggerCustomString",
+                  "CustomString": {
+                    "Custom": true,
+                    "Key": "PuzzleCompass_IsOpened"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.RogueDLC1Dot3CompassProcess",
+          "Compass": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropSetupUITrigger",
+          "ButtonText": {
+            "Hash": 700534429
+          },
+          "ButtonCallback": [
+            {
+              "$type": "RPG.GameCore.SelectorConfig",
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.PropStateExecute",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "Execute": [
+                    {
+                      "$type": "RPG.GameCore.StartPropInteractMode",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "Mode": "UseInteractiveProp",
+                      "UseOverrideData": true,
+                      "OverrideData01": {
+                        "AreasPath": "Level/Common_Adventure/UseCompassPuzzle.prefab",
+                        "AreaName": "UseCompassPuzzle",
+                        "AnchorName": "PuzzleCompassCam"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.RogueDLC1Dot3ImmediateNotify",
+                      "NotifyType": "CompassInteract"
+                    },
+                    {
+                      "$type": "RPG.GameCore.RogueDLC1Dot3AdventureRoomPrepare"
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.PropStateExecute",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "State": "Open",
+                  "Execute": [
+                    {
+                      "$type": "RPG.GameCore.StartPropInteractMode",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "Mode": "LockControl",
+                      "OverrideData01": {
+                        "AreasPath": "Level/Common_Adventure/UseCompassPuzzle.prefab",
+                        "AreaName": "UseCompassPuzzle",
+                        "AnchorName": "PuzzleCompassCam"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerPerformance",
+                      "ValueSource": {},
+                      "PerformanceType": "E",
+                      "PerformanceID": 401510100
+                    },
+                    {
+                      "$type": "RPG.GameCore.EndPropInteract"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "OverrideTargetTypes": [],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": []
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "ToState": "Open",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Custom": true,
+                "Key": "PuzzleCompass_IsOpened"
+              }
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Puzzle_isFinished"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 2
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.EndPropInteract"
+        },
+        {
+          "$type": "RPG.GameCore.StartPropInteractMode",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "Mode": "LockControl"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitServerPropStateChange"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitRogueAdventureRoomStart"
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "BoardPath"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "0,0",
+        "Key": "PuzzleCompass_ControllerProp"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "PuzzleCompass_IsClosed",
+        "Key": "PuzzleCompass_IsClosed"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "PuzzleCompass_IsOpened",
+        "Key": "PuzzleCompass_IsOpened"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "HiddenChest"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "PlayerSelector"
+      }
+    ]
+  }
+}

@@ -1,0 +1,285 @@
+{
+  "AIName": "ST_Sub_NPCMonster_Enchanted_Chase",
+  "VariableList": [],
+  "DecisionList": [],
+  "TransitionTable": [],
+  "RootState": {
+    "Name": "Root",
+    "TaskList": [
+      {
+        "$type": "RPG.GameCore.ST_Side_OverrideStandByStance"
+      },
+      {
+        "$type": "RPG.GameCore.ST_Side_SetAlertLevel"
+      },
+      {
+        "$type": "RPG.GameCore.ST_Side_OverrideVision",
+        "VisionSetName": "DefaultVision_Relaxed",
+        "Visions": []
+      }
+    ],
+    "TransitionList": [
+      {
+        "Trigger": "OnTick",
+        "TransitionToType": "TreeSucceed",
+        "Condition": {
+          "$type": "RPG.GameCore.ByAnd",
+          "PredicateList": [
+            {
+              "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+              "States": [
+                "Enchanted"
+              ],
+              "Inverse": true
+            },
+            {
+              "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+              "States": [
+                "None"
+              ],
+              "Inverse": true
+            }
+          ]
+        },
+        "BoolVariableList": [],
+        "FloatVariableList": [
+          {
+            "VariableName": "Int_StateMemory"
+          }
+        ]
+      }
+    ],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+          "States": [
+            "Enchanted"
+          ]
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Side_SetVariableFloat",
+            "OnEnter": true,
+            "EnterName": "Int_StateMemory",
+            "EnterValue": 101
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "EnChanted_After",
+            "Condition": {
+              "$type": "RPG.GameCore.ByAnd",
+              "PredicateList": [
+                {
+                  "$type": "RPG.GameCore.ST_ByContainAbnormalState",
+                  "States": [
+                    "Enchanted"
+                  ],
+                  "Inverse": true
+                }
+              ]
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_MoveToTarget",
+                "TargetType": "LocalTarget",
+                "MoveStance": "Run",
+                "Tolerance": 2,
+                "ForbidPreSteerWhenPathing": true
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "TransitionToState": "WaitSteer",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnTick",
+                "TransitionToType": "NextState",
+                "Condition": {
+                  "$type": "RPG.GameCore.ST_ByDistanceToTarget",
+                  "CompareType": "LessEqual",
+                  "CompareValue": 2.5
+                },
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "Being_Chase"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": -1
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnTick",
+                "TransitionToState": "Being_Chase",
+                "Condition": {
+                  "$type": "RPG.GameCore.ST_ByDistanceToTarget",
+                  "CompareType": "GreaterEqual",
+                  "CompareValue": 4
+                },
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "Being_Wait"
+          }
+        ],
+        "Name": "EnChanted_Being"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ByAnd",
+          "PredicateList": [
+            {
+              "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+              "States": [
+                "Enchanted"
+              ],
+              "Inverse": true
+            },
+            {
+              "$type": "RPG.GameCore.ST_ByCompareVariableFloat",
+              "VarName": "Int_StateMemory",
+              "CompareType": "Equal",
+              "CompareValue": 101
+            }
+          ]
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Side_MuteVision",
+            "Duration": 5
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "EnChanted_Being",
+            "Condition": {
+              "$type": "RPG.GameCore.ByAnd",
+              "PredicateList": [
+                {
+                  "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+                  "States": [
+                    "Enchanted"
+                  ]
+                }
+              ]
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "TransitionToState": "EnChanted_GoBack",
+            "Condition": {
+              "$type": "RPG.GameCore.ByAnd",
+              "PredicateList": [
+                {
+                  "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+                  "States": [
+                    "None"
+                  ]
+                }
+              ]
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "Trigger": "OnTick",
+            "TransitionToType": "TreeSucceed",
+            "Condition": {
+              "$type": "RPG.GameCore.ByAnd",
+              "PredicateList": [
+                {
+                  "$type": "RPG.GameCore.ST_ByInAIStatus",
+                  "States": [
+                    "Attack"
+                  ],
+                  "Inverse": true
+                },
+                {
+                  "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+                  "States": [
+                    "None"
+                  ],
+                  "Inverse": true
+                }
+              ]
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": [
+              {
+                "VariableName": "Int_StateMemory"
+              }
+            ]
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": 1
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "TransitionToState": "WaitSteer",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "After_Wait"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Side_SetVariableFloat",
+                "OnEnter": true,
+                "EnterName": "Int_StateMemory",
+                "EnterValue": 102
+              },
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": 0.1
+              }
+            ],
+            "TransitionList": [],
+            "Name": "After_Record"
+          }
+        ],
+        "Name": "EnChanted_After"
+      }
+    ]
+  },
+  "OnDisable": {
+    "$type": "RPG.GameCore.TaskConfig"
+  },
+  "OnInit": {
+    "$type": "RPG.GameCore.TaskConfig"
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.CreateLevelAreas",
+          "AssetPath": {
+            "Value": "Level/Common_Adventure/LookatPhone.prefab"
+          }
+        }
+      ]
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.SetCharacterMaterialEffectEnable",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer",
+            "IncludeStoryPlayer": false
+          },
+          "IsEnable": false
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByIsContainAdventureModifier",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "AdvLocalPlayer"
+            },
+            "ModifierName": "ADV_Modifier_Maze_Seele"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AdvLocalPlayer"
+              },
+              "Flags": [],
+              "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Seele_00/Eff_Avatar_Seele_00_MazeSkill_Start01.prefab",
+              "SubObjectModifyDataList": []
+            }
+          ],
+          "FailedTaskList": []
+        },
+        {
+          "$type": "RPG.Client.AdventureGameplayLock",
+          "IsLock": true,
+          "LockSource": "LookAtPhone"
+        },
+        {
+          "$type": "RPG.GameCore.CaptureLocalPlayer",
+          "CharacterUniqueName": "LocalPlayer"
+        },
+        {
+          "$type": "RPG.GameCore.CharacterTriggerAnimState",
+          "CharacterUniqueName": {
+            "Value": "LocalPlayer"
+          },
+          "AnimStateName": "LookatPhoneBS",
+          "NormalizedTransitionDuration": 0
+        },
+        {
+          "$type": "RPG.GameCore.CreatePhoneOnCharacter"
+        },
+        {
+          "$type": "RPG.GameCore.ActiveVirtualCamera",
+          "AreaName": "LookatPhone",
+          "AnchorName": "LookatPhone_Camera2",
+          "FollowTargetUniqueName": "LocalPlayer",
+          "LookAtTargetUniqueName": "LocalPlayer",
+          "WaitBlendFinish": true,
+          "BlendConfig": {
+            "ExportToJson": true,
+            "BlendType": "Cut",
+            "CustomCurveName": "BlendCut_08to1"
+          },
+          "VCameraDitherNPCOn": true,
+          "VCameraDitherMaxDistance": 3,
+          "DynamicParams": {}
+        },
+        {
+          "$type": "RPG.GameCore.WaitFrame"
+        },
+        {
+          "$type": "RPG.GameCore.ActiveVirtualCamera",
+          "AreaName": "LookatPhone",
+          "AnchorName": "LookatPhone_Camera",
+          "FollowTargetUniqueName": "LocalPlayer",
+          "LookAtTargetUniqueName": "LocalPlayer",
+          "WaitBlendFinish": true,
+          "BlendConfig": {
+            "ExportToJson": true,
+            "BlendType": "EaseOut",
+            "CustomCurveName": "BlendCut_08to1",
+            "BlendTime": 0.5
+          },
+          "VCameraDitherNPCOn": true,
+          "VCameraDitherMaxDistance": 3,
+          "DynamicParams": {}
+        },
+        {
+          "$type": "RPG.GameCore.ReleaseCharacter",
+          "CharacterUniqueName": "LocalPlayer"
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "LookatPhoneFinish"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.RemoveLevelAreas",
+          "AreaName": {
+            "Value": "LookatPhone"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 3
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+          "Name": "DynamicFloat",
+          "Value": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1
+            }
+          },
+          "CompareType": "Equal"
+        },
+        {
+          "$type": "RPG.GameCore.DebugLog",
+          "Level": "Warn",
+          "Message": "ValueSetBefore"
+        },
+        {
+          "$type": "RPG.GameCore.SetFloorCustomBool",
+          "Name": {
+            "Value": "RunSubGraph"
+          },
+          "Value": {}
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorCustomValueChange",
+          "Name": {
+            "Value": "RunSubGraph"
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+              "Name": "DynamicFloat",
+              "Value": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1
+                }
+              },
+              "CompareType": "Equal"
+            },
+            {
+              "$type": "RPG.GameCore.DebugLog",
+              "Level": "Warn",
+              "Message": "ValueSetAfter"
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.2
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.FinishLevelGraph"
+            }
+          ],
+          "Condition": {
+            "$type": "RPG.GameCore.ByCheckFloorCustomBool",
+            "Name": {
+              "Value": "RunSubGraph"
+            },
+            "Inverse": true
+          }
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "DynamicFloat"
+      }
+    ]
+  },
+  "Type": "SubGraph"
+}

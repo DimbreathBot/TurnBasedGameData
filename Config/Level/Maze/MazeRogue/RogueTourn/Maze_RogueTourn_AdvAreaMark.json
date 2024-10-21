@@ -1,0 +1,99 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.RogueDLC1Dot3AdventureRoomManage",
+          "Type": "Trotter"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.RogueDLC1Dot3AdventureRoomProcess",
+          "OnSettleStart": [
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "Mode": "DirectlySet",
+              "MaskAlpha": 1
+            },
+            {
+              "$type": "RPG.Client.AdventureGameplayLock",
+              "IsLock": true,
+              "LockSource": "UI"
+            }
+          ],
+          "OnSettleResponse": [
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.16
+                }
+              },
+              "IsRealtime": true
+            },
+            {
+              "$type": "RPG.Client.AdventureGameplayLock",
+              "LockSource": "UI"
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer"
+            }
+          ],
+          "OnSettleFinish": [
+            {
+              "$type": "RPG.GameCore.RogueDLCADVRoomHideTrotter"
+            },
+            {
+              "$type": "RPG.GameCore.RogueDLCADVRoomHideDestruct"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "OnSettleFinish"
+              }
+            }
+          ],
+          "OnLoginFinished": [
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "OnLoginFinished"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "OnLoginFinished"
+          },
+          "GoNextImmediately": true
+        },
+        {
+          "$type": "RPG.GameCore.RogueDLCADVRoomHideTrotter"
+        },
+        {
+          "$type": "RPG.GameCore.RogueDLCADVRoomHideDestruct"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerCustomString",
+          "CustomString": {
+            "Value": "OnSettleFinish"
+          }
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": []
+  }
+}

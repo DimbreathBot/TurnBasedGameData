@@ -1,0 +1,81 @@
+{
+  "AIName": "ST_NPC_Master",
+  "VariableList": [
+    {
+      "$type": "RPG.GameCore.AIVariableFloat",
+      "Name": "NPCAIState"
+    }
+  ],
+  "DecisionList": [],
+  "TransitionTable": [],
+  "RootState": {
+    "Name": "Root",
+    "TaskList": [],
+    "TransitionList": [],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ByAIHangUp"
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_HangUpByLevel"
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "Default",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByAIHangUp",
+              "Inverse": true
+            }
+          }
+        ],
+        "SubStateList": [],
+        "Name": "HangUp"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TaskList": [],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "HangUp",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByAIHangUp"
+            }
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ST_ByHasBornSmartObject"
+            },
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_PlaySmartObject",
+                "ParamType": "BornSmartOjbect",
+                "RecordContext": true
+              }
+            ],
+            "Name": "Default_SO"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": -1
+              }
+            ],
+            "Name": "Default_Idle"
+          }
+        ],
+        "Name": "Default"
+      }
+    ]
+  }
+}

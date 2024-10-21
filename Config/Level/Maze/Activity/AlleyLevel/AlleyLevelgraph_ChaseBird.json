@@ -1,0 +1,442 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Custom": true,
+            "Key": "StartString"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PropInitPuzzle",
+          "BoardPath": {
+            "Custom": true,
+            "Key": "PrefabPath"
+          },
+          "LocalPosition": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TutorialTaskUnlock",
+          "TriggerParam": {
+            "Value": "8061"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TakenMazePuzzleChallenge",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "MazePuzzleChallengeID": {
+            "Value": "1027"
+          },
+          "AutoClosePuzzle": false,
+          "AutoResetPuzzle": false,
+          "AutoFinishChallenge": false,
+          "OnReset": [],
+          "OnCancel": [
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "Mode": "SwitchOut",
+              "CustomTime": 0.5
+            },
+            {
+              "$type": "RPG.GameCore.PropClosePuzzle"
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "CustomTime": 0.5
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.PropStartPuzzle",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Custom": true,
+            "Key": "EndString"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PropClosePuzzle"
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Chase01Runaway"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.LockPlayerControl"
+        },
+        {
+          "$type": "RPG.GameCore.ActiveVirtualCamera",
+          "LevelAreaCameraKey": {
+            "Custom": true,
+            "Key": "Camera"
+          },
+          "BlendConfig": {
+            "ExportToJson": true,
+            "BlendType": "Cut"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AdvEntityFaceTo",
+          "SourceType": {
+            "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+            "FetchType": "SingleNpcByNpcID",
+            "SingleNpcID": {
+              "GroupID": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 210
+                }
+              },
+              "GroupNpcID": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 400001
+                }
+              }
+            }
+          },
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+          },
+          "EnableSteer": true,
+          "EnableLookAt": false,
+          "FinishImmediately": false,
+          "TurnBackOnGraphEnd": false
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffectList",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+            "FetchType": "SingleNpcByNpcID",
+            "SingleNpcID": {
+              "GroupID": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 210
+                }
+              },
+              "GroupNpcID": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 400001
+                }
+              }
+            }
+          },
+          "EffectList": [
+            {
+              "EffectPath": "Effects/Eff_Prefab/Eff_Common/Eff_Common_MazeSkill_Stealth.prefab"
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareCustomString",
+            "LeftValue": {
+              "Custom": true,
+              "Key": "Branch"
+            },
+            "RightValue": {
+              "Value": "RightDirection"
+            },
+            "CompareType": "Equal"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.PlayMissionTalk",
+              "SimpleTalkList": [
+                {
+                  "TalkSentenceID": 801326611,
+                  "ProtectTime": 2
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AdvAINavigateTo",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                "FetchType": "SingleNpcByNpcKey",
+                "SingleNpcKey": {
+                  "Custom": true,
+                  "Key": "Bird"
+                },
+                "SingleNpcID": {
+                  "GroupID": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 99
+                    }
+                  },
+                  "GroupNpcID": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 400001
+                    }
+                  }
+                }
+              },
+              "Mode": "NavigateToEntity",
+              "MotionFlag": "Walk",
+              "NavigateTarget": {
+                "$type": "RPG.GameCore.TargetFetchAnchorByName",
+                "AnchorName": {
+                  "Custom": true,
+                  "Key": "MoveTo"
+                }
+              },
+              "WaitFinish": true
+            },
+            {
+              "$type": "RPG.GameCore.AdvEntityFaceTo",
+              "SourceType": {
+                "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                "FetchType": "SingleNpcByNpcKey",
+                "SingleNpcKey": {
+                  "Custom": true,
+                  "Key": "Bird"
+                },
+                "SingleNpcID": {
+                  "GroupID": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 99
+                    }
+                  },
+                  "GroupNpcID": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 400001
+                    }
+                  }
+                }
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAnchorByName",
+                "AnchorName": {
+                  "Custom": true,
+                  "Key": "FaceTo"
+                }
+              },
+              "EnableSteer": true,
+              "EnableLookAt": false,
+              "FinishImmediately": false,
+              "TurnBackOnGraphEnd": false
+            },
+            {
+              "$type": "RPG.GameCore.UnLockPlayerControl"
+            },
+            {
+              "$type": "RPG.GameCore.ActiveVirtualCamera",
+              "LevelAreaCameraKey": {
+                "Custom": true,
+                "Key": "Camera"
+              },
+              "IsActive": false,
+              "BlendConfig": {
+                "ExportToJson": true,
+                "BlendType": "Cut"
+              },
+              "DynamicParams": {}
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.PlayMissionTalk",
+              "SimpleTalkList": [
+                {
+                  "TalkSentenceID": 801326612,
+                  "ProtectTime": 2
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AdvAINavigateTo",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                "FetchType": "SingleNpcByNpcKey",
+                "SingleNpcKey": {
+                  "Custom": true,
+                  "Key": "Bird"
+                },
+                "SingleNpcID": {
+                  "GroupID": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 99
+                    }
+                  },
+                  "GroupNpcID": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 400001
+                    }
+                  }
+                }
+              },
+              "Mode": "NavigateToEntity",
+              "MotionFlag": "Walk",
+              "NavigateTarget": {
+                "$type": "RPG.GameCore.TargetFetchAnchorByName",
+                "AnchorName": {
+                  "Custom": true,
+                  "Key": "MoveTo"
+                }
+              },
+              "WaitFinish": true
+            },
+            {
+              "$type": "RPG.GameCore.AdvEntityFaceTo",
+              "SourceType": {
+                "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                "FetchType": "SingleNpcByNpcKey",
+                "SingleNpcKey": {
+                  "Custom": true,
+                  "Key": "Bird"
+                },
+                "SingleNpcID": {
+                  "GroupID": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 99
+                    }
+                  },
+                  "GroupNpcID": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 400001
+                    }
+                  }
+                }
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAnchorByName",
+                "AnchorName": {
+                  "Custom": true,
+                  "Key": "FaceTo"
+                }
+              },
+              "EnableSteer": true,
+              "EnableLookAt": false,
+              "FinishImmediately": false,
+              "TurnBackOnGraphEnd": false
+            },
+            {
+              "$type": "RPG.GameCore.UnLockPlayerControl"
+            },
+            {
+              "$type": "RPG.GameCore.ActiveVirtualCamera",
+              "LevelAreaCameraKey": {
+                "Custom": true,
+                "Key": "Camera"
+              },
+              "IsActive": false,
+              "BlendConfig": {
+                "ExportToJson": true,
+                "BlendType": "Cut"
+              },
+              "DynamicParams": {}
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "ChaseBird01_End"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.FinishMazePuzzleChallenge",
+          "MazePuzzleChallengeID": {
+            "Value": "1027"
+          }
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "PrefabPath"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "StartString"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "EndString"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "FaceTo"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "Bird"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "Camera"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "Branch"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "MoveTo"
+      }
+    ]
+  }
+}

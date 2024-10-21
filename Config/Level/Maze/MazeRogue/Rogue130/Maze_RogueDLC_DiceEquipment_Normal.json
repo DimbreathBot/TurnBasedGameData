@@ -1,0 +1,625 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.CreateLevelAreas",
+          "AssetPath": {
+            "Value": "Level/Common_Adventure/RogueDLC_ConsoleCamera.prefab"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.RogueDLC1Dot3DiceInteract",
+          "AttachPoints": [
+            "Preservation",
+            "Remembrance",
+            "Nihility",
+            "Abundance",
+            "TheHunt",
+            "Destruction",
+            "Elation",
+            "Propagation"
+          ],
+          "Dice": {
+            "$type": "RPG.GameCore.TriggerEffect",
+            "IsAttachToTargetEntity": true,
+            "Flags": [],
+            "UniqueEffectName": "Dice",
+            "AttachPoint": "Dice",
+            "SubObjectModifyDataList": []
+          },
+          "DiceFollowEntity": {
+            "$type": "RPG.GameCore.TargetFetchCaster"
+          },
+          "CustomString": {
+            "Value": "DiceSpawn"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "ToState": "CustomState02",
+          "FromAnyState": true,
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.4
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AnimSetParameter",
+              "ParameterName": "TriggerBreak",
+              "ParameterType": "Trigger"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "SetDiceTrigger"
+              }
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateExecute",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "State": "CustomState02",
+          "Execute": [
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "SetDiceTrigger"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "SetDiceTrigger"
+          },
+          "WaitOwnerOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.PropSetupUITrigger",
+          "ColliderRelativePath": "TriggerUIBtn",
+          "ButtonText": {
+            "Hash": 204921056
+          },
+          "ButtonCallback": [
+            {
+              "$type": "RPG.GameCore.HideTopPage",
+              "Hide": true
+            },
+            {
+              "$type": "RPG.GameCore.LockPlayerControl"
+            },
+            {
+              "$type": "RPG.GameCore.GlobalShowBillboard"
+            },
+            {
+              "$type": "RPG.GameCore.SwitchCharacterAnchor",
+              "IsLocalPlayer": true,
+              "CharacterUniqueName": "LocalPlayer",
+              "Target": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "AttachPoint": "InteractPoint",
+              "ResetCamera": false
+            },
+            {
+              "$type": "RPG.GameCore.StartPropInteractMode",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.EnablePlayerPlayIdleShow",
+              "Enable": false
+            },
+            {
+              "$type": "RPG.GameCore.AdvForceNpcGoBack"
+            },
+            {
+              "$type": "RPG.GameCore.EnableNPCMonsterAI",
+              "GroupMonsterIDs": [],
+              "UniqueNames": []
+            },
+            {
+              "$type": "RPG.GameCore.AnimSetParameter",
+              "ParameterName": "ForceActive",
+              "ParameterType": "Trigger"
+            },
+            {
+              "$type": "RPG.GameCore.CaptureCurrentInteractProp",
+              "UniqueName": "RogueConsole"
+            },
+            {
+              "$type": "RPG.GameCore.ActiveVirtualCamera",
+              "AreaName": "RogueDLC_ConsoleCamera",
+              "AnchorName": "DiceCam02",
+              "FollowTargetUniqueName": "RogueConsole",
+              "FollowTargetAttachPoint": "CameraRoot",
+              "LookAtTargetUniqueName": "RogueConsole",
+              "LookAtTargetAttachPoint": "CameraRoot",
+              "WaitBlendFinish": true,
+              "BlendConfig": {
+                "ExportToJson": true,
+                "BlendType": "Custom",
+                "CustomCurveName": "BlendCut01",
+                "BlendTime": 1.5
+              },
+              "DisableProtectWhenBlending": true,
+              "DynamicParams": {}
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareRogueDiceRotateImmediately"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AnimSetParameter",
+                  "ParameterName": "ForceDice",
+                  "ParameterType": "Trigger"
+                },
+                {
+                  "$type": "RPG.GameCore.WaitSecond",
+                  "WaitTime": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0.1
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.RogueDLC1Dot3DiceRotate",
+                  "StopImmediately": true
+                },
+                {
+                  "$type": "RPG.GameCore.ShowMazeUI"
+                },
+                {
+                  "$type": "RPG.GameCore.ShowUI",
+                  "Name": "Ui.RogueDLC.ChessRogue.ChessBoard.ChessRogueBoardPage",
+                  "Param": {
+                    "Value": "1"
+                  }
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.WaitSecond",
+                  "WaitTime": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0.1
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEffectList",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "EffectList": [
+                    {
+                      "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Rogue_MAZ_DiceConsole_01_Spurt_Lod0.prefab",
+                      "AttachPoint": "EffectHead"
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.AnimSetParameter",
+                  "ParameterName": "DiceSpawn",
+                  "ParameterType": "Trigger"
+                },
+                {
+                  "$type": "RPG.GameCore.RogueDLC1Dot3DiceRotate"
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEffectList",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "EffectList": [
+                    {
+                      "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Rogue_MAZ_DiceConsole_01_Wind_Lod0.prefab",
+                      "AttachPoint": "Dice"
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.WaitSecond",
+                  "WaitTime": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0.7
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.ShowMazeUI"
+                },
+                {
+                  "$type": "RPG.GameCore.ShowUI",
+                  "Name": "Ui.RogueDLC.ChessRogue.ChessBoard.ChessRogueBoardPage",
+                  "Param": {
+                    "Value": "1"
+                  }
+                }
+              ]
+            }
+          ],
+          "InteractAngleRange": 240,
+          "OverrideTargetTypes": [],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "ToState": "CustomState04",
+          "FromAnyState": true,
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.4
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AnimSetParameter",
+              "ParameterName": "TriggerBreak",
+              "ParameterType": "Trigger"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "SetLeaveTrigger"
+              }
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateExecute",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "State": "CustomState04",
+          "Execute": [
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "SetLeaveTrigger"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "SetLeaveTrigger"
+          },
+          "WaitOwnerOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.PropSetupUITrigger",
+          "ColliderRelativePath": "TriggerUIBtn",
+          "ButtonText": {
+            "Hash": 204921056
+          },
+          "ButtonCallback": [
+            {
+              "$type": "RPG.GameCore.HideTopPage",
+              "Hide": true
+            },
+            {
+              "$type": "RPG.GameCore.BlockInputController",
+              "Enable": true,
+              "ActionNameList": []
+            },
+            {
+              "$type": "RPG.GameCore.AdventurePauseTeamDataRefresh"
+            },
+            {
+              "$type": "RPG.GameCore.LockPlayerControl"
+            },
+            {
+              "$type": "RPG.GameCore.LockCamera"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+              },
+              "Flags": [],
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/Interactive Object/Eff_Rogue_MAZ_DiceConsole_01_Scan.prefab",
+              "SubObjectModifyDataList": []
+            },
+            {
+              "$type": "RPG.GameCore.TriggerSound",
+              "SoundName": {
+                "Value": "Ev_sfx_rogue_diceconsole_01_showportal"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.4
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "Mode": "SwitchOut",
+              "CustomTime": 0.8
+            },
+            {
+              "$type": "RPG.GameCore.ChessRogueDoorInteraction"
+            }
+          ],
+          "InteractAngleRange": 240,
+          "OverrideTargetTypes": [],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "ShowGrid"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.ActiveVirtualCamera",
+          "AreaName": "RogueDLC_ConsoleCamera",
+          "AnchorName": "GridCam",
+          "FollowTargetUniqueName": "RogueConsole",
+          "FollowTargetAttachPoint": "Root",
+          "LookAtTargetUniqueName": "RogueConsole",
+          "LookAtTargetAttachPoint": "Root",
+          "BlendConfig": {
+            "ExportToJson": true,
+            "BlendType": "Custom",
+            "CustomCurveName": "BlendCut09",
+            "BlendTime": 0.8
+          },
+          "DynamicParams": {}
+        },
+        {
+          "$type": "RPG.GameCore.AnimSetParameter",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "ParameterName": "TriggerScreen",
+          "ParameterType": "Trigger"
+        },
+        {
+          "$type": "RPG.GameCore.RemoveEffect",
+          "UniqueEffectName": "Dice",
+          "Flags": []
+        },
+        {
+          "$type": "RPG.GameCore.RogueDLC1Dot3ImmediateNotify",
+          "NotifyType": "DiceRemove"
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "RerollDice"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AnimSetParameter",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "ParameterName": "DiceReroll",
+          "ParameterType": "Trigger"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffectList",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "EffectList": [
+            {
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Rogue_MAZ_DiceConsole_01_Spurt1_Lod0.prefab",
+              "AttachPoint": "EffectHead"
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffectList",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "EffectList": [
+            {
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Rogue_MAZ_DiceConsole_01_Wind_Lod0.prefab",
+              "AttachPoint": "Dice"
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.7
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.RogueDLC1Dot3ImmediateNotify",
+          "NotifyType": "DiceTurnPanelRefresh"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.RogueDLC1Dot3Teleport",
+          "BeforeTeleport": [
+            {
+              "$type": "RPG.GameCore.HideTopPage",
+              "Hide": true
+            },
+            {
+              "$type": "RPG.GameCore.BlockInputController",
+              "Enable": true,
+              "ActionNameList": []
+            },
+            {
+              "$type": "RPG.GameCore.AnimSetParameter",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "ParameterName": "TriggerPortal",
+              "ParameterType": "Trigger"
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.2
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AdventurePauseTeamDataRefresh"
+            },
+            {
+              "$type": "RPG.GameCore.LockPlayerControl"
+            },
+            {
+              "$type": "RPG.GameCore.LockCamera"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+              },
+              "Flags": [],
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/Interactive Object/Eff_Rogue_MAZ_DiceConsole_01_Scan.prefab",
+              "SubObjectModifyDataList": []
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.4
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "Mode": "SwitchOut",
+              "CustomTime": 0.8
+            },
+            {
+              "$type": "RPG.GameCore.ActiveVirtualCamera",
+              "AreaName": "RogueDLC_ConsoleCamera",
+              "AnchorName": "GridCam",
+              "IsActive": false,
+              "FollowTargetUniqueName": "RogueConsole",
+              "FollowTargetAttachPoint": "Root",
+              "LookAtTargetUniqueName": "RogueConsole",
+              "LookAtTargetAttachPoint": "Root",
+              "BlendConfig": {
+                "ExportToJson": true,
+                "BlendType": "Custom",
+                "CustomCurveName": "BlendCut09",
+                "BlendTime": 0.8
+              },
+              "DynamicParams": {}
+            },
+            {
+              "$type": "RPG.GameCore.GlobalShowBillboard",
+              "IsShow": true
+            },
+            {
+              "$type": "RPG.GameCore.RemoveLevelAreas",
+              "AreaName": {
+                "Value": "RogueDLC_ConsoleCamera"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.EnableNPCMonsterAI",
+              "Enable": true,
+              "GroupMonsterIDs": [],
+              "UniqueNames": []
+            },
+            {
+              "$type": "RPG.GameCore.EnablePlayerPlayIdleShow"
+            },
+            {
+              "$type": "RPG.GameCore.EndPropInteract"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "LevelAreaName"
+      }
+    ]
+  }
+}

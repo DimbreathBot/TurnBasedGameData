@@ -1,0 +1,239 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupButtonListTrigger",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "TriggerName": "InteractTrigger",
+          "ButtonsByName": [],
+          "ButtonConfigs": [
+            {
+              "ID": "btn1",
+              "ButtonText": {
+                "Value": "Resha_InteractName_Enter"
+              }
+            }
+          ],
+          "MustNotInDanger": true
+        },
+        {
+          "$type": "RPG.GameCore.AdvOnButtonPressed",
+          "ButtonName": "btn1",
+          "OnPressedCallback": [
+            {
+              "$type": "RPG.GameCore.DebugLog",
+              "Message": "HS_Int_Interact",
+              "TaskEnabled": false
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+                "Name": "ButtonLockState",
+                "CompareType": "Equal"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEventV2",
+                  "EventName": {
+                    "Value": "SelfInteract"
+                  }
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+                    "Name": "ButtonLockState",
+                    "CompareType": "Equal",
+                    "CompareValue": 1
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                        "Name": "PlanetDisplayID",
+                        "Value": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 1
+                          }
+                        },
+                        "CompareType": "LessEqual"
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.TriggerEntityEventV2",
+                          "EventName": {
+                            "Value": "SelfInteract"
+                          }
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.TriggerEntityEventV2",
+                          "EventName": {
+                            "Value": "SelfNoInteract"
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+                        "Name": "ButtonLockState",
+                        "CompareType": "Equal",
+                        "CompareValue": 2
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                            "Name": "PlanetDisplayID",
+                            "Value": {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 2
+                              }
+                            },
+                            "CompareType": "LessEqual"
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.TriggerEntityEventV2",
+                              "EventName": {
+                                "Value": "SelfInteract"
+                              }
+                            }
+                          ],
+                          "FailedTaskList": [
+                            {
+                              "$type": "RPG.GameCore.TriggerEntityEventV2",
+                              "EventName": {
+                                "Value": "SelfNoInteract"
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+                            "Name": "ButtonLockState",
+                            "CompareType": "Equal",
+                            "CompareValue": 3
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.TriggerEntityEventV2",
+                              "EventName": {
+                                "Value": "SelfInteract"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEventV2",
+          "EventName": {
+            "Value": "SelfInteract"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.TriggerPerformance",
+              "ValueSource": {},
+              "PerformanceType": "PlayVideo",
+              "PerformanceID_DS": {
+                "Custom": true,
+                "Key": "PerformanceID"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.DebugLog",
+              "Message": "HS_Int_PerformanceEnd",
+              "TaskEnabled": false
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "OnInteract"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEventV2",
+          "EventName": {
+            "Value": "SelfNoInteract"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.ToastPile",
+              "DescTextID": {
+                "Hash": 1202209106
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AdvEnableTrigger",
+              "TriggerName": "InteractTrigger"
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 3
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AdvEnableTrigger",
+              "IsEnable": true,
+              "TriggerName": "InteractTrigger"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "PerformanceID"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "PlanetDisplayID"
+      }
+    ]
+  },
+  "Type": "Entity"
+}

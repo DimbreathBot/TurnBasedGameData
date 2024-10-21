@@ -1,0 +1,176 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupCustomTaskTrigger",
+          "TriggerName": "MissionTrigger",
+          "OnEnter": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "InMazeSkillTrigger1"
+              }
+            }
+          ],
+          "OnExit": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "InMazeSkillTrigger0"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "MazeSkillUsed"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGroupState",
+                "EquationType": "Equal"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.WaitFor",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByCompareFloorCustomFloat",
+                        "Name": {
+                          "Value": "InMazeSkillTrigger"
+                        },
+                        "CompareType": "Equal",
+                        "CompareValue": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 1
+                          }
+                        }
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByIsTargetValid",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetSequence",
+                          "Sequence": [
+                            {
+                              "$type": "RPG.GameCore.TargetFetchCurrentGroupNPCMonsters"
+                            },
+                            {
+                              "$type": "RPG.GameCore.TargetFilter",
+                              "Predicate": {
+                                "$type": "RPG.GameCore.ByIsContainAdventureModifier",
+                                "TargetType": {
+                                  "$type": "RPG.GameCore.TargetFetchParamEntity"
+                                },
+                                "ModifierName": "ADV_StageAbility_Maze_Feixiao_GatheredEnemy"
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.TargetTake",
+                              "Count": 1
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.ShowTutorialUI",
+                  "ForceShowDialog": true
+                },
+                {
+                  "$type": "RPG.GameCore.ShowGuideHintWithText",
+                  "Block": true,
+                  "TargetEvent": [
+                    {
+                      "$type": "RPG.GameCore.WaitForWithTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByIsTargetValid",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetSequence",
+                          "Sequence": [
+                            {
+                              "$type": "RPG.GameCore.TargetFetchCurrentGroupNPCMonsters"
+                            },
+                            {
+                              "$type": "RPG.GameCore.TargetFilter",
+                              "Predicate": {
+                                "$type": "RPG.GameCore.ByIsContainAdventureModifier",
+                                "TargetType": {
+                                  "$type": "RPG.GameCore.TargetFetchParamEntity"
+                                },
+                                "ModifierName": "ADV_StageAbility_Maze_Feixiao_GatheredEnemy"
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.TargetTake",
+                              "Count": 1
+                            }
+                          ]
+                        },
+                        "Inverse": true
+                      },
+                      "TaskListClientOnly": [
+                        {
+                          "$type": "RPG.GameCore.TutorialLockControl",
+                          "Reset": true
+                        },
+                        {
+                          "$type": "RPG.GameCore.WaitTutorial",
+                          "Event": "UseMazeSkill",
+                          "Param": "0",
+                          "OnSuccessImmediate": [
+                            {
+                              "$type": "RPG.GameCore.TriggerEntityEventV2",
+                              "EventName": {
+                                "Value": "MazeSkillFinished"
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.TriggerGroupEvent",
+                              "EventName": {
+                                "Value": "MazeSkillFinished"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "NodeIDList": [
+                    "MazeMainPage.MazeAction"
+                  ],
+                  "GuideTextType": "InfoTip",
+                  "GuideText": "TutorialTextmap_Avatar_1220_Hint03",
+                  "GuideHintShowConfig": {},
+                  "GuideTextShowConfig": {},
+                  "GuideUIContextConfig": {
+                    "Type": "MainPage"
+                  },
+                  "EnableClickInHintArea": true,
+                  "EnableActionList": [
+                    "Menu_MazeAttack"
+                  ],
+                  "EnableBattleOperationList": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Type": "EntityInstance"
+}

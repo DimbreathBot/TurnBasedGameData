@@ -1,0 +1,120 @@
+{
+  "AIName": "MazeNPC_FollowPlayer",
+  "VariableList": [],
+  "DecisionList": [
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Follow Player",
+      "RootTask": {
+        "$type": "RPG.GameCore.AdvNpcFollowPlayer",
+        "Mode": "Puppy",
+        "WaitActionTime": 5,
+        "WaitActionTask": {
+          "$type": "RPG.GameCore.TaskConfig"
+        },
+        "TransferDistance": 10,
+        "ProtectTransferDistance": 3,
+        "PuppyKeepMax": 1.5,
+        "PuppyKeepMin": 0.5,
+        "PuppyKeepAngle": 300,
+        "PuppyKeepAngleExclude": 200,
+        "PuppySpeedCurveAsset": "Camera/BlendCurve/PuppySpeedCurve.asset"
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "Weight": {
+        "Value": 4
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByNPCStatus",
+            "NPCStatus": "FollowPlayer"
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Follow By Player",
+      "RootTask": {
+        "$type": "RPG.GameCore.AdvNpcFollowByPlayer",
+        "KeepDistance": 10,
+        "FollowDistance": 4,
+        "WaitProtectTime": 1,
+        "WaitActionTime": 5,
+        "Waypath": "TaskFollow"
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "Weight": {
+        "Value": 4
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByNPCStatus",
+            "NPCStatus": "FollowByPlayer"
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Searching",
+      "RootTask": {
+        "$type": "RPG.GameCore.AdvNpcPetSearch",
+        "OnStartSearchCallback": [
+          {
+            "$type": "RPG.GameCore.AnimSetParameter",
+            "ParameterName": "TriggerSearch",
+            "ParameterType": "Trigger",
+            "Value": 1
+          }
+        ],
+        "OnFoundTreatureString": {
+          "Value": "Maze_Puppy_FoundChest_Success"
+        },
+        "OnFoundTreatureCallback": [
+          {
+            "$type": "RPG.GameCore.AnimSetParameter",
+            "ParameterName": "TriggerSearchFinded",
+            "ParameterType": "Trigger",
+            "Value": 1
+          }
+        ],
+        "OnLeaveSearchString": {
+          "Value": "SpecialVisionClose"
+        },
+        "DistanceProtection": 6,
+        "TransferDistance": 2,
+        "ToFarLeaveDistance": 5
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "Weight": {
+        "Value": 5
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByNPCStatus",
+            "NPCStatus": "PetSearch"
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    }
+  ],
+  "OnDisable": {
+    "$type": "RPG.GameCore.AdvNPCIdle"
+  }
+}

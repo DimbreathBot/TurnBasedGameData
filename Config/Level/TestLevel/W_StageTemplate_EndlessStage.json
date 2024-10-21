@@ -1,0 +1,1047 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByContainCustomString",
+            "Key": {
+              "Hash": 514182458
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TransitEnvProfile",
+              "Path": {
+                "Custom": true,
+                "Key": "_SceneEnvironment"
+              }
+            }
+          ],
+          "FailedTaskList": []
+        }
+      ]
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "Order": 1,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.StartLevelGraph",
+          "LoadFromTableKey": "_DefaultSubStage"
+        },
+        {
+          "$type": "RPG.GameCore.StartTutorialGraph",
+          "LoadFromTableKey": "_DefaultTutorial"
+        },
+        {
+          "$type": "RPG.GameCore.StartLevelGraph",
+          "Path": "Config/Level/SubLevelGraph/StagePerformance.json"
+        }
+      ]
+    },
+    {
+      "Order": 1,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaveMonsterMaxCount",
+          "Count": 99
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByContainCustomString",
+            "Key": {
+              "Hash": 910463983
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.SetBattleBGMState",
+              "StateName": {
+                "Custom": true,
+                "Key": "_BGM"
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.StartStageBGM",
+              "IsEliteStage": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAK",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    -1804961164
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.SetMainLightOffset",
+          "SetType": "ResetLevelVal"
+        },
+        {
+          "$type": "RPG.GameCore.StartBattleScoringAbility"
+        },
+        {
+          "$type": "RPG.GameCore.AddStageAbilityByName",
+          "ReadFromTable": true
+        },
+        {
+          "$type": "RPG.GameCore.LevelLockFeature",
+          "LockFeatureType": "TurnStartPage"
+        },
+        {
+          "$type": "RPG.GameCore.AddMazeBuffBinding",
+          "BindingTypes": [
+            "StageAbility",
+            "StageAbilityBeforeCharacterBorn"
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.CreatePlayerTeam"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerCustomString",
+          "CustomString": {
+            "Value": "Stage_TimingCreateBattleEvent"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByContainCustomString",
+            "Key": {
+              "Hash": -306273023
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_CreateBattleEventStart"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.CreateBattleEventEntityFromStage",
+              "DefaultAbilityList": [
+                "BattleEventAbility_Camear_SelectLightTeamEntity",
+                "BattleEventAbility_Camear_SelectDarkTeamEntity",
+                "BattleEventAbility_Camear_AllLightTeam",
+                "BattleEventAbility_Camear_AllDarkTeam",
+                "BattleEventAbility_ChallengeTurnLimit"
+              ],
+              "DefaultAbilityTypeList": [
+                "ChallengerEvent",
+                "ChallengerEvent",
+                "ChallengerEvent",
+                "ChallengerEvent",
+                "ChallengerEvent"
+              ],
+              "OnBattleEventCreate": [
+                {
+                  "$type": "RPG.GameCore.SetTargetUniqueName",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ParamEntity"
+                  },
+                  "UniqueName": "_BattleEventFromStage"
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_CreateBattleEventFinish"
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.WaveMonster",
+          "WaitDie": false,
+          "ForbiddenPassiveSkill": true
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByContainCustomString",
+            "Key": {
+              "Hash": 1257711741
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_WaveMonsterPerformStart1_Special"
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_WaveMonsterPerformStart1"
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.WaitCustomStringBattleClientOnly",
+          "CustomString": {
+            "Value": "Stage_WaveMonsterPerformEnd1"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AddMazeBuffBinding",
+          "BindingTypes": [
+            "StageAbilityAfterCharacterBorn",
+            "CharacterSkill",
+            "CharacterAbility"
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.PreloadStageBattleEventEffects",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "BattleEventEntityList"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitFrame",
+          "WaitFrameCount": 3
+        },
+        {
+          "$type": "RPG.GameCore.TriggerUINotify",
+          "NotifyTypeName": "MazeToBattleTransitFadeOutEnd"
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.15
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.UsePassiveSkill",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllDarkTeam"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerModifierEnterBattle"
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAny",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByContainCustomString",
+                "Key": {
+                  "Hash": 1257711741
+                }
+              },
+              {
+                "$type": "RPG.GameCore.ByContainCustomString",
+                "Key": {
+                  "Hash": -1153152981
+                }
+              }
+            ]
+          },
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerUINotify",
+              "NotifyTypeName": "BattleShowBattleStartDialog"
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAnd",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByCompareWaveCount",
+                "CompareType": "Equal",
+                "CompareWithMax": true
+              },
+              {
+                "$type": "RPG.GameCore.ByCheckDarkTeamDestroy",
+                "ForWaveEnd": true
+              }
+            ]
+          },
+          "FailedTaskList": []
+        },
+        {
+          "$type": "RPG.GameCore.AddGlobalDynamicOffset",
+          "ConfigName": {
+            "Custom": true,
+            "Key": "_LevelCameraGlobalDynamicOffset"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByHasInsertAbilityPending"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.7
+                }
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.StartBattle"
+        },
+        {
+          "$type": "RPG.GameCore.PauseGameModeToState",
+          "PauseTurnState": "BattleEnter",
+          "Pause": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.2
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAnd",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByCompareWaveCount",
+                "CompareType": "Equal",
+                "CompareWithMax": true
+              },
+              {
+                "$type": "RPG.GameCore.ByCheckDarkTeamDestroy",
+                "ForWaveEnd": true
+              }
+            ]
+          },
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerUINotify",
+              "NotifyTypeName": "BattleCharacterHudTrue"
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1.8
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PauseGameModeToState",
+          "PauseTurnState": "BattleEnter"
+        },
+        {
+          "$type": "RPG.GameCore.DarkTeamDestroyCheck",
+          "ForWaveEnd": true
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareWaveCount",
+            "CompareType": "Equal",
+            "CompareWithMax": true
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.WaitForTurnEnd"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_PreLocalWin"
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_Wave1End"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Order": 2,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Stage_Wave1End"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PauseToTurnEnd",
+          "Pause": true
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByContainCustomString",
+            "Key": {
+              "Hash": 666990979
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.SetBattleBGMState",
+              "StateName": {
+                "Custom": true,
+                "Key": "_BGM_Wave2"
+              }
+            }
+          ],
+          "FailedTaskList": []
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1.5
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaveMonster",
+          "InitAnimStateName": "Appear",
+          "WaitDie": false
+        },
+        {
+          "$type": "RPG.GameCore.TriggerUINotify",
+          "NotifyTypeName": "BattleShowNextWaveDialog"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerCustomString",
+          "CustomString": {
+            "Value": "Stage_WaveMonsterPerformStart2"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitCustomStringBattleClientOnly",
+          "CustomString": {
+            "Value": "Stage_WaveMonsterPerformEnd2"
+          },
+          "ResetWhenTaskBegin": true
+        },
+        {
+          "$type": "RPG.GameCore.UsePassiveSkill",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllDarkTeam"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerModifierEnterBattle"
+        },
+        {
+          "$type": "RPG.GameCore.PauseToTurnEnd"
+        },
+        {
+          "$type": "RPG.GameCore.DarkTeamDestroyCheck",
+          "ForWaveEnd": true
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareWaveCount",
+            "CompareType": "Equal",
+            "CompareWithMax": true
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.WaitForTurnEnd"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_PreLocalWin"
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_Wave2End"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Order": 1,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Stage_Wave2End"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PauseToTurnEnd",
+          "Pause": true
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByContainCustomString",
+            "Key": {
+              "Hash": -899092962
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.SetBattleBGMState",
+              "StateName": {
+                "Custom": true,
+                "Key": "_BGM_Wave3"
+              }
+            }
+          ],
+          "FailedTaskList": []
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1.5
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaveMonster",
+          "InitAnimStateName": "Appear",
+          "WaitDie": false
+        },
+        {
+          "$type": "RPG.GameCore.TriggerUINotify",
+          "NotifyTypeName": "BattleShowNextWaveDialog"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerCustomString",
+          "CustomString": {
+            "Value": "Stage_WaveMonsterPerformStart2"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitCustomStringBattleClientOnly",
+          "CustomString": {
+            "Value": "Stage_WaveMonsterPerformEnd2"
+          },
+          "ResetWhenTaskBegin": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerModifierEnterBattle"
+        },
+        {
+          "$type": "RPG.GameCore.PauseToTurnEnd"
+        },
+        {
+          "$type": "RPG.GameCore.DarkTeamDestroyCheck",
+          "ForWaveEnd": true
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareWaveCount",
+            "CompareType": "Equal",
+            "CompareWithMax": true
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.WaitForTurnEnd"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_PreLocalWin"
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_Endless1Start"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "Order": 1,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Stage_Endless1Start"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PauseToTurnEnd",
+          "Pause": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1.5
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaveMonster",
+          "InitAnimStateName": "Appear",
+          "WaitDie": false
+        },
+        {
+          "$type": "RPG.GameCore.TriggerUINotify",
+          "NotifyTypeName": "BattleShowNextWaveDialog"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerCustomString",
+          "CustomString": {
+            "Value": "Stage_WaveMonsterPerformStart2"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitCustomStringBattleClientOnly",
+          "CustomString": {
+            "Value": "Stage_WaveMonsterPerformEnd2"
+          },
+          "ResetWhenTaskBegin": true
+        },
+        {
+          "$type": "RPG.GameCore.UsePassiveSkill",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllDarkTeam"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerModifierEnterBattle"
+        },
+        {
+          "$type": "RPG.GameCore.PauseToTurnEnd"
+        },
+        {
+          "$type": "RPG.GameCore.DarkTeamDestroyCheck",
+          "ForWaveEnd": true
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareWaveCount",
+            "CompareType": "Equal",
+            "CompareWithMax": true
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.WaitForTurnEnd"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_PreLocalWin"
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_Endless2Start"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "Order": 1,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Stage_Endless2Start"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PauseToTurnEnd",
+          "Pause": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1.5
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaveMonster",
+          "InitAnimStateName": "Appear",
+          "WaitDie": false
+        },
+        {
+          "$type": "RPG.GameCore.TriggerUINotify",
+          "NotifyTypeName": "BattleShowNextWaveDialog"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerCustomString",
+          "CustomString": {
+            "Value": "Stage_WaveMonsterPerformStart2"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitCustomStringBattleClientOnly",
+          "CustomString": {
+            "Value": "Stage_WaveMonsterPerformEnd2"
+          },
+          "ResetWhenTaskBegin": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerModifierEnterBattle"
+        },
+        {
+          "$type": "RPG.GameCore.PauseToTurnEnd"
+        },
+        {
+          "$type": "RPG.GameCore.DarkTeamDestroyCheck",
+          "ForWaveEnd": true
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareWaveCount",
+            "CompareType": "Equal",
+            "CompareWithMax": true
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.WaitForTurnEnd"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_PreLocalWin"
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_Endless1Start"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitBattleResult",
+          "WinTaskList": [
+            {
+              "$type": "RPG.GameCore.WaitLastKillFinish"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerUINotify",
+              "NotifyTypeName": "BattleCharacterHudFalse"
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAny",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByCompareStageType",
+                    "CurrentStageType": "Cocoon"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCompareStageType",
+                    "CurrentStageType": "FarmElement"
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.ShowUI",
+                  "Name": "FarmResult",
+                  "WaitForExit": true
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetLevelFinish"
+            }
+          ],
+          "LoseTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerUINotify",
+              "NotifyTypeName": "BattleCharacterHudFalse"
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareStageType",
+                "CurrentStageType": "PunkLord"
+              },
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.ShowUI",
+                  "Name": "DefaultLose",
+                  "WaitForExit": true
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetLevelFinish"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Order": 10,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFor",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAny",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByLevelLoseCheck"
+              },
+              {
+                "$type": "RPG.GameCore.ByCheckTrialCharacterDie"
+              },
+              {
+                "$type": "RPG.GameCore.ByCheckAdditionalConditions"
+              }
+            ]
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByContainCustomString",
+            "Key": {
+              "Hash": -1148494254
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_PreLocalWin"
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_PlayerTeamDie"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Order": 10,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFor",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAny",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByCheckAdditionalConditions",
+                "CheckForWin": true
+              }
+            ]
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAny",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByLevelLoseCheck"
+              },
+              {
+                "$type": "RPG.GameCore.ByCheckTrialCharacterDie"
+              }
+            ]
+          },
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_PreLocalWin"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Stage_PlayerTeamDie"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerCustomString",
+          "CustomString": {
+            "Value": "Stage_WriteLocalLose"
+          }
+        }
+      ]
+    },
+    {
+      "Order": 10,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Stage_PreLocalWin"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAnd",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByAny",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByLevelLoseCheck"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCheckTrialCharacterDie"
+                  }
+                ]
+              },
+              {
+                "$type": "RPG.GameCore.ByNot",
+                "Predicate": {
+                  "$type": "RPG.GameCore.ByContainCustomString",
+                  "Key": {
+                    "Hash": -1148494254
+                  }
+                }
+              }
+            ]
+          },
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.SetLocalWinFlag"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_WriteLocalWin"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Order": 10,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Stage_WriteLocalWin"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetBattleResult",
+          "IsWin": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerModifierLeaveBattle"
+        }
+      ]
+    },
+    {
+      "Order": 10,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Stage_WriteLocalLose"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetBattleResult"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerModifierLeaveBattle"
+        }
+      ]
+    }
+  ]
+}

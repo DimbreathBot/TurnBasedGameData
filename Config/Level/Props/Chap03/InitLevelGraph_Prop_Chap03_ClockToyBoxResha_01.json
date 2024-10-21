@@ -1,0 +1,873 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.GenericSwitchCase",
+          "SwitchRef": {
+            "$type": "RPG.GameCore.SwitchRefPropState"
+          },
+          "Cases": [
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "Case": "Open",
+              "OnSuccess": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "ReshaClock_FirstOpen"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.AnimSetParameter",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "ParameterName": "IsActivating",
+              "ParameterType": "Bool",
+              "Value": 1
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1
+                }
+              },
+              "MaxAdvencePerTick": 0
+            },
+            {
+              "$type": "RPG.GameCore.SetGameplayBGMEmotionState",
+              "StateName": "State_Gameplay_ClockBoy"
+            },
+            {
+              "$type": "RPG.GameCore.CartoonScreenTransfer",
+              "TargetEntity": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                "SinglePropID": {},
+                "MultiPropID": [],
+                "PropIDInOwnerGroup": {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 300001
+                  }
+                }
+              },
+              "AttachPoint": "Root",
+              "Duration": 1,
+              "AnimationCurvePath": "Camera/BlendCurve/WolfBro_CartoonFadeIn.asset"
+            },
+            {
+              "$type": "RPG.GameCore.EnablePlayerPlayIdleShow",
+              "Enable": false
+            },
+            {
+              "$type": "RPG.GameCore.PropInitPuzzle",
+              "BoardPath": {
+                "Custom": true,
+                "Key": "PuzzlePrefabRef_F"
+              },
+              "LocalPosition": {
+                "X": 0,
+                "Y": -100,
+                "Z": 0
+              },
+              "PuzzleArea": {
+                "Custom": true,
+                "Key": "PuzzleArea"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TakenMazePuzzleChallenge",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "MazePuzzleChallengeID": {
+                "Value": "1031"
+              },
+              "AutoClosePuzzle": false,
+              "AutoResetPuzzle": false,
+              "AutoFinishChallenge": false,
+              "PrepareTime": 0
+            },
+            {
+              "$type": "RPG.GameCore.PropStartPuzzle",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "OnStart": [
+                {
+                  "$type": "RPG.GameCore.WaitSecond",
+                  "WaitTime": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0.5
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerCustomString",
+                  "CustomString": {
+                    "Value": "MainClockToy_Open"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.CartoonScreenTransfer",
+                  "TargetEntity": {
+                    "$type": "RPG.GameCore.TargetFetchPuzzleEntity"
+                  },
+                  "AttachPoint": "Root",
+                  "Duration": 1,
+                  "AnimationCurvePath": "Camera/BlendCurve/WolfBro_CartoonFadeOut.asset",
+                  "Close": true
+                },
+                {
+                  "$type": "RPG.Client.AdventureGameplayLock",
+                  "LockSource": "FullScreenLock"
+                },
+                {
+                  "$type": "RPG.GameCore.OpticalIllusionEnterPerformance",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerPerformance",
+                  "PerformanceType": "E",
+                  "PerformanceID_DS": {
+                    "Value": "103270123"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.OpticalIllusionExitPerformance",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerCustomString",
+                  "CustomString": {
+                    "Value": "MainClockToy_FroceExit"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.BlockInputController",
+                  "ActionNameList": []
+                }
+              ]
+            }
+          ],
+          "InstanceID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.OpticalIllusionPuzzleEventListener",
+          "FinishCallback": [
+            {
+              "$type": "RPG.GameCore.FinishMazePuzzleChallenge",
+              "MazePuzzleChallengeID": {
+                "Value": "1031"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "Mode": "SwitchOut",
+              "CustomTime": 0.2
+            },
+            {
+              "$type": "RPG.GameCore.PropClosePuzzle"
+            },
+            {
+              "$type": "RPG.GameCore.WaitStreamingJobFinished"
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareFloorCustomFloat",
+                "Name": {
+                  "Value": "FCV_ReshaClockToy_State"
+                },
+                "CompareType": "Equal",
+                "CompareValue": {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 3
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetFloorCustomFloat",
+                  "Name": {
+                    "Value": "FCV_ReshaClockToy_State"
+                  },
+                  "Value": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 4
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.PropReqInteract",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "InteractID": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 1010
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "CustomTime": 0.2,
+              "TaskEnabled": false
+            },
+            {
+              "$type": "RPG.GameCore.EnablePlayerPlayIdleShow"
+            },
+            {
+              "$type": "RPG.GameCore.SetGameplayBGMEmotionState",
+              "StateName": "State_Gameplay_ClockBoy",
+              "Reset": true
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.5
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "ClockBoxRaidEnd"
+              }
+            }
+          ],
+          "QuitCallback": [
+            {
+              "$type": "RPG.GameCore.FinishMazePuzzleChallenge",
+              "MazePuzzleChallengeID": {
+                "Value": "1031"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "Mode": "SwitchOut",
+              "CustomTime": 0.2
+            },
+            {
+              "$type": "RPG.GameCore.PropClosePuzzle"
+            },
+            {
+              "$type": "RPG.GameCore.AnimSetParameter",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "ParameterName": "IsActivating",
+              "ParameterType": "Bool"
+            },
+            {
+              "$type": "RPG.GameCore.WaitStreamingJobFinished"
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.1
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "CustomTime": 0.2
+            },
+            {
+              "$type": "RPG.GameCore.EnablePlayerPlayIdleShow"
+            },
+            {
+              "$type": "RPG.GameCore.SetGameplayBGMEmotionState",
+              "StateName": "State_Gameplay_ClockBoy",
+              "Reset": true
+            }
+          ],
+          "WayPassCallback": [],
+          "RotateBlockCallback": [],
+          "ReachCallback": [],
+          "ResetCallback": [
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "Mode": "SwitchOut",
+              "CustomTime": 0.2,
+              "KeepDisplay": true,
+              "TextEnabled": true,
+              "TalkSentenceID": 100000004
+            },
+            {
+              "$type": "RPG.GameCore.PropResetPuzzle"
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.1
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "CustomTime": 0.2,
+              "KeepDisplay": true,
+              "TextEnabled": true,
+              "TalkSentenceID": 100000004
+            }
+          ],
+          "ReachSecondPoint": [
+            {
+              "$type": "RPG.GameCore.OpticalIllusionEnterPerformance",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PPFilterStackEffect",
+              "PriorityGroup": "MazeGroupHigh",
+              "Priority": "High",
+              "StartRate": 0,
+              "Duration": 0.5,
+              "AssetPath": "EnviroSystem/PostProcessFilterAsset/Dizziness.asset"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerSound",
+              "SoundName": {
+                "Value": "Ev_sfx_storyd_clockboy_chaos"
+              },
+              "EmitterType": "DefaultEmitter"
+            },
+            {
+              "$type": "RPG.GameCore.PuzzleSetAnimatorParams",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "Params": [
+                {
+                  "AnimatorPath": "MirrorFront",
+                  "ParamName": "Chaos",
+                  "ParamType": "Int",
+                  "ParamValue": 1
+                },
+                {
+                  "AnimatorPath": "Reflection",
+                  "ParamName": "Chaos",
+                  "ParamType": "Int",
+                  "ParamValue": 1
+                },
+                {
+                  "AnimatorPath": "MirrorBack",
+                  "ParamName": "Chaos",
+                  "ParamType": "Int",
+                  "ParamValue": 1
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.TriggerPerformance",
+              "PerformanceType": "E",
+              "PerformanceID_DS": {
+                "Value": "103270158"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.OpticalIllusionExitPerformance",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitAnimStateChange",
+          "StateName": "Using01",
+          "IsEnter": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.5
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AnimSetParameter",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "ParameterName": "TriggerDissolve",
+          "ParameterType": "Trigger",
+          "Value": 1
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "ReshaClock_SecondOpen"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.AnimSetParameter",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "ParameterName": "IsActivating",
+              "ParameterType": "Bool",
+              "Value": 1
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1
+                }
+              },
+              "MaxAdvencePerTick": 0
+            },
+            {
+              "$type": "RPG.GameCore.SetGameplayBGMEmotionState",
+              "StateName": "State_Gameplay_ClockBoy"
+            },
+            {
+              "$type": "RPG.GameCore.CartoonScreenTransfer",
+              "TargetEntity": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                "SinglePropID": {},
+                "MultiPropID": [],
+                "PropIDInOwnerGroup": {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 300001
+                  }
+                }
+              },
+              "AttachPoint": "Root",
+              "Duration": 1,
+              "AnimationCurvePath": "Camera/BlendCurve/WolfBro_CartoonFadeIn.asset"
+            },
+            {
+              "$type": "RPG.GameCore.EnablePlayerPlayIdleShow",
+              "Enable": false
+            },
+            {
+              "$type": "RPG.GameCore.PropInitPuzzle",
+              "BoardPath": {
+                "Custom": true,
+                "Key": "PuzzlePrefabRef_S"
+              },
+              "LocalPosition": {
+                "X": 0,
+                "Y": -100,
+                "Z": 0
+              },
+              "PuzzleArea": {
+                "Custom": true,
+                "Key": "PuzzleArea"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TakenMazePuzzleChallenge",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "MazePuzzleChallengeID": {
+                "Value": "1031"
+              },
+              "AutoClosePuzzle": false,
+              "AutoResetPuzzle": false,
+              "AutoFinishChallenge": false,
+              "PrepareTime": 0
+            },
+            {
+              "$type": "RPG.GameCore.PropStartPuzzle",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "OnStart": [
+                {
+                  "$type": "RPG.GameCore.WaitSecond",
+                  "WaitTime": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0.5
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerCustomString",
+                  "CustomString": {
+                    "Value": "MainClockToy_Open"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.CartoonScreenTransfer",
+                  "TargetEntity": {
+                    "$type": "RPG.GameCore.TargetFetchPuzzleEntity"
+                  },
+                  "AttachPoint": "Root",
+                  "Duration": 1,
+                  "AnimationCurvePath": "Camera/BlendCurve/WolfBro_CartoonFadeOut.asset",
+                  "Close": true
+                },
+                {
+                  "$type": "RPG.GameCore.BlockInputController",
+                  "ActionNameList": []
+                },
+                {
+                  "$type": "RPG.Client.AdventureGameplayLock",
+                  "LockSource": "FullScreenLock"
+                }
+              ]
+            }
+          ],
+          "InstanceID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorCustomValueChange",
+          "Name": {
+            "Value": "FCV_ReshaClockToy_State"
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "ReshaClock_FirstOpen"
+              },
+              "InstanceID": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            }
+          ],
+          "Condition": {
+            "$type": "RPG.GameCore.ByCompareFloorCustomFloat",
+            "Name": {
+              "Value": "FCV_ReshaClockToy_State"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorCustomValueChange",
+          "Name": {
+            "Value": "FCV_ReshaClockToy_State"
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "ReshaClock_SecondOpen"
+              },
+              "InstanceID": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            }
+          ],
+          "Condition": {
+            "$type": "RPG.GameCore.ByCompareFloorCustomFloat",
+            "Name": {
+              "Value": "FCV_ReshaClockToy_State"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 3
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "MainClockToy_FroceExit"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.5
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PlayScreenTransfer",
+          "Mode": "SwitchOut",
+          "CustomTime": 0.2
+        },
+        {
+          "$type": "RPG.GameCore.FinishMazePuzzleChallenge",
+          "MazePuzzleChallengeID": {
+            "Value": "1031"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PropClosePuzzle"
+        },
+        {
+          "$type": "RPG.GameCore.AnimSetParameter",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "ParameterName": "IsActivating",
+          "ParameterType": "Bool"
+        },
+        {
+          "$type": "RPG.GameCore.WaitStreamingJobFinished"
+        },
+        {
+          "$type": "RPG.GameCore.SetFloorCustomFloat",
+          "Name": {
+            "Value": "FCV_ReshaClockToy_State"
+          },
+          "Value": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 2
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PlayScreenTransfer",
+          "CustomTime": 0.2,
+          "TaskEnabled": false
+        },
+        {
+          "$type": "RPG.GameCore.EnablePlayerPlayIdleShow"
+        },
+        {
+          "$type": "RPG.GameCore.SetGameplayBGMEmotionState",
+          "StateName": "State_Gameplay_ClockBoy",
+          "Reset": true
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Resha_ClockEff"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerSound",
+          "SoundName": {
+            "Value": "Ev_sfx_storyd_clockboy_stop"
+          },
+          "EmitterType": "DefaultEmitter"
+        },
+        {
+          "$type": "RPG.GameCore.PPFilterStackEffect",
+          "PriorityGroup": "MazeGroupHigh",
+          "Priority": "High",
+          "StartRate": 0,
+          "Rate": 0.5,
+          "Duration": 0.1,
+          "AssetPath": "EnviroSystem/PostProcessFilterAsset/GhostFilter.asset"
+        },
+        {
+          "$type": "RPG.GameCore.CaptureNPCToCharacter",
+          "CharacterUniqueName": {
+            "Value": "Act103270158_GN"
+          },
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchPuzzleEntity"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.CharacterTriggerAnimState",
+          "CharacterUniqueName": {
+            "Value": "Act103270158_GN"
+          },
+          "AnimStateName": "ClockRing"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerSound",
+          "SoundName": {
+            "Value": "Ev_sfx_FreeStylePreviewEditor_NPC_Special_ClockBoy_00_Ring01"
+          },
+          "EmitterType": "DefaultEmitter"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchPuzzleEntity"
+          },
+          "IsAttachToTargetEntity": true,
+          "Flags": [],
+          "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_NPC_Special_ClockBoy_00_Ring.prefab",
+          "SubObjectModifyDataList": []
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.3
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PPFilterStackEffect",
+          "Active": false,
+          "PriorityGroup": "MazeGroupHigh",
+          "Priority": "High",
+          "StartRate": 0.5,
+          "Rate": 0,
+          "Duration": 0.1,
+          "AssetPath": "EnviroSystem/PostProcessFilterAsset/GhostFilter.asset"
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.15
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PPFilterStackEffect",
+          "Active": false,
+          "PriorityGroup": "MazeGroupHigh",
+          "Priority": "Middle",
+          "StartRate": 1,
+          "Rate": 0,
+          "Duration": 4,
+          "AssetPath": "EnviroSystem/PostProcessFilterAsset/Dizziness.asset"
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "Stages/DesignerBackup/Chapter03/_dependencies/Prefab/MirrormentValley/ClockBox01_Art.prefab",
+        "Key": "PuzzlePrefabRef_F"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "ClockBoxPuzzleBG",
+        "Key": "PuzzleArea"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "ControlledPawnKey"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "E",
+        "Key": "PerformanceType_01"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "E",
+        "Key": "PerformanceType_02"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "802020108",
+        "Key": "PerformanceID_01"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "802020109",
+        "Key": "PerformanceID_02"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "Stages/DesignerBackup/Chapter03/_dependencies/Prefab/MirrormentValley/ClockBox01_Art.prefab",
+        "Key": "PuzzlePrefabRef_S"
+      }
+    ]
+  },
+  "Type": "Entity"
+}

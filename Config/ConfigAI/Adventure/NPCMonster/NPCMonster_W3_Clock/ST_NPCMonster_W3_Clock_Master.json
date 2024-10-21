@@ -1,0 +1,244 @@
+{
+  "AIName": "ST_NPCMonster_W3_Clock_Master",
+  "VariableList": [],
+  "DecisionList": [],
+  "TransitionTable": [],
+  "RootState": {
+    "Name": "Root",
+    "TaskList": [],
+    "TransitionList": [],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeSubTreeConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ByAny",
+          "PredicateList": [
+            {
+              "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+              "States": [
+                "HangUp"
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.ST_ByOnHit"
+            }
+          ]
+        },
+        "TransitionList": [
+          {
+            "Trigger": "OnStateSucceeded",
+            "TransitionToType": "TreeSucceed"
+          }
+        ],
+        "FilePath": "Config/ConfigAI/Adventure/NPCMonster/ST_NPCMonster_Sub_Controlled.json",
+        "Name": "ControlledState"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+          "States": [
+            "Taunt",
+            "Fear"
+          ]
+        },
+        "TransitionList": [],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeSubTreeConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+              "States": [
+                "Taunt"
+              ]
+            },
+            "TransitionList": [
+              {
+                "TransitionToState": "ExitCombatState"
+              }
+            ],
+            "FilePath": "Config/ConfigAI/Adventure/NPCMonster/ST_NPCMonster_Sub_Taunt_Chase.json",
+            "Name": "TauntState"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeSubTreeConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+              "States": [
+                "Fear"
+              ]
+            },
+            "TransitionList": [
+              {
+                "TransitionToState": "ExitCombatState"
+              }
+            ],
+            "FilePath": "Config/ConfigAI/Adventure/NPCMonster/ST_NPCMonster_Sub_Fear.json",
+            "Name": "FearState"
+          }
+        ],
+        "Name": "AbnormalState"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeSubTreeConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ByAIHangUp"
+        },
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToType": "TreeFail",
+            "Condition": {
+              "$type": "RPG.GameCore.ByAny",
+              "PredicateList": [
+                {
+                  "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+                  "States": [
+                    "Taunt",
+                    "HangUp",
+                    "Fear"
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.ST_ByOnHit"
+                }
+              ]
+            }
+          },
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "SystemicState",
+            "Condition": {
+              "$type": "RPG.GameCore.ByAny",
+              "PredicateList": [
+                {
+                  "$type": "RPG.GameCore.ST_ByAIHangUp",
+                  "Inverse": true
+                },
+                {
+                  "$type": "RPG.GameCore.ST_ByAlertLevel",
+                  "AlertLevel": "Alert"
+                },
+                {
+                  "$type": "RPG.GameCore.ST_ByEnterCombat"
+                }
+              ]
+            }
+          }
+        ],
+        "FilePath": "Config/ConfigAI/Adventure/NPCMonster/ST_NPCMonster_Sub_HangUp.json",
+        "Name": "HangUpState"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToType": "TreeFail",
+            "TransitionToState": "AbnormalState",
+            "Condition": {
+              "$type": "RPG.GameCore.ByAny",
+              "PredicateList": [
+                {
+                  "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+                  "States": [
+                    "Taunt",
+                    "HangUp",
+                    "Fear"
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.ST_ByOnHit"
+                }
+              ]
+            }
+          },
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "HangUpState",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByAIHangUp"
+            }
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeSubTreeConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ST_ByAlertLevel"
+            },
+            "TransitionList": [
+              {
+                "Trigger": "OnTick",
+                "TransitionToState": "CombatState",
+                "Condition": {
+                  "$type": "RPG.GameCore.ST_ByEnterCombat"
+                }
+              },
+              {
+                "Trigger": "OnTick",
+                "TransitionToState": "AlertState",
+                "Condition": {
+                  "$type": "RPG.GameCore.ST_ByAlertLevel",
+                  "AlertLevel": "Alert"
+                }
+              }
+            ],
+            "FilePath": "Config/ConfigAI/Adventure/NPCMonster/ST_NPCMonster_Sub_Relax.json",
+            "Name": "RelaxState"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeSubTreeConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ST_ByAlertLevel",
+              "AlertLevel": "Alert"
+            },
+            "TransitionList": [
+              {
+                "Trigger": "OnTick",
+                "TransitionToState": "CombatState",
+                "Condition": {
+                  "$type": "RPG.GameCore.ST_ByEnterCombat"
+                }
+              },
+              {
+                "Trigger": "OnTick",
+                "TransitionToState": "RelaxState",
+                "Condition": {
+                  "$type": "RPG.GameCore.ST_ByAlertLevel"
+                }
+              }
+            ],
+            "FilePath": "Config/ConfigAI/Adventure/NPCMonster/ST_NPCMonster_Sub_Alert.json",
+            "Name": "AlertState"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeSubTreeConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ST_ByEnterCombat"
+            },
+            "TransitionList": [
+              {
+                "Trigger": "OnStateFailed",
+                "TransitionToState": "ExitCombatState"
+              }
+            ],
+            "FilePath": "Config/ConfigAI/Adventure/NPCMonster/NPCMonster_W3_Clock/ST_NPCMonster_W3_Sub_Combat.json",
+            "Name": "CombatState"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeSubTreeConfig",
+            "TransitionList": [
+              {
+                "TransitionToType": "TreeSucceed"
+              }
+            ],
+            "FilePath": "Config/ConfigAI/Adventure/NPCMonster/ST_NPCMonster_Sub_ExitCombat.json",
+            "Name": "ExitCombatState"
+          }
+        ],
+        "Name": "SystemicState"
+      }
+    ]
+  }
+}

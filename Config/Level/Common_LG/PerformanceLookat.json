@@ -1,0 +1,669 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.SetHudTemplate",
+          "TemplateID": 1011,
+          "EnableTemplate": true
+        },
+        {
+          "$type": "RPG.GameCore.BlockInputController",
+          "Enable": true,
+          "ActionNameList": []
+        },
+        {
+          "$type": "RPG.GameCore.EnablePlayerPlayIdleShow",
+          "Enable": false
+        },
+        {
+          "$type": "RPG.GameCore.LockPlayerControl"
+        },
+        {
+          "$type": "RPG.GameCore.EnableNPCMonsterAI",
+          "GroupMonsterIDs": [],
+          "UniqueNames": []
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+            "Name": "FirstTalkListStart",
+            "Value": {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 0
+              }
+            },
+            "CompareType": "Equal"
+          },
+          "SuccessTaskList": [],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                "Name": "FirstTalkListEnd",
+                "Value": {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 0
+                  }
+                },
+                "CompareType": "Equal"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PlayMissionTalk",
+                  "StartSentenceID": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAK",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -1822321590
+                      ]
+                    }
+                  },
+                  "EndSentenceID": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAK",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -1822321590
+                      ]
+                    }
+                  },
+                  "SimpleTalkList": []
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PlayMissionTalk",
+                  "StartSentenceID": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAK",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -1822321590
+                      ]
+                    }
+                  },
+                  "EndSentenceID": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAK",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        510073753
+                      ]
+                    }
+                  },
+                  "SimpleTalkList": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAnd",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                "Name": "FaceToCameraTarget",
+                "Value": {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 0
+                  }
+                },
+                "CompareType": "NotEqual"
+              },
+              {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                "Name": "CameraTargetName",
+                "Value": {
+                  "Value": "0"
+                },
+                "Inverse": true
+              }
+            ]
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                "Name": "CameraTargetName",
+                "Value": {
+                  "Value": "0"
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvEntityFaceTo",
+                  "SourceType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+                  },
+                  "TargetType": {
+                    "$type": "RPG.GameCore.AdvGroupFetchTargetByString",
+                    "Target": {
+                      "Custom": true,
+                      "Key": "CameraAnchorName"
+                    }
+                  },
+                  "EnableSteer": true,
+                  "WaitFinishMode": "Default",
+                  "TurnBackOnGraphEnd": false
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvEntityFaceTo",
+                  "SourceType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+                  },
+                  "TargetType": {
+                    "$type": "RPG.GameCore.AdvGroupFetchTargetByString",
+                    "Target": {
+                      "Custom": true,
+                      "Key": "CameraTargetName"
+                    }
+                  },
+                  "EnableSteer": true,
+                  "WaitFinishMode": "Default",
+                  "TurnBackOnGraphEnd": false
+                }
+              ]
+            }
+          ],
+          "FailedTaskList": []
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAK",
+              "FixedValues": [],
+              "DynamicHashes": [
+                -1352275545
+              ]
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+            "Name": "CameraTargetName",
+            "Value": {
+              "Value": "0"
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.ActiveVirtualCamera",
+              "LevelAreaCameraKey": {
+                "Custom": true,
+                "Key": "CameraAnchorName"
+              },
+              "SelectFollowTargetType": "Anchor",
+              "SelectLookAtTargetType": "Anchor",
+              "WaitBlendFinish": true,
+              "BlendConfig": {
+                "ExportToJson": true,
+                "BlendType": "Cut",
+                "BlendTime": 1
+              },
+              "DynamicParams": {}
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.ActiveVirtualCamera",
+              "LevelAreaCameraKey": {
+                "Custom": true,
+                "Key": "CameraAnchorName"
+              },
+              "SelectFollowTargetType": "Anchor",
+              "LevelAreaFollowKey": {
+                "Custom": true,
+                "Key": "CameraTargetName"
+              },
+              "SelectLookAtTargetType": "Anchor",
+              "LevelAreaLookAtKey": {
+                "Custom": true,
+                "Key": "CameraTargetName"
+              },
+              "WaitBlendFinish": true,
+              "BlendConfig": {
+                "ExportToJson": true,
+                "BlendType": "Cut",
+                "BlendTime": 1
+              },
+              "DynamicParams": {}
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.6
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetCameraXAxisByPlayerTargetAxis",
+          "Target": {
+            "$type": "RPG.GameCore.TargetFetchAnchorByName",
+            "AnchorName": {
+              "Custom": true,
+              "Key": "CameraAnchorName"
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+            "Name": "SecondTalkListStart",
+            "Value": {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 0
+              }
+            },
+            "CompareType": "Equal"
+          },
+          "SuccessTaskList": [],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                "Name": "SecondTalkListEnd",
+                "Value": {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 0
+                  }
+                },
+                "CompareType": "Equal"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PlayMissionTalk",
+                  "StartSentenceID": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAK",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        1063419996
+                      ]
+                    }
+                  },
+                  "EndSentenceID": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAK",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        1063419996
+                      ]
+                    }
+                  },
+                  "SimpleTalkList": []
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PlayMissionTalk",
+                  "StartSentenceID": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAK",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        1063419996
+                      ]
+                    }
+                  },
+                  "EndSentenceID": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAK",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        479099767
+                      ]
+                    }
+                  },
+                  "SimpleTalkList": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAK",
+              "FixedValues": [],
+              "DynamicHashes": [
+                -1683089787
+              ]
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+            "Name": "CutToAdventureCamera",
+            "Value": {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 0
+              }
+            },
+            "CompareType": "Equal"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.ActiveVirtualCamera",
+              "LevelAreaCameraKey": {
+                "Custom": true,
+                "Key": "CameraAnchorName"
+              },
+              "IsActive": false,
+              "WaitBlendFinish": true,
+              "BlendConfig": {
+                "ExportToJson": true,
+                "BlendType": "EaseInOut",
+                "BlendTime": 1.6
+              },
+              "KeepMainCameraRotation": true,
+              "DynamicParams": {}
+            },
+            {
+              "$type": "RPG.GameCore.UnLockPlayerControl"
+            },
+            {
+              "$type": "RPG.GameCore.EnablePlayerPlayIdleShow"
+            },
+            {
+              "$type": "RPG.GameCore.BlockInputController",
+              "ActionNameList": []
+            },
+            {
+              "$type": "RPG.GameCore.SetHudTemplate",
+              "TemplateID": 1011
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                    "Name": "FaceToCameraTarget",
+                    "Value": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 0
+                      }
+                    },
+                    "CompareType": "NotEqual"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                    "Name": "CameraTargetName",
+                    "Value": {
+                      "Value": "0"
+                    },
+                    "Inverse": true
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                    "Name": "CameraTargetName",
+                    "Value": {
+                      "Value": "0"
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AdvEntityStopLookAt",
+                      "SourceType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+                      },
+                      "TargetType": {
+                        "$type": "RPG.GameCore.AdvGroupFetchTargetByString",
+                        "Target": {
+                          "Custom": true,
+                          "Key": "CameraAnchorName"
+                        }
+                      }
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AdvEntityStopLookAt",
+                      "SourceType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+                      },
+                      "TargetType": {
+                        "$type": "RPG.GameCore.AdvGroupFetchTargetByString",
+                        "Target": {
+                          "Custom": true,
+                          "Key": "CameraTargetName"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "FailedTaskList": []
+            },
+            {
+              "$type": "RPG.GameCore.EnableNPCMonsterAI",
+              "Enable": true,
+              "GroupMonsterIDs": [],
+              "UniqueNames": []
+            },
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Custom": true,
+                "Key": "CallBackEventName"
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.ActiveVirtualCamera",
+              "LevelAreaCameraKey": {
+                "Custom": true,
+                "Key": "CameraAnchorName"
+              },
+              "IsActive": false,
+              "WaitBlendFinish": true,
+              "BlendConfig": {
+                "ExportToJson": true,
+                "BlendType": "Cut"
+              },
+              "KeepMainCameraRotation": true,
+              "DynamicParams": {}
+            },
+            {
+              "$type": "RPG.GameCore.UnLockPlayerControl"
+            },
+            {
+              "$type": "RPG.GameCore.EnablePlayerPlayIdleShow"
+            },
+            {
+              "$type": "RPG.GameCore.BlockInputController",
+              "ActionNameList": []
+            },
+            {
+              "$type": "RPG.GameCore.SetHudTemplate",
+              "TemplateID": 1011
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                    "Name": "FaceToCameraTarget",
+                    "Value": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 0
+                      }
+                    },
+                    "CompareType": "NotEqual"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                    "Name": "CameraTargetName",
+                    "Value": {
+                      "Value": "0"
+                    },
+                    "Inverse": true
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                    "Name": "CameraTargetName",
+                    "Value": {
+                      "Value": "0"
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AdvEntityStopLookAt",
+                      "SourceType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+                      },
+                      "TargetType": {
+                        "$type": "RPG.GameCore.AdvGroupFetchTargetByString",
+                        "Target": {
+                          "Custom": true,
+                          "Key": "CameraAnchorName"
+                        }
+                      }
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AdvEntityStopLookAt",
+                      "SourceType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+                      },
+                      "TargetType": {
+                        "$type": "RPG.GameCore.AdvGroupFetchTargetByString",
+                        "Target": {
+                          "Custom": true,
+                          "Key": "CameraTargetName"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "FailedTaskList": []
+            },
+            {
+              "$type": "RPG.GameCore.EnableNPCMonsterAI",
+              "Enable": true,
+              "GroupMonsterIDs": [],
+              "UniqueNames": []
+            },
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Custom": true,
+                "Key": "CallBackEventName"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Value": 3,
+        "Key": "CamDuration"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Value": 1.5,
+        "Key": "WaitSecondsBeforeCut"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "CameraAnchorName"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "0",
+        "Key": "CameraTargetName"
+      },
+      {
+        "$type": "RPG.GameCore.SharedUint",
+        "Key": "FirstTalkListStart"
+      },
+      {
+        "$type": "RPG.GameCore.SharedUint",
+        "Key": "FirstTalkListEnd"
+      },
+      {
+        "$type": "RPG.GameCore.SharedUint",
+        "Key": "SecondTalkListStart"
+      },
+      {
+        "$type": "RPG.GameCore.SharedUint",
+        "Key": "SecondTalkListEnd"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "DefaultEventName",
+        "Key": "CallBackEventName"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Value": 1,
+        "Key": "FaceToCameraTarget"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "CutToAdventureCamera"
+      }
+    ]
+  },
+  "Type": "SubGraph"
+}

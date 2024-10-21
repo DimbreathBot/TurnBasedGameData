@@ -1,0 +1,333 @@
+{
+  "ModifierMap": {
+    "ADV_Modifier_XP_Minion04_ListenTopazSkill": {
+      "ModifierTaskList": [
+        {
+          "$type": "RPG.GameCore.ListenTargetUseSkill",
+          "Owner": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "Target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AdvLocalPlayer"
+          },
+          "ListenSkillType": [
+            "NormalAtk"
+          ],
+          "Distance": 8,
+          "ListenCallback": [
+            {
+              "$type": "RPG.GameCore.AddAdventureModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "ModifierName": "ADV_Modifier_XP_Minion04_MuteIgnoreVision"
+            }
+          ]
+        }
+      ]
+    },
+    "ADV_Modifier_XP_Minion04_MuteIgnoreVision": {
+      "LifeTime": 8,
+      "OnCreate": [
+        {
+          "$type": "RPG.GameCore.ModifyAiVisionExcludeTagRuntime",
+          "Target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "VisionID": "Default",
+          "ModifyTag": [
+            "TrotterLover"
+          ]
+        }
+      ],
+      "OnDestroy": [
+        {
+          "$type": "RPG.GameCore.ModifyAiVisionExcludeTagRuntime",
+          "Target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "VisionID": "Default",
+          "IsAdd": true,
+          "ModifyTag": [
+            "TrotterLover"
+          ]
+        }
+      ],
+      "Stacking": "Refresh"
+    },
+    "ADV_Modifier_W3_Junk_Passive": {
+      "BehaviorFlagList": [
+        "BeHitWithoutBattle"
+      ],
+      "OnBeAttack": [
+        {
+          "$type": "RPG.GameCore.AdventureSetAttackTargetWithoutBattle",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "ModifierOwnerEntity"
+          }
+        }
+      ]
+    },
+    "ADV_Modifier_W3_Junk_Disguise": {
+      "OnCreate": [
+        {
+          "$type": "RPG.GameCore.DebugLog",
+          "Message": "MDF_On"
+        }
+      ],
+      "OnDestroy": [
+        {
+          "$type": "RPG.GameCore.DebugLog",
+          "Message": "MDF_Off"
+        }
+      ]
+    },
+    "ADV_Monster_W3_TV_00_CleanFace": {
+      "OnDestroy": [
+        {
+          "$type": "RPG.GameCore.RemoveEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W3_TV_00/Eff_Monster_W3_TV_00_Break_Occur_Blank.prefab"
+        }
+      ],
+      "OnModifierAdd": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCheckAdvModifierCallBackBehaviorFlag",
+            "Flag": "Freeze"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.RemoveEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W3_TV_00/Eff_Monster_W3_TV_00_BeingHit02.prefab"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W3_TV_00/Eff_Monster_W3_TV_00_Break_Occur_Blank.prefab"
+            }
+          ]
+        }
+      ],
+      "OnModifierRemove": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAnd",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByCheckAdvModifierCallBackBehaviorFlag",
+                "Flag": "Freeze"
+              },
+              {
+                "$type": "RPG.GameCore.AdvByContainBehaviorFlag",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                },
+                "Flag": "Freeze",
+                "Inverse": true
+              },
+              {
+                "$type": "RPG.GameCore.AdvByContainBehaviorFlag",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                },
+                "Flag": "Stun",
+                "Inverse": true
+              },
+              {
+                "$type": "RPG.GameCore.ByAnimatorParam",
+                "ParamType": "Int",
+                "ParamName": "Side",
+                "ParamCompareType": "NotEqual",
+                "IntegerValue": 2
+              }
+            ]
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.RemoveEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W3_TV_00/Eff_Monster_W3_TV_00_Break_Occur_Blank.prefab"
+            }
+          ]
+        }
+      ]
+    },
+    "ADV_Monster_W3_Figure_02_FireInHead": {
+      "OnModifierAdd": [
+        {
+          "$type": "RPG.GameCore.ModifierAttachEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "ModifierOwnerEntity"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W3_Figure_02/Eff_Monster_W3_Figure_02_Fire_Loop.prefab",
+          "MinMutexTime": -1,
+          "MutexType": "Entity"
+        }
+      ]
+    },
+    "ADV_Monster_W1_Mecha01_02_CleanEffect": {
+      "OnDestroy": [
+        {
+          "$type": "RPG.GameCore.RemoveEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_StandBy_Light.prefab",
+          "IsNeedFadeOut": false
+        },
+        {
+          "$type": "RPG.GameCore.RemoveEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_MazeStandBy01_Light.prefab",
+          "IsNeedFadeOut": false
+        }
+      ],
+      "OnModifierAdd": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCheckAdvModifierCallBackBehaviorFlag",
+            "Flag": "Freeze"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.RemoveEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_StandBy_Light.prefab",
+              "IsNeedFadeOut": false
+            },
+            {
+              "$type": "RPG.GameCore.RemoveEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Mecha01_02/Eff_Monster_W1_Mecha01_02_MazeStandBy01_Light.prefab",
+              "IsNeedFadeOut": false
+            }
+          ]
+        }
+      ]
+    },
+    "ADV_Monster_W3_Dinosaur_02_CleanFace": {
+      "OnDestroy": [
+        {
+          "$type": "RPG.GameCore.RemoveEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W3_Dinosaur_02/Eff_Monster_W3_Dinosaur_02_Break_Occur_Blank.prefab"
+        }
+      ],
+      "OnModifierAdd": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCheckAdvModifierCallBackBehaviorFlag",
+            "Flag": "Freeze"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.RemoveEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W3_Dinosaur_02/Eff_Monster_W3_Dinosaur_02_BeingHit02.prefab"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W3_Dinosaur_02/Eff_Monster_W3_Dinosaur_02_Break_Occur_Blank.prefab"
+            }
+          ]
+        }
+      ],
+      "OnModifierRemove": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAnd",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByCheckAdvModifierCallBackBehaviorFlag",
+                "Flag": "Freeze"
+              },
+              {
+                "$type": "RPG.GameCore.AdvByContainBehaviorFlag",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                },
+                "Flag": "Freeze",
+                "Inverse": true
+              },
+              {
+                "$type": "RPG.GameCore.AdvByContainBehaviorFlag",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                },
+                "Flag": "Stun",
+                "Inverse": true
+              },
+              {
+                "$type": "RPG.GameCore.ByAnimatorParam",
+                "ParamType": "Int",
+                "ParamName": "Side",
+                "ParamCompareType": "NotEqual",
+                "IntegerValue": 2
+              }
+            ]
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.RemoveEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W3_Dinosaur_02/Eff_Monster_W3_Dinosaur_02_Break_Occur_Blank.prefab"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

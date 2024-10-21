@@ -1,0 +1,103 @@
+{
+  "AIName": "ST_NPC_Track",
+  "VariableList": [],
+  "DecisionList": [],
+  "RootState": {
+    "TransitionList": [
+      {
+        "Trigger": "OnEvent",
+        "UserDefineEvent": "NpcIdle",
+        "TransitionToState": "Idle"
+      },
+      {
+        "Trigger": "OnEvent",
+        "UserDefineEvent": "NpcPatrol",
+        "TransitionToState": "Patrol"
+      }
+    ],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_Wait",
+            "Time": -1
+          }
+        ],
+        "Name": "Idle"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_PlaySmartObject",
+            "ParamType": "BornSmartOjbect",
+            "GroupId": 2,
+            "InstanceId": 1,
+            "RecordContext": true
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "Search",
+            "Condition": {
+              "$type": "RPG.GameCore.AdvByPerceiveValueReachMax"
+            }
+          }
+        ],
+        "Name": "Patrol"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.AdvByPlayerInVisionZone",
+          "ZoneTags": [
+            "Zone1",
+            "Zone3"
+          ],
+          "Inverse": true
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_PlayFreeStyle",
+            "StoryMotionID": 311110907,
+            "ForceStart": false,
+            "Duration": -1
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "SearchExit",
+            "Condition": {
+              "$type": "RPG.GameCore.AdvByPerceiveValueReachMax",
+              "Inverse": true
+            }
+          }
+        ],
+        "Name": "Search"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_PlayFreeStyle",
+            "StoryMotionID": 311110909,
+            "NormalizedTimeWait": 0.5
+          }
+        ],
+        "TransitionList": [
+          {
+            "TransitionToState": "Patrol",
+            "Condition": {
+              "$type": "RPG.GameCore.AdvByPerceiveValueReachMax",
+              "Inverse": true
+            }
+          }
+        ],
+        "Name": "SearchExit"
+      }
+    ]
+  }
+}

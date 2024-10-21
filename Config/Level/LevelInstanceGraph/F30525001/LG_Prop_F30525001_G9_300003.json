@@ -1,0 +1,257 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupCustomTaskTrigger",
+          "TriggerName": "MissionTrigger",
+          "OnEnter": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByCompareFloorCustomFloat",
+                    "Name": {
+                      "Value": "MazeSkillUsed"
+                    },
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 0
+                      }
+                    }
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCompareGroupState",
+                    "EquationType": "Equal"
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerGroupEvent",
+                  "EventName": {
+                    "Value": "UseMazeSkill"
+                  }
+                }
+              ]
+            }
+          ],
+          "DisableAfterTriggered": true
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "UseMazeSkill"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.ShowTutorialUI",
+              "ForceShowDialog": true
+            },
+            {
+              "$type": "RPG.GameCore.ShowGuideHintWithText",
+              "Block": true,
+              "TargetEvent": [
+                {
+                  "$type": "RPG.GameCore.TutorialLockControl",
+                  "Reset": true
+                },
+                {
+                  "$type": "RPG.GameCore.WaitTutorial",
+                  "Event": "UseMazeSkill",
+                  "Param": "1",
+                  "OnSuccessImmediate": []
+                }
+              ],
+              "NodeIDList": [
+                "MazeMainPage.MazeSkill"
+              ],
+              "GuideTextType": "InfoTip",
+              "GuideText": "TutorialTextmap_Avatar_1220_Hint01",
+              "GuideHintShowConfig": {},
+              "GuideTextShowConfig": {},
+              "GuideUIContextConfig": {
+                "Type": "MainPage"
+              },
+              "EnableClickInHintArea": true,
+              "EnableActionList": [
+                "Menu_MazeSkill"
+              ],
+              "EnableBattleOperationList": []
+            }
+          ],
+          "IsLoop": false
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "MazeSkillUsed"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGroupState",
+                "EquationType": "Equal"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.ShowTutorialUI",
+                  "ForceShowDialog": true
+                },
+                {
+                  "$type": "RPG.GameCore.ShowGuideHintWithText",
+                  "TargetEvent": [
+                    {
+                      "$type": "RPG.GameCore.WaitTutorial",
+                      "Event": "UseMazeSkill",
+                      "Param": "0",
+                      "OnSuccessImmediate": [
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByIsTargetValid",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetSequence",
+                              "Sequence": [
+                                {
+                                  "$type": "RPG.GameCore.TargetFetchCurrentGroupNPCMonsters"
+                                },
+                                {
+                                  "$type": "RPG.GameCore.TargetFilter",
+                                  "Predicate": {
+                                    "$type": "RPG.GameCore.ByIsContainAdventureModifier",
+                                    "TargetType": {
+                                      "$type": "RPG.GameCore.TargetFetchParamEntity"
+                                    },
+                                    "ModifierName": "ADV_StageAbility_Maze_Feixiao_GatheredEnemy"
+                                  }
+                                },
+                                {
+                                  "$type": "RPG.GameCore.TargetTake",
+                                  "Count": 1
+                                }
+                              ]
+                            }
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.TriggerEntityEventV2",
+                              "EventName": {
+                                "Value": "MazeSkillFinished"
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.TriggerGroupEvent",
+                              "EventName": {
+                                "Value": "MazeSkillFinished"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "NodeIDList": [],
+                  "GuideTextType": "TopCenterTip",
+                  "GuideText": "TutorialTextmap_Avatar_1220_Hint02",
+                  "GuideHintShowConfig": {},
+                  "GuideTextShowConfig": {},
+                  "GuideUIContextConfig": {
+                    "Type": "MainPage"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.ShowTutorialUI",
+                  "IsHide": true,
+                  "ForceShowDialog": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "MazeSkillFinished"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PlayMazeButtonEffect",
+              "Enable": true,
+              "BtnType": "MazeSkill"
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGroupState",
+                "EquationType": "Equal"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.RequestGroupStateChange",
+                  "TargetState": 1,
+                  "NeedBlock": false
+                }
+              ]
+            }
+          ],
+          "IsLoop": false
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.ListenTargetUseSkill",
+          "Owner": {
+            "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+          },
+          "Target": {
+            "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+          },
+          "ListenSkillType": [
+            "MazeSkill"
+          ],
+          "Distance": 1,
+          "ListenCallback": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "MazeSkillUsed"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PlayMazeButtonEffect",
+              "BtnType": "MazeSkill"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerGroupEvent",
+              "EventName": {
+                "Value": "MazeSkillUsed"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Type": "EntityInstance"
+}

@@ -1,0 +1,709 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupButtonListTrigger",
+          "TriggerName": "InteractTrigger",
+          "ButtonsByName": [
+            "HideButton",
+            "LeaveButton"
+          ],
+          "ButtonConfigs": [],
+          "InteractAngleRange": 75,
+          "OwnerForwardAngleRange": 45,
+          "IsOverrideValidGuestConfig": true,
+          "OverridedValidGuestConfig": {
+            "Teammember": false,
+            "FakePlayer": true
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetPropSpecialVisionConfig",
+          "SpecialVisionConfigs": [
+            {
+              "TargetIsOwner": true,
+              "StencilRefGBuffer": 3
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.SelectorConfig",
+          "TaskList": [
+            {
+              "$type": "RPG.GameCore.PropStateExecute",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "State": "Open",
+              "Execute": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "CltSrv_TriggerClose"
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.PropStateExecute",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "Execute": [
+                {
+                  "$type": "RPG.GameCore.AdvEnableButtons",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "HideButton"
+                  ],
+                  "IsEnable": true
+                },
+                {
+                  "$type": "RPG.GameCore.AdvEnableButtons",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "LeaveButton"
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.SetupEffectTransformParams",
+                  "OverrideFloating": true,
+                  "FloatingFrequency": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "FloatingDistance": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvOnButtonPressed",
+          "ButtonName": "HideButton",
+          "OnPressedCallback": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Self_Hide"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WolfBroSetupCameraAxis",
+              "Save": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvOnButtonPressed",
+          "ButtonName": "LeaveButton",
+          "OnPressedCallback": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Self_Leave"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WolfBroSetupCameraAxis",
+              "Save": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Self_Hide"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.EnableNPCMonsterAI",
+              "GroupMonsterIDs": [],
+              "UniqueNames": []
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "Mode": "SwitchOut",
+              "CustomTime": 0.3
+            },
+            {
+              "$type": "RPG.GameCore.EnableNPCMonsterAI",
+              "Enable": true,
+              "GroupMonsterIDs": [],
+              "UniqueNames": []
+            },
+            {
+              "$type": "RPG.GameCore.TriggerSound",
+              "SoundName": {
+                "Value": "Ev_sfx_wolfbro_woodbox"
+              },
+              "IsPropLodLoop": true
+            },
+            {
+              "$type": "RPG.GameCore.AdvEnableButtons",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "TriggerName": "InteractTrigger",
+              "ButtonsByName": [
+                "HideButton"
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetEntityVisible",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+              },
+              "MuteColliderWhenInvisible": false
+            },
+            {
+              "$type": "RPG.GameCore.SwitchCharacterAnchor",
+              "IsLocalPlayer": true,
+              "CharacterUniqueName": "LocalPlayer",
+              "LevelAreaKey": {
+                "Custom": true,
+                "Key": "InPoint"
+              },
+              "ResetCamera": false
+            },
+            {
+              "$type": "RPG.GameCore.WolfBroSetupCameraAxis"
+            },
+            {
+              "$type": "RPG.GameCore.AdvOverrideCameraModuleConfig",
+              "OverrideConfigs": [
+                {
+                  "OverrideType": "Freelook3rdModuleConfig",
+                  "OverrideConfigPath": "Camera/ModuleConfig/SpecialAdventure/Freelook3rdModuleConfigLittleFakeAvatar.asset"
+                },
+                {
+                  "OverrideType": "ZoomModuleConfig",
+                  "OverrideConfigPath": "Camera/ModuleConfig/SpecialAdventure/ZoomModuleConfigLittleFakeAvatar.asset"
+                }
+              ],
+              "IsReset": true
+            },
+            {
+              "$type": "RPG.GameCore.SetHudTemplate",
+              "TemplateID": 1012
+            },
+            {
+              "$type": "RPG.GameCore.ShowPuzzleHudWolfBro",
+              "Show": true
+            },
+            {
+              "$type": "RPG.GameCore.ShowPuzzleHudWolfBroInBox",
+              "Show": true
+            },
+            {
+              "$type": "RPG.GameCore.SetHudTemplate",
+              "TemplateID": 1008,
+              "EnableTemplate": true
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.5
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "CustomTime": 0.3
+            },
+            {
+              "$type": "RPG.GameCore.LockPlayerControl",
+              "LockCameraControl": false
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "CltSrv_TriggerOpen"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TutorialTaskUnlock",
+              "TriggerParam": {
+                "Value": "6061"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WolfBroPuzzleReport",
+              "ReportHide": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Self_Leave"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "Mode": "SwitchOut",
+              "CustomTime": 0.3
+            },
+            {
+              "$type": "RPG.GameCore.TriggerSound",
+              "SoundName": {
+                "Value": "Ev_sfx_wolfbro_woodbox"
+              },
+              "IsPropLodLoop": true
+            },
+            {
+              "$type": "RPG.GameCore.AdvEnableButtons",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "TriggerName": "InteractTrigger",
+              "ButtonsByName": [
+                "LeaveButton"
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetEntityVisible",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+              },
+              "Visible": true
+            },
+            {
+              "$type": "RPG.GameCore.SwitchCharacterAnchor",
+              "IsLocalPlayer": true,
+              "CharacterUniqueName": "LocalPlayer",
+              "LevelAreaKey": {
+                "Custom": true,
+                "Key": "LeavePoint"
+              },
+              "ResetCamera": false
+            },
+            {
+              "$type": "RPG.GameCore.WolfBroSetupCameraAxis"
+            },
+            {
+              "$type": "RPG.GameCore.AdvOverrideCameraModuleConfig",
+              "OverrideConfigs": [
+                {
+                  "OverrideType": "Freelook3rdModuleConfig",
+                  "OverrideConfigPath": "Camera/ModuleConfig/SpecialAdventure/Freelook3rdModuleConfigLittleFakeAvatar.asset"
+                },
+                {
+                  "OverrideType": "ZoomModuleConfig",
+                  "OverrideConfigPath": "Camera/ModuleConfig/SpecialAdventure/ZoomModuleConfigLittleFakeAvatar.asset"
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetHudTemplate",
+              "TemplateID": 1008
+            },
+            {
+              "$type": "RPG.GameCore.SetHudTemplate",
+              "TemplateID": 1012,
+              "EnableTemplate": true
+            },
+            {
+              "$type": "RPG.GameCore.ShowPuzzleHudWolfBro",
+              "Show": true
+            },
+            {
+              "$type": "RPG.GameCore.ShowPuzzleHudWolfBroInBox"
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.5
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "CustomTime": 0.3
+            },
+            {
+              "$type": "RPG.GameCore.UnLockPlayerControl"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "CltSrv_TriggerClose"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupCustomTaskTrigger",
+          "TriggerName": "CloseToTrigger",
+          "OnEnter": [
+            {
+              "$type": "RPG.GameCore.PropStateExecute",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "State": "Open",
+              "Execute": [
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "IsAttachToTargetEntity": true,
+                  "Flags": [],
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap03_Prop_WoodenBox_01_Nervous_Lod0.prefab",
+                  "SubObjectModifyDataList": [],
+                  "MaxMutexCount": 5
+                },
+                {
+                  "$type": "RPG.GameCore.SetupEffectTransformParams",
+                  "OverrideFloating": true,
+                  "FloatingFrequency": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 5.29
+                    }
+                  },
+                  "FloatingDistance": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0.0019999999
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "OnExit": [
+            {
+              "$type": "RPG.GameCore.RemoveEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap03_Prop_WoodenBox_01_Nervous_Lod0.prefab",
+              "Flags": []
+            },
+            {
+              "$type": "RPG.GameCore.SetupEffectTransformParams",
+              "OverrideFloating": true,
+              "FloatingFrequency": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "FloatingDistance": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            }
+          ],
+          "IsOverrideValidGuestConfig": true,
+          "OverridedValidGuestConfig": {
+            "NpcMonster": true,
+            "LocalPlayer": false
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "CltSrv_TriggerOpen"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PropReqInteract",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                "SinglePropKey": {
+                  "Custom": true,
+                  "Key": "IsWolfBro"
+                }
+              },
+              "InteractID": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1010
+                }
+              },
+              "OnUICancel": [],
+              "OnCheckItemFail": [],
+              "EnableAdvanceInteract": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "CltSrv_TriggerClose"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PropReqInteract",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                "SinglePropKey": {
+                  "Custom": true,
+                  "Key": "IsWolfBro"
+                }
+              },
+              "InteractID": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1100
+                }
+              },
+              "OnUICancel": [],
+              "OnCheckItemFail": [],
+              "EnableAdvanceInteract": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "ToState": "Open",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_OnOpend"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AdvEnableButtons",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "TriggerName": "InteractTrigger",
+              "ButtonsByName": [
+                "HideButton"
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.5
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AdvEnableButtons",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "TriggerName": "InteractTrigger",
+              "ButtonsByName": [
+                "LeaveButton"
+              ],
+              "IsEnable": true
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "FromState": "Open",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_OnClosed"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AdvEnableButtons",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "TriggerName": "InteractTrigger",
+              "ButtonsByName": [
+                "LeaveButton"
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.5
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AdvEnableButtons",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "TriggerName": "InteractTrigger",
+              "ButtonsByName": [
+                "HideButton"
+              ],
+              "IsEnable": true
+            },
+            {
+              "$type": "RPG.GameCore.RemoveEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap03_Prop_WoodenBox_01_Nervous_Lod0.prefab",
+              "Flags": []
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "HeroBeHit"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PropStateExecute",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "State": "Open",
+          "Execute": [
+            {
+              "$type": "RPG.GameCore.AdvEnableButtons",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "TriggerName": "InteractTrigger",
+              "ButtonsByName": [
+                "LeaveButton"
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetEntityVisible",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+              },
+              "Visible": true
+            },
+            {
+              "$type": "RPG.GameCore.AdvOverrideCameraModuleConfig",
+              "OverrideConfigs": [
+                {
+                  "OverrideType": "Freelook3rdModuleConfig",
+                  "OverrideConfigPath": "Camera/ModuleConfig/SpecialAdventure/Freelook3rdModuleConfigLittleFakeAvatar.asset"
+                },
+                {
+                  "OverrideType": "ZoomModuleConfig",
+                  "OverrideConfigPath": "Camera/ModuleConfig/SpecialAdventure/ZoomModuleConfigLittleFakeAvatar.asset"
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetHudTemplate",
+              "TemplateID": 1008
+            },
+            {
+              "$type": "RPG.GameCore.SetHudTemplate",
+              "TemplateID": 1012,
+              "EnableTemplate": true
+            },
+            {
+              "$type": "RPG.GameCore.ShowPuzzleHudWolfBro",
+              "Show": true
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.5
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "CltSrv_TriggerClose"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "InPoint"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "LeavePoint"
+      }
+    ]
+  },
+  "Type": "Entity"
+}

@@ -1,0 +1,374 @@
+{
+  "AIName": "MazeMonster_TriggerTrap_AI",
+  "VariableList": [],
+  "DecisionList": [
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "GuardAlertDeviceInactive",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.AdvSetNpcVisionsConfig",
+            "VisionsByName": [
+              "GlobalVisionConfig_WaitTrigger_Fast"
+            ]
+          },
+          {
+            "$type": "RPG.GameCore.AdvSetMinimapAlertVisionState",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+            }
+          },
+          {
+            "$type": "RPG.GameCore.AdvNpcGuardAlertDeviceInactive",
+            "OnPlayerEnter": [
+              {
+                "$type": "RPG.GameCore.SetNpcStatus",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+                },
+                "Status": "GuardAlertDevice"
+              },
+              {
+                "$type": "RPG.GameCore.AdvSetNpcVisionsConfig",
+                "VisionsByName": [
+                  "GlobalVisionConfig_Front_Back_Chase",
+                  "GlobalVisionConfig_Front_Fast_Chase"
+                ]
+              },
+              {
+                "$type": "RPG.GameCore.AdvSetMinimapAlertVisionState",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+                },
+                "Enable": true
+              },
+              {
+                "$type": "RPG.GameCore.AdvSetTargetAlertValue",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+                },
+                "BehaviourType": "AlertToMax"
+              },
+              {
+                "$type": "RPG.GameCore.AdvAIRemeberGobackPosition",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+                }
+              },
+              {
+                "$type": "RPG.GameCore.AdvAINavigateTo",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+                },
+                "Mode": "AIKnowledge",
+                "MotionFlag": "Run"
+              }
+            ],
+            "OnActiveByAlertValue": [
+              {
+                "$type": "RPG.GameCore.SetNpcStatus",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+                },
+                "Status": "GuardAlertDevice"
+              },
+              {
+                "$type": "RPG.GameCore.AdvSetMinimapAlertVisionState",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+                },
+                "Enable": true
+              },
+              {
+                "$type": "RPG.GameCore.AdvSetTargetAlertValue",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+                },
+                "BehaviourType": "AlertToMax"
+              },
+              {
+                "$type": "RPG.GameCore.AdvAIRemeberGobackPosition",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+                }
+              },
+              {
+                "$type": "RPG.GameCore.AdvAINavigateTo",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+                },
+                "Mode": "NavigateToEntity",
+                "MotionFlag": "Run",
+                "NavigateTarget": {
+                  "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "AdventureDefaultDSE",
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAlertValueInRange",
+            "AlertValueMax": 5
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "GuardAlertDeviceActive",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.AdvAINavigateTo",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+            },
+            "Mode": "AIKnowledge",
+            "MotionFlag": "Run"
+          },
+          {
+            "$type": "RPG.GameCore.AdvNpcGuardAlertDeviceActive",
+            "TargetPlayerWhenActive": [
+              {
+                "$type": "RPG.GameCore.SetNpcStatus",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+                }
+              }
+            ],
+            "AlertClearWhenActive": [
+              {
+                "$type": "RPG.GameCore.SetNpcStatus",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+                },
+                "Status": "GoBack"
+              }
+            ],
+            "OnPlayerEnterAgain": [
+              {
+                "$type": "RPG.GameCore.AdvAINavigateTo",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+                },
+                "Mode": "AIKnowledge",
+                "MotionFlag": "Run"
+              }
+            ]
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "AdventureDefaultDSE",
+      "Weight": {
+        "Value": 2
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByNPCStatus",
+            "NPCStatus": "GuardAlertDevice"
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Chase",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.AdvSetNpcVisionsConfig",
+            "VisionsByName": [
+              "GlobalVisionConfig_Front_Back_Chase",
+              "GlobalVisionConfig_Front_Fast_Chase"
+            ]
+          },
+          {
+            "$type": "RPG.GameCore.AdvNPCChase",
+            "ChaseRadius": 30,
+            "OnMissTarget": {
+              "$type": "RPG.GameCore.AdvForceSetNpcAlertValue",
+              "AlertValue": 26
+            },
+            "OnEnterChaseButNoTarget": {
+              "$type": "RPG.GameCore.AdvForceSetNpcAlertValue",
+              "AlertValue": 26
+            }
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "AdventureDefaultDSE",
+      "Weight": {
+        "Value": 3
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAny",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByAlertValueInRange",
+                "AlertValueMin": 5,
+                "AlertValueMax": 45
+              }
+            ]
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "GoBack",
+      "RootTask": {
+        "$type": "RPG.GameCore.AdvNPCGoback",
+        "OnBeforeGoBack": {
+          "$type": "RPG.GameCore.AdvSetNpcVisionsConfig",
+          "VisionsByName": [
+            "GlobalVisionConfig_GoBack"
+          ]
+        }
+      },
+      "ScoreEvaluatorType": "AdventureDefaultDSE",
+      "Weight": {
+        "Value": 5
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAny",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByNPCStatus",
+                "NPCStatus": "GoBack"
+              }
+            ]
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Attack",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.AdvNPCAttack",
+            "AttackCD": 4
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "AdventureDefaultDSE",
+      "Weight": {
+        "Value": 4
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAny",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByInAttackRange"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByAlertValueInRange",
+                    "AlertValueMin": 5,
+                    "AlertValueMax": 45
+                  }
+                ]
+              },
+              {
+                "$type": "RPG.GameCore.ByNPCStatus",
+                "NPCStatus": "Attack"
+              }
+            ]
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    }
+  ],
+  "TransitionTable": [
+    {
+      "FromDecision": "GuardAlertDeviceInactive",
+      "AvailableDecisions": [
+        "GuardAlertDeviceInactive",
+        "GuardAlertDeviceActive"
+      ]
+    },
+    {
+      "FromDecision": "GuardAlertDeviceActive",
+      "AvailableDecisions": [
+        "GuardAlertDeviceActive",
+        "Chase",
+        "GoBack"
+      ]
+    },
+    {
+      "FromDecision": "Chase",
+      "AvailableDecisions": [
+        "GoBack",
+        "Chase",
+        "Attack"
+      ]
+    },
+    {
+      "FromDecision": "Attack",
+      "AvailableDecisions": [
+        "GoBack",
+        "Chase",
+        "Attack"
+      ]
+    },
+    {
+      "FromDecision": "GoBack",
+      "AvailableDecisions": [
+        "GuardAlertDeviceInactive",
+        "GoBack"
+      ]
+    }
+  ],
+  "OnDisable": {
+    "$type": "RPG.GameCore.AdvNPCIdle"
+  },
+  "OnInit": {
+    "$type": "RPG.GameCore.AdvSetNpcAlertConfig",
+    "TargetType": {
+      "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+    },
+    "AlertLimitMax": 45,
+    "AlertGuardLimitMin": 5,
+    "AlertGuardLimitMax": 25,
+    "AlertDeclineSpeed": 3
+  }
+}

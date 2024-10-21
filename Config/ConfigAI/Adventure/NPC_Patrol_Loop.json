@@ -1,0 +1,125 @@
+{
+  "AIName": "NPC_Patrol_Loop",
+  "VariableList": [],
+  "DecisionList": [
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Patrol",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.AdvNPCPatrol"
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "DefaultDSE"
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Idle",
+      "RootTask": {
+        "$type": "RPG.GameCore.ParallelConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.TriggerCustomString",
+            "CustomString": {
+              "Value": "Robot_InCheckPoint99_C"
+            }
+          },
+          {
+            "$type": "RPG.GameCore.AdvNPCIdle"
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "Weight": {
+        "Value": 2
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAny",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByAnyNpcMonsterInRange",
+                "Range": 8
+              },
+              {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByDistance",
+                    "From": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "To": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "AdvLocalPlayer"
+                    },
+                    "CompareType": "LessEqual",
+                    "CompareValue": {
+                      "IsDynamic": true,
+                      "PostfixExpr": {
+                        "OpCodes": "AAAK",
+                        "FixedValues": [
+                          {
+                            "Value": 2
+                          }
+                        ],
+                        "DynamicHashes": []
+                      }
+                    }
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByAngle",
+                    "From": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "To": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "AdvLocalPlayer"
+                    },
+                    "CompareType": "LessEqual",
+                    "CompareValue": {
+                      "IsDynamic": true,
+                      "PostfixExpr": {
+                        "OpCodes": "AAAK",
+                        "FixedValues": [
+                          {
+                            "Value": 360
+                          }
+                        ],
+                        "DynamicHashes": []
+                      }
+                    }
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByHaveObstacle",
+                    "From": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "To": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "AdvLocalPlayer"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    }
+  ],
+  "OnDisable": {
+    "$type": "RPG.GameCore.AdvNPCIdle"
+  }
+}

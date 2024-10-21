@@ -1,0 +1,532 @@
+{
+  "AIName": "ST_SummonUnit_Topaz_Master",
+  "VariableList": [
+    {
+      "$type": "RPG.GameCore.AIVariableBool",
+      "Name": "FindTreasure"
+    },
+    {
+      "$type": "RPG.GameCore.AIVariableBool",
+      "Name": "FindTrotter"
+    },
+    {
+      "$type": "RPG.GameCore.AIVariableBool",
+      "Name": "IsTrotterValid"
+    },
+    {
+      "$type": "RPG.GameCore.AIVariableBool",
+      "Name": "IsTreasureValid"
+    },
+    {
+      "$type": "RPG.GameCore.AIVariableFloat",
+      "Name": "CD_Action"
+    },
+    {
+      "$type": "RPG.GameCore.AIVariableBool",
+      "Name": "IsBlock"
+    }
+  ],
+  "DecisionList": [],
+  "TransitionTable": [],
+  "RootState": {
+    "Name": "Root",
+    "TaskList": [],
+    "TransitionList": [],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ByAIHangUp"
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_HangUpByLevel"
+          },
+          {
+            "$type": "RPG.GameCore.ST_Side_CommitCD",
+            "VariableName": "CD_Action",
+            "Duration": 1,
+            "CommitOnExit": true
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "SystemicState",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByAIHangUp",
+              "Inverse": true
+            }
+          }
+        ],
+        "Name": "HangUpState"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "HangUpState",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByAIHangUp"
+            }
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ByAnd",
+              "PredicateList": [
+                {
+                  "$type": "RPG.GameCore.ByAny",
+                  "PredicateList": [
+                    {
+                      "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                      "VarName": "FindTreasure",
+                      "CompareValue": true
+                    },
+                    {
+                      "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                      "VarName": "FindTrotter",
+                      "CompareValue": true
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.ST_BySkillInCD",
+                  "CDVariableName": "CD_Action",
+                  "Inverse": true
+                }
+              ]
+            },
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Side_SetVariableBool",
+                "OnExit": true,
+                "ExitName": "FindTrotter"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_SetVariableBool",
+                "OnExit": true,
+                "ExitName": "FindTreasure"
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnTick",
+                "TransitionToState": "FollowState",
+                "Condition": {
+                  "$type": "RPG.GameCore.ST_ByDistanceToTarget",
+                  "CompareType": "Greater",
+                  "CompareValue": 35
+                }
+              }
+            ],
+            "SubStateList": [
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "EnterCondition": {
+                  "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                  "VarName": "FindTrotter",
+                  "CompareValue": true
+                },
+                "TaskList": [
+                  {
+                    "$type": "RPG.GameCore.ST_Side_SetVariableBool",
+                    "OnExit": true,
+                    "ExitName": "FindTrotter"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ST_Side_SetVariableBool",
+                    "OnEnter": true,
+                    "EnterName": "IsTrotterValid",
+                    "EnterValue": true,
+                    "OnExit": true,
+                    "ExitName": "IsTrotterValid"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ST_Side_TriggerInstantAbility",
+                    "TriggerOnEnter": true,
+                    "EnterAbilityName": "SummonUnit_Topaz_00_FindTrotterStart",
+                    "TriggerOnExit": true,
+                    "ExitAbilityName": "SummonUnit_Topaz_00_FindTrotterFinish"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ST_Side_NotifySpecialEvent",
+                    "SpecialEventType": "ZhangZhangLeft",
+                    "TriggerOnEnter": false,
+                    "TriggerOnExit": true,
+                    "Distance": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": -1
+                      }
+                    }
+                  },
+                  {
+                    "$type": "RPG.GameCore.ST_Side_ListenFindTrotterState",
+                    "SetBoolVariableName": "IsTrotterValid"
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "TransitionToState": "FollowState"
+                  }
+                ],
+                "SubStateList": [
+                  {
+                    "$type": "RPG.GameCore.StateTreeStateConfig",
+                    "TaskList": [
+                      {
+                        "$type": "RPG.GameCore.ST_Main_MoveToTarget",
+                        "TargetType": "AwardTarget",
+                        "MoveStance": "Run",
+                        "Tolerance": 5,
+                        "AngleTolerance": 90,
+                        "SpeedScale": 1.2
+                      }
+                    ],
+                    "TransitionList": [
+                      {
+                        "Trigger": "OnStateSucceeded",
+                        "TransitionToState": "FindTrotterAction"
+                      },
+                      {
+                        "Trigger": "OnTick",
+                        "TransitionToState": "FollowState",
+                        "Condition": {
+                          "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                          "VarName": "IsTrotterValid"
+                        }
+                      },
+                      {
+                        "Trigger": "OnStateFailed",
+                        "TransitionToState": "FollowState",
+                        "BoolVariableList": [
+                          {
+                            "VariableName": "IsBlock",
+                            "Value": true
+                          }
+                        ],
+                        "FloatVariableList": []
+                      }
+                    ],
+                    "Name": "FindTrotterMove"
+                  },
+                  {
+                    "$type": "RPG.GameCore.StateTreeStateConfig",
+                    "TaskList": [],
+                    "TransitionList": [],
+                    "SubStateList": [
+                      {
+                        "$type": "RPG.GameCore.StateTreeStateConfig",
+                        "EnterCondition": {
+                          "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                          "VarName": "IsTrotterValid"
+                        },
+                        "TaskList": [
+                          {
+                            "$type": "RPG.GameCore.ST_Main_DoSkill",
+                            "Name": "FindTreasureFailAction"
+                          }
+                        ],
+                        "TransitionList": [
+                          {
+                            "TransitionToType": "TreeSucceed",
+                            "TransitionToState": "FollowState"
+                          }
+                        ],
+                        "Name": "FindTrotterDoubt"
+                      },
+                      {
+                        "$type": "RPG.GameCore.StateTreeStateConfig",
+                        "EnterCondition": {
+                          "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                          "VarName": "IsTrotterValid",
+                          "CompareValue": true
+                        },
+                        "TaskList": [
+                          {
+                            "$type": "RPG.GameCore.ST_Main_DoSkill",
+                            "Name": "FindTrotterAction"
+                          }
+                        ],
+                        "TransitionList": [
+                          {
+                            "TransitionToState": "FindTrotterWait"
+                          }
+                        ],
+                        "Name": "FindTrotterHappy"
+                      }
+                    ],
+                    "Name": "FindTrotterAction"
+                  },
+                  {
+                    "$type": "RPG.GameCore.StateTreeStateConfig",
+                    "TaskList": [
+                      {
+                        "$type": "RPG.GameCore.ST_Main_Wait",
+                        "Time": -1
+                      }
+                    ],
+                    "TransitionList": [
+                      {
+                        "Trigger": "OnTick",
+                        "TransitionToState": "FindTrotterDoubt",
+                        "Condition": {
+                          "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                          "VarName": "IsTrotterValid"
+                        }
+                      },
+                      {
+                        "Trigger": "OnTick",
+                        "TransitionToType": "TreeFail",
+                        "Condition": {
+                          "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                          "VarName": "IsTrotterValid"
+                        }
+                      }
+                    ],
+                    "Name": "FindTrotterWait"
+                  }
+                ],
+                "Name": "FindTrotterState"
+              },
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "EnterCondition": {
+                  "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                  "VarName": "FindTreasure",
+                  "CompareValue": true
+                },
+                "TaskList": [
+                  {
+                    "$type": "RPG.GameCore.ST_Side_SetVariableBool",
+                    "OnExit": true,
+                    "ExitName": "FindTreasure"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ST_Side_SetVariableBool",
+                    "OnEnter": true,
+                    "EnterName": "IsTreasureValid",
+                    "EnterValue": true,
+                    "OnExit": true,
+                    "ExitName": "IsTreasureValid"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ST_Side_TriggerInstantAbility",
+                    "TriggerOnEnter": true,
+                    "EnterAbilityName": "SummonUnit_Topaz_00_FindTreasureStart",
+                    "TriggerOnExit": true,
+                    "ExitAbilityName": "SummonUnit_Topaz_00_FindTreasureFinish"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ST_Side_ListenFindTreasureState",
+                    "SetBoolVariableName": "IsTreasureValid"
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "TransitionToState": "FollowState"
+                  }
+                ],
+                "SubStateList": [
+                  {
+                    "$type": "RPG.GameCore.StateTreeStateConfig",
+                    "TaskList": [
+                      {
+                        "$type": "RPG.GameCore.ST_Main_MoveToPosition",
+                        "PositionType": "AwardStaticPosition",
+                        "MoveStance": "Run",
+                        "SkipStartTurn": true,
+                        "SpeedScale": 1.2,
+                        "TargetSampleRadius": 1.5,
+                        "SetBlockConfig": true,
+                        "BlockSampleCount": 4
+                      }
+                    ],
+                    "TransitionList": [
+                      {
+                        "Trigger": "OnStateSucceeded",
+                        "TransitionToState": "FindTreasureAction",
+                        "BoolVariableList": [],
+                        "FloatVariableList": []
+                      },
+                      {
+                        "Trigger": "OnStateFailed",
+                        "TransitionToState": "FollowState",
+                        "BoolVariableList": [
+                          {
+                            "VariableName": "IsBlock",
+                            "Value": true
+                          }
+                        ],
+                        "FloatVariableList": []
+                      }
+                    ],
+                    "Name": "FindTreasureMove"
+                  },
+                  {
+                    "$type": "RPG.GameCore.StateTreeStateConfig",
+                    "TaskList": [],
+                    "TransitionList": [],
+                    "SubStateList": [
+                      {
+                        "$type": "RPG.GameCore.StateTreeStateConfig",
+                        "EnterCondition": {
+                          "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                          "VarName": "IsTreasureValid"
+                        },
+                        "TaskList": [
+                          {
+                            "$type": "RPG.GameCore.ST_Main_DoSkill",
+                            "Name": "FindTreasureFailAction"
+                          }
+                        ],
+                        "TransitionList": [
+                          {
+                            "UserDefineEvent": "OpenTreasure",
+                            "TransitionToType": "TreeSucceed"
+                          },
+                          {}
+                        ],
+                        "Name": "FindTreasureDoubt"
+                      },
+                      {
+                        "$type": "RPG.GameCore.StateTreeStateConfig",
+                        "EnterCondition": {
+                          "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                          "VarName": "IsTreasureValid",
+                          "CompareValue": true
+                        },
+                        "TaskList": [
+                          {
+                            "$type": "RPG.GameCore.ST_Main_DoSkill",
+                            "Name": "FindTreasureAction"
+                          }
+                        ],
+                        "TransitionList": [
+                          {
+                            "TransitionToState": "FindTreasureWait",
+                            "Condition": {
+                              "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                              "VarName": "IsTreasureValid",
+                              "CompareValue": true
+                            }
+                          }
+                        ],
+                        "Name": "FindTreasureHappy"
+                      }
+                    ],
+                    "Name": "FindTreasureAction"
+                  },
+                  {
+                    "$type": "RPG.GameCore.StateTreeStateConfig",
+                    "TaskList": [
+                      {
+                        "$type": "RPG.GameCore.ST_Main_Wait",
+                        "Time": -1
+                      }
+                    ],
+                    "TransitionList": [
+                      {
+                        "Trigger": "OnTick",
+                        "UserDefineEvent": "OpenTreasure",
+                        "TransitionToType": "TreeSucceed",
+                        "Condition": {
+                          "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                          "VarName": "IsTreasureValid"
+                        }
+                      }
+                    ],
+                    "Name": "FindTreasureWait"
+                  }
+                ],
+                "Name": "FindTreasureState"
+              }
+            ],
+            "Name": "ActionState"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_FollowTarget",
+                "Mode": "ZhangZhang",
+                "WaitActionTask": {
+                  "$type": "RPG.GameCore.TaskConfig"
+                },
+                "StartFollowDistance": 1.3,
+                "StartFollowThreshold": 10,
+                "ChooseSideInterval": 0.25,
+                "ChooseSlotInterval": 0.25,
+                "PreferSlotIDs": [
+                  2,
+                  3
+                ],
+                "PredictTime": 0.2,
+                "Halflife": 0.6,
+                "TeleportDistance": 12,
+                "TeleportOnEnter": "IsBlock"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_DetectAward",
+                "DetectRadius": 25,
+                "VariableOnFindTrotter": "FindTrotter",
+                "VariableOnFindTreature": "FindTreasure",
+                "SampleRadiusOverride": 1.5
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_CommitCD",
+                "VariableName": "CD_Action",
+                "Duration": 1,
+                "CommitOnEnter": true,
+                "CommitOnExit": true
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_SetVariableBool",
+                "OnEnter": true,
+                "EnterName": "IsBlock"
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnTick",
+                "TransitionToState": "ActionState",
+                "Condition": {
+                  "$type": "RPG.GameCore.ByAnd",
+                  "PredicateList": [
+                    {
+                      "$type": "RPG.GameCore.ByAny",
+                      "PredicateList": [
+                        {
+                          "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                          "VarName": "FindTreasure",
+                          "CompareValue": true
+                        },
+                        {
+                          "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                          "VarName": "FindTrotter",
+                          "CompareValue": true
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.ST_BySkillInCD",
+                      "CDVariableName": "CD_Action",
+                      "Inverse": true
+                    }
+                  ]
+                }
+              }
+            ],
+            "SubStateList": [],
+            "Name": "FollowState"
+          }
+        ],
+        "Name": "SystemicState"
+      }
+    ]
+  }
+}

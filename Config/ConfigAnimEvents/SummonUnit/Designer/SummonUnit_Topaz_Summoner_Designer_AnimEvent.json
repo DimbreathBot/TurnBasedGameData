@@ -1,0 +1,215 @@
+{
+  "AnimatorStateEvents": [
+    {
+      "AnimatorStateName": "Idle_Show_01",
+      "EventList": [
+        {
+          "$type": "RPG.GameCore.CharacterFollowAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Idle_Show_01BS",
+          "FollowTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterSummoner"
+          },
+          "FollowTargetAnimStateName": "Idle_Show_01",
+          "TransitionDuration": 0.1
+        }
+      ]
+    },
+    {
+      "AnimatorStateName": "Idle_Show_02",
+      "EventList": [
+        {
+          "$type": "RPG.GameCore.CharacterFollowAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Idle_Show_02BS",
+          "FollowTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterSummoner"
+          },
+          "FollowTargetAnimStateName": "Idle_Show_02",
+          "TransitionDuration": 0.1
+        }
+      ]
+    },
+    {
+      "AnimatorStateName": "Common_IdleShow",
+      "EventList": [
+        {
+          "$type": "RPG.GameCore.CharacterFollowAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Alert_01BS",
+          "FollowTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterSummoner"
+          },
+          "FollowTargetAnimStateName": "Common_IdleShow",
+          "TransitionDuration": 0.1
+        }
+      ]
+    },
+    {
+      "AnimatorStateName": "MazeSkill",
+      "EventList": [
+        {
+          "$type": "RPG.GameCore.CharacterFollowAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "MazeSkill",
+          "FollowTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterSummoner"
+          },
+          "FollowTargetAnimStateName": "MazeSkill",
+          "TransitionDuration": 0
+        },
+        {
+          "$type": "RPG.GameCore.SetEntityVisible",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "Visible": true
+        }
+      ]
+    }
+  ],
+  "AnimatorStateGroupEvents": [
+    {
+      "States": [
+        {
+          "Name": "MazeSkill",
+          "ReEnterOnStateLoop": true
+        }
+      ],
+      "OnEnter": [
+        {
+          "$type": "RPG.GameCore.CharacterFollowAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "MazeSkill",
+          "FollowTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterSummoner"
+          },
+          "FollowTargetAnimStateName": "MazeSkill",
+          "TransitionDuration": 0
+        },
+        {
+          "$type": "RPG.GameCore.SetEntityVisible",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "Visible": true
+        }
+      ]
+    },
+    {
+      "States": [
+        {
+          "Name": "Idle_Show_01"
+        },
+        {
+          "Name": "Idle_Show_02"
+        },
+        {
+          "Name": "Common_IdleShow"
+        }
+      ],
+      "OnEnter": [
+        {
+          "$type": "RPG.GameCore.AdvAddAIHangUpInfo",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "HangUpKey": {
+            "Value": "FollowSummonerAnim"
+          },
+          "AITickImmediately": true
+        }
+      ],
+      "OnExit": [
+        {
+          "$type": "RPG.GameCore.AdvRemoveAIHangUpInfo",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "HangUpKey": {
+            "Value": "FollowSummonerAnim"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.RemoveEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Topaz_00/Eff_Avatar_Topaz_00_IdleShow_01_Appear.prefab"
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByDistance",
+            "From": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "AdvLocalPlayer"
+            },
+            "To": {
+              "$type": "RPG.GameCore.TargetFetchSummonUnit",
+              "Summoner": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AdvLocalPlayer"
+              },
+              "SummonUnitID": 11121
+            },
+            "CompareType": "LessEqual",
+            "CompareValue": {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 0.3
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.CharacterTriggerAnimState",
+              "TargetAlias": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AnimStateName": "Appear",
+              "NormalizedTransitionDuration": 0
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.CharacterTriggerAnimState",
+              "TargetAlias": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AnimStateName": "StandBy",
+              "NormalizedTransitionDuration": 0.1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

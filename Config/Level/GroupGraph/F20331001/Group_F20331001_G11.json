@@ -1,0 +1,185 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": []
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorCustomValueChange",
+          "Name": {
+            "Value": "IsInIsometric"
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.2
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCheckFloorCustomBool",
+                "Name": {
+                  "Value": "IsInIsometric"
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByComparePropState",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                      "TargetType": "Prop",
+                      "Targets": [
+                        300003
+                      ]
+                    },
+                    "State": "Open"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetFloorCustomBool",
+                      "Name": {
+                        "Value": "IsInIsometric_Case1"
+                      },
+                      "Value": {
+                        "Value": true
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.AddStreamingSource",
+                      "StreamingSource": {
+                        "CenterName": "C1SS1",
+                        "AreaName": "LevelArea_P20331_F20331001_G11",
+                        "AnchorName": "Case1_StreamingSource1"
+                      }
+                    }
+                  ],
+                  "FailedTaskList": []
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetFloorCustomBool",
+                  "Name": {
+                    "Value": "IsInIsometric_Case1"
+                  },
+                  "Value": {}
+                },
+                {
+                  "$type": "RPG.GameCore.WaitSecond",
+                  "WaitTime": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 2.5
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.RemoveStreamingSource",
+                  "StreamingSource": "C1SS1"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+            "Name": "IsInIsometric",
+            "CompareType": "Equal",
+            "CompareValue": 1
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByComparePropState",
+                "TargetType": {
+                  "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                  "TargetType": "Prop",
+                  "Targets": [
+                    300003
+                  ]
+                },
+                "State": "Open"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetFloorCustomBool",
+                  "Name": {
+                    "Value": "IsInIsometric_Case1"
+                  },
+                  "Value": {
+                    "Value": true
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.AddStreamingSource",
+                  "StreamingSource": {
+                    "CenterName": "C1SS1",
+                    "AreaName": "LevelArea_P20331_F20331001_G11",
+                    "AnchorName": "Case1_StreamingSource1"
+                  }
+                }
+              ],
+              "FailedTaskList": []
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.SetFloorCustomBool",
+              "Name": {
+                "Value": "IsInIsometric_Case1"
+              },
+              "Value": {}
+            },
+            {
+              "$type": "RPG.GameCore.RemoveStreamingSource",
+              "StreamingSource": "C1SS1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "OnIsometricTransitComplete"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "Clt_TriggerEmit"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300007
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Type": "Group"
+}

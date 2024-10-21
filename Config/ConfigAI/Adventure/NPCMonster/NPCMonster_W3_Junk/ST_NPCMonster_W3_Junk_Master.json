@@ -1,0 +1,384 @@
+{
+  "AIName": "ST_NPCMonster_W3_Junk_Master",
+  "VariableList": [
+    {
+      "$type": "RPG.GameCore.AIVariableBool",
+      "Name": "IsActive"
+    },
+    {
+      "$type": "RPG.GameCore.AIVariableBool",
+      "Name": "111"
+    }
+  ],
+  "GlobalVariableList": [
+    {
+      "$type": "RPG.GameCore.AIVariableString",
+      "Name": "BubbleTalkSentenceID",
+      "IsPrivate": false
+    }
+  ],
+  "DecisionList": [],
+  "TransitionTable": [],
+  "RootState": {
+    "Name": "Root",
+    "TaskList": [
+      {
+        "$type": "RPG.GameCore.ST_Side_MuteAlertValueDecline"
+      }
+    ],
+    "TransitionList": [],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ByAny",
+          "PredicateList": [
+            {
+              "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+              "States": [
+                "HangUp"
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.ST_ByOnHit"
+            }
+          ]
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Side_SetAlertLevel",
+            "AlertLevel": "Alert"
+          },
+          {
+            "$type": "RPG.GameCore.ST_Side_SetVariableBool",
+            "OnEnter": true,
+            "EnterName": "IsActive",
+            "EnterValue": true
+          }
+        ],
+        "TransitionList": [
+          {
+            "TransitionToState": "ActiveState"
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeSubTreeConfig",
+            "FilePath": "Config/ConfigAI/Adventure/NPCMonster/ST_NPCMonster_Sub_Controlled.json",
+            "Name": "ControlledSubState"
+          }
+        ],
+        "Name": "ControlledState"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToType": "TreeFail",
+            "TransitionToState": "AbnormalState",
+            "Condition": {
+              "$type": "RPG.GameCore.ByAny",
+              "PredicateList": [
+                {
+                  "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+                  "States": [
+                    "HangUp"
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.ST_ByOnHit"
+                }
+              ]
+            }
+          },
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "HangUpState",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByAIHangUp"
+            }
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+              "VarName": "IsActive",
+              "CompareValue": true
+            },
+            "TaskList": [],
+            "TransitionList": [
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "EVT_Fight",
+                "TransitionToState": "Attack"
+              }
+            ],
+            "SubStateList": [
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "EnterCondition": {
+                  "$type": "RPG.GameCore.AdvByInCustomZone",
+                  "CustomZoneName": "InDisguise"
+                },
+                "TaskList": [
+                  {
+                    "$type": "RPG.GameCore.ST_Main_DoSkill",
+                    "Name": "Maze_Disguise_Exit"
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "Trigger": "OnStateSucceeded",
+                    "TransitionToType": "NextState"
+                  }
+                ],
+                "Name": "ActiveEnter"
+              },
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "TaskList": [
+                  {
+                    "$type": "RPG.GameCore.ST_Side_PlayBubbleTalk",
+                    "AutoSkipTime": 3,
+                    "TalkSentenceUseVariable": true,
+                    "TalkSentenceVarName": "BubbleTalkSentenceID"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ST_Side_OverrideStandByStance",
+                    "Stance": "Detect"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ST_Side_SetAlertLevel",
+                    "AlertLevel": "Alert"
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "Trigger": "OnStateSucceeded",
+                    "TransitionToState": "RelaxState",
+                    "Condition": {
+                      "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+                      "States": [
+                        "Taunt",
+                        "Fear",
+                        "Debuff"
+                      ],
+                      "Inverse": true
+                    }
+                  }
+                ],
+                "SubStateList": [
+                  {
+                    "$type": "RPG.GameCore.StateTreeStateConfig",
+                    "TaskList": [
+                      {
+                        "$type": "RPG.GameCore.ST_Main_Wait",
+                        "Time": 6
+                      }
+                    ],
+                    "TransitionList": [
+                      {
+                        "TransitionToType": "NextState",
+                        "Condition": {
+                          "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+                          "States": [
+                            "Debuff"
+                          ]
+                        }
+                      },
+                      {
+                        "TransitionToState": "RelaxState",
+                        "Condition": {
+                          "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+                          "States": [
+                            "Taunt",
+                            "Fear",
+                            "Enchanted",
+                            "Debuff"
+                          ],
+                          "Inverse": true
+                        }
+                      }
+                    ],
+                    "Name": "Wait1"
+                  },
+                  {
+                    "$type": "RPG.GameCore.StateTreeStateConfig",
+                    "TaskList": [
+                      {
+                        "$type": "RPG.GameCore.ST_Main_Wait",
+                        "Time": -1
+                      }
+                    ],
+                    "TransitionList": [
+                      {
+                        "Trigger": "OnTick",
+                        "TransitionToState": "RelaxState",
+                        "Condition": {
+                          "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+                          "States": [
+                            "Taunt",
+                            "Fear",
+                            "Enchanted",
+                            "Debuff"
+                          ],
+                          "Inverse": true
+                        }
+                      }
+                    ],
+                    "Name": "Wait2"
+                  }
+                ],
+                "Name": "ActiveWait"
+              }
+            ],
+            "Name": "ActiveState"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+              "States": [
+                "Taunt",
+                "Fear",
+                "Debuff"
+              ],
+              "Inverse": true
+            },
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Side_MuteVision",
+                "Duration": -1
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_SetAlertLevel"
+              }
+            ],
+            "TransitionList": [],
+            "SubStateList": [
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "EnterCondition": {
+                  "$type": "RPG.GameCore.AdvByInCustomZone",
+                  "CustomZoneName": "InDisguise"
+                },
+                "TaskList": [
+                  {
+                    "$type": "RPG.GameCore.ST_Main_Wait",
+                    "Time": -1
+                  },
+                  {
+                    "$type": "RPG.GameCore.ST_Side_TriggerInstantAbility",
+                    "TriggerOnEnter": true,
+                    "EnterAbilityName": "MazeMonster_W3_Junk_00_Disguise_On",
+                    "TriggerOnExit": true,
+                    "ExitAbilityName": "MazeMonster_W3_Junk_00_Disguise_Off"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ST_Side_EnableDialogue"
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "Trigger": "OnEvent",
+                    "UserDefineEvent": "EVT_Fight",
+                    "TransitionToState": "AttackState"
+                  },
+                  {
+                    "Trigger": "OnTick",
+                    "TransitionToState": "RelaxToActive",
+                    "Condition": {
+                      "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+                      "States": [
+                        "Debuff"
+                      ]
+                    }
+                  }
+                ],
+                "Name": "RelaxWait"
+              },
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "EnterCondition": {
+                  "$type": "RPG.GameCore.AdvByInCustomZone",
+                  "CustomZoneName": "InDisguise",
+                  "Inverse": true
+                },
+                "TaskList": [
+                  {
+                    "$type": "RPG.GameCore.ST_Main_DoSkill",
+                    "Name": "Maze_Disguise_Enter"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ST_Side_SetVariableBool",
+                    "OnExit": true,
+                    "ExitName": "IsActive"
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "TransitionToState": "RelaxWait"
+                  }
+                ],
+                "Name": "RelaxEnter"
+              },
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "TaskList": [
+                  {
+                    "$type": "RPG.GameCore.ST_Main_Wait",
+                    "Time": 0.2
+                  },
+                  {
+                    "$type": "RPG.GameCore.ST_Side_SetVariableBool",
+                    "OnEnter": true,
+                    "EnterName": "IsActive",
+                    "EnterValue": true
+                  }
+                ],
+                "Name": "RelaxToActive"
+              }
+            ],
+            "Name": "RelaxState"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_DoSkill",
+                "Name": "MazeAtk01"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_SetVariableBool",
+                "OnEnter": true,
+                "EnterName": "IsActive",
+                "EnterValue": true
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_SetAlertLevel",
+                "AlertLevel": "Chase"
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToState": "ActiveState"
+              }
+            ],
+            "SubStateList": [],
+            "Name": "AttackState"
+          }
+        ],
+        "Name": "SystemicState"
+      }
+    ]
+  },
+  "OnDisable": {
+    "$type": "RPG.GameCore.TaskConfig"
+  },
+  "OnInit": {
+    "$type": "RPG.GameCore.TaskConfig"
+  }
+}

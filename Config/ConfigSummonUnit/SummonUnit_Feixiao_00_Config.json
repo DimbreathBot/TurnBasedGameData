@@ -1,0 +1,301 @@
+{
+  "GroupConfigName": "FollowField",
+  "ConfigEntityPath": "Config/ConfigEntity/SummonUnit/SummonUnit_Common_TeamField_Entity.json",
+  "OnCreate": [
+    {
+      "$type": "RPG.GameCore.AdvPlayerEnableIdleShow",
+      "TargetType": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "CasterSummoner"
+      },
+      "IdleShowIndex": 1
+    },
+    {
+      "$type": "RPG.GameCore.AdvPlayerEnableIdleShow",
+      "TargetType": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "CasterSummoner"
+      },
+      "IdleShowIndex": 2
+    }
+  ],
+  "OnDestroy": [
+    {
+      "$type": "RPG.GameCore.AdvPlayerEnableIdleShow",
+      "TargetType": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "CasterSummoner"
+      },
+      "Enable": true,
+      "IdleShowIndex": 1
+    },
+    {
+      "$type": "RPG.GameCore.AdvPlayerEnableIdleShow",
+      "TargetType": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "CasterSummoner"
+      },
+      "Enable": true,
+      "IdleShowIndex": 2
+    }
+  ],
+  "TriggerConfig": {
+    "CustomTriggers": [
+      {
+        "TriggerName": "HitNpcMonsterTrigger",
+        "Radius": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": 8
+          }
+        },
+        "NeedNavmeshCheck": true,
+        "TargetTypes": [
+          "NPCMonster"
+        ],
+        "OnTriggerEnter": [
+          {
+            "$type": "RPG.GameCore.PredicateTaskList",
+            "Predicate": {
+              "$type": "RPG.GameCore.ByIsContainAdventureModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterSummoner"
+              },
+              "ModifierName": "ADV_StageAbility_Maze_Feixiao"
+            },
+            "SuccessTaskList": [
+              {
+                "$type": "RPG.GameCore.AddMazeBuff",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "TaskActionTarget"
+                },
+                "ID": 122003,
+                "LifeTime": {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 90061
+                  }
+                }
+              },
+              {
+                "$type": "RPG.GameCore.PredicateTaskList",
+                "Predicate": {
+                  "$type": "RPG.GameCore.AdvByIsEliteMonster",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "TaskActionTarget"
+                  }
+                },
+                "SuccessTaskList": [
+                  {
+                    "$type": "RPG.GameCore.AddAdventureModifier",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "TaskActionTarget"
+                    },
+                    "ModifierName": "ADV_StageAbility_Maze_Feixiao_GatheredEnemyElite_Visual",
+                    "Count": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 1
+                      }
+                    }
+                  }
+                ],
+                "FailedTaskList": [
+                  {
+                    "$type": "RPG.GameCore.AddAdventureModifier",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "TaskActionTarget"
+                    },
+                    "ModifierName": "ADV_StageAbility_Maze_Feixiao_GatheredEnemy_Visual",
+                    "Count": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 1
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "OnTriggerExit": [
+          {
+            "$type": "RPG.GameCore.RefreshMazeBuffTime",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "TaskActionTarget"
+            },
+            "ID": 122003,
+            "LifeTime": {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 0.5
+              }
+            }
+          },
+          {
+            "$type": "RPG.GameCore.PredicateTaskList",
+            "Predicate": {
+              "$type": "RPG.GameCore.ByIsContainModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AdvLocalPlayer"
+              },
+              "ModifierName": "ADV_StageAbility_Maze_Feixiao_Visual",
+              "Inverse": true
+            },
+            "SuccessTaskList": [
+              {
+                "$type": "RPG.GameCore.PredicateTaskList",
+                "Predicate": {
+                  "$type": "RPG.GameCore.AdvByIsEliteMonster",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "TaskActionTarget"
+                  }
+                },
+                "SuccessTaskList": [
+                  {
+                    "$type": "RPG.GameCore.RemoveAdventureModifier",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "TaskActionTarget"
+                    },
+                    "ModifierName": "ADV_StageAbility_Maze_Feixiao_GatheredEnemyElite_Visual"
+                  }
+                ],
+                "FailedTaskList": [
+                  {
+                    "$type": "RPG.GameCore.RemoveAdventureModifier",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "TaskActionTarget"
+                    },
+                    "ModifierName": "ADV_StageAbility_Maze_Feixiao_GatheredEnemy_Visual"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "$type": "RPG.GameCore.PredicateTaskList",
+            "Predicate": {
+              "$type": "RPG.GameCore.ByCompareTargetCount",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetSequence",
+                "Sequence": [
+                  {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  {
+                    "$type": "RPG.GameCore.TargetMapDynamicEntityParam",
+                    "DynamicKey": "_Feixiao_Achievement_Count"
+                  }
+                ]
+              },
+              "Number": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 5
+                }
+              },
+              "CompareType": "GreaterEqual"
+            },
+            "FailedTaskList": [
+              {
+                "$type": "RPG.GameCore.RemoveAdventureModifier",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                },
+                "ModifierName": "ADV_StageAbility_Maze_Feixiao_Achievement"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "TriggerName": "HitPropTrigger",
+        "Radius": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": 8
+          }
+        },
+        "UseVerticalBound": true,
+        "NeedRaycast": true,
+        "TargetTypes": [
+          "Prop"
+        ],
+        "TargetFilter": {
+          "$type": "RPG.GameCore.ByComparePropType",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "ParamEntity"
+          },
+          "Types": [
+            "PROP_DESTRUCT"
+          ]
+        },
+        "OnTriggerEnter": [
+          {
+            "$type": "RPG.GameCore.TriggerHitProp",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "TaskActionTarget"
+            },
+            "ClientMode": "PreShow"
+          },
+          {
+            "$type": "RPG.GameCore.TriggerEffect",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "TaskActionTarget"
+            },
+            "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Feixiao_00/Eff_Avatar_Feixiao_00_MazeSkill01_Tornado_01_Hit.prefab",
+            "AttachPoint": "SelectRoot"
+          }
+        ],
+        "OnTriggerExit": [],
+        "OnTriggerEnterRollback": [
+          {
+            "$type": "RPG.GameCore.PropDestructReset",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "TaskActionTarget"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "GatherConfig": {
+    "RegionOffset": 0,
+    "RegionRadius": 3,
+    "DampSmoothTime": 0.01,
+    "CentripetalSpeedCurve": "Camera/BlendCurve/BlendCut_1220_MazeCentripetalSpeed.asset",
+    "CentripetalFactorX": 10,
+    "CentripetalFactorY": 15,
+    "TangentSpeedCurve": "Camera/BlendCurve/BlendCut_1220_MazeTangentSpeed.asset",
+    "TangentSpeedFactorX": 10,
+    "TangentSpeedFactorY": 5,
+    "AddSinFactorTime": 3,
+    "AddSinFactorValue": 0.5,
+    "MinRadius": 1.5,
+    "MaxRadius": 3.5,
+    "RingCount": 3,
+    "IsClockwise": true
+  },
+  "DynamicValues": {
+    "Values": {
+      "-1432975418": {}
+    }
+  }
+}

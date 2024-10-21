@@ -1,0 +1,193 @@
+{
+  "CharacterFightCenterDist": 3,
+  "ChessCharacterPreActionWaitTime": 1.5,
+  "ChessCharacterPostActionWaitTime": 1.5,
+  "MoveGuideLineEffectPath": "Prefabs/ChessMoveGuideLine.prefab",
+  "PreBeginFightPerformTaskList": [
+    {
+      "$type": "RPG.GameCore.SetChessGridVisible"
+    },
+    {
+      "$type": "RPG.GameCore.SetDitherGroup",
+      "GroupName": "ChessFightPeform",
+      "ShowList": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "CasterWithAbilityTargetEntity"
+      },
+      "HideList": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "AllChessGridObject"
+      },
+      "FadeDuration": 0.5
+    },
+    {
+      "$type": "RPG.GameCore.WaitSecond",
+      "WaitTime": {
+        "IsDynamic": false,
+        "FixedValue": {
+          "Value": 0.2
+        }
+      }
+    },
+    {
+      "$type": "RPG.GameCore.GlobalTimeSlow",
+      "TimeScale": {
+        "IsDynamic": false,
+        "FixedValue": {
+          "Value": 0.1
+        }
+      },
+      "UnscaledDuration": {
+        "IsDynamic": false,
+        "FixedValue": {
+          "Value": 0.5
+        }
+      }
+    },
+    {
+      "$type": "RPG.GameCore.TopViewCameraChange",
+      "LookAtEntity": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "CasterWithAbilityTargetEntity"
+      },
+      "LookAtAngleBias": 40,
+      "DepressionAngle": 20,
+      "CameraDistance": 5,
+      "SmoothTime": 1
+    },
+    {
+      "$type": "RPG.GameCore.RadialBlurCurveEffect",
+      "BlurRadius": 1,
+      "Iteration": 4,
+      "BlurStart": 0.002,
+      "BlurFeather": 0.001,
+      "Duration": 1,
+      "CurveName": "BattleTransitionBlurCurve"
+    },
+    {
+      "$type": "RPG.GameCore.LensDistortionCurveEffect",
+      "XMultiplier": 2,
+      "YMultiplier": 2,
+      "Intensity": 2,
+      "XCurvePath": "Camera/BlendCurve/Blend_SlowToFast.asset",
+      "YCurvePath": "Camera/BlendCurve/Blend_SlowToFast.asset",
+      "IntensityCurvePath": "Camera/BlendCurve/Blend_SlowToFast.asset",
+      "Duration": 1
+    },
+    {
+      "$type": "RPG.GameCore.WaitSecond",
+      "WaitTime": {
+        "IsDynamic": false,
+        "FixedValue": {
+          "Value": 0.2
+        }
+      }
+    },
+    {
+      "$type": "RPG.GameCore.TriggerEffect",
+      "EffectPath": "Effects/Eff_Prefab/Eff_Common/Eff_Common_MazeCameraTransition_Universe3_3.prefab"
+    }
+  ],
+  "PostBeginFightPerformTaskList": [
+    {
+      "$type": "RPG.GameCore.VCameraConfigChange",
+      "CameraConfig": {
+        "NormalConfig": {
+          "CameraState": "CasterToTargetPerform",
+          "IsLocalOffset": true,
+          "AnchorOffset": {
+            "X": 0.96,
+            "Y": 0,
+            "Z": -1.15
+          },
+          "AimOffset": {
+            "X": -2,
+            "Y": -0.91,
+            "Z": 0
+          },
+          "AimRatio": 1,
+          "Dutch": 3
+        },
+        "BlendConfig": {
+          "BlendType": "Custom",
+          "CustomCurveName": "BlendCut07",
+          "BlendTime": 0.515067
+        }
+      }
+    },
+    {
+      "$type": "RPG.GameCore.TriggerAnimState",
+      "AnimLogicState": "ChessIdle",
+      "AnimStateName": "StandBy",
+      "NormalizedTimeEnd": {
+        "IsDynamic": false,
+        "FixedValue": {
+          "Value": 0.1
+        }
+      },
+      "NormalizedTimeWait": {
+        "IsDynamic": false,
+        "FixedValue": {
+          "Value": 0
+        }
+      }
+    }
+  ],
+  "PreEndFightPerformTaskList": [],
+  "PostEndFightPerformTaskList": [
+    {
+      "$type": "RPG.GameCore.SetChessGridVisible",
+      "Visible": true
+    },
+    {
+      "$type": "RPG.GameCore.ResetChessCharacterToGrid",
+      "TargetType": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "AllChessCharacter"
+      }
+    },
+    {
+      "$type": "RPG.GameCore.TopViewCameraChange",
+      "ResetToDefault": true,
+      "CameraDistance": 7,
+      "SmoothTime": 0
+    },
+    {
+      "$type": "RPG.GameCore.RemoveDitherGroup",
+      "GroupName": "ChessFightPeform",
+      "FadeDuration": 0.5
+    },
+    {
+      "$type": "RPG.GameCore.TopViewCameraChange"
+    }
+  ],
+  "DeathPerformTaskList": [
+    {
+      "$type": "RPG.GameCore.TriggerEffect",
+      "TargetType": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "AllDeathCharacter"
+      },
+      "EffectPath": "Effects/Eff_Prefab/Eff_Scene/Interactive Object/Eff_Common_MAZ_Prop_AvatarTeleport.prefab"
+    },
+    {
+      "$type": "RPG.GameCore.WaitSecond",
+      "WaitTime": {
+        "IsDynamic": false,
+        "FixedValue": {
+          "Value": 0.3
+        }
+      }
+    }
+  ],
+  "StageList": [
+    {
+      "StageID": 1,
+      "ConfigPath": "Config/BattleMode/Chess/Stage/WhiteBox/ChessStageConfig_Test_1.json"
+    },
+    {
+      "StageID": 2,
+      "ConfigPath": "Config/BattleMode/Chess/Stage/WhiteBox/ChessStageConfig_Test_2.json"
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "AIName": "ST_SummonUnit_Diting_Master",
+  "VariableList": [],
+  "DecisionList": [],
+  "TransitionTable": [],
+  "RootState": {
+    "Name": "Root",
+    "TaskList": [],
+    "TransitionList": [],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ByAIHangUp"
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_HangUpByLevel"
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "SystemicState",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByAIHangUp",
+              "Inverse": true
+            }
+          }
+        ],
+        "Name": "HangUpState"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "HangUpState",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByAIHangUp"
+            }
+          },
+          {
+            "Trigger": "OnEvent",
+            "UserDefineEvent": "PetFollow",
+            "TransitionToState": "FollowState"
+          },
+          {
+            "Trigger": "OnEvent",
+            "UserDefineEvent": "PetSearch",
+            "TransitionToState": "PetSearchState"
+          },
+          {
+            "Trigger": "OnEvent",
+            "UserDefineEvent": "PetHappy",
+            "TransitionToState": "PetHappyState"
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_FollowTarget",
+                "Mode": "ZhangZhang",
+                "StartFollowDistance": 1.3,
+                "StartFollowThreshold": 10,
+                "ChooseSideInterval": 0.25,
+                "ChooseSlotInterval": 0.25,
+                "PreferSlotIDs": [
+                  2,
+                  3
+                ],
+                "PredictTime": 0.2,
+                "Halflife": 0.6,
+                "TeleportDistance": 12
+              }
+            ],
+            "TransitionList": [],
+            "SubStateList": [],
+            "Name": "FollowState"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_PlayFreeStyle",
+                "StoryMotionID": 900040251
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToState": "FollowState"
+              }
+            ],
+            "Name": "PetSearchState"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_PlayFreeStyle",
+                "StoryMotionID": 900040253
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToState": "FollowState"
+              }
+            ],
+            "Name": "PetHappyState"
+          }
+        ],
+        "Name": "SystemicState"
+      }
+    ]
+  }
+}

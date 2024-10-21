@@ -1,0 +1,83 @@
+{
+  "AIName": "ST_Sub_NPCMonster_Alert",
+  "VariableList": [],
+  "DecisionList": [],
+  "TransitionTable": [],
+  "RootState": {
+    "Name": "Root",
+    "TaskList": [
+      {
+        "$type": "RPG.GameCore.ST_Side_OverrideVision",
+        "VisionSetName": "DefaultVision_Relaxed",
+        "Visions": []
+      }
+    ],
+    "TransitionList": [],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ByAnd",
+          "PredicateList": [
+            {
+              "$type": "RPG.GameCore.ST_ByInAttackAngle",
+              "Inverse": true
+            }
+          ]
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_Wait",
+            "Time": -1
+          },
+          {
+            "$type": "RPG.GameCore.ST_Side_SteerToTarget"
+          }
+        ],
+        "TransitionList": [
+          {
+            "TransitionToType": "NextState",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByInAttackAngle"
+            }
+          }
+        ],
+        "Name": "FaceTo"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ByAnd",
+          "PredicateList": [
+            {
+              "$type": "RPG.GameCore.ST_ByInAttackAngle"
+            }
+          ]
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_Wait",
+            "Time": -1
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "FaceTo",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByInAttackAngle",
+              "Inverse": true
+            }
+          }
+        ],
+        "Name": "Guard"
+      }
+    ]
+  },
+  "OnDisable": {
+    "$type": "RPG.GameCore.TaskConfig"
+  },
+  "OnInit": {
+    "$type": "RPG.GameCore.TaskConfig"
+  }
+}

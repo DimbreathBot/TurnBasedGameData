@@ -1,0 +1,569 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateExecute",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "Execute": [
+            {
+              "$type": "RPG.GameCore.ShowWaypointByProp",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "MaxRange": 10,
+              "IconPath": "SpriteOutput/MapPics/Collect/IconCollect02.png",
+              "Offset": {
+                "X": 0,
+                "Y": 2,
+                "Z": 0
+              },
+              "OnNameBoard": true
+            },
+            {
+              "$type": "RPG.GameCore.PropSetupUITrigger",
+              "ColliderRelativePath": "CustomTrigger_01",
+              "ButtonIcon": "SpriteOutput/TalkIcon/TriggerProp.png",
+              "IconType": "TriggerProp",
+              "ButtonTextCustom": {
+                "Custom": true,
+                "Key": "InteractKey"
+              },
+              "ButtonCallback": [
+                {
+                  "$type": "RPG.GameCore.StartPropInteractMode",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "Mode": "OpenUI",
+                  "UseOverrideData": true,
+                  "OverrideData01": {
+                    "AreasPath": "Level/Common_Adventure/UseCompassPuzzle.prefab",
+                    "AreaName": "UseCompassPuzzle",
+                    "AnchorName": "PuzzleCompassCam"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.PropInitPuzzle",
+                  "BoardPath": {
+                    "Custom": true,
+                    "Key": "PrefabPath"
+                  },
+                  "LocalPosition": {
+                    "X": 1,
+                    "Y": 1.8,
+                    "Z": -1.3
+                  },
+                  "LocalScale": {
+                    "X": 9,
+                    "Y": 9,
+                    "Z": 1
+                  },
+                  "AutoPlayFinishSound": false
+                },
+                {
+                  "$type": "RPG.GameCore.TakenMazePuzzleChallenge",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "MazePuzzleChallengeID": {
+                    "Value": "1020"
+                  },
+                  "AutoClosePuzzle": false,
+                  "AutoResetPuzzle": false,
+                  "AutoFinishChallenge": false,
+                  "OnReset": [],
+                  "OnCancel": [
+                    {
+                      "$type": "RPG.GameCore.SetLocalPlayerDitherAlpha",
+                      "DitherAlpha": 1
+                    },
+                    {
+                      "$type": "RPG.GameCore.PropClosePuzzle"
+                    },
+                    {
+                      "$type": "RPG.GameCore.EndPropInteract"
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.SetLocalPlayerDitherAlpha"
+                },
+                {
+                  "$type": "RPG.GameCore.PropStartPuzzle",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TutorialTaskUnlock",
+                  "TriggerParam": {
+                    "Value": "5021"
+                  }
+                }
+              ],
+              "InteractAngleRange": 220,
+              "OverrideTargetTypes": [],
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropPuzzleEventListener",
+          "FinishCallback": [
+            {
+              "$type": "RPG.GameCore.PropEnableCollider",
+              "OPType": "TriggerOnly",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 2
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.FinishMazePuzzleChallenge",
+              "MazePuzzleChallengeID": {
+                "Value": "1020"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.SetLocalPlayerDitherAlpha",
+              "DitherAlpha": 1
+            },
+            {
+              "$type": "RPG.GameCore.PropClosePuzzle"
+            },
+            {
+              "$type": "RPG.GameCore.EndPropInteract"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Custom": true,
+                "Key": "UsageString"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.HideWaypointByProp",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                "SinglePropKey": {
+                  "Custom": true,
+                  "Key": "UnlockTarget"
+                }
+              },
+              "OnNameBoard": true
+            }
+          ],
+          "ResetCallback": [
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "Mode": "SwitchOut",
+              "CustomTime": 0.25,
+              "KeepDisplay": true,
+              "TextEnabled": true,
+              "TalkSentenceID": 100000004
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.5
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PropResetPuzzle"
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.5
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "CustomTime": 0.25,
+              "KeepDisplay": true,
+              "TextEnabled": true,
+              "TalkSentenceID": 100000004
+            }
+          ],
+          "QuitCallback": []
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Insertion_UnlockPortal"
+          },
+          "WaitOwnerOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.ToastPage",
+          "MessageOne": {
+            "Hash": 362442128
+          },
+          "MessageTwo_DS": {
+            "Custom": true,
+            "Key": "ToastText"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PropReqInteract",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+            "SinglePropKey": {
+              "Custom": true,
+              "Key": "UnlockTarget"
+            }
+          },
+          "InteractID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 100020
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeServerListenerConfig"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "ToState": "CustomState01",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.PropEnableCollider",
+              "OPType": "TriggerOnly",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Insertion_OpenDoor"
+          },
+          "WaitOwnerOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.ToastPage",
+          "MessageOne": {
+            "Hash": 362442128
+          },
+          "MessageTwo_DS": {
+            "Custom": true,
+            "Key": "ToastText"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PropReqInteract",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+            "SinglePropKey": {
+              "Custom": true,
+              "Key": "UnlockTarget"
+            }
+          },
+          "InteractID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 100022
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeServerListenerConfig"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "ToState": "CustomState02",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.PropTriggerAnimState",
+              "AnimStateName": "Activing",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                "FetchType": "SinglePropByPropKey",
+                "SinglePropKey": {
+                  "Custom": true,
+                  "Key": "UnlockTarget"
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.5
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AnimSetParameter",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                "FetchType": "SinglePropByPropKey",
+                "SinglePropKey": {
+                  "Custom": true,
+                  "Key": "UnlockTarget02"
+                }
+              },
+              "ParameterName": "TriggerOpen",
+              "ParameterType": "Trigger"
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Insertion_FinishMission"
+          },
+          "WaitOwnerOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.ToastPage",
+          "MessageOne": {
+            "Hash": 362442128
+          },
+          "MessageTwo_DS": {
+            "Custom": true,
+            "Key": "ToastText"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerCustomString",
+          "CustomString": {
+            "Custom": true,
+            "Key": "MissionString"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PropReqInteract",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+            "SinglePropKey": {
+              "Custom": true,
+              "Key": "UnlockTarget"
+            }
+          },
+          "InteractID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1020
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Insertion_LogiBird"
+          },
+          "WaitOwnerOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.PropReqInteract",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+            "SinglePropKey": {
+              "Custom": true,
+              "Key": "UnlockTarget"
+            }
+          },
+          "InteractID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 100023
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeServerListenerConfig"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Insertion_ChangeToOpen"
+          },
+          "WaitOwnerOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.ToastPage",
+          "MessageOne": {
+            "Hash": 362442128
+          },
+          "MessageTwo_DS": {
+            "Custom": true,
+            "Key": "ToastText"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PropReqInteract",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+            "SinglePropKey": {
+              "Custom": true,
+              "Key": "UnlockTarget"
+            }
+          },
+          "InteractID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 100024
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeServerListenerConfig"
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "PrefabPath"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "UnlockTarget"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "UnlockTarget02"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "UnlockTarget03"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "Insertion_OpenDoor",
+        "Key": "UsageString"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "MazeText_MazePuzzle_TeleportGate_Fixed",
+        "Key": "ToastText"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "MazeText_MazePuzzle_Insertion_Interact01",
+        "Key": "InteractKey"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "MissionString"
+      }
+    ]
+  }
+}

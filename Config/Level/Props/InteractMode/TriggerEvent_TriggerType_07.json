@@ -1,0 +1,116 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.CreateLevelAreas",
+          "AssetPath": {
+            "Custom": true,
+            "Key": "DialogueEntityInteract_AreaPath"
+          }
+        }
+      ]
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.CaptureCurrentInteractDialogueEntity",
+          "UniqueName": "CurrentInteractDialogueEntity"
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+            "Name": "ResetEntityTransform",
+            "Value": {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 0
+              }
+            },
+            "CompareType": "NotEqual"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.AdvEntityResetTransform",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                "UniqueName": "CurrentInteractDialogueEntity"
+              },
+              "ResetRotation": true
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.AdvEntityStopLookAt",
+          "SourceType": {
+            "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+            "UniqueName": "CurrentInteractDialogueEntity"
+          },
+          "StopImmediately": true
+        },
+        {
+          "$type": "RPG.GameCore.ActiveVirtualCamera",
+          "AreaName": "UseInteractNPC",
+          "AnchorName": "UseInteractNPC_Camera",
+          "LevelAreaCameraKey": {
+            "Custom": true,
+            "Key": "DialogueEntityInteract_CameraKey"
+          },
+          "FollowTargetUniqueName": "CurrentInteractDialogueEntity",
+          "LookAtTargetUniqueName": "CurrentInteractDialogueEntity",
+          "BlendConfig": {
+            "ExportToJson": true,
+            "BlendType": "Custom",
+            "CustomCurveName": "BlendCut09",
+            "BlendTime": 0.8
+          },
+          "VCameraDitherNPCOn": true,
+          "VCameraDitherMaxDistance": 3,
+          "DynamicParams": {}
+        },
+        {
+          "$type": "RPG.GameCore.SetLocalPlayerDitherAlpha"
+        },
+        {
+          "$type": "RPG.GameCore.EnableBillboard",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+            "UniqueName": "CurrentInteractDialogueEntity"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.LockPlayerControl"
+        },
+        {
+          "$type": "RPG.GameCore.FinishLevelGraph"
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "Level/Common_Adventure/UseInteractNPCFront.prefab",
+        "Key": "DialogueEntityInteract_AreaPath"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "UseInteractNPCFront,UseInteractNPCFront_Camera",
+        "Key": "DialogueEntityInteract_CameraKey"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "UseInteractNPCFront",
+        "Key": "DialogueEntityInteract_AreaName"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "ResetEntityTransform"
+      }
+    ]
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "AIName": "MazeNPC_FollowPlayer",
+  "VariableList": [],
+  "DecisionList": [
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "WaitMonster",
+      "RootTask": {
+        "$type": "RPG.GameCore.ParallelConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.TriggerCustomString",
+            "CustomString": {
+              "Value": "Bird_FindMonster"
+            }
+          },
+          {
+            "$type": "RPG.GameCore.AdvNPCIdle"
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "Weight": {
+        "Value": 4
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAny",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByAnyNpcMonsterInRange",
+                "Range": 8,
+                "AngleLimit": 120
+              }
+            ]
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Wait",
+      "RootTask": {
+        "$type": "RPG.GameCore.ParallelConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.AdvNPCIdle"
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "Weight": {
+        "Value": 3
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAny",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByNPCStatus"
+              }
+            ]
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Follow Player",
+      "RootTask": {
+        "$type": "RPG.GameCore.AdvNpcFollowPlayer",
+        "WaitActionTime": 5,
+        "TransferDistance": 10,
+        "EnterRushDistance": 5,
+        "ExitRushDistance": 4,
+        "RushChangeProtectTime": 1,
+        "KeepDistance": 2,
+        "FollowDistance": 2
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "Weight": {
+        "Value": 4
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByNPCStatus",
+            "NPCStatus": "FollowPlayer"
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Follow By Player",
+      "RootTask": {
+        "$type": "RPG.GameCore.AdvNpcFollowByPlayer",
+        "KeepDistance": 4,
+        "FollowDistance": 3,
+        "WaitProtectTime": 1,
+        "WaitActionTime": 5,
+        "Waypath": "TaskFollow"
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "Weight": {
+        "Value": 4
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByNPCStatus",
+            "NPCStatus": "FollowByPlayer"
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Searching",
+      "RootTask": {
+        "$type": "RPG.GameCore.AdvNpcPetSearch",
+        "OnStartSearchCallback": [
+          {
+            "$type": "RPG.GameCore.AnimSetParameter",
+            "ParameterName": "TriggerSearch",
+            "ParameterType": "Bool",
+            "Value": 1
+          }
+        ],
+        "OnFoundTreatureString": {
+          "Value": "Maze_puppy_FoundChest_Success"
+        },
+        "OnFoundTreatureCallback": [
+          {
+            "$type": "RPG.GameCore.CharacterTriggerAnimState",
+            "AnimStateName": "Searching01Finded",
+            "NormalizedTransitionDuration": 0.25
+          }
+        ],
+        "OnLeaveSearchString": {
+          "Value": "SpecialVisionClose"
+        },
+        "OnLeaveSearchCallback": [
+          {
+            "$type": "RPG.GameCore.CharacterTriggerAnimState",
+            "AnimStateName": "StandBy",
+            "NormalizedTransitionDuration": 0.25
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "Weight": {
+        "Value": 5
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByNPCStatus",
+            "NPCStatus": "PetSearch"
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    }
+  ],
+  "OnDisable": {
+    "$type": "RPG.GameCore.AdvNPCIdle"
+  }
+}

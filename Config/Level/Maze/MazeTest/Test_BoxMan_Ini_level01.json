@@ -1,0 +1,256 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PuzzleBoxmanInBoard",
+          "OnPlayerEnter": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnchorAngleDiffWithMainCameraOverThan",
+                "LevelAreaCameraKey": {
+                  "Custom": true,
+                  "Key": "Anchor"
+                },
+                "Angle": 90
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.ActiveVirtualCamera",
+                  "LevelAreaCameraKey": {
+                    "Custom": true,
+                    "Key": "BoxMan_Cam"
+                  },
+                  "IsEntryPointCamera": true,
+                  "BlendConfig": {
+                    "ExportToJson": true,
+                    "BlendType": "Cut",
+                    "CustomCurveName": "Camera/BlendCurve/Test_BoxManRecoverCurve.asset",
+                    "BlendTime": 1
+                  }
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.ActiveVirtualCamera",
+                  "LevelAreaCameraKey": {
+                    "Custom": true,
+                    "Key": "BoxMan_Cam"
+                  },
+                  "IsEntryPointCamera": true,
+                  "BlendConfig": {
+                    "ExportToJson": true,
+                    "BlendType": "EaseInOut",
+                    "BlendTime": 1
+                  }
+                }
+              ]
+            }
+          ],
+          "OnPlayerLeave": [
+            {
+              "$type": "RPG.GameCore.ActiveVirtualCamera",
+              "LevelAreaCameraKey": {
+                "Custom": true,
+                "Key": "BoxMan_Cam"
+              },
+              "IsActive": false,
+              "BlendConfig": {
+                "ExportToJson": true,
+                "BlendType": "Linear",
+                "BlendTime": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Custom": true,
+            "Key": "BoxMan_LevelStart"
+          },
+          "WaitOwnerOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.PropClosePuzzle"
+        },
+        {
+          "$type": "RPG.GameCore.PlayScreenTransfer",
+          "Mode": "SwitchOut",
+          "CustomTime": 1
+        },
+        {
+          "$type": "RPG.GameCore.PropInitPuzzle",
+          "BoardPath": {
+            "Custom": true,
+            "Key": "BoxMan_BoardPath"
+          },
+          "LocalPosition": {
+            "X": 0,
+            "Y": 0,
+            "Z": 0
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SwitchCharacterAnchor",
+          "IsLocalPlayer": true,
+          "CharacterUniqueName": "LocalPlayer",
+          "AreaName": {
+            "Custom": true,
+            "Key": "SwitchAnchorArea"
+          },
+          "AnchorName": {
+            "Custom": true,
+            "Key": "SwitchAnchor"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PlayScreenTransfer",
+          "CustomTime": 1
+        },
+        {
+          "$type": "RPG.GameCore.TakeEventMission",
+          "EventMissionID": 900110
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropPuzzleEventListener",
+          "FinishCallback": [
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "Mode": "SwitchOut",
+              "CustomTime": 1
+            },
+            {
+              "$type": "RPG.GameCore.PropClosePuzzle"
+            },
+            {
+              "$type": "RPG.GameCore.ActiveVirtualCamera",
+              "AreaName": "Test_EquipmentCocoonCamera",
+              "AnchorName": "C1",
+              "LevelAreaCameraKey": {
+                "Custom": true,
+                "Key": "BoxMan_Cam"
+              },
+              "IsActive": false,
+              "BlendConfig": {
+                "ExportToJson": true,
+                "BlendType": "Cut"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "CustomTime": 1
+            },
+            {
+              "$type": "RPG.GameCore.ReleaseCharacter",
+              "CharacterUniqueName": "LocalPlayer"
+            }
+          ],
+          "ResetCallback": []
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropPuzzleMissionResetEventListener",
+          "MissionID": {
+            "Value": "900110"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PlayScreenTransfer",
+          "Mode": "SwitchOut",
+          "CustomTime": 1
+        },
+        {
+          "$type": "RPG.GameCore.PropResetPuzzle"
+        },
+        {
+          "$type": "RPG.GameCore.SwitchCharacterAnchor",
+          "IsLocalPlayer": true,
+          "CharacterUniqueName": "LocalPlayer",
+          "AreaName": {
+            "Custom": true,
+            "Key": "SwitchAnchorArea"
+          },
+          "AnchorName": {
+            "Custom": true,
+            "Key": "SwitchAnchor"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PlayScreenTransfer",
+          "CustomTime": 1
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "BoxMan_Close02"
+          },
+          "WaitOwnerOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.PlayScreenTransfer",
+          "Mode": "SwitchOut",
+          "CustomTime": 1
+        },
+        {
+          "$type": "RPG.GameCore.PropClosePuzzle"
+        },
+        {
+          "$type": "RPG.GameCore.PlayScreenTransfer",
+          "CustomTime": 1
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "BoxMan_Cam"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "BoxMan_LevelStart"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "BoxMan_LevelClose"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "BoxMan_BoardPath"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "SwitchAnchorArea"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "SwitchAnchor"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "CamAngleAnchor"
+      }
+    ]
+  }
+}

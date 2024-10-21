@@ -1,0 +1,325 @@
+{
+  "AIName": "ST_NPC_Special_AdvertBoard_Master",
+  "VariableList": [
+    {
+      "$type": "RPG.GameCore.AIVariableBool",
+      "Name": "HasTarget"
+    }
+  ],
+  "DecisionList": [],
+  "TransitionTable": [],
+  "RootState": {
+    "Name": "Root",
+    "TaskList": [
+      {
+        "$type": "RPG.GameCore.ST_Side_EnableDialogue",
+        "Inverse": true
+      }
+    ],
+    "TransitionList": [],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ByOnHit"
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_Wait",
+            "Time": -1
+          },
+          {
+            "$type": "RPG.GameCore.ST_Side_SetVariableBool",
+            "OnEnter": true,
+            "EnterName": "HasTarget"
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "GoBack",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByOnHit",
+              "Inverse": true
+            }
+          }
+        ],
+        "Name": "ControlledState"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ByAIHangUp"
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_HangUpByLevel"
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "Default",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByAIHangUp",
+              "Inverse": true
+            }
+          }
+        ],
+        "SubStateList": [],
+        "Name": "HangUp"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TaskList": [],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "HangUp",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByAIHangUp"
+            }
+          },
+          {
+            "Trigger": "OnEvent",
+            "SystemEvent": "ReceiveStimulus",
+            "TransitionToState": "ReactionState"
+          },
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "ControlledState",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByOnHit"
+            }
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+              "VarName": "HasTarget"
+            },
+            "TaskList": [],
+            "TransitionList": [],
+            "SubStateList": [
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "TaskList": [
+                  {
+                    "$type": "RPG.GameCore.ST_Main_MoveToPosition",
+                    "PositionType": "BornPos",
+                    "MoveStance": "Run",
+                    "SkipStartTurn": true,
+                    "FinishAfterStop": true,
+                    "AccurateStop": true,
+                    "AlignRotation": true
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "Trigger": "OnTick",
+                    "TransitionToState": "ControlledState",
+                    "Condition": {
+                      "$type": "RPG.GameCore.ST_ByOnHit"
+                    }
+                  },
+                  {
+                    "Trigger": "OnStateSucceeded",
+                    "TransitionToState": "GoBackWait"
+                  }
+                ],
+                "Name": "GoBackMove"
+              },
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "TaskList": [
+                  {
+                    "$type": "RPG.GameCore.ST_Main_Wait",
+                    "Time": 5
+                  },
+                  {
+                    "$type": "RPG.GameCore.ST_Side_EnableDialogue"
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "Trigger": "OnStateSucceeded",
+                    "TransitionToState": "Search"
+                  }
+                ],
+                "Name": "GoBackWait"
+              }
+            ],
+            "Name": "GoBack"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+              "VarName": "HasTarget",
+              "CompareValue": true
+            },
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Side_SetVariableBool",
+                "OnExit": true,
+                "ExitName": "HasTarget"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_EnableDialogue"
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnTick",
+                "TransitionToState": "ActionExit",
+                "Condition": {
+                  "$type": "RPG.GameCore.ST_ByDistanceToTarget",
+                  "TargetType": "BornPosition",
+                  "CompareType": "Greater",
+                  "CompareValue": 15
+                }
+              }
+            ],
+            "SubStateList": [
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "EnterCondition": {
+                  "$type": "RPG.GameCore.ST_ByDistanceToTarget",
+                  "CompareType": "Greater",
+                  "CompareValue": 3
+                },
+                "TaskList": [
+                  {
+                    "$type": "RPG.GameCore.ST_Main_MoveToTarget",
+                    "MoveStance": "Run",
+                    "Tolerance": 1.8
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "Trigger": "OnStateSucceeded",
+                    "TransitionToState": "ActionInteract"
+                  }
+                ],
+                "Name": "ActionMove"
+              },
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "TaskList": [
+                  {
+                    "$type": "RPG.GameCore.ST_Main_PlayInteract",
+                    "CharacterID": "NPC_Special_AdvertBoard_00",
+                    "MotionID": 900180284,
+                    "Duration": -1,
+                    "SteerToPlayer": true
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "Trigger": "OnTick",
+                    "TransitionToState": "ActionMove",
+                    "Condition": {
+                      "$type": "RPG.GameCore.ST_ByDistanceToTarget",
+                      "CompareType": "Greater",
+                      "CompareValue": 3
+                    }
+                  }
+                ],
+                "Name": "ActionInteract"
+              },
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "EnterCondition": {
+                  "$type": "RPG.GameCore.ST_ByDistanceToTarget",
+                  "TargetType": "BornPosition",
+                  "CompareType": "Greater",
+                  "CompareValue": 15
+                },
+                "TaskList": [
+                  {
+                    "$type": "RPG.GameCore.ST_Main_Wait",
+                    "Time": 1
+                  },
+                  {
+                    "$type": "RPG.GameCore.ST_Side_SetVariableBool",
+                    "OnExit": true,
+                    "ExitName": "HasTarget"
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "TransitionToState": "GoBack"
+                  }
+                ],
+                "Name": "ActionExit"
+              }
+            ],
+            "Name": "Action"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "SubStateList": [
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "TaskList": [
+                  {
+                    "$type": "RPG.GameCore.ST_Main_Wait",
+                    "Time": 5
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "Trigger": "OnTick",
+                    "TransitionToState": "SearchExit",
+                    "Condition": {
+                      "$type": "RPG.GameCore.ByAnd",
+                      "PredicateList": [
+                        {
+                          "$type": "RPG.GameCore.ST_ByDistanceToTarget",
+                          "CompareType": "Less",
+                          "CompareValue": 7
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "SubStateList": [],
+                "Name": "Search"
+              },
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "TaskList": [
+                  {
+                    "$type": "RPG.GameCore.ST_Main_PlayInteract",
+                    "ForceStartMotion": true,
+                    "CharacterID": "NPC_Special_AdvertBoard_00",
+                    "MotionID": 900180205,
+                    "Duration": 1,
+                    "SteerToPlayer": true
+                  },
+                  {
+                    "$type": "RPG.GameCore.ST_Side_SetVariableBool",
+                    "OnEnter": true,
+                    "EnterName": "HasTarget",
+                    "EnterValue": true
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "Trigger": "OnStateSucceeded",
+                    "TransitionToState": "Action"
+                  }
+                ],
+                "Name": "SearchExit"
+              }
+            ],
+            "Name": "SearchState"
+          }
+        ],
+        "Name": "DefaultState"
+      }
+    ]
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "AIName": "MazeNPC_FollowPlayer",
+  "VariableList": [],
+  "DecisionList": [
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Follow Player",
+      "RootTask": {
+        "$type": "RPG.GameCore.AdvNpcFollowPlayer",
+        "WaitActionTime": 5,
+        "TransferDistance": 10,
+        "EnterRushDistance": 5,
+        "ExitRushDistance": 4,
+        "RushChangeProtectTime": 1,
+        "KeepDistance": 2,
+        "FollowDistance": 2
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "Weight": {
+        "Value": 4
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByNPCStatus",
+            "NPCStatus": "FollowPlayer"
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Follow By Player",
+      "RootTask": {
+        "$type": "RPG.GameCore.AdvNpcFollowByPlayer",
+        "KeepDistance": 1000,
+        "FollowDistance": 4,
+        "WaitProtectTime": 1,
+        "WaitActionTime": 5,
+        "Waypath": "TaskFollow",
+        "OnReachTask": {
+          "$type": "RPG.GameCore.SequenceConfig",
+          "TaskList": [
+            {
+              "$type": "RPG.GameCore.AdvNPCIdle"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Arrive_202020401"
+              }
+            }
+          ]
+        },
+        "RushProtectTime": -1
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "Weight": {
+        "Value": 4
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByNPCStatus",
+            "NPCStatus": "FollowByPlayer"
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    }
+  ],
+  "OnDisable": {
+    "$type": "RPG.GameCore.AdvNPCIdle"
+  }
+}

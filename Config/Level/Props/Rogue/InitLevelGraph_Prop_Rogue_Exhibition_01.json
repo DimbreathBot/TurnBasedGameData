@@ -1,0 +1,265 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupButtonListTrigger",
+          "TriggerName": "InteractTrigger",
+          "ButtonsByName": [
+            "Interact"
+          ],
+          "ButtonConfigs": [],
+          "ConsiderAngleLimit": true,
+          "IsOverrideValidGuestConfig": true,
+          "OverridedValidGuestConfig": {}
+        },
+        {
+          "$type": "RPG.GameCore.SelectorConfig",
+          "TaskList": [
+            {
+              "$type": "RPG.GameCore.PropStateExecute",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "Execute": [
+                {
+                  "$type": "RPG.GameCore.AdvEnableButtons",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "Interact"
+                  ]
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.PropStateExecute",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "State": "Open",
+              "Execute": [
+                {
+                  "$type": "RPG.GameCore.AdvEnableButtons",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "Interact"
+                  ],
+                  "IsEnable": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvOnButtonPressed",
+          "ButtonName": "Interact",
+          "OnPressedCallback": [
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefPropState"
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "Open",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.TriggerEntityEvent",
+                      "EventName": {
+                        "Value": "Self_TriggerUse"
+                      },
+                      "InstanceID": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Self_TriggerUse"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_OnUseStart"
+              },
+              "InstanceID": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.StartDialogueEntityInteract",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "LevelGraphPath": "Config/Level/Props/InteractMode/TriggerEvent_TriggerType_08.json",
+              "UseOverrideData": true,
+              "ValueSource": {
+                "Values": [
+                  {
+                    "$type": "RPG.GameCore.SharedString",
+                    "Value": "Level/Common_Adventure/UseRogueExhibition.prefab",
+                    "Key": "DialogueEntityInteract_AreaPath"
+                  },
+                  {
+                    "$type": "RPG.GameCore.SharedString",
+                    "Value": "UseRogueExhibition,UseRogueExhibition_Camera",
+                    "Key": "DialogueEntityInteract_CameraKey"
+                  },
+                  {
+                    "$type": "RPG.GameCore.SharedString",
+                    "Value": "UseRogueExhibition",
+                    "Key": "DialogueEntityInteract_AreaName"
+                  },
+                  {
+                    "$type": "RPG.GameCore.SharedFloat",
+                    "Key": "ResetEntityTransform"
+                  }
+                ]
+              }
+            },
+            {
+              "$type": "RPG.GameCore.RogueTournCollectionFuncShowUI",
+              "BoothIDString": {
+                "Custom": true,
+                "Key": "BotthID_string"
+              },
+              "Offset": {
+                "X": 0,
+                "Y": 1.6,
+                "Z": 0
+              },
+              "CollectionScale": {
+                "X": 1.5,
+                "Y": 1.5,
+                "Z": 1.5
+              },
+              "TriggerEffect": {
+                "$type": "RPG.GameCore.TriggerEffect",
+                "Flags": [],
+                "EffectPath": "Effects/Eff_Prefab/Eff_Scene/Scene_Static/Eff_Chap03_Maz_Exhibition_01_Bubble_Lod0.prefab",
+                "AttachPoint": "EffectPoint",
+                "SubObjectModifyDataList": []
+              },
+              "TriggerChangeEffect": {
+                "$type": "RPG.GameCore.TriggerEffect",
+                "Flags": [],
+                "EffectPath": "Effects/Eff_Prefab/Eff_Scene/Scene_Static/Eff_Chap03_Maz_Exhibition_01_Switch_Lod0.prefab",
+                "AttachPoint": "SwitchEffectPoint",
+                "SubObjectModifyDataList": []
+              },
+              "OnExitUI": [
+                {
+                  "$type": "RPG.GameCore.EndDialogueEntityInteract"
+                }
+              ]
+            }
+          ],
+          "InstanceID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.RogueTournCollectionLoadShow",
+          "BoothIDString": {
+            "Custom": true,
+            "Key": "BotthID_string"
+          },
+          "Offset": {
+            "X": 0,
+            "Y": 1.6,
+            "Z": 0
+          },
+          "CollectionScale": {
+            "X": 1.5,
+            "Y": 1.5,
+            "Z": 1.5
+          },
+          "TriggerEffect": {
+            "$type": "RPG.GameCore.TriggerEffect",
+            "Flags": [],
+            "EffectPath": "Effects/Eff_Prefab/Eff_Scene/Scene_Static/Eff_Chap03_Maz_Exhibition_01_Bubble_Lod0.prefab",
+            "AttachPoint": "EffectPoint",
+            "SubObjectModifyDataList": []
+          },
+          "TriggerChangeEffect": {
+            "$type": "RPG.GameCore.TriggerEffect",
+            "Flags": [],
+            "EffectPath": "Effects/Eff_Prefab/Eff_Scene/Scene_Static/Eff_Chap03_Maz_Exhibition_01_Switch_Lod0.prefab",
+            "AttachPoint": "SwitchEffectPoint",
+            "SubObjectModifyDataList": []
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "ToState": "Open",
+          "FromAnyState": true,
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.AdvEnableButtons",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "TriggerName": "InteractTrigger",
+              "ButtonsByName": [
+                "Interact"
+              ],
+              "IsEnable": true
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "BotthID_string"
+      }
+    ]
+  },
+  "Type": "Entity"
+}

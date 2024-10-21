@@ -1,0 +1,175 @@
+{
+  "GroupConfigName": "FollowField",
+  "ConfigEntityPath": "Config/ConfigEntity/SummonUnit/SummonUnit_Common_TeamField_Entity.json",
+  "ResidentEffects": [
+    {
+      "$type": "RPG.GameCore.TriggerEffect",
+      "TargetType": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "AdvLocalPlayer"
+      },
+      "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Firefly_00/Eff_Avatar_Firefly_00_MazeSkill_01_Hit.prefab",
+      "AttachPoint": "Origin"
+    },
+    {
+      "$type": "RPG.GameCore.TriggerEffect",
+      "TargetType": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "AdvLocalPlayer"
+      },
+      "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Firefly_00/Eff_Avatar_Firefly_00_MazeSkill_01_Hit_02.prefab",
+      "AttachPoint": "Origin"
+    }
+  ],
+  "AttachPoint": "Origin",
+  "OnCreate": [
+    {
+      "$type": "RPG.GameCore.DisableMazeLockTarget",
+      "Target": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "AdvLocalPlayer"
+      }
+    }
+  ],
+  "OnDestroy": [
+    {
+      "$type": "RPG.GameCore.DisableMazeLockTarget",
+      "Target": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "AdvLocalPlayer"
+      },
+      "Disable": false
+    },
+    {
+      "$type": "RPG.GameCore.RemoveEffect",
+      "TargetType": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "Caster"
+      },
+      "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Firefly_00/Eff_Avatar_Firefly_00_MazeSkill_01_Hit.prefab",
+      "IsNeedFadeOut": false
+    },
+    {
+      "$type": "RPG.GameCore.RemoveEffect",
+      "TargetType": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "Caster"
+      },
+      "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Firefly_00/Eff_Avatar_Firefly_00_MazeSkill_01_Hit_02.prefab",
+      "IsNeedFadeOut": false
+    }
+  ],
+  "TriggerConfig": {
+    "CustomTriggers": [
+      {
+        "TriggerName": "ShowMonsterTargetTrigger",
+        "Radius": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": 10
+          }
+        },
+        "UseVerticalBound": true,
+        "UpperBound": 2,
+        "LowerBound": -0.5,
+        "NeedRaycast": true,
+        "TargetTypes": [
+          "NPCMonster"
+        ],
+        "OnTriggerEnter": [
+          {
+            "$type": "RPG.GameCore.PredicateTaskList",
+            "Predicate": {
+              "$type": "RPG.GameCore.ByIsTargetValid",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "TaskActionTarget"
+              },
+              "AliveOnly": true
+            },
+            "SuccessTaskList": [
+              {
+                "$type": "RPG.GameCore.TriggerEffect",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "TaskActionTarget"
+                },
+                "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Firefly_00/Eff_Avatar_Firefly_00_MazeSkill_01_Hit_03.prefab"
+              }
+            ]
+          }
+        ],
+        "OnTriggerExit": [
+          {
+            "$type": "RPG.GameCore.RemoveEffect",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "TaskActionTarget"
+            },
+            "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Firefly_00/Eff_Avatar_Firefly_00_MazeSkill_01_Hit_03.prefab"
+          }
+        ]
+      },
+      {
+        "TriggerName": "ShowPropTargetTrigger",
+        "Radius": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": 10
+          }
+        },
+        "UseVerticalBound": true,
+        "UpperBound": 2,
+        "LowerBound": -0.5,
+        "NeedRaycast": true,
+        "TargetTypes": [
+          "Prop"
+        ],
+        "TargetFilter": {
+          "$type": "RPG.GameCore.ByComparePropType",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "ParamEntity"
+          },
+          "Types": [
+            "PROP_DESTRUCT"
+          ]
+        },
+        "OnTriggerEnter": [
+          {
+            "$type": "RPG.GameCore.PredicateTaskList",
+            "Predicate": {
+              "$type": "RPG.GameCore.ByIsTargetValid",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "TaskActionTarget"
+              },
+              "AliveOnly": true
+            },
+            "SuccessTaskList": [
+              {
+                "$type": "RPG.GameCore.TriggerEffect",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "TaskActionTarget"
+                },
+                "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Firefly_00/Eff_Avatar_Firefly_00_MazeSkill_01_Hit_03.prefab",
+                "AttachPoint": "Root"
+              }
+            ]
+          }
+        ],
+        "OnTriggerExit": [
+          {
+            "$type": "RPG.GameCore.RemoveEffect",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "TaskActionTarget"
+            },
+            "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Firefly_00/Eff_Avatar_Firefly_00_MazeSkill_01_Hit_03.prefab"
+          }
+        ]
+      }
+    ]
+  }
+}

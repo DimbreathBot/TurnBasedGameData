@@ -1,0 +1,150 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropInitPuzzle",
+          "BoardPath": {
+            "Custom": true,
+            "Key": "BoardPath"
+          }
+        }
+      ]
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.CommonBoardPuzzleInBoard",
+          "OnPlayerEnter": [
+            {
+              "$type": "RPG.GameCore.ActiveVirtualCamera",
+              "LevelAreaCameraKey": {
+                "Custom": true,
+                "Key": "Vcam"
+              },
+              "BlendConfig": {
+                "ExportToJson": true,
+                "BlendType": "EaseInOut"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TakenMazePuzzleChallenge",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "MazePuzzleChallengeID": {
+                "Value": "90001"
+              },
+              "AutoClosePuzzle": false,
+              "AutoResetPuzzle": false,
+              "OnReset": [
+                {
+                  "$type": "RPG.GameCore.PlayScreenTransfer",
+                  "Mode": "SwitchOut",
+                  "CustomTime": 0.1
+                },
+                {
+                  "$type": "RPG.GameCore.SwitchCharacterAnchor",
+                  "IsLocalPlayer": true,
+                  "CharacterUniqueName": "LocalPlayer",
+                  "AreaName": {
+                    "Custom": true,
+                    "Key": "AreaName"
+                  },
+                  "AnchorName": {
+                    "Custom": true,
+                    "Key": "AnchorName"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.ToastPile"
+                },
+                {
+                  "$type": "RPG.GameCore.PropResetPuzzle"
+                },
+                {
+                  "$type": "RPG.GameCore.WaitSecond",
+                  "WaitTime": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0.8
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.PlayScreenTransfer",
+                  "CustomTime": 0.1
+                }
+              ]
+            }
+          ],
+          "OnPlayerLeave": [
+            {
+              "$type": "RPG.GameCore.ActiveVirtualCamera",
+              "LevelAreaCameraKey": {
+                "Custom": true,
+                "Key": "Vcam"
+              },
+              "IsActive": false,
+              "BlendConfig": {
+                "ExportToJson": true,
+                "BlendType": "EaseInOut"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.CancelMazePuzzleChallenge",
+              "MazePuzzleChallengeID": {
+                "Value": "90001"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropPuzzleEventListener",
+          "FinishCallback": [
+            {
+              "$type": "RPG.GameCore.FinishMazePuzzleChallenge",
+              "MazePuzzleChallengeID": {
+                "Value": "90001"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.ToastPage",
+              "MessageOne": {
+                "Hash": 362442128
+              }
+            }
+          ],
+          "ResetCallback": [],
+          "QuitCallback": []
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "Vcam"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "BoardPath"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "AreaName"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "AnchorName"
+      }
+    ]
+  }
+}

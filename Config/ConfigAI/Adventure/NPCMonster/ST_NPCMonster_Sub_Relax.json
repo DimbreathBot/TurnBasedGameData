@@ -1,0 +1,89 @@
+{
+  "AIName": "ST_Sub_NPCMonster_Relax",
+  "VariableList": [],
+  "DecisionList": [],
+  "TransitionTable": [],
+  "RootState": {
+    "Name": "Root",
+    "TaskList": [
+      {
+        "$type": "RPG.GameCore.ST_Side_OverrideVision",
+        "VisionSetName": "DefaultVision_Relaxed"
+      },
+      {
+        "$type": "RPG.GameCore.ST_Side_RecordGuardPosition"
+      }
+    ],
+    "TransitionList": [],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ByHasBornSmartObject"
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_PlaySmartObject",
+            "ParamType": "BornSmartOjbect",
+            "RecordContext": true
+          }
+        ],
+        "Name": "SmartObject"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ByHasPatrolPath"
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_Patrol",
+            "MoveStance": "Walk"
+          }
+        ],
+        "Name": "Patrol"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TaskList": [],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ST_ByDistanceToTarget",
+              "TargetType": "BornPosition",
+              "CompareType": "Greater",
+              "CompareValue": 1
+            },
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_MoveToPosition",
+                "PositionType": "BornPos",
+                "MoveStance": "Walk",
+                "AlignRotation": true
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnStateSucceeded",
+                "TransitionToType": "NextState"
+              }
+            ],
+            "Name": "IdleMove"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": -1
+              }
+            ],
+            "Name": "IdleWait"
+          }
+        ],
+        "Name": "Idle"
+      }
+    ]
+  }
+}

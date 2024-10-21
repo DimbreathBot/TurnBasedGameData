@@ -1,0 +1,437 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropInitFarmElement",
+          "AssistantEffectPath": {
+            "Custom": true,
+            "Key": "AssistEffectPath"
+          },
+          "DetectPlayerTriggerName": {
+            "Value": "DetectPlayer"
+          },
+          "ActiveFarmElementGroundBurstAnimTriggerName": {
+            "Value": "Active_Trigger"
+          },
+          "ActiveFarmElementMonsterAnimName": {
+            "Value": "FESpecialStandByAS1"
+          },
+          "FarmElementPropColliders": [
+            "Collider",
+            "CameraCollider"
+          ],
+          "AssistantLeaveTextID": {
+            "Hash": 1883863084
+          },
+          "MonsterDieAndDissolveEffectPath": {
+            "Value": "Effects/Eff_Prefab/Eff_Monster/Eff_W1_Soldier01_02/Eff_Monster_W1_Soldier01_02_Common_Die_01.prefab"
+          },
+          "InactiveFarmElementRestartAnimTriggerName": {
+            "Value": "Restart_Trigger"
+          },
+          "InactiveFarmElementFadeOutEffectName": [
+            {
+              "Custom": true,
+              "Key": "SpecialMonsterEffect1"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "triggerfarmelementspawn"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerFarmElementAnimState",
+          "AnimStateName": "FESpecialStandByBS1"
+        },
+        {
+          "$type": "RPG.GameCore.PropTriggerAnimState",
+          "AnimStateName": "Appear",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropSetupUITrigger",
+          "ColliderRelativePath": "TriggerUIBtn",
+          "ButtonTextCustom": {
+            "Custom": true,
+            "Key": "InteractID"
+          },
+          "ButtonCallback": [
+            {
+              "$type": "RPG.GameCore.BlockInputController",
+              "Enable": true,
+              "ActionNameList": []
+            },
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "InteractWithFarmElement"
+              }
+            }
+          ],
+          "OverrideTargetTypes": [],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "FromState": "CheckPointDisable",
+          "ToState": "CheckPointEnable",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.NotifyFarmUnlock"
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitStaminaChange",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.PropEnableCollider",
+              "OPType": "TriggerOnly",
+              "Enabled": true,
+              "SpecifiedRelativePaths": [],
+              "TriggerSelect": "PropInteractionTrigger",
+              "CustomTriggerName": "LocationBlock",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PropEnableCollider",
+              "OPType": "ColliderOnly",
+              "Enabled": true,
+              "SpecifiedRelativePaths": [],
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PropEnableCollider",
+              "OPType": "TriggerOnly",
+              "SpecifiedRelativePaths": [
+                "CustomTrigger_DetectPlayer"
+              ],
+              "TriggerSelect": "CustomTrigger",
+              "CustomTriggerName": "DetectPlayer",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "InteractWithFarmElement"
+          },
+          "WaitOwnerOnly": true,
+          "GoNextImmediately": true
+        },
+        {
+          "$type": "RPG.GameCore.BlockInputController",
+          "ActionNameList": []
+        },
+        {
+          "$type": "RPG.GameCore.OpenFarmElement",
+          "OnCancel": [
+            {
+              "$type": "RPG.GameCore.EndPropInteract"
+            }
+          ],
+          "OnUIEnter": [
+            {
+              "$type": "RPG.GameCore.StartPropInteractMode",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "Mode": "UseInteractiveProp",
+              "UseOverrideData": true,
+              "OverrideData01": {
+                "AreasPath": "Level/Common_Adventure/UsePropFarmElement.prefab",
+                "AreaName": "UsePropFarmElement",
+                "AnchorName": "UseProp_Camera"
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.PropEnableCollider",
+          "OPType": "TriggerOnly",
+          "SpecifiedRelativePaths": [],
+          "TriggerSelect": "PropInteractionTrigger",
+          "CustomTriggerName": "LocationBlock",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PropStartFarmElement"
+        },
+        {
+          "$type": "RPG.GameCore.SetNavMeshState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "Name": {
+            "Value": "Open"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.EndPropInteract"
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": []
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitTransferFinishedEvent"
+        },
+        {
+          "$type": "RPG.GameCore.BlockInputController",
+          "Enable": true,
+          "ActionNameList": []
+        },
+        {
+          "$type": "RPG.GameCore.TriggerCustomString",
+          "CustomString": {
+            "Value": "InteractWithFarmElement"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropSetupTrigger",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "TargetGroupID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0
+            }
+          },
+          "TargetID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0
+            }
+          },
+          "TargetTypes": [],
+          "ColliderRelativePath": "LocationBlock",
+          "OnTriggerEnter": [
+            {
+              "$type": "RPG.GameCore.SetPlayerMotionSync"
+            }
+          ],
+          "OnTriggerExit": [
+            {
+              "$type": "RPG.GameCore.SetPlayerMotionSync",
+              "Enable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropSetupTrigger",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "TargetGroupID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0
+            }
+          },
+          "TargetID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0
+            }
+          },
+          "TargetTypes": [],
+          "ColliderRelativePath": "TutorialTrigger",
+          "DisableAfterTriggered": true,
+          "OnTriggerEnter": [
+            {
+              "$type": "RPG.GameCore.TutorialTaskUnlock",
+              "TriggerParam": {
+                "Value": "5103"
+              }
+            }
+          ],
+          "OnTriggerExit": []
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropSetupTrigger",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "TargetGroupID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0
+            }
+          },
+          "TargetID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0
+            }
+          },
+          "TargetTypes": [
+            "LocalPlayer",
+            "NPCMonster"
+          ],
+          "ColliderRelativePath": "CustomTrigger_DetectPlayer",
+          "DisableAfterTriggered": true,
+          "OnTriggerEnter": [],
+          "OnTriggerExit": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.AdvByCheckFarmElementActive",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerCustomString",
+                  "CustomString": {
+                    "Value": "RemoveAssistAvatar"
+                  }
+                }
+              ],
+              "FailedTaskList": []
+            }
+          ],
+          "OnExitFilter": {
+            "$type": "RPG.GameCore.ByAny",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByCompareTarget",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchTaskActionTarget"
+                },
+                "CompareType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+                }
+              },
+              {
+                "$type": "RPG.GameCore.ByCompareTarget",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchTaskActionTarget"
+                },
+                "CompareType": {
+                  "$type": "RPG.GameCore.TargetFetchPropFarmElement"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PropEnableCollider",
+          "OPType": "TriggerOnly",
+          "SpecifiedRelativePaths": [
+            "CustomTrigger_DetectPlayer"
+          ],
+          "TriggerSelect": "CustomTrigger",
+          "CustomTriggerName": "DetectPlayer",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "RemoveAssistAvatar"
+          },
+          "WaitOwnerOnly": true
+        },
+        {
+          "$type": "RPG.GameCore.PropRestartFarmElement"
+        },
+        {
+          "$type": "RPG.GameCore.SetNavMeshState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "Name": {
+            "Value": "Closed"
+          }
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "InteractID"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "Effects/Eff_Prefab/Eff_Common/Eff_Common_BossDomain_Assistfield_01.prefab",
+        "Key": "AssistEffectPath"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "SpecialMonsterEffect1"
+      }
+    ]
+  },
+  "Type": "Entity"
+}

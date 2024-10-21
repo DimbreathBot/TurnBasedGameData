@@ -1,0 +1,103 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.CollectDataConditions",
+          "TaskIDList": [
+            103100121,
+            103100125,
+            103100123
+          ],
+          "MainMissionIDList": [],
+          "PerformanceIDList": [],
+          "PerformanceIDDsList": [],
+          "CustomValueMainMissionIDList": []
+        },
+        {
+          "$type": "RPG.GameCore.SwitchCase",
+          "TaskList": [
+            {
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareSubMissionState",
+                "SubMissionID": 103100123,
+                "SubMissionState": "Started"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerPerformance",
+                  "ValueSource": {},
+                  "PerformanceType": "D",
+                  "PerformanceID": 103100123
+                },
+                {
+                  "$type": "RPG.GameCore.PerformanceEndSeq",
+                  "Cases": [
+                    {
+                      "OnSuccess": [
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByAnd",
+                            "PredicateList": [
+                              {
+                                "$type": "RPG.GameCore.ByCompareSubMissionState",
+                                "SubMissionID": 103100121,
+                                "SubMissionState": "Finish"
+                              },
+                              {
+                                "$type": "RPG.GameCore.ByCompareSubMissionState",
+                                "SubMissionID": 103100125,
+                                "SubMissionState": "Finish"
+                              }
+                            ]
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.SwitchCharacterAnchorV2",
+                              "SwitchCharacterAnchorConfig": {
+                                "IsLocalPlayer": true,
+                                "CharacterUniqueName": "LocalPlayer",
+                                "AreaName": {
+                                  "Value": "LevelArea_P10301_F10301001_G168"
+                                },
+                                "AnchorName": {
+                                  "Value": "Anchor1"
+                                }
+                              }
+                            }
+                          ],
+                          "FailedTaskList": [
+                            {
+                              "$type": "RPG.GameCore.PlayFullScreenTransfer",
+                              "PrevDuration": 0
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "RPG.GameCore.TriggerCustomString",
+                          "CustomString": {
+                            "Value": "Talk_103100123"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "DefaultTask": [
+            {
+              "$type": "RPG.GameCore.TriggerPerformance",
+              "ValueSource": {},
+              "PerformanceType": "E",
+              "PerformanceID": 103100133
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

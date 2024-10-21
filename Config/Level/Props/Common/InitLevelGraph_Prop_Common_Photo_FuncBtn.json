@@ -1,0 +1,142 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropSetupTrigger",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+            "SinglePropID": {}
+          },
+          "TargetGroupID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0
+            }
+          },
+          "TargetID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0
+            }
+          },
+          "TargetTypes": [],
+          "OnTriggerEnter": [
+            {
+              "$type": "RPG.GameCore.ShowFuncBtn",
+              "PuzzleFunc": "Identify",
+              "CDDuration": 1,
+              "CustomString": {
+                "Value": "Prop_EnterPhotoMode"
+              },
+              "MissionID": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAK",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    833656080
+                  ]
+                }
+              }
+            }
+          ],
+          "OnTriggerExit": [
+            {
+              "$type": "RPG.GameCore.ShowFuncBtn",
+              "Show": false,
+              "PuzzleFunc": "Identify",
+              "CDDuration": 1,
+              "ShowBtnFucHint": false,
+              "CustomString": {
+                "Value": "Prop_EnterPhotoMode"
+              },
+              "MissionID": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAK",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    833656080
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Prop_EnterPhotoMode"
+          },
+          "WaitOwnerOnly": true,
+          "GoNextImmediately": true
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareDynamicValue",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+              "SinglePropKey": {
+                "Custom": true
+              }
+            },
+            "DynamicKey": "Is_Photo_SkipPreviewDialog",
+            "ContextScope": "TargetEntity",
+            "CompareType": "Equal",
+            "CompareValue": {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 0
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.SwitchPhotoGraphMode",
+              "PhotoGraphMode": "Identify",
+              "IdentifyRadiusOverride": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.SwitchPhotoGraphMode",
+              "PhotoGraphMode": "Identify",
+              "SkipPhotoPreviewDialog": true,
+              "IdentifyRadiusOverride": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "Is_Photo_SkipPreviewDialog"
+      },
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Key": "MissionID_FuncBtn"
+      }
+    ]
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitRaidExitNotify",
+          "RaidID": {
+            "Custom": true,
+            "Key": "RaidID"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PropSetupTrigger",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "TargetGroupID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0
+            }
+          },
+          "TargetID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0
+            }
+          },
+          "TargetTypes": [],
+          "BlockDialogueInRange": true
+        },
+        {
+          "$type": "RPG.GameCore.CreateLevelAreas",
+          "AssetPath": {
+            "Value": "Level/Common_Adventure/UseInteractNPCRobot.prefab"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.CaptureNPCToCharacter",
+          "GroupID": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAK",
+              "FixedValues": [],
+              "DynamicHashes": [
+                929570483
+              ]
+            }
+          },
+          "GroupNpcID": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAK",
+              "FixedValues": [],
+              "DynamicHashes": [
+                -655989992
+              ]
+            }
+          },
+          "CharacterUniqueName": {
+            "Value": "CurrentInteractDialogueEntity"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitFrame"
+        },
+        {
+          "$type": "RPG.GameCore.ActiveVirtualCamera",
+          "AreaName": "UseInteractNPCRobot",
+          "AnchorName": "UseInteractNPCRobot_Camera",
+          "FollowTargetUniqueName": "CurrentInteractDialogueEntity",
+          "LookAtTargetUniqueName": "CurrentInteractDialogueEntity",
+          "BlendConfig": {
+            "ExportToJson": true,
+            "BlendType": "Custom",
+            "CustomCurveName": "BlendCut09",
+            "BlendTime": 0.8
+          },
+          "VCameraDitherNPCOn": true,
+          "VCameraDitherMaxDistance": 3
+        },
+        {
+          "$type": "RPG.GameCore.SetLocalPlayerDitherAlpha"
+        },
+        {
+          "$type": "RPG.GameCore.OpenTreasureChallenge",
+          "DynamicRaidID": {
+            "Custom": true,
+            "Key": "RaidID"
+          },
+          "OnCancel": [
+            {
+              "$type": "RPG.GameCore.SetLocalPlayerDitherAlpha",
+              "DitherAlpha": 1,
+              "Duration": 0.2
+            },
+            {
+              "$type": "RPG.GameCore.ActiveVirtualCamera",
+              "AreaName": "UseInteractNPCRobot",
+              "AnchorName": "UseInteractNPCRobot_Camera",
+              "IsActive": false,
+              "FollowTargetAnchorName": "RootPointPropInteract",
+              "LookAtTargetAnchorName": "RootPointPropInteract",
+              "BlendConfig": {
+                "ExportToJson": true,
+                "BlendType": "Cut",
+                "CustomCurveName": "BlendCut10",
+                "BlendTime": 1
+              }
+            },
+            {
+              "$type": "RPG.GameCore.RemoveLevelAreas",
+              "AreaName": {
+                "Value": "UseInteractNPC"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.ReleaseCharacter",
+              "CharacterUniqueName": "CurrentInteractDialogueEntity"
+            },
+            {
+              "$type": "RPG.GameCore.DestroyPropTrigger",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "RaidID"
+      },
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Key": "NPCGroupID"
+      },
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Key": "NPCID"
+      }
+    ]
+  }
+}

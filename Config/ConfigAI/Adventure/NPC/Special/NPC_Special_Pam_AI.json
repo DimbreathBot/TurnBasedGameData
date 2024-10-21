@@ -1,0 +1,289 @@
+{
+  "AIName": "Pam",
+  "VariableList": [],
+  "DecisionList": [
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "OnlineFirst",
+      "RootTask": {
+        "$type": "RPG.GameCore.ParallelConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.AdvNpcFollowPlayer",
+            "NoAutoDisableTalk": true,
+            "KeepDistance": 2,
+            "FollowDistance": 2
+          },
+          {
+            "$type": "RPG.GameCore.SequenceConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.WaitDialogueBegin",
+                "BeginCallback": [
+                  {
+                    "$type": "RPG.GameCore.TriggerPamOnlineFirst"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "$type": "RPG.GameCore.SequenceConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.WaitSecond",
+                "WaitTime": {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 10
+                  }
+                }
+              },
+              {
+                "$type": "RPG.GameCore.TriggerPamOnlineFirst"
+              }
+            ]
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "Weight": {
+        "Value": 4
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByPamOnlineFirst"
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "BreakMove",
+      "RootTask": {
+        "$type": "RPG.GameCore.ParallelConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.TriggerPamMovePhaseTalkWait"
+          },
+          {
+            "$type": "RPG.GameCore.AdvNpcFaceToPlayer",
+            "FromDialog": false,
+            "TryFaceToFace": false,
+            "PlayerLookAtNpc": false,
+            "StopLookAtOnGraphEnd": false,
+            "TurnBackOnGraphEnd": false,
+            "FinishImmadiate": true
+          },
+          {
+            "$type": "RPG.GameCore.SequenceConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.WaitDialogueBegin",
+                "BeginCallback": [
+                  {
+                    "$type": "RPG.GameCore.TriggerPamMovePhaseTalk"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "$type": "RPG.GameCore.SequenceConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.WaitSecond",
+                "WaitTime": {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 5
+                  }
+                }
+              },
+              {
+                "$type": "RPG.GameCore.TriggerPamMovePhaseTalk"
+              }
+            ]
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "Weight": {
+        "Value": 3
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAnd",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByDistance",
+                "From": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ModifierOwnerEntity"
+                },
+                "To": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "AdvLocalPlayer"
+                },
+                "CompareType": "LessEqual",
+                "CompareValue": {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 2
+                  }
+                }
+              },
+              {
+                "$type": "RPG.GameCore.ByPamMovePhaseTalk"
+              }
+            ]
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Normal Action",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.TriggerPamActionPhaseMove"
+          },
+          {
+            "$type": "RPG.GameCore.CharacterTriggerAnimState",
+            "AnimStateName": "StandBy",
+            "NormalizedTransitionDuration": 0.25
+          },
+          {
+            "$type": "RPG.GameCore.PredicateTaskList",
+            "Predicate": {
+              "$type": "RPG.GameCore.ByPamCurrentActionAnyDirection"
+            },
+            "SuccessTaskList": [
+              {
+                "$type": "RPG.GameCore.CharacterNavigateTo",
+                "CharacterUniqueName": "3-400001",
+                "AreaNameDS": {
+                  "Custom": true,
+                  "Key": "PamNavigateToAreaName"
+                },
+                "AnchorNameDS": {
+                  "Custom": true,
+                  "Key": "PamNavigateToAnchorName"
+                },
+                "MotionFlag": "Walk",
+                "TurnInPlace": true,
+                "DontTurnInPlaceInEnd": true
+              },
+              {
+                "$type": "RPG.GameCore.PredicateTaskList",
+                "Predicate": {
+                  "$type": "RPG.GameCore.ByPamAnchorContinous"
+                },
+                "SuccessTaskList": [
+                  {
+                    "$type": "RPG.GameCore.AdvNpcFaceToPlayer",
+                    "FromDialog": false,
+                    "TryFaceToFace": false,
+                    "NpcLookAtPlayer": false,
+                    "PlayerLookAtNpc": false,
+                    "StopLookAtOnGraphEnd": false,
+                    "TurnBackOnGraphEnd": false
+                  }
+                ]
+              }
+            ],
+            "FailedTaskList": [
+              {
+                "$type": "RPG.GameCore.CharacterNavigateTo",
+                "CharacterUniqueName": "3-400001",
+                "AreaNameDS": {
+                  "Custom": true,
+                  "Key": "PamNavigateToAreaName"
+                },
+                "AnchorNameDS": {
+                  "Custom": true,
+                  "Key": "PamNavigateToAnchorName"
+                },
+                "MotionFlag": "Walk",
+                "TurnInPlace": true
+              }
+            ]
+          },
+          {
+            "$type": "RPG.GameCore.TriggerPamActionPhaseAction"
+          },
+          {
+            "$type": "RPG.GameCore.TriggerPamActionPhaseSettle"
+          },
+          {
+            "$type": "RPG.GameCore.CharacterTriggerFreeStyleGraph",
+            "TargetAlias": {
+              "$type": "RPG.GameCore.TargetFetchModifierOwner"
+            },
+            "GraphName": {
+              "Custom": true,
+              "Key": "PamAnimName"
+            }
+          },
+          {
+            "$type": "RPG.GameCore.WaitRandomSecond",
+            "MinWaitTime": 15,
+            "MaxWaitTime": 25
+          },
+          {
+            "$type": "RPG.GameCore.CharacterStopFreeStyle"
+          },
+          {
+            "$type": "RPG.GameCore.TriggerPamActionPhaseDone"
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByPamNormalAction"
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "NormalActionSwitch",
+      "RootTask": {
+        "$type": "RPG.GameCore.TaskConfig"
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByPamNormalActionSwitch"
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    }
+  ],
+  "OnDisable": {
+    "$type": "RPG.GameCore.CharacterStopFreeStyle"
+  }
+}
