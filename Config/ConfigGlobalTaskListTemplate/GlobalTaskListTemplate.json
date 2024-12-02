@@ -17,7 +17,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "DynamicKey": "ChangePhase_MaxHPValue",
+          "DynamicKey": {
+            "Value": "ChangePhase_MaxHPValue"
+          },
           "ContextScope": "TargetEntity"
         },
         {
@@ -84,7 +86,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "ParamEntity"
           },
-          "DynamicKey": "ChangePhase_MaxHPValue",
+          "DynamicKey": {
+            "Value": "ChangePhase_MaxHPValue"
+          },
           "ContextScope": "TargetEntity"
         },
         {
@@ -124,6 +128,230 @@
         },
         {
           "$type": "RPG.GameCore.RefreshChangePhaseUI"
+        }
+      ]
+    },
+    {
+      "Name": "Wave_CommonPreProcess",
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PauseToTurnEnd",
+          "Pause": true
+        },
+        {
+          "$type": "RPG.GameCore.TaskTemplateFetchParamSequence",
+          "ParamName": "WaveSwitchBGM"
+        },
+        {
+          "$type": "RPG.GameCore.WaitFor",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByHaveDyingEntity",
+            "TeamTypeMask": "TeamDark",
+            "EntityTypeMask": "Mask_TeamCharacters",
+            "Inverse": true
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitForTurnEnd",
+          "GoNextImmediately": true
+        },
+        {
+          "$type": "RPG.GameCore.PredicateToMakeFail",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCheckFightFinish"
+          },
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.PauseToTurnEnd"
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.AddMazeBuffBinding",
+          "BindingTypes": [
+            "StageAbility",
+            "StageAbilityBeforeCharacterBorn"
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.WaveMonster",
+          "InitAnimStateName": "Appear",
+          "WaitDie": false,
+          "ForbiddenPassiveSkill": true
+        },
+        {
+          "$type": "RPG.GameCore.UsePassiveSkill",
+          "TeamType": "TeamDark"
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareDynamicValue",
+            "DynamicKey": {
+              "Value": "NeedShowNextWaveDialog"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 1
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerUINotify",
+              "NotifyTypeName": "BattleShowNextWaveDialog"
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.TriggerCustomString",
+          "CustomString": {
+            "Value": "Stage_WaveMonsterPerformStart2"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitCustomStringBattleClientOnly",
+          "CustomString": {
+            "Value": "Stage_WaveMonsterPerformEnd2"
+          },
+          "ResetWhenTaskBegin": true
+        }
+      ]
+    },
+    {
+      "Name": "Wave_CommonProcess",
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AddMazeBuffBinding",
+          "BindingTypes": [
+            "StageAbilityAfterCharacterBorn"
+          ],
+          "IsAfterWave": true
+        },
+        {
+          "$type": "RPG.GameCore.IncludeTaskListTemplate",
+          "Name": "TaskList_WaveMonsterDelayCreate"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerModifierEnterBattle"
+        },
+        {
+          "$type": "RPG.GameCore.IncludeTaskListTemplate",
+          "Name": "Wave_ShowRoleTrialPage"
+        },
+        {
+          "$type": "RPG.GameCore.PauseToTurnEnd"
+        },
+        {
+          "$type": "RPG.GameCore.WaitFrame"
+        },
+        {
+          "$type": "RPG.GameCore.DarkTeamDestroyCheck",
+          "ForWaveEnd": true
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareWaveCount",
+            "CompareType": "Equal",
+            "CompareWithMax": true
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.WaitForTurnEnd"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_PreLocalWin"
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.TaskTemplateFetchParamSequence",
+              "ParamName": "TriggerNextWave"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "Wave_ShowRoleTrialPage",
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAnd",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByCompareStageType",
+                "CurrentStageType": "Trial"
+              },
+              {
+                "$type": "RPG.GameCore.ByCompareDynamicValue",
+                "DynamicKey": {
+                  "Value": "RoleTrialDetailPageShowed"
+                },
+                "CompareType": "Equal",
+                "CompareValue": {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 0
+                  }
+                }
+              },
+              {
+                "$type": "RPG.GameCore.ByCheckDarkTeamDestroy",
+                "ForWaveEnd": true,
+                "Inverse": true
+              },
+              {
+                "$type": "RPG.GameCore.ByAny",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByCompareAllWaveMonsterRank",
+                    "CompareType": "Less",
+                    "CompareValue": 3,
+                    "Inverse": true
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCheckRoleTrialNormalWaveShowDetail"
+                  }
+                ]
+              }
+            ]
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.SetDynamicValue",
+              "Value": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1
+                }
+              },
+              "DynamicKey": {
+                "Value": "RoleTrialDetailPageShowed"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.15
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.ShowUI",
+              "Name": "Ui.Activity.RoleTrial.RoleTrialDetailPage",
+              "WaitForExit": true
+            }
+          ]
         }
       ]
     },
@@ -282,7 +510,56 @@
           "WaitTime": {
             "IsDynamic": false,
             "FixedValue": {
-              "Value": 3
+              "Value": 1.3
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.VCameraConfigChange",
+          "CameraConfig": {
+            "NormalConfig": {
+              "CameraState": "CasterToTargetPerform",
+              "AnchorTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "LightTeamCenter"
+              },
+              "IsLocalOffset": true,
+              "AnchorOffset": {
+                "X": 2,
+                "Y": 1.4,
+                "Z": 0.01
+              },
+              "AnchorRatio": 0.1,
+              "AimTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "DarkTeamCenter"
+              },
+              "AimOffset": {
+                "X": 0.5,
+                "Y": 1,
+                "Z": 0.01
+              },
+              "AimRatio": 1
+            },
+            "BlendConfig": {
+              "BlendType": "Custom",
+              "CustomCurveName": "BlendCut_00to1",
+              "BlendTime": 0.7
+            },
+            "ShowEntityConfig": {
+              "ShowTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AllDarkTeam"
+              }
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1
             }
           }
         }
@@ -314,7 +591,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "ParamEntity"
           },
-          "ModifierName": "MCommon_Element_Bleed",
+          "ModifierName": {
+            "Value": "MCommon_Element_Bleed"
+          },
           "Chance": {
             "IsDynamic": false,
             "FixedValue": {
@@ -461,7 +740,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "ParamEntity"
           },
-          "ModifierName": "MCommon_Element_Frozen",
+          "ModifierName": {
+            "Value": "MCommon_Element_Frozen"
+          },
           "Chance": {
             "IsDynamic": false,
             "FixedValue": {
@@ -586,7 +867,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "ParamEntity"
           },
-          "ModifierName": "MCommon_Element_Burn",
+          "ModifierName": {
+            "Value": "MCommon_Element_Burn"
+          },
           "Chance": {
             "IsDynamic": false,
             "FixedValue": {
@@ -720,7 +1003,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "ParamEntity"
               },
-              "ModifierName": "MCommon_Element_Poison",
+              "ModifierName": {
+                "Value": "MCommon_Element_Poison"
+              },
               "Chance": {
                 "IsDynamic": false,
                 "FixedValue": {
@@ -756,7 +1041,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "ParamEntity"
               },
-              "ModifierName": "MCommon_Element_Poison",
+              "ModifierName": {
+                "Value": "MCommon_Element_Poison"
+              },
               "Chance": {
                 "IsDynamic": false,
                 "FixedValue": {
@@ -883,7 +1170,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "ParamEntity"
           },
-          "ModifierName": "MCommon_Element_Electric",
+          "ModifierName": {
+            "Value": "MCommon_Element_Electric"
+          },
           "Chance": {
             "IsDynamic": false,
             "FixedValue": {
@@ -1008,7 +1297,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "ParamEntity"
           },
-          "ModifierName": "MCommon_Element_Confine",
+          "ModifierName": {
+            "Value": "MCommon_Element_Confine"
+          },
           "Chance": {
             "IsDynamic": false,
             "FixedValue": {
@@ -1139,7 +1430,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "ParamEntity"
           },
-          "ModifierName": "MCommon_Element_Entangle",
+          "ModifierName": {
+            "Value": "MCommon_Element_Entangle"
+          },
           "Chance": {
             "IsDynamic": false,
             "FixedValue": {
@@ -1951,7 +2244,9 @@
               "$type": "RPG.GameCore.TargetAlias",
               "Alias": "ParamEntity"
             },
-            "ModifierName": "MLevel_BoxingClubResonance_Fire_10_Debuff"
+            "ModifierName": {
+              "Value": "MLevel_BoxingClubResonance_Fire_10_Debuff"
+            }
           },
           "SuccessTaskList": [
             {
@@ -1980,7 +2275,9 @@
                   "Value": 0
                 }
               },
-              "DynamicKey": "ExplodeLayer"
+              "DynamicKey": {
+                "Value": "ExplodeLayer"
+              }
             }
           ]
         },
@@ -2347,7 +2644,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "AllLightTeamWithAllUnselectableLightTeam.GetAliveOnly"
           },
-          "DynamicKey": "MDF_PerformanceDelay",
+          "DynamicKey": {
+            "Value": "MDF_PerformanceDelay"
+          },
           "ContextScope": "TargetEntity"
         },
         {
@@ -2397,7 +2696,9 @@
                           "Value": 0.3
                         }
                       },
-                      "DynamicKey": "MDF_PerformanceDelay"
+                      "DynamicKey": {
+                        "Value": "MDF_PerformanceDelay"
+                      }
                     },
                     {
                       "$type": "RPG.GameCore.PerformDelayExecute",
@@ -2463,7 +2764,9 @@
                           "Value": 0.2
                         }
                       },
-                      "DynamicKey": "MDF_PerformanceDelay"
+                      "DynamicKey": {
+                        "Value": "MDF_PerformanceDelay"
+                      }
                     }
                   ]
                 }
@@ -2488,7 +2791,9 @@
                           "Value": 0.5
                         }
                       },
-                      "DynamicKey": "MDF_PerformanceDelay"
+                      "DynamicKey": {
+                        "Value": "MDF_PerformanceDelay"
+                      }
                     },
                     {
                       "$type": "RPG.GameCore.PerformDelayExecute",
@@ -2554,7 +2859,9 @@
                           "Value": 0.3
                         }
                       },
-                      "DynamicKey": "MDF_PerformanceDelay"
+                      "DynamicKey": {
+                        "Value": "MDF_PerformanceDelay"
+                      }
                     }
                   ]
                 }
@@ -2573,7 +2880,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "DynamicKey": "MDF_OriginalDamagePercentage",
+          "DynamicKey": {
+            "Value": "MDF_OriginalDamagePercentage"
+          },
           "ContextScope": "ContextModifier"
         },
         {
@@ -2582,7 +2891,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "DynamicKey": "MDF_OriginalDamageValue",
+          "DynamicKey": {
+            "Value": "MDF_OriginalDamageValue"
+          },
           "ContextScope": "ContextModifier"
         },
         {
@@ -2636,13 +2947,76 @@
       ]
     },
     {
+      "Name": "Bounce_SelectTarget",
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.Retarget",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "TemplateParamEntityList"
+          },
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAny",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByTargetListAny",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "TemplateParamEntityList"
+                },
+                "Predicate": {
+                  "$type": "RPG.GameCore.ByTargetAliveState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ParamEntity"
+                  },
+                  "AliveStateMask": "Mask_AliveOnly"
+                },
+                "Inverse": true
+              },
+              {
+                "$type": "RPG.GameCore.ByCompareHP",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ParamEntity"
+                },
+                "CompareType": "Greater",
+                "CompareValue": {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 0
+                  }
+                }
+              }
+            ]
+          },
+          "ByRandom": true,
+          "IncludeLimbo": true,
+          "MaxNumber": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1
+            }
+          },
+          "TaskList": [
+            {
+              "$type": "RPG.GameCore.TaskTemplateFetchParamSequence",
+              "ParamName": "ParamTaskList"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "Name": "Avatar_Silwolf_00_Skill02_OverrideNameForStatus",
       "TaskList": [
         {
           "$type": "RPG.GameCore.PredicateTaskList",
           "Predicate": {
             "$type": "RPG.GameCore.ByCompareDynamicValue",
-            "DynamicKey": "DF_WeakType",
+            "DynamicKey": {
+              "Value": "DF_WeakType"
+            },
             "CompareType": "Equal",
             "CompareValue": {
               "IsDynamic": false,
@@ -2667,7 +3041,9 @@
           "$type": "RPG.GameCore.PredicateTaskList",
           "Predicate": {
             "$type": "RPG.GameCore.ByCompareDynamicValue",
-            "DynamicKey": "DF_WeakType",
+            "DynamicKey": {
+              "Value": "DF_WeakType"
+            },
             "CompareType": "Equal",
             "CompareValue": {
               "IsDynamic": false,
@@ -2692,7 +3068,9 @@
           "$type": "RPG.GameCore.PredicateTaskList",
           "Predicate": {
             "$type": "RPG.GameCore.ByCompareDynamicValue",
-            "DynamicKey": "DF_WeakType",
+            "DynamicKey": {
+              "Value": "DF_WeakType"
+            },
             "CompareType": "Equal",
             "CompareValue": {
               "IsDynamic": false,
@@ -2717,7 +3095,9 @@
           "$type": "RPG.GameCore.PredicateTaskList",
           "Predicate": {
             "$type": "RPG.GameCore.ByCompareDynamicValue",
-            "DynamicKey": "DF_WeakType",
+            "DynamicKey": {
+              "Value": "DF_WeakType"
+            },
             "CompareType": "Equal",
             "CompareValue": {
               "IsDynamic": false,
@@ -2742,7 +3122,9 @@
           "$type": "RPG.GameCore.PredicateTaskList",
           "Predicate": {
             "$type": "RPG.GameCore.ByCompareDynamicValue",
-            "DynamicKey": "DF_WeakType",
+            "DynamicKey": {
+              "Value": "DF_WeakType"
+            },
             "CompareType": "Equal",
             "CompareValue": {
               "IsDynamic": false,
@@ -2767,7 +3149,9 @@
           "$type": "RPG.GameCore.PredicateTaskList",
           "Predicate": {
             "$type": "RPG.GameCore.ByCompareDynamicValue",
-            "DynamicKey": "DF_WeakType",
+            "DynamicKey": {
+              "Value": "DF_WeakType"
+            },
             "CompareType": "Equal",
             "CompareValue": {
               "IsDynamic": false,
@@ -2792,7 +3176,9 @@
           "$type": "RPG.GameCore.PredicateTaskList",
           "Predicate": {
             "$type": "RPG.GameCore.ByCompareDynamicValue",
-            "DynamicKey": "DF_WeakType",
+            "DynamicKey": {
+              "Value": "DF_WeakType"
+            },
             "CompareType": "Equal",
             "CompareValue": {
               "IsDynamic": false,

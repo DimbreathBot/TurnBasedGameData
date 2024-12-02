@@ -41,7 +41,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "AbilityName": "Avatar_Topaz_00_Skill01_Camera",
+          "AbilityName": {
+            "Value": "Avatar_Topaz_00_Skill01_Camera"
+          },
           "IsSkillPerform": true
         },
         {
@@ -50,7 +52,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "AbilityName": "Avatar_Topaz_00_Skill01_Phase02",
+          "AbilityName": {
+            "Value": "Avatar_Topaz_00_Skill01_Phase02"
+          },
           "IsSkillPerform": true
         },
         {
@@ -122,7 +126,9 @@
                     "$type": "RPG.GameCore.TargetAlias",
                     "Alias": "ModifierOwnerEntity"
                   },
-                  "ModifierName": "M_Topaz_Normal_AddRegardAsAttackType"
+                  "ModifierName": {
+                    "Value": "M_Topaz_Normal_AddRegardAsAttackType"
+                  }
                 }
               ]
             }
@@ -149,7 +155,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "Caster"
               },
-              "ModifierName": "M_Topaz_Normal_AddRegardAsAttackType"
+              "ModifierName": {
+                "Value": "M_Topaz_Normal_AddRegardAsAttackType"
+              }
             }
           ]
         },
@@ -284,7 +292,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "AbilityName": "Avatar_Topaz_00_Skill02_Camera",
+          "AbilityName": {
+            "Value": "Avatar_Topaz_00_Skill02_Camera"
+          },
           "IsSkillPerform": true
         },
         {
@@ -312,7 +322,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "AbilityName": "Avatar_Topaz_00_Skill02_Phase02",
+          "AbilityName": {
+            "Value": "Avatar_Topaz_00_Skill02_Phase02"
+          },
           "IsSkillPerform": true
         },
         {
@@ -323,7 +335,9 @@
               "$type": "RPG.GameCore.TargetAlias",
               "Alias": "Caster"
             },
-            "ModifierName": "MAvatar_Topaz_00_UltraEnhance"
+            "ModifierName": {
+              "Value": "MAvatar_Topaz_00_UltraEnhance"
+            }
           },
           "SuccessTaskList": [
             {
@@ -452,17 +466,132 @@
                     "$type": "RPG.GameCore.TargetAlias",
                     "Alias": "ModifierOwnerEntity"
                   },
-                  "ModifierName": "M_Topaz_BPSkill_AddRegardAsAttackType"
+                  "ModifierName": {
+                    "Value": "M_Topaz_BPSkill_AddRegardAsAttackType"
+                  }
                 }
               ]
             }
           ]
+        },
+        "MAvatar_Topaz_00_Skill02_SpecialMarkAdder": {
+          "AdditionConfig": {
+            "SubModifierList": [
+              {
+                "Name": "MAvatar_Topaz_BETargetTagActive_BP",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "AllEnemyWithUnSelectable"
+                },
+                "IsHaloStatus": true,
+                "AliveOnly": "True"
+              }
+            ]
+          }
+        },
+        "MAvatar_Topaz_BETargetTagActive_BP": {
+          "BehaviorFlagList": [
+            "ListenBattleEventSkill",
+            "RemoveWhenCasterDead"
+          ],
+          "UIConfig": {
+            "UIEffectPath": "UI/Battle/Widget/SpecialSkilMarkEff/SpecialSkillMark_Topaz_Max.prefab",
+            "UIMiniEffectPath": "UI/Battle/Widget/SpecialSkilMarkEff/Mini/SpecialSkillMark_Topaz_Max_Mini.prefab",
+            "ModifierUIPriority": "SoftControl"
+          },
+          "_CallbackList": [
+            {
+              "Event": "OnListenBeforeSkillUse",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.ToggleSpecialSkillMark"
+                }
+              ]
+            },
+            {
+              "Event": "OnListenInsertAbilityStart",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.ToggleSpecialSkillMark"
+                }
+              ]
+            },
+            {
+              "Event": "OnListenAimAtTargetsRefresh_CL",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByTargetListAny",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "CurrentAimAtTarget"
+                        },
+                        "Predicate": {
+                          "$type": "RPG.GameCore.ByCompareTarget",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          "CompareType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ParamEntity"
+                          }
+                        }
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareTarget",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "CurrentTurnActionEntity"
+                        },
+                        "CompareType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        }
+                      }
+                    ]
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.ToggleSpecialSkillMark",
+                      "Enable": true,
+                      "AllowSkillType": [
+                        "Skill"
+                      ]
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.ToggleSpecialSkillMark"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "Stacking": "ReplaceByCaster"
         }
       },
       "Name": "Avatar_Topaz_00_Skill02_Phase02",
       "TargetInfo": {
         "TargetType": "SkillTargetEntityList"
       },
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "MAvatar_Topaz_00_Skill02_SpecialMarkAdder"
+          }
+        }
+      ],
       "OnStart": [
         {
           "$type": "RPG.GameCore.SetDynamicValue",
@@ -472,7 +601,9 @@
               "Value": 0
             }
           },
-          "DynamicKey": "_damageStart"
+          "DynamicKey": {
+            "Value": "_damageStart"
+          }
         },
         {
           "$type": "RPG.GameCore.AddModifier",
@@ -480,7 +611,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "ModifierName": "M_Topaz_BPSkill_AddRegardAsAttackType"
+          "ModifierName": {
+            "Value": "M_Topaz_BPSkill_AddRegardAsAttackType"
+          }
         },
         {
           "$type": "RPG.GameCore.AddModifier",
@@ -488,7 +621,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Topaz_BattleEventEntity"
           },
-          "ModifierName": "M_Topaz_BPSkill_AddRegardAsAttackType"
+          "ModifierName": {
+            "Value": "M_Topaz_BPSkill_AddRegardAsAttackType"
+          }
         },
         {
           "$type": "RPG.GameCore.GlobalMainIntensityEffect",
@@ -501,7 +636,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "AbilityTargetEntity"
           },
-          "ModifierName": "MAvatar_Topaz_BETargetTag",
+          "ModifierName": {
+            "Value": "MAvatar_Topaz_BETargetTag"
+          },
           "DynamicValues": {
             "MDF_PropertyValue1_DamageAdd": {
               "IsDynamic": true,
@@ -549,7 +686,9 @@
               "$type": "RPG.GameCore.TargetAlias",
               "Alias": "Caster"
             },
-            "ModifierName": "MAvatar_Topaz_00_UltraEnhance"
+            "ModifierName": {
+              "Value": "MAvatar_Topaz_00_UltraEnhance"
+            }
           },
           "SuccessTaskList": [
             {
@@ -607,14 +746,18 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "AbilityTargetEntity"
           },
-          "AbilityName": "Avatar_Topaz_00_BE_FirstAttack",
+          "AbilityName": {
+            "Value": "Avatar_Topaz_00_BE_FirstAttack"
+          },
           "IsSkillPerform": true
         },
         {
           "$type": "RPG.GameCore.WaitFor",
           "Predicate": {
             "$type": "RPG.GameCore.ByCompareDynamicValue",
-            "DynamicKey": "_damageStart",
+            "DynamicKey": {
+              "Value": "_damageStart"
+            },
             "ContextScope": "ContextCaster",
             "CompareType": "GreaterEqual",
             "CompareValue": {
@@ -633,7 +776,9 @@
               "$type": "RPG.GameCore.TargetAlias",
               "Alias": "Caster"
             },
-            "ModifierName": "MAvatar_Topaz_00_UltraEnhance"
+            "ModifierName": {
+              "Value": "MAvatar_Topaz_00_UltraEnhance"
+            }
           },
           "SuccessTaskList": [
             {
@@ -663,13 +808,17 @@
                   ]
                 }
               },
-              "DynamicKey": "CurEnhance"
+              "DynamicKey": {
+                "Value": "CurEnhance"
+              }
             },
             {
               "$type": "RPG.GameCore.PredicateTaskList",
               "Predicate": {
                 "$type": "RPG.GameCore.ByCompareDynamicValue",
-                "DynamicKey": "CurEnhance",
+                "DynamicKey": {
+                  "Value": "CurEnhance"
+                },
                 "CompareType": "GreaterEqual",
                 "CompareValue": {
                   "IsDynamic": false,
@@ -751,7 +900,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "Caster"
               },
-              "ModifierName": "Avatar_Topaz_BE_CriticalChance"
+              "ModifierName": {
+                "Value": "Avatar_Topaz_BE_CriticalChance"
+              }
             },
             {
               "$type": "RPG.GameCore.LoopExecuteTaskListWithInterval",
@@ -801,6 +952,9 @@
                       }
                     },
                     "AttackType": "BPSkill",
+                    "DamageTag": [
+                      "DummyCharacter"
+                    ],
                     "HitAnimation": "Hit",
                     "HitPosHeight": 1,
                     "HitAngleHorizontal": -80
@@ -908,6 +1062,9 @@
                   }
                 },
                 "AttackType": "BPSkill",
+                "DamageTag": [
+                  "DummyCharacter"
+                ],
                 "HitAnimation": "Hit",
                 "HitPosHeight": 1,
                 "HitAngleHorizontal": -80
@@ -957,7 +1114,9 @@
                   "$type": "RPG.GameCore.TargetAlias",
                   "Alias": "Caster"
                 },
-                "ModifierName": "MAvatar_Topaz_Buff"
+                "ModifierName": {
+                  "Value": "MAvatar_Topaz_Buff"
+                }
               },
               "SuccessTaskList": [
                 {
@@ -983,20 +1142,26 @@
                     "$type": "RPG.GameCore.TargetAlias",
                     "Alias": "Caster"
                   },
-                  "ModifierName": "MAvatar_Topaz_Buff"
+                  "ModifierName": {
+                    "Value": "MAvatar_Topaz_Buff"
+                  }
                 }
               ]
             },
             {
               "$type": "RPG.GameCore.SetModifierValue",
-              "ModifierName": "MAvatar_Topaz_00_UltraEnhance",
+              "ModifierName": {
+                "Value": "MAvatar_Topaz_00_UltraEnhance"
+              },
               "ModifyFunction": "Add"
             },
             {
               "$type": "RPG.GameCore.PredicateTaskList",
               "Predicate": {
                 "$type": "RPG.GameCore.ByCompareDynamicValue",
-                "DynamicKey": "CurEnhance",
+                "DynamicKey": {
+                  "Value": "CurEnhance"
+                },
                 "ContextScope": "ContextCaster",
                 "CompareType": "GreaterEqual",
                 "CompareValue": {
@@ -1042,7 +1207,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "Caster"
               },
-              "ModifierName": "Avatar_Topaz_BE_CriticalChance"
+              "ModifierName": {
+                "Value": "Avatar_Topaz_BE_CriticalChance"
+              }
             },
             {
               "$type": "RPG.GameCore.VCameraConfigChange",
@@ -1149,6 +1316,9 @@
                       }
                     },
                     "AttackType": "BPSkill",
+                    "DamageTag": [
+                      "DummyCharacter"
+                    ],
                     "HitAnimation": "Hit",
                     "HitPosHeight": 1,
                     "HitAngleHorizontal": -80
@@ -1173,7 +1343,9 @@
                   "$type": "RPG.GameCore.TargetAlias",
                   "Alias": "Caster"
                 },
-                "ModifierName": "MAvatar_Topaz_Buff"
+                "ModifierName": {
+                  "Value": "MAvatar_Topaz_Buff"
+                }
               },
               "SuccessTaskList": [
                 {
@@ -1199,7 +1371,9 @@
                     "$type": "RPG.GameCore.TargetAlias",
                     "Alias": "Caster"
                   },
-                  "ModifierName": "MAvatar_Topaz_Buff"
+                  "ModifierName": {
+                    "Value": "MAvatar_Topaz_Buff"
+                  }
                 }
               ]
             }
@@ -1369,7 +1543,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "AbilityName": "Avatar_Topaz_00_Skill03_Camera",
+          "AbilityName": {
+            "Value": "Avatar_Topaz_00_Skill03_Camera"
+          },
           "IsSkillPerform": true
         },
         {
@@ -1393,7 +1569,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "AbilityName": "Avatar_Topaz_00_Skill03_Phase02",
+          "AbilityName": {
+            "Value": "Avatar_Topaz_00_Skill03_Phase02"
+          },
           "IsSkillPerform": true
         },
         {
@@ -1500,7 +1678,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Topaz_BattleEventEntity"
           },
-          "ModifierName": "MAvatar_Topaz_BE_UltraEnhance_Text",
+          "ModifierName": {
+            "Value": "MAvatar_Topaz_BE_UltraEnhance_Text"
+          },
           "CustomUIModelAttachPointName": "BuffPoint"
         },
         {
@@ -1522,7 +1702,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Topaz_BattleEventEntity"
           },
-          "AbilityName": "Avatar_Topaz_00_BE_RefreshEnhance"
+          "AbilityName": {
+            "Value": "Avatar_Topaz_00_BE_RefreshEnhance"
+          }
         },
         {
           "$type": "RPG.GameCore.AddModifier",
@@ -1530,7 +1712,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "ModifierName": "MAvatar_Topaz_00_UltraEnhance",
+          "ModifierName": {
+            "Value": "MAvatar_Topaz_00_UltraEnhance"
+          },
           "Count": {
             "IsDynamic": true,
             "PostfixExpr": {
@@ -1596,7 +1780,9 @@
               ]
             }
           },
-          "DynamicKey": "CurEnhance"
+          "DynamicKey": {
+            "Value": "CurEnhance"
+          }
         },
         {
           "$type": "RPG.GameCore.ShowAttackTime",
@@ -1709,7 +1895,9 @@
                     "$type": "RPG.GameCore.TargetAlias",
                     "Alias": "LightTeamSkillLockTarget"
                   },
-                  "ModifierName": "MAvatar_Topaz_BETargetTag"
+                  "ModifierName": {
+                    "Value": "MAvatar_Topaz_BETargetTag"
+                  }
                 },
                 {
                   "$type": "RPG.GameCore.ByIsTurnOwnerEntity",
@@ -1784,7 +1972,9 @@
                     "$type": "RPG.GameCore.TargetAlias",
                     "Alias": "LightTeamSkillLockTarget"
                   },
-                  "ModifierName": "MAvatar_Topaz_BETargetTag"
+                  "ModifierName": {
+                    "Value": "MAvatar_Topaz_BETargetTag"
+                  }
                 },
                 {
                   "$type": "RPG.GameCore.ByIsContainModifier",
@@ -1792,7 +1982,9 @@
                     "$type": "RPG.GameCore.TargetAlias",
                     "Alias": "Caster"
                   },
-                  "ModifierName": "MAvatar_Topaz_00_UltraEnhance"
+                  "ModifierName": {
+                    "Value": "MAvatar_Topaz_00_UltraEnhance"
+                  }
                 },
                 {
                   "$type": "RPG.GameCore.ByIsTurnOwnerEntity",
@@ -1836,7 +2028,9 @@
                     "$type": "RPG.GameCore.TargetAlias",
                     "Alias": "Caster"
                   },
-                  "ModifierName": "MAvatar_Topaz_00_UltraEnhance"
+                  "ModifierName": {
+                    "Value": "MAvatar_Topaz_00_UltraEnhance"
+                  }
                 },
                 {
                   "$type": "RPG.GameCore.ByIsTurnOwnerEntity",
@@ -1891,7 +2085,9 @@
                       "$type": "RPG.GameCore.TargetAlias",
                       "Alias": "ParamEntity"
                     },
-                    "ModifierName": "MAvatar_Topaz_BETargetTag"
+                    "ModifierName": {
+                      "Value": "MAvatar_Topaz_BETargetTag"
+                    }
                   }
                 },
                 {
@@ -1900,7 +2096,9 @@
                     "$type": "RPG.GameCore.TargetAlias",
                     "Alias": "Caster"
                   },
-                  "ModifierName": "MAvatar_Topaz_00_UltraEnhance"
+                  "ModifierName": {
+                    "Value": "MAvatar_Topaz_00_UltraEnhance"
+                  }
                 },
                 {
                   "$type": "RPG.GameCore.ByIsTurnOwnerEntity",
@@ -2005,7 +2203,9 @@
                     "$type": "RPG.GameCore.TargetAlias",
                     "Alias": "Topaz_BattleEventEntity"
                   },
-                  "AbilityName": "Avatar_Topaz_00_BE_Hit"
+                  "AbilityName": {
+                    "Value": "Avatar_Topaz_00_BE_Hit"
+                  }
                 }
               ]
             },
@@ -2029,7 +2229,9 @@
                         "$type": "RPG.GameCore.TargetAlias",
                         "Alias": "ParamEntity"
                       },
-                      "ModifierName": "Avatar_Topaz_Ultra_Listen_ModifyBEAction"
+                      "ModifierName": {
+                        "Value": "Avatar_Topaz_Ultra_Listen_ModifyBEAction"
+                      }
                     }
                   ]
                 }
@@ -2044,7 +2246,9 @@
                     "$type": "RPG.GameCore.TargetAlias",
                     "Alias": "Topaz_BattleEventEntity"
                   },
-                  "ModifierName": "Avatar_Topaz_00_BE_HitEffect"
+                  "ModifierName": {
+                    "Value": "Avatar_Topaz_00_BE_HitEffect"
+                  }
                 }
               ]
             },
@@ -2058,7 +2262,9 @@
                     "$type": "RPG.GameCore.TargetAlias",
                     "Alias": "AllTeammate"
                   },
-                  "ModifierName": "Avatar_Topaz_Ultra_Listen_ModifyBEAction"
+                  "ModifierName": {
+                    "Value": "Avatar_Topaz_Ultra_Listen_ModifyBEAction"
+                  }
                 }
               ]
             },
@@ -2078,7 +2284,9 @@
                         "$type": "RPG.GameCore.TargetAlias",
                         "Alias": "ParamEntity"
                       },
-                      "ModifierName": "Avatar_Topaz_00_BE_FindNoTargetFlag"
+                      "ModifierName": {
+                        "Value": "Avatar_Topaz_00_BE_FindNoTargetFlag"
+                      }
                     },
                     {
                       "$type": "RPG.GameCore.Retarget",
@@ -2100,7 +2308,9 @@
                             "$type": "RPG.GameCore.TargetAlias",
                             "Alias": "ParamEntity"
                           },
-                          "ModifierName": "MAvatar_Topaz_BETargetTag",
+                          "ModifierName": {
+                            "Value": "MAvatar_Topaz_BETargetTag"
+                          },
                           "DynamicValues": {
                             "MDF_PropertyValue1_DamageAdd": {
                               "IsDynamic": true,
@@ -2163,7 +2373,9 @@
                         "$type": "RPG.GameCore.TargetAlias",
                         "Alias": "ParamEntity"
                       },
-                      "ModifierName": "Avatar_Topaz_00_BE_FindNoTargetFlagOnUltraOrExtraTurn"
+                      "ModifierName": {
+                        "Value": "Avatar_Topaz_00_BE_FindNoTargetFlagOnUltraOrExtraTurn"
+                      }
                     },
                     {
                       "$type": "RPG.GameCore.Retarget",
@@ -2185,7 +2397,9 @@
                             "$type": "RPG.GameCore.TargetAlias",
                             "Alias": "ParamEntity"
                           },
-                          "ModifierName": "MAvatar_Topaz_BETargetTag",
+                          "ModifierName": {
+                            "Value": "MAvatar_Topaz_BETargetTag"
+                          },
                           "DynamicValues": {
                             "MDF_PropertyValue1_DamageAdd": {
                               "IsDynamic": true,
@@ -2248,7 +2462,9 @@
                         "$type": "RPG.GameCore.TargetAlias",
                         "Alias": "ParamEntity"
                       },
-                      "ModifierName": "Avatar_Topaz_00_BETargetTagHitFlag"
+                      "ModifierName": {
+                        "Value": "Avatar_Topaz_00_BETargetTagHitFlag"
+                      }
                     },
                     {
                       "$type": "RPG.GameCore.PredicateTaskList",
@@ -2258,7 +2474,9 @@
                           "$type": "RPG.GameCore.TargetAlias",
                           "Alias": "Caster"
                         },
-                        "ModifierName": "MAvatar_Topaz_00_UltraEnhance"
+                        "ModifierName": {
+                          "Value": "MAvatar_Topaz_00_UltraEnhance"
+                        }
                       },
                       "SuccessTaskList": [
                         {
@@ -2308,7 +2526,9 @@
                         "$type": "RPG.GameCore.TargetAlias",
                         "Alias": "ParamEntity"
                       },
-                      "ModifierName": "Avatar_Topaz_00_BETargetTagInsertHitFlag"
+                      "ModifierName": {
+                        "Value": "Avatar_Topaz_00_BETargetTagInsertHitFlag"
+                      }
                     },
                     {
                       "$type": "RPG.GameCore.PredicateTaskList",
@@ -2429,7 +2649,9 @@
                             "$type": "RPG.GameCore.TargetAlias",
                             "Alias": "ParamEntity"
                           },
-                          "ModifierName": "MAvatar_Topaz_BETargetTag"
+                          "ModifierName": {
+                            "Value": "MAvatar_Topaz_BETargetTag"
+                          }
                         },
                         "Inverse": true
                       }
@@ -2442,7 +2664,9 @@
                         "$type": "RPG.GameCore.TargetAlias",
                         "Alias": "ModifierOwnerEntity"
                       },
-                      "ModifierName": "Avatar_Topaz_00_BE_FindNoTargetFlag"
+                      "ModifierName": {
+                        "Value": "Avatar_Topaz_00_BE_FindNoTargetFlag"
+                      }
                     }
                   ]
                 }
@@ -2481,7 +2705,9 @@
                             "$type": "RPG.GameCore.TargetAlias",
                             "Alias": "ParamEntity"
                           },
-                          "ModifierName": "MAvatar_Topaz_BETargetTag"
+                          "ModifierName": {
+                            "Value": "MAvatar_Topaz_BETargetTag"
+                          }
                         },
                         "Inverse": true
                       }
@@ -2494,7 +2720,9 @@
                         "$type": "RPG.GameCore.TargetAlias",
                         "Alias": "ModifierOwnerEntity"
                       },
-                      "ModifierName": "Avatar_Topaz_00_BE_FindNoTargetFlagOnUltraOrExtraTurn"
+                      "ModifierName": {
+                        "Value": "Avatar_Topaz_00_BE_FindNoTargetFlagOnUltraOrExtraTurn"
+                      }
                     }
                   ]
                 }
@@ -2533,7 +2761,9 @@
                             "$type": "RPG.GameCore.TargetAlias",
                             "Alias": "ParamEntity"
                           },
-                          "ModifierName": "MAvatar_Topaz_BETargetTag"
+                          "ModifierName": {
+                            "Value": "MAvatar_Topaz_BETargetTag"
+                          }
                         },
                         "Inverse": true
                       }
@@ -2546,7 +2776,9 @@
                         "$type": "RPG.GameCore.TargetAlias",
                         "Alias": "ModifierOwnerEntity"
                       },
-                      "ModifierName": "Avatar_Topaz_00_BE_FindNoTargetFlagOnUltraOrExtraTurn"
+                      "ModifierName": {
+                        "Value": "Avatar_Topaz_00_BE_FindNoTargetFlagOnUltraOrExtraTurn"
+                      }
                     }
                   ]
                 }
@@ -2585,7 +2817,9 @@
                             "$type": "RPG.GameCore.TargetAlias",
                             "Alias": "ParamEntity"
                           },
-                          "ModifierName": "MAvatar_Topaz_BETargetTag"
+                          "ModifierName": {
+                            "Value": "MAvatar_Topaz_BETargetTag"
+                          }
                         },
                         "Inverse": true
                       }
@@ -2598,7 +2832,9 @@
                         "$type": "RPG.GameCore.TargetAlias",
                         "Alias": "ModifierOwnerEntity"
                       },
-                      "ModifierName": "Avatar_Topaz_00_BE_FindNoTargetFlag"
+                      "ModifierName": {
+                        "Value": "Avatar_Topaz_00_BE_FindNoTargetFlag"
+                      }
                     }
                   ]
                 }
@@ -2618,7 +2854,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "ModifierName": "Avatar_Topaz_00_Passive"
+          "ModifierName": {
+            "Value": "Avatar_Topaz_00_Passive"
+          }
         },
         {
           "$type": "RPG.GameCore.AddModifier",
@@ -2626,7 +2864,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "ModifierName": "Avatar_Topaz_00_Passive_Sub_ListenAction"
+          "ModifierName": {
+            "Value": "Avatar_Topaz_00_Passive_Sub_ListenAction"
+          }
         },
         {
           "$type": "RPG.GameCore.AddModifier",
@@ -2634,7 +2874,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "ModifierName": "Avatar_Topaz_BPSkill_ModifyBEAction"
+          "ModifierName": {
+            "Value": "Avatar_Topaz_BPSkill_ModifyBEAction"
+          }
         },
         {
           "$type": "RPG.GameCore.AddModifier",
@@ -2642,7 +2884,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "ModifierName": "Avatar_Topaz_Ultra_Normal_ModifyBEAction"
+          "ModifierName": {
+            "Value": "Avatar_Topaz_Ultra_Normal_ModifyBEAction"
+          }
         },
         {
           "$type": "RPG.GameCore.AddModifier",
@@ -2650,7 +2894,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "ModifierName": "Avatar_Topaz_Ultra_BPSkill_ModifyBEAction"
+          "ModifierName": {
+            "Value": "Avatar_Topaz_Ultra_BPSkill_ModifyBEAction"
+          }
         },
         {
           "$type": "RPG.GameCore.PredicateTaskList",
@@ -2667,7 +2913,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "Caster"
               },
-              "ModifierName": "Avatar_Topaz_Normal_ModifyBEAction"
+              "ModifierName": {
+                "Value": "Avatar_Topaz_Normal_ModifyBEAction"
+              }
             }
           ]
         },
@@ -2693,7 +2941,9 @@
                   ]
                 }
               },
-              "DynamicKey": "MaxEnhance"
+              "DynamicKey": {
+                "Value": "MaxEnhance"
+              }
             }
           ],
           "FailedTaskList": [
@@ -2709,7 +2959,9 @@
                   ]
                 }
               },
-              "DynamicKey": "MaxEnhance"
+              "DynamicKey": {
+                "Value": "MaxEnhance"
+              }
             }
           ]
         },
@@ -2764,7 +3016,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Topaz_BattleEventEntity"
           },
-          "ModifierName": "Avatar_Topaz_BE_BaseSpeed"
+          "ModifierName": {
+            "Value": "Avatar_Topaz_BE_BaseSpeed"
+          }
         },
         {
           "$type": "RPG.GameCore.PredicateTaskList",
@@ -2781,7 +3035,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "Caster"
               },
-              "ModifierName": "Avatar_Topaz_PointB2Effect"
+              "ModifierName": {
+                "Value": "Avatar_Topaz_PointB2Effect"
+              }
             }
           ]
         },
@@ -2800,7 +3056,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "Topaz_BattleEventEntity"
               },
-              "ModifierName": "Avatar_Topaz_BE_ReduceDelay"
+              "ModifierName": {
+                "Value": "Avatar_Topaz_BE_ReduceDelay"
+              }
             }
           ]
         },
@@ -2862,7 +3120,9 @@
                         "$type": "RPG.GameCore.TargetAlias",
                         "Alias": "Caster"
                       },
-                      "ModifierName": "MAvatar_Topaz_Buff"
+                      "ModifierName": {
+                        "Value": "MAvatar_Topaz_Buff"
+                      }
                     }
                   ],
                   "FailedTaskList": []
@@ -2886,7 +3146,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "ModifierName": "SkillMaze_Topaz_Modifier"
+          "ModifierName": {
+            "Value": "SkillMaze_Topaz_Modifier"
+          }
         }
       ]
     },
@@ -2922,7 +3184,9 @@
                       "$type": "RPG.GameCore.TargetAlias",
                       "Alias": "Caster"
                     },
-                    "ModifierName": "Avatar_Topaz_BE_ReduceDelay"
+                    "ModifierName": {
+                      "Value": "Avatar_Topaz_BE_ReduceDelay"
+                    }
                   },
                   "SuccessTaskList": [
                     {
@@ -2931,7 +3195,9 @@
                         "$type": "RPG.GameCore.TargetAlias",
                         "Alias": "BattleEventCaster"
                       },
-                      "AbilityName": "Avatar_Topaz_Rank04_ReduceDelay"
+                      "AbilityName": {
+                        "Value": "Avatar_Topaz_Rank04_ReduceDelay"
+                      }
                     }
                   ]
                 },
@@ -2949,7 +3215,9 @@
                         "$type": "RPG.GameCore.TargetAlias",
                         "Alias": "ParamEntity"
                       },
-                      "ModifierName": "MAvatar_Topaz_BETargetTag"
+                      "ModifierName": {
+                        "Value": "MAvatar_Topaz_BETargetTag"
+                      }
                     }
                   },
                   "FailedTaskList": [
@@ -2959,7 +3227,9 @@
                         "$type": "RPG.GameCore.TargetAlias",
                         "Alias": "Caster"
                       },
-                      "ModifierName": "Avatar_Topaz_00_BE_FindNoTargetFlag"
+                      "ModifierName": {
+                        "Value": "Avatar_Topaz_00_BE_FindNoTargetFlag"
+                      }
                     }
                   ]
                 },
@@ -2977,13 +3247,17 @@
                         "$type": "RPG.GameCore.TargetAlias",
                         "Alias": "ParamEntity"
                       },
-                      "ModifierName": "MAvatar_Topaz_BETargetTag"
+                      "ModifierName": {
+                        "Value": "MAvatar_Topaz_BETargetTag"
+                      }
                     }
                   },
                   "SuccessTaskList": [
                     {
                       "$type": "RPG.GameCore.TurnInsertAbility",
-                      "AbilityName": "Avatar_Topaz_00_BE_LaterAttack",
+                      "AbilityName": {
+                        "Value": "Avatar_Topaz_00_BE_LaterAttack"
+                      },
                       "TargetType": {
                         "$type": "RPG.GameCore.TargetAlias",
                         "Alias": "Caster"
@@ -3003,7 +3277,9 @@
                                 "$type": "RPG.GameCore.TargetAlias",
                                 "Alias": "ParamEntity"
                               },
-                              "ModifierName": "MAvatar_Topaz_BETargetTag"
+                              "ModifierName": {
+                                "Value": "MAvatar_Topaz_BETargetTag"
+                              }
                             }
                           }
                         ]
@@ -3033,7 +3309,9 @@
                       "$type": "RPG.GameCore.TargetAlias",
                       "Alias": "ParamEntity"
                     },
-                    "ModifierName": "Avatar_Topaz_00_Passive"
+                    "ModifierName": {
+                      "Value": "Avatar_Topaz_00_Passive"
+                    }
                   },
                   "SuccessTaskList": []
                 }
@@ -3050,7 +3328,9 @@
                       "$type": "RPG.GameCore.TargetAlias",
                       "Alias": "ParamEntity"
                     },
-                    "ModifierName": "Avatar_Topaz_00_Passive"
+                    "ModifierName": {
+                      "Value": "Avatar_Topaz_00_Passive"
+                    }
                   },
                   "SuccessTaskList": [
                     {
@@ -3151,7 +3431,9 @@
                       "$type": "RPG.GameCore.TargetAlias",
                       "Alias": "ParamEntity"
                     },
-                    "ModifierName": "Avatar_Topaz_00_Passive"
+                    "ModifierName": {
+                      "Value": "Avatar_Topaz_00_Passive"
+                    }
                   },
                   "SuccessTaskList": [
                     {
@@ -3185,7 +3467,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "ModifierName": "Topaz_BETag"
+          "ModifierName": {
+            "Value": "Topaz_BETag"
+          }
         },
         {
           "$type": "RPG.GameCore.SetEntityActionState",
@@ -3273,7 +3557,9 @@
               "$type": "RPG.GameCore.TargetAlias",
               "Alias": "BattleEventCaster"
             },
-            "ModifierName": "MAvatar_Topaz_00_UltraEnhance"
+            "ModifierName": {
+              "Value": "MAvatar_Topaz_00_UltraEnhance"
+            }
           },
           "SuccessTaskList": [
             {
@@ -3286,7 +3572,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "AbilityTargetEntity"
               },
-              "AbilityName": "Avatar_Topaz_00_BE_Skill02_Enhance_Camera",
+              "AbilityName": {
+                "Value": "Avatar_Topaz_00_BE_Skill02_Enhance_Camera"
+              },
               "IsSkillPerform": true
             },
             {
@@ -3454,7 +3742,9 @@
                   "Value": 1
                 }
               },
-              "DynamicKey": "_damageStart"
+              "DynamicKey": {
+                "Value": "_damageStart"
+              }
             },
             {
               "$type": "RPG.GameCore.WaitSecond",
@@ -3577,7 +3867,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "AbilityTargetEntity"
               },
-              "AbilityName": "Avatar_Topaz_00_BE_Skill02_Camera",
+              "AbilityName": {
+                "Value": "Avatar_Topaz_00_BE_Skill02_Camera"
+              },
               "IsSkillPerform": true
             },
             {
@@ -3712,7 +4004,9 @@
                   "Value": 1
                 }
               },
-              "DynamicKey": "_damageStart"
+              "DynamicKey": {
+                "Value": "_damageStart"
+              }
             },
             {
               "$type": "RPG.GameCore.WaitAnimState",
@@ -3803,7 +4097,65 @@
       ]
     },
     {
-      "Modifiers": {},
+      "OnInsertAbort": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAny",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByContainBehaviorFlag",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "BattleEventCaster"
+                },
+                "Flag": "STAT_CTRL"
+              },
+              {
+                "$type": "RPG.GameCore.ByContainBehaviorFlag",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "BattleEventCaster"
+                },
+                "Flag": "STAT_CTRL_Frozen"
+              }
+            ]
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerAnimState",
+              "AnimLogicState": "Idle",
+              "AnimStateName": "StandBy"
+            },
+            {
+              "$type": "RPG.GameCore.SetCharacterFormation",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "Type": "Follow",
+              "FollowTarget": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "BattleEventCaster"
+              },
+              "FollowOffsetMode": "Target"
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.SetCharacterAnimFollow",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "FollowTarget": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "BattleEventCaster"
+              }
+            }
+          ]
+        }
+      ],
       "Name": "Avatar_Topaz_00_BE_LaterAttack",
       "TargetInfo": {
         "TargetType": "InherentTargetEntity"
@@ -3858,7 +4210,9 @@
               "$type": "RPG.GameCore.TargetAlias",
               "Alias": "BattleEventCaster"
             },
-            "ModifierName": "MAvatar_Topaz_00_UltraEnhance"
+            "ModifierName": {
+              "Value": "MAvatar_Topaz_00_UltraEnhance"
+            }
           },
           "SuccessTaskList": [
             {
@@ -3871,7 +4225,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "AbilityTargetEntity"
               },
-              "AbilityName": "Avatar_Topaz_00_BE_Skill01_Enhance_Camera",
+              "AbilityName": {
+                "Value": "Avatar_Topaz_00_BE_Skill01_Enhance_Camera"
+              },
               "IsSkillPerform": true
             }
           ],
@@ -3886,7 +4242,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "AbilityTargetEntity"
               },
-              "AbilityName": "Avatar_Topaz_00_BE_Skill01_Camera",
+              "AbilityName": {
+                "Value": "Avatar_Topaz_00_BE_Skill01_Camera"
+              },
               "IsSkillPerform": true
             }
           ]
@@ -3931,7 +4289,9 @@
               "$type": "RPG.GameCore.TargetAlias",
               "Alias": "BattleEventCaster"
             },
-            "ModifierName": "MAvatar_Topaz_00_UltraEnhance"
+            "ModifierName": {
+              "Value": "MAvatar_Topaz_00_UltraEnhance"
+            }
           },
           "SuccessTaskList": [
             {
@@ -4096,7 +4456,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "AbilityTargetEntity"
               },
-              "AbilityName": "Avatar_Topaz_00_BE_UltraAttackDamage",
+              "AbilityName": {
+                "Value": "Avatar_Topaz_00_BE_UltraAttackDamage"
+              },
               "IsSkillPerform": true
             },
             {
@@ -4339,7 +4701,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "AbilityTargetEntity"
               },
-              "AbilityName": "Avatar_Topaz_00_BE_NormalAttackDamage",
+              "AbilityName": {
+                "Value": "Avatar_Topaz_00_BE_NormalAttackDamage"
+              },
               "IsSkillPerform": true
             },
             {
@@ -4506,6 +4870,9 @@
                   }
                 },
                 "AttackType": "Insert",
+                "DamageTag": [
+                  "DummyCharacter"
+                ],
                 "HitAnimation": "Hit",
                 "HitPosHeight": 1,
                 "HitAngleHorizontal": -80
@@ -4566,7 +4933,9 @@
               "$type": "RPG.GameCore.TargetAlias",
               "Alias": "Caster"
             },
-            "ModifierName": "MAvatar_Topaz_Buff"
+            "ModifierName": {
+              "Value": "MAvatar_Topaz_Buff"
+            }
           },
           "SuccessTaskList": [
             {
@@ -4592,7 +4961,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "Caster"
               },
-              "ModifierName": "MAvatar_Topaz_Buff"
+              "ModifierName": {
+                "Value": "MAvatar_Topaz_Buff"
+              }
             }
           ]
         }
@@ -4631,13 +5002,17 @@
               ]
             }
           },
-          "DynamicKey": "CurEnhance"
+          "DynamicKey": {
+            "Value": "CurEnhance"
+          }
         },
         {
           "$type": "RPG.GameCore.PredicateTaskList",
           "Predicate": {
             "$type": "RPG.GameCore.ByCompareDynamicValue",
-            "DynamicKey": "CurEnhance",
+            "DynamicKey": {
+              "Value": "CurEnhance"
+            },
             "CompareType": "GreaterEqual",
             "CompareValue": {
               "IsDynamic": false,
@@ -4719,7 +5094,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "ModifierName": "Avatar_Topaz_BE_CriticalChance"
+          "ModifierName": {
+            "Value": "Avatar_Topaz_BE_CriticalChance"
+          }
         },
         {
           "$type": "RPG.GameCore.LoopExecuteTaskListWithInterval",
@@ -4769,6 +5146,9 @@
                   }
                 },
                 "AttackType": "Insert",
+                "DamageTag": [
+                  "DummyCharacter"
+                ],
                 "HitAnimation": "Hit",
                 "HitPosHeight": 1,
                 "HitAngleHorizontal": -80
@@ -4876,6 +5256,9 @@
               }
             },
             "AttackType": "Insert",
+            "DamageTag": [
+              "DummyCharacter"
+            ],
             "HitAnimation": "Hit",
             "HitPosHeight": 1,
             "HitAngleHorizontal": -80
@@ -4953,7 +5336,9 @@
               "$type": "RPG.GameCore.TargetAlias",
               "Alias": "Caster"
             },
-            "ModifierName": "MAvatar_Topaz_Buff"
+            "ModifierName": {
+              "Value": "MAvatar_Topaz_Buff"
+            }
           },
           "SuccessTaskList": [
             {
@@ -4979,20 +5364,26 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "Caster"
               },
-              "ModifierName": "MAvatar_Topaz_Buff"
+              "ModifierName": {
+                "Value": "MAvatar_Topaz_Buff"
+              }
             }
           ]
         },
         {
           "$type": "RPG.GameCore.SetModifierValue",
-          "ModifierName": "MAvatar_Topaz_00_UltraEnhance",
+          "ModifierName": {
+            "Value": "MAvatar_Topaz_00_UltraEnhance"
+          },
           "ModifyFunction": "Add"
         },
         {
           "$type": "RPG.GameCore.PredicateTaskList",
           "Predicate": {
             "$type": "RPG.GameCore.ByCompareDynamicValue",
-            "DynamicKey": "CurEnhance",
+            "DynamicKey": {
+              "Value": "CurEnhance"
+            },
             "ContextScope": "ContextCaster",
             "CompareType": "GreaterEqual",
             "CompareValue": {
@@ -5038,7 +5429,9 @@
             "$type": "RPG.GameCore.TargetAlias",
             "Alias": "Caster"
           },
-          "ModifierName": "Avatar_Topaz_BE_CriticalChance"
+          "ModifierName": {
+            "Value": "Avatar_Topaz_BE_CriticalChance"
+          }
         },
         {
           "$type": "RPG.GameCore.VCameraConfigChange",
@@ -5111,7 +5504,9 @@
               "$type": "RPG.GameCore.TargetAlias",
               "Alias": "Caster"
             },
-            "ModifierName": "Avatar_Topaz_00_BE_HitEffect"
+            "ModifierName": {
+              "Value": "Avatar_Topaz_00_BE_HitEffect"
+            }
           },
           "SuccessTaskList": [
             {
@@ -5122,7 +5517,9 @@
                   "Value": 1
                 }
               },
-              "DynamicKey": "HasHitEffect"
+              "DynamicKey": {
+                "Value": "HasHitEffect"
+              }
             },
             {
               "$type": "RPG.GameCore.RemoveModifier",
@@ -5130,7 +5527,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "Caster"
               },
-              "ModifierName": "Avatar_Topaz_00_BE_HitEffect"
+              "ModifierName": {
+                "Value": "Avatar_Topaz_00_BE_HitEffect"
+              }
             }
           ],
           "FailedTaskList": [
@@ -5142,7 +5541,9 @@
                   "Value": 0
                 }
               },
-              "DynamicKey": "HasHitEffect"
+              "DynamicKey": {
+                "Value": "HasHitEffect"
+              }
             }
           ]
         },
@@ -5175,7 +5576,9 @@
           "$type": "RPG.GameCore.PredicateTaskList",
           "Predicate": {
             "$type": "RPG.GameCore.ByCompareDynamicValue",
-            "DynamicKey": "HasHitEffect",
+            "DynamicKey": {
+              "Value": "HasHitEffect"
+            },
             "CompareType": "Greater",
             "CompareValue": {
               "IsDynamic": false,
@@ -5296,7 +5699,9 @@
                     "$type": "RPG.GameCore.TargetAlias",
                     "Alias": "ParamEntity"
                   },
-                  "ModifierName": "MAvatar_Topaz_BETargetTag"
+                  "ModifierName": {
+                    "Value": "MAvatar_Topaz_BETargetTag"
+                  }
                 },
                 {
                   "$type": "RPG.GameCore.RemoveModifier",
@@ -5304,7 +5709,9 @@
                     "$type": "RPG.GameCore.TargetAlias",
                     "Alias": "ParamEntity"
                   },
-                  "ModifierName": "MAvatar_Topaz_BETargetTagActive"
+                  "ModifierName": {
+                    "Value": "MAvatar_Topaz_BETargetTagActive"
+                  }
                 }
               ]
             },
@@ -5322,15 +5729,9 @@
                   "DynamicHashes": []
                 }
               },
-              "DynamicKey": "MDF_PropertyValue4_InsertCriticalDamageAddLayer"
-            },
-            {
-              "$type": "RPG.GameCore.AddModifier",
-              "TargetType": {
-                "$type": "RPG.GameCore.TargetAlias",
-                "Alias": "AllEnemy"
-              },
-              "ModifierName": "MAvatar_Topaz_BETargetTagActive_BP"
+              "DynamicKey": {
+                "Value": "MDF_PropertyValue4_InsertCriticalDamageAddLayer"
+              }
             },
             {
               "$type": "RPG.GameCore.AddModifier",
@@ -5338,7 +5739,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "ModifierOwnerEntity"
               },
-              "ModifierName": "MAvatar_Topaz_BETargetTagActive",
+              "ModifierName": {
+                "Value": "MAvatar_Topaz_BETargetTagActive"
+              },
               "DynamicValues": {
                 "ShowSpecialMarkOnCreate": {
                   "IsDynamic": true,
@@ -5363,7 +5766,9 @@
                       "$type": "RPG.GameCore.TargetAlias",
                       "Alias": "ModifierOwnerEntity"
                     },
-                    "DynamicKey": "ShowSpecialMarkOnCreate",
+                    "DynamicKey": {
+                      "Value": "ShowSpecialMarkOnCreate"
+                    },
                     "ContextScope": "ContextModifier",
                     "CompareType": "GreaterEqual",
                     "CompareValue": {
@@ -5419,7 +5824,9 @@
                           },
                           {
                             "$type": "RPG.GameCore.ByCompareDynamicValue",
-                            "DynamicKey": "CurEnhance",
+                            "DynamicKey": {
+                              "Value": "CurEnhance"
+                            },
                             "ContextScope": "ContextCaster",
                             "CompareType": "GreaterEqual",
                             "CompareValue": {
@@ -5444,7 +5851,9 @@
                       "$type": "RPG.GameCore.TargetAlias",
                       "Alias": "ModifierOwnerEntity"
                     },
-                    "DynamicKey": "_isShowSpecialMark",
+                    "DynamicKey": {
+                      "Value": "_isShowSpecialMark"
+                    },
                     "ContextScope": "ContextModifier",
                     "CompareType": "LessEqual",
                     "CompareValue": {
@@ -5463,7 +5872,9 @@
                           "Value": 1
                         }
                       },
-                      "DynamicKey": "_isShowSpecialMark"
+                      "DynamicKey": {
+                        "Value": "_isShowSpecialMark"
+                      }
                     },
                     {
                       "$type": "RPG.GameCore.ToggleSpecialSkillMark",
@@ -5484,7 +5895,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "ModifierOwnerEntity"
               },
-              "ModifierName": "MAvatar_Topaz_BETargetTag_CriticalDamageUp"
+              "ModifierName": {
+                "Value": "MAvatar_Topaz_BETargetTag_CriticalDamageUp"
+              }
             },
             {
               "$type": "RPG.GameCore.ToggleSpecialSkillMark"
@@ -5502,7 +5915,9 @@
                   "$type": "RPG.GameCore.TargetAlias",
                   "Alias": "ModifierOwnerEntity"
                 },
-                "DynamicKey": "_isShowSpecialMark",
+                "DynamicKey": {
+                  "Value": "_isShowSpecialMark"
+                },
                 "ContextScope": "ContextModifier",
                 "CompareType": "GreaterEqual",
                 "CompareValue": {
@@ -5521,7 +5936,9 @@
                       "Value": 0
                     }
                   },
-                  "DynamicKey": "_isShowSpecialMark"
+                  "DynamicKey": {
+                    "Value": "_isShowSpecialMark"
+                  }
                 },
                 {
                   "$type": "RPG.GameCore.ToggleSpecialSkillMark"
@@ -5609,7 +6026,9 @@
                       "Value": 0
                     }
                   },
-                  "DynamicKey": "MDF_PropertyValue4_InsertCriticalDamageAddLayer"
+                  "DynamicKey": {
+                    "Value": "MDF_PropertyValue4_InsertCriticalDamageAddLayer"
+                  }
                 },
                 {
                   "$type": "RPG.GameCore.RemoveModifier",
@@ -5617,7 +6036,9 @@
                     "$type": "RPG.GameCore.TargetAlias",
                     "Alias": "ModifierOwnerEntity"
                   },
-                  "ModifierName": "MAvatar_Topaz_BETargetTag_CriticalDamageUp"
+                  "ModifierName": {
+                    "Value": "MAvatar_Topaz_BETargetTag_CriticalDamageUp"
+                  }
                 }
               ]
             }
@@ -5665,7 +6086,9 @@
                     "$type": "RPG.GameCore.TargetAlias",
                     "Alias": "ModifierOwnerEntity"
                   },
-                  "ModifierName": "Avatar_Topaz_00_BETargetTagHitFlag"
+                  "ModifierName": {
+                    "Value": "Avatar_Topaz_00_BETargetTagHitFlag"
+                  }
                 }
               ]
             },
@@ -5704,7 +6127,9 @@
                         "$type": "RPG.GameCore.TargetAlias",
                         "Alias": "ModifierOwnerEntity"
                       },
-                      "ModifierName": "Avatar_Topaz_00_BETargetTagInsertHitFlag"
+                      "ModifierName": {
+                        "Value": "Avatar_Topaz_00_BETargetTagInsertHitFlag"
+                      }
                     }
                   ]
                 },
@@ -5725,7 +6150,9 @@
                           "$type": "RPG.GameCore.TargetAlias",
                           "Alias": "ModifierOwnerEntity"
                         },
-                        "DynamicKey": "MDF_PropertyValue4_InsertCriticalDamageAddLayer",
+                        "DynamicKey": {
+                          "Value": "MDF_PropertyValue4_InsertCriticalDamageAddLayer"
+                        },
                         "ContextScope": "ContextModifier",
                         "CompareType": "Less",
                         "CompareValue": {
@@ -5756,7 +6183,9 @@
                               ]
                             }
                           },
-                          "DynamicKey": "MDF_PropertyValue4_InsertCriticalDamageAddLayer"
+                          "DynamicKey": {
+                            "Value": "MDF_PropertyValue4_InsertCriticalDamageAddLayer"
+                          }
                         },
                         {
                           "$type": "RPG.GameCore.AddModifier",
@@ -5764,7 +6193,9 @@
                             "$type": "RPG.GameCore.TargetAlias",
                             "Alias": "ModifierOwnerEntity"
                           },
-                          "ModifierName": "MAvatar_Topaz_BETargetTag_CriticalDamageUp",
+                          "ModifierName": {
+                            "Value": "MAvatar_Topaz_BETargetTag_CriticalDamageUp"
+                          },
                           "DynamicValues": {
                             "MDF_PropertyValue1_InsertCriticalDamageAddRatio": {
                               "IsDynamic": true,
@@ -5807,7 +6238,9 @@
                   "$type": "RPG.GameCore.TargetAlias",
                   "Alias": "ModifierOwnerEntity"
                 },
-                "DynamicKey": "_isShowSpecialMark",
+                "DynamicKey": {
+                  "Value": "_isShowSpecialMark"
+                },
                 "ContextScope": "ContextModifier",
                 "CompareType": "GreaterEqual",
                 "CompareValue": {
@@ -5826,7 +6259,9 @@
                       "Value": 0
                     }
                   },
-                  "DynamicKey": "_isShowSpecialMark"
+                  "DynamicKey": {
+                    "Value": "_isShowSpecialMark"
+                  }
                 },
                 {
                   "$type": "RPG.GameCore.ToggleSpecialSkillMark"
@@ -5846,7 +6281,9 @@
                   "$type": "RPG.GameCore.TargetAlias",
                   "Alias": "ModifierOwnerEntity"
                 },
-                "DynamicKey": "_isShowSpecialMark",
+                "DynamicKey": {
+                  "Value": "_isShowSpecialMark"
+                },
                 "ContextScope": "ContextModifier",
                 "CompareType": "GreaterEqual",
                 "CompareValue": {
@@ -5865,7 +6302,9 @@
                       "Value": 0
                     }
                   },
-                  "DynamicKey": "_isShowSpecialMark"
+                  "DynamicKey": {
+                    "Value": "_isShowSpecialMark"
+                  }
                 },
                 {
                   "$type": "RPG.GameCore.ToggleSpecialSkillMark"
@@ -5885,7 +6324,9 @@
                   "$type": "RPG.GameCore.TargetAlias",
                   "Alias": "Caster"
                 },
-                "ModifierName": "MAvatar_Topaz_00_UltraEnhance"
+                "ModifierName": {
+                  "Value": "MAvatar_Topaz_00_UltraEnhance"
+                }
               },
               "SuccessTaskList": [
                 {
@@ -6060,7 +6501,9 @@
                       },
                       {
                         "$type": "RPG.GameCore.ByCompareDynamicValue",
-                        "DynamicKey": "CurEnhance",
+                        "DynamicKey": {
+                          "Value": "CurEnhance"
+                        },
                         "ContextScope": "ContextCaster",
                         "CompareType": "GreaterEqual",
                         "CompareValue": {
@@ -6083,7 +6526,9 @@
                       "$type": "RPG.GameCore.TargetAlias",
                       "Alias": "ModifierOwnerEntity"
                     },
-                    "DynamicKey": "_isShowSpecialMark",
+                    "DynamicKey": {
+                      "Value": "_isShowSpecialMark"
+                    },
                     "ContextScope": "ContextModifier",
                     "CompareType": "LessEqual",
                     "CompareValue": {
@@ -6102,7 +6547,9 @@
                           "Value": 1
                         }
                       },
-                      "DynamicKey": "_isShowSpecialMark"
+                      "DynamicKey": {
+                        "Value": "_isShowSpecialMark"
+                      }
                     },
                     {
                       "$type": "RPG.GameCore.ToggleSpecialSkillMark",
@@ -6120,7 +6567,9 @@
                       "Value": 0
                     }
                   },
-                  "DynamicKey": "_isShowSpecialMark"
+                  "DynamicKey": {
+                    "Value": "_isShowSpecialMark"
+                  }
                 },
                 {
                   "$type": "RPG.GameCore.ToggleSpecialSkillMark"
@@ -6265,7 +6714,9 @@
                 "$type": "RPG.GameCore.TargetAlias",
                 "Alias": "Topaz_BattleEventEntity"
               },
-              "ModifierName": "BE_ExtraSpeedModifier"
+              "ModifierName": {
+                "Value": "BE_ExtraSpeedModifier"
+              }
             }
           ]
         },
@@ -6337,92 +6788,6 @@
       ],
       "Stacking": "ReplaceByCaster"
     },
-    "MAvatar_Topaz_BETargetTagActive_BP": {
-      "BehaviorFlagList": [
-        "ListenBattleEventSkill",
-        "RemoveWhenCasterDead"
-      ],
-      "UIConfig": {
-        "UIEffectPath": "UI/Battle/Widget/SpecialSkilMarkEff/SpecialSkillMark_Topaz_Max.prefab",
-        "UIMiniEffectPath": "UI/Battle/Widget/SpecialSkilMarkEff/Mini/SpecialSkillMark_Topaz_Max_Mini.prefab",
-        "ModifierUIPriority": "SoftControl"
-      },
-      "_CallbackList": [
-        {
-          "Event": "OnListenBeforeSkillUse",
-          "CallbackConfig": [
-            {
-              "$type": "RPG.GameCore.ToggleSpecialSkillMark"
-            }
-          ]
-        },
-        {
-          "Event": "OnListenInsertAbilityStart",
-          "CallbackConfig": [
-            {
-              "$type": "RPG.GameCore.ToggleSpecialSkillMark"
-            }
-          ]
-        },
-        {
-          "Event": "OnListenAimAtTargetsRefresh_CL",
-          "CallbackConfig": [
-            {
-              "$type": "RPG.GameCore.PredicateTaskList",
-              "Predicate": {
-                "$type": "RPG.GameCore.ByAnd",
-                "PredicateList": [
-                  {
-                    "$type": "RPG.GameCore.ByTargetListAny",
-                    "TargetType": {
-                      "$type": "RPG.GameCore.TargetAlias",
-                      "Alias": "CurrentAimAtTarget"
-                    },
-                    "Predicate": {
-                      "$type": "RPG.GameCore.ByCompareTarget",
-                      "TargetType": {
-                        "$type": "RPG.GameCore.TargetAlias",
-                        "Alias": "ModifierOwnerEntity"
-                      },
-                      "CompareType": {
-                        "$type": "RPG.GameCore.TargetAlias",
-                        "Alias": "ParamEntity"
-                      }
-                    }
-                  },
-                  {
-                    "$type": "RPG.GameCore.ByCompareTarget",
-                    "TargetType": {
-                      "$type": "RPG.GameCore.TargetAlias",
-                      "Alias": "CurrentTurnActionEntity"
-                    },
-                    "CompareType": {
-                      "$type": "RPG.GameCore.TargetAlias",
-                      "Alias": "Caster"
-                    }
-                  }
-                ]
-              },
-              "SuccessTaskList": [
-                {
-                  "$type": "RPG.GameCore.ToggleSpecialSkillMark",
-                  "Enable": true,
-                  "AllowSkillType": [
-                    "Skill"
-                  ]
-                }
-              ],
-              "FailedTaskList": [
-                {
-                  "$type": "RPG.GameCore.ToggleSpecialSkillMark"
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "Stacking": "ReplaceByCaster"
-    },
     "MAvatar_Topaz_BETargetTagActive": {
       "BehaviorFlagList": [
         "ListenBattleEventSkill",
@@ -6448,7 +6813,9 @@
                       "$type": "RPG.GameCore.TargetAlias",
                       "Alias": "ModifierOwnerEntity"
                     },
-                    "DynamicKey": "ShowSpecialMarkOnCreate",
+                    "DynamicKey": {
+                      "Value": "ShowSpecialMarkOnCreate"
+                    },
                     "ContextScope": "ContextModifier",
                     "CompareType": "GreaterEqual",
                     "CompareValue": {
@@ -6503,7 +6870,9 @@
                           },
                           {
                             "$type": "RPG.GameCore.ByCompareDynamicValue",
-                            "DynamicKey": "CurEnhance",
+                            "DynamicKey": {
+                              "Value": "CurEnhance"
+                            },
                             "ContextScope": "ContextCaster",
                             "CompareType": "GreaterEqual",
                             "CompareValue": {
@@ -6555,7 +6924,9 @@
                   "$type": "RPG.GameCore.TargetAlias",
                   "Alias": "Caster"
                 },
-                "ModifierName": "MAvatar_Topaz_00_UltraEnhance"
+                "ModifierName": {
+                  "Value": "MAvatar_Topaz_00_UltraEnhance"
+                }
               },
               "SuccessTaskList": [
                 {

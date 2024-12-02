@@ -1,0 +1,111 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupButtonListTrigger",
+          "TargetType": {
+            "$type": "RPG.GameCore.GroupFetchLocalTarget",
+            "TargetType": "Prop",
+            "Targets": [
+              300001
+            ]
+          },
+          "TriggerName": "MissionTrigger",
+          "ButtonsByName": [],
+          "ButtonConfigs": [
+            {
+              "ID": "press01",
+              "IconType": "SecretMissionIcon",
+              "ButtonText": {
+                "Value": "PropInteractTitle_477"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.CollectDataConditions",
+          "TaskIDList": [
+            434014002,
+            434014001
+          ],
+          "MainMissionIDList": [],
+          "PerformanceIDList": [],
+          "PerformanceIDDsList": [],
+          "CustomValueMainMissionIDList": []
+        },
+        {
+          "$type": "RPG.GameCore.AdvOnButtonPressed",
+          "ButtonName": "press01",
+          "OnPressedCallback": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareSubMissionState",
+                "SubMissionID": 434014001,
+                "SubMissionState": "Finish"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareSubMissionState",
+                    "SubMissionID": 434014002,
+                    "SubMissionState": "Finish"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.TriggerPerformance",
+                      "ValueSource": {},
+                      "PerformanceType": "D",
+                      "PerformanceID": 434014003,
+                      "MaskConfig": {
+                        "UseExcelData": false
+                      }
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.TriggerPerformance",
+                      "ValueSource": {},
+                      "PerformanceType": "D",
+                      "PerformanceID": 434014002,
+                      "MaskConfig": {
+                        "UseExcelData": false,
+                        "StartBlack": "None",
+                        "EndBlack": "None"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerPerformance",
+                  "ValueSource": {},
+                  "PerformanceType": "D",
+                  "PerformanceID": 434014001,
+                  "MaskConfig": {
+                    "UseExcelData": false,
+                    "StartBlack": "None",
+                    "EndBlack": "None"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.ClientFinishMission",
+                  "SubmissionID": 434014001
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Type": "Group"
+}
