@@ -1,0 +1,228 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": []
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEventV2",
+          "EventName": {
+            "Value": "is_open"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByComparePropState",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                  "FetchType": "SinglePropByPropKey",
+                  "SinglePropKey": {
+                    "Custom": true,
+                    "Key": "EraDevice_Right"
+                  }
+                },
+                "State": "Open"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByComparePropState",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                      "FetchType": "SinglePropByPropKey",
+                      "SinglePropKey": {
+                        "Custom": true,
+                        "Key": "EraPoint_Right"
+                      }
+                    },
+                    "State": "Open"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.TriggerEntityEventV2",
+                      "EventName": {
+                        "Value": "open"
+                      },
+                      "TargetType": {
+                        "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                        "TargetType": "Prop",
+                        "Targets": [
+                          300003
+                        ]
+                      }
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.TriggerEntityEventV2",
+                      "EventName": {
+                        "Value": "close"
+                      },
+                      "TargetType": {
+                        "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                        "TargetType": "Prop",
+                        "Targets": [
+                          300003
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEventV2",
+                  "EventName": {
+                    "Value": "close"
+                  },
+                  "TargetType": {
+                    "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                    "TargetType": "Prop",
+                    "Targets": [
+                      300003
+                    ]
+                  }
+                }
+              ]
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.GroupFetchLocalTarget",
+            "TargetType": "Prop",
+            "Targets": [
+              300003
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitServerPropStateChange"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorSavedValueChangeV2",
+          "Name": {
+            "Value": "FSV_SStatueRight01_Day"
+          },
+          "Condition": {
+            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+            "DynamicName": {
+              "Value": "FSV_SStatueRight01_Day"
+            },
+            "CompareType": "Equal",
+            "CompareValue": 1
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 0.5
+                }
+              },
+              "IsRealtime": true
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "Trigger_Open"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300003
+                ]
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "Clt_TriggeLocked"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                "FetchType": "SinglePropByPropKey",
+                "SinglePropKey": {
+                  "Custom": true,
+                  "Key": "Night_Bee_Right"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvDistrictSetupTrigger",
+          "GroupID": {
+            "FixedValue": {
+              "Value": 154
+            }
+          },
+          "DistrictID": {
+            "FixedValue": {
+              "Value": 4
+            }
+          },
+          "OnEnter": [
+            {
+              "$type": "RPG.GameCore.SetIgnoreTimeRewindLockRangeLimit",
+              "Target": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300003
+                ]
+              }
+            }
+          ],
+          "OnExit": [
+            {
+              "$type": "RPG.GameCore.SetIgnoreTimeRewindLockRangeLimit",
+              "Target": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300003
+                ]
+              },
+              "Ignore": false
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "EraDevice_Right"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "EraPoint_Right"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "Night_Bee_Right"
+      }
+    ]
+  },
+  "Type": "Group",
+  "EntityEventList": []
+}

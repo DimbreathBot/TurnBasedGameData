@@ -1,0 +1,6232 @@
+{
+  "AbilityList": [
+    {
+      "Modifiers": {
+        "Avatar_Aglaea_00_SpecialMarkAdder": {
+          "AdditionConfig": {
+            "SubModifierList": [
+              {
+                "Name": "Avatar_Aglaea_00_SpecialMar",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "AllEnemyWithUnSelectable"
+                },
+                "IsHaloStatus": true,
+                "AliveOnly": "True"
+              }
+            ]
+          }
+        },
+        "Avatar_Aglaea_00_SpecialMar": {
+          "BehaviorFlagList": [
+            "ListenBattleEventSkill",
+            "RemoveWhenCasterDead"
+          ],
+          "UIConfig": {
+            "UIEffectPath": "UI/Battle/Widget/SpecialSkilMarkEff/SpecialSkillMark_1402.prefab",
+            "UIMiniEffectPath": "UI/Battle/Widget/SpecialSkilMarkEff/Mini/SpecialSkillMark_1402_Mini.prefab",
+            "ModifierUIPriority": "SoftControl"
+          },
+          "_CallbackList": [
+            {
+              "Event": "OnDestroy",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.ToggleSpecialSkillMark"
+                }
+              ]
+            },
+            {
+              "Event": "OnListenBeforeSkillUse",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.ToggleSpecialSkillMark"
+                }
+              ]
+            },
+            {
+              "Event": "OnListenInsertAbilityStart",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.ToggleSpecialSkillMark"
+                }
+              ]
+            },
+            {
+              "Event": "OnListenAimAtTargetsRefresh_CL",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByTargetListAny",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "CurrentAimAtMainTarget"
+                        },
+                        "Predicate": {
+                          "$type": "RPG.GameCore.ByCompareTarget",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          "CompareType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ParamEntity"
+                          }
+                        }
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareTarget",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "CurrentTurnActionEntity"
+                        },
+                        "CompareType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        }
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByIsTargetValid",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "CasterServant"
+                        },
+                        "AliveOnly": true
+                      }
+                    ]
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.ToggleSpecialSkillMark",
+                      "Enable": true,
+                      "AllowSkillType": [
+                        "Normal"
+                      ],
+                      "TriggerName": "State_Active"
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.ToggleSpecialSkillMark"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "Stacking": "ReplaceByCaster"
+        }
+      },
+      "Name": "Avatar_Aglaea_00_Skill01_Phase01",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList"
+      },
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "Avatar_Aglaea_00_SpecialMarkAdder"
+          }
+        }
+      ],
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Avatar_Aglaea_00_Skill01_Camera"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Avatar_Aglaea_00_Skill01_Phase02"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "$type": "RPG.GameCore.LookAt",
+          "TargetType": "AbilityTargetEntity",
+          "Duration": 0.2
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimStateWithMove",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "MovingRangeList": [
+            {
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AbilityTargetEntity"
+              },
+              "OffsetTargetDistance": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              },
+              "NormalizedTimeStart": {
+                "FixedValue": {
+                  "Value": 0.01
+                }
+              },
+              "NormalizedTimeEnd": {
+                "FixedValue": {
+                  "Value": 0.081
+                }
+              }
+            },
+            {
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "TeamFormation"
+              },
+              "OffsetTargetDistance": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "NormalizedTimeStart": {
+                "FixedValue": {
+                  "Value": 0.601
+                }
+              },
+              "NormalizedTimeEnd": {
+                "FixedValue": {
+                  "Value": 0.737
+                }
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.263
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.RadialBlurEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "Duration": 0.15,
+          "BlurX": 0.3,
+          "BlurY": 0,
+          "BlurRadius": 0.8,
+          "Iteration": 4,
+          "BlurFeather": 0.2
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.318
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.RadialBlurEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "Active": false
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.66
+            }
+          }
+        }
+      ]
+    },
+    {
+      "Modifiers": {},
+      "Name": "Avatar_Aglaea_00_Skill01_Phase02",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.07
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByIsTargetValid",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "CasterServant"
+            },
+            "AliveOnly": true
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.AddModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AbilityTargetEntity"
+              },
+              "AliveOnly": false,
+              "ModifierName": {
+                "Value": "MAvatar_Aglaea_00_GoldenSword_Mark"
+              },
+              "DynamicValues": {
+                "BombDamagePercentage": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      938740920
+                    ]
+                  }
+                },
+                "_SpRecover": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      77717678
+                    ]
+                  }
+                },
+                "MDF_PropertyValue": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      938740920
+                    ]
+                  }
+                },
+                "MDF_PropertyValue2": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      -941578568
+                    ]
+                  }
+                }
+              },
+              "IsShowUIMessageOnUpdate": false
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.DamageByAttackProperty",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "AttackProperty": {
+            "$type": "RPG.GameCore.AttackData",
+            "DamageType": {
+              "DamageType": "Thunder"
+            },
+            "DamagePercentage": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  -1126825319
+                ]
+              }
+            },
+            "StanceValue": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  1659254037
+                ]
+              }
+            },
+            "HitSplitRatio": {
+              "FixedValue": {
+                "Value": 0.2
+              }
+            },
+            "SPHitRatio": {
+              "FixedValue": {
+                "Value": 1
+              }
+            },
+            "AttackType": "Normal",
+            "HitAnimation": "Hit",
+            "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Skill01_Hit_01.prefab",
+            "HitEffectHeight": 1.45,
+            "HitPosHeight": 1,
+            "HitAngleVertical": 20
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.119
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DamageByAttackProperty",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "AttackProperty": {
+            "$type": "RPG.GameCore.AttackData",
+            "DamageType": {
+              "DamageType": "Thunder"
+            },
+            "DamagePercentage": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  -1126825319
+                ]
+              }
+            },
+            "StanceValue": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  1659254037
+                ]
+              }
+            },
+            "HitSplitRatio": {
+              "FixedValue": {
+                "Value": 0.2
+              }
+            },
+            "SPHitRatio": {
+              "FixedValue": {
+                "Value": 1
+              }
+            },
+            "AttackType": "Normal",
+            "HitAnimation": "Hit",
+            "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Skill01_Hit_02.prefab",
+            "HitEffectHeight": 1.06,
+            "HitPosHeight": 1,
+            "HitAngleHorizontal": -60
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.232
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DamageByAttackProperty",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "AttackProperty": {
+            "$type": "RPG.GameCore.AttackData",
+            "DamageType": {
+              "DamageType": "Thunder"
+            },
+            "DamagePercentage": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  -1126825319
+                ]
+              }
+            },
+            "StanceValue": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  1659254037
+                ]
+              }
+            },
+            "HitSplitRatio": {
+              "FixedValue": {
+                "Value": 0.6
+              }
+            },
+            "SPHitRatio": {
+              "FixedValue": {
+                "Value": 1
+              }
+            },
+            "AttackType": "Normal",
+            "HitAnimation": "Hit_H",
+            "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Skill01_Hit_03.prefab",
+            "HitEffectHeight": 1.46,
+            "HitPosHeight": 1
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DamagePerformFinish"
+        },
+        {
+          "$type": "RPG.GameCore.SkillPerformFinish"
+        }
+      ]
+    },
+    {
+      "Name": "Avatar_Aglaea_00_Skill02_Phase01",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.SyncCharLightAndCameraDir"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Avatar_Aglaea_00_Skill02_Phase02"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Avatar_Aglaea_00_Skill02_Camera"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "AnimStateName": "Skill02"
+        },
+        {
+          "$type": "RPG.GameCore.GlobalMainIntensityEffect",
+          "TargetIntensity": 0.3,
+          "FadeDuration": 0.3
+        },
+        {
+          "$type": "RPG.GameCore.TriggerSoundInAnim",
+          "SoundName": "Ev_vo_avatar_skill_cast01_aglaea"
+        },
+        {
+          "$type": "RPG.GameCore.WaitTimelineFinish",
+          "TimelineName": "Camera/TimeLine/Avatar/Character_Aglaea_00_Skill02_TimeLine.playable",
+          "TriggerBeforeFinish": true
+        },
+        {
+          "$type": "RPG.GameCore.VCameraConfigChange",
+          "CameraConfig": {
+            "NormalConfig": {
+              "CameraState": "LastCloseupShotEnd",
+              "AimTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              }
+            },
+            "BlendConfig": {
+              "BlendType": "Cut"
+            },
+            "NoiseConfig": {
+              "AmplitudeGain": 0.01,
+              "FrequencyGain": 0.01
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Avatar_Aglaea_00_Skill02_Camera_Self"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "$type": "RPG.GameCore.RadialBlurEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "BlurRadius": 2,
+          "Iteration": 8,
+          "BlurStart": 0.1
+        },
+        {
+          "$type": "RPG.GameCore.RadialBlurEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "Active": false
+        },
+        {
+          "$type": "RPG.GameCore.GlobalMainIntensityEffect",
+          "IsRevert": true,
+          "TargetIntensity": 1,
+          "FadeDuration": 0.7
+        },
+        {
+          "$type": "RPG.GameCore.MoveToTargetPosition",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "TeamFormation"
+          },
+          "IgnoreRadius": true,
+          "OffsetTargetDistance": {
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SyncCharLightAndCameraDir",
+          "IsSync": false
+        }
+      ]
+    },
+    {
+      "Modifiers": {},
+      "Name": "Avatar_Aglaea_00_Skill02_Phase02",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill02",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.324
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareTargetCount",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "CasterServant"
+            },
+            "AliveOnly": true,
+            "Number": {
+              "FixedValue": {
+                "Value": 0
+              }
+            },
+            "CompareType": "LessEqual"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.CreateServant",
+              "ServantID": {
+                "FixedValue": {
+                  "Value": 11402
+                }
+              },
+              "DynamicValues": {
+                "_PointB3Layer": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      138415046
+                    ]
+                  }
+                },
+                "Skill11_DamagePercentage": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      -909740667
+                    ]
+                  }
+                },
+                "Skill11_DamagePercentageAD": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      1326964645
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.SetEntityPosition",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "PosTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "OffsetX": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "OffsetY": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "OffsetZ": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "YawAngle": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.SetActionDelay",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "Value": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.ModifyCurrentSkillDelayCost",
+              "NormalizedValue": {
+                "FixedValue": {
+                  "Value": -1
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerAnimState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "AnimStateName": "Skill02",
+              "NormalizedTimeWait": {
+                "FixedValue": {
+                  "Value": 0.01
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitAnimState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "AnimStateName": "Skill02",
+              "NormalizedTimeEnd": {
+                "FixedValue": {
+                  "Value": 0.012
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Servant/Eff_Servant_AglaeaServant_00_Skill02_Start.prefab"
+            },
+            {
+              "$type": "RPG.GameCore.SetCharacterPartsVisibility",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "AttachPoint": "WeaponA",
+              "ShowPartList": [
+                1,
+                2
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetAttachmentVisibility",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "AttachPoints": [
+                {
+                  "Name": "WeaponB"
+                }
+              ],
+              "Visibility": true
+            },
+            {
+              "$type": "RPG.GameCore.SetCharacterPartsVisibility",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "AttachPoint": "WeaponB",
+              "ShowPartList": [
+                1
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicValue",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "Value": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    1859710505
+                  ]
+                }
+              },
+              "DynamicKey": {
+                "Value": "_CasterEnergy"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AddModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "ModifierName": {
+                "Value": "MAvatar_Aglaea_00_Skill02_ChangeSkill"
+              }
+            }
+          ],
+          "FailedTaskList": []
+        },
+        {
+          "$type": "RPG.GameCore.SetCameraRootFollow",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "IsReset": true
+        },
+        {
+          "$type": "RPG.GameCore.ModifySPNew",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AddRatio": {
+            "FixedValue": {
+              "Value": 1
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitTimelineFinish",
+          "TimelineName": "Camera/TimeLine/Avatar/Character_Aglaea_00_Skill02_TimeLine.playable"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "AnimLogicState": "Idle",
+          "AnimStateName": "StandBy",
+          "ForceStart": true
+        },
+        {
+          "$type": "RPG.GameCore.SkillPerformFinish"
+        }
+      ]
+    },
+    {
+      "Name": "Avatar_Aglaea_00_Skill21_Phase01",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Avatar_Aglaea_00_Skill21_Phase02"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "$type": "RPG.GameCore.SyncCharLightAndCameraDir"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Avatar_Aglaea_00_Skill02_Camera"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "AnimStateName": "Skill02"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerSoundInAnim",
+          "SoundName": "Ev_vo_avatar_skill_cast02_aglaea"
+        },
+        {
+          "$type": "RPG.GameCore.GlobalMainIntensityEffect",
+          "TargetIntensity": 0.3,
+          "FadeDuration": 0.3
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Skill02_Attack01_V02.prefab"
+        },
+        {
+          "$type": "RPG.GameCore.WaitTimelineFinish",
+          "TimelineName": "Camera/TimeLine/Avatar/Character_Aglaea_00_Skill02_TimeLine.playable",
+          "TriggerBeforeFinish": true
+        },
+        {
+          "$type": "RPG.GameCore.VCameraConfigChange",
+          "CameraConfig": {
+            "NormalConfig": {
+              "CameraState": "LastCloseupShotEnd",
+              "AimTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              }
+            },
+            "BlendConfig": {
+              "BlendType": "Cut"
+            },
+            "NoiseConfig": {
+              "AmplitudeGain": 0.01,
+              "FrequencyGain": 0.01
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Avatar_Aglaea_00_Skill02_Camera_Self"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "$type": "RPG.GameCore.RadialBlurEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "BlurRadius": 2,
+          "Iteration": 8,
+          "BlurStart": 0.1
+        },
+        {
+          "$type": "RPG.GameCore.RadialBlurEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "Active": false
+        },
+        {
+          "$type": "RPG.GameCore.GlobalMainIntensityEffect",
+          "IsRevert": true,
+          "TargetIntensity": 1,
+          "FadeDuration": 0.7
+        },
+        {
+          "$type": "RPG.GameCore.MoveToTargetPosition",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "TeamFormation"
+          },
+          "IgnoreRadius": true,
+          "OffsetTargetDistance": {
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SyncCharLightAndCameraDir",
+          "IsSync": false
+        }
+      ]
+    },
+    {
+      "Name": "Avatar_Aglaea_00_Skill21_Phase02",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.SetEntityPosition",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "PosTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "OffsetX": {
+            "FixedValue": {
+              "Value": 0
+            }
+          },
+          "OffsetY": {
+            "FixedValue": {
+              "Value": 0
+            }
+          },
+          "OffsetZ": {
+            "FixedValue": {
+              "Value": 0
+            }
+          },
+          "YawAngle": {
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetEntityVisible",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicValueByProperty",
+          "DynamicKey": "CasterBaseHP",
+          "ReadTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "Value": "BaseHP"
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill02",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.324
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetEntityVisible",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "Visible": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "AnimStateName": "Skill02",
+          "NormalizedTimeWait": {
+            "FixedValue": {
+              "Value": 0.01
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Servant/Eff_Servant_AglaeaServant_00_Skill02_Start_V02.prefab"
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill02",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.337
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicValue",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "Value": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                1859710505
+              ]
+            }
+          },
+          "DynamicKey": {
+            "Value": "_CasterEnergy"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Skill02_buff.prefab"
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill02",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.528
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.HealHP",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "FormulaType": "HealByTargetMaxHP",
+          "HealPercentage": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                13902247
+              ]
+            }
+          },
+          "DisplayData": {
+            "UIMessageHeight": 2
+          }
+        },
+        {
+          "$type": "RPG.GameCore.ModifySPNew",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AddRatio": {
+            "FixedValue": {
+              "Value": 1
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitTimelineFinish",
+          "TimelineName": "Camera/TimeLine/Avatar/Character_Aglaea_00_Skill02_TimeLine.playable"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "AnimLogicState": "Idle",
+          "AnimStateName": "StandBy",
+          "ForceStart": true
+        },
+        {
+          "$type": "RPG.GameCore.SkillPerformFinish"
+        }
+      ],
+      "DynamicValues": {
+        "Floats": {}
+      }
+    },
+    {
+      "Name": "Avatar_Aglaea_00_Skill11_Phase01",
+      "TargetInfo": {
+        "TargetType": "InherentTargetEntity"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.SetCharacterAnimFollow",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "FollowTarget": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AlignTargetToTeamCenter",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AlignTargetToTeamCenter",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.ShowBonusUIEffect",
+          "UIPrefabPath": "UI/Battle/SpecialAction/Avatar/SpecialAction_1402_D.prefab",
+          "TitleTextID": {
+            "Hash": 3957539260007422934
+          }
+        },
+        {
+          "$type": "RPG.GameCore.LookAt",
+          "TargetType": "DarkTeamCenter"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "AnimStateName": "Skill11"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityInherentTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetAndAdjoinEntity"
+          },
+          "AbilityName": {
+            "Value": "Avatar_Aglaea_00_Skill11_Camera"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerParallelAbility",
+          "ParallelAbilityList": [
+            {
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AbilityInherentTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AbilityTargetEntity"
+              },
+              "AbilityName": {
+                "Value": "Avatar_Aglaea_00_Skill11_Phase02"
+              }
+            },
+            {
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "AbilityInherentTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AbilityTargetEntity"
+              },
+              "AbilityName": {
+                "Value": "Servant_AglaeaServant_00_Skill11_Together_Phase01"
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.WaitTimelineFinish",
+          "TimelineName": "Camera/TimeLine/Avatar/Character_Aglaea_00_Skill11_TimeLine.playable",
+          "IgnoreWarning": true
+        },
+        {
+          "$type": "RPG.GameCore.HideLevelStage"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "AnimLogicState": "Idle",
+          "AnimStateName": "StandBy",
+          "ForceStart": true
+        },
+        {
+          "$type": "RPG.GameCore.SetTeamFormation",
+          "Team": "TeamDark",
+          "FormationType": "DarkTeamNormal"
+        },
+        {
+          "$type": "RPG.GameCore.SetTeamFormation",
+          "Team": "TeamLight",
+          "FormationType": "LightTeamNormal"
+        },
+        {
+          "$type": "RPG.GameCore.SetCharacterAnimFollow",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Avatar_Aglaea_00_Skill11_Phase02",
+      "TargetInfo": {
+        "TargetType": "InherentTargetEntity"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.SetDynamicValueByProperty",
+          "DynamicKey": "_CurrentSpeed",
+          "ReadTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "Value": "Speed"
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicValueByProperty",
+          "DynamicKey": "_ServantCurrentSpeed",
+          "ReadTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "Value": "Speed"
+        },
+        {
+          "$type": "RPG.GameCore.SetSkillTargetFormationByPos",
+          "Team": "TeamDark",
+          "CustomTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetAndAdjoinEntity"
+          },
+          "CustomCenterTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "SetBodyPartPos": true,
+          "TargetFormation": {
+            "LocalDelta": {
+              "X": -3.1545,
+              "Z": 4.9373255
+            },
+            "Yaw": 120
+          },
+          "LeftSideFormations": [
+            {
+              "LocalDelta": {
+                "X": -3.055359,
+                "Z": 2.1773374
+              }
+            }
+          ],
+          "RightSideFormations": [
+            {
+              "LocalDelta": {
+                "X": 0.2250729,
+                "Z": 3.6226747
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.HideLevelStage",
+          "IsHide": true
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicValue",
+          "Value": {
+            "FixedValue": {
+              "Value": 0
+            }
+          },
+          "DynamicKey": {
+            "Value": "_Rank06Ratio"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DebugLog",
+          "Level": "Warn",
+          "Message": "======Stance ONE={Stance_One}===================="
+        },
+        {
+          "$type": "RPG.GameCore.DebugLog",
+          "Level": "Warn",
+          "Message": "=========Stance_Spread={Stance_Spread}==================="
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicValue",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "Value": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                1659254037
+              ]
+            }
+          },
+          "DynamicKey": {
+            "Value": "_PairStanceDMG1"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicValue",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "Value": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                -1315627076
+              ]
+            }
+          },
+          "DynamicKey": {
+            "Value": "_PairStanceDMG2"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicValue",
+          "Value": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAAAAMR",
+              "FixedValues": [
+                {
+                  "Value": 1
+                }
+              ],
+              "DynamicHashes": [
+                1859710505
+              ]
+            }
+          },
+          "DynamicKey": {
+            "Value": "_Energy"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitParallelTimeStamp",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 0.2667
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicValue",
+          "Value": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAAAAIR",
+              "FixedValues": [
+                {
+                  "Value": 1
+                }
+              ],
+              "DynamicHashes": [
+                -1795125032
+              ]
+            }
+          },
+          "DynamicKey": {
+            "Value": "Skill11Count"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitParallelTimeStamp",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 1.033
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByIsTargetValid",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "CasterServant"
+            },
+            "AliveOnly": true
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.AddModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AbilityTargetEntity"
+              },
+              "AliveOnly": false,
+              "ModifierName": {
+                "Value": "MAvatar_Aglaea_00_GoldenSword_Mark"
+              },
+              "DynamicValues": {
+                "BombDamagePercentage": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      938740920
+                    ]
+                  }
+                },
+                "_SpRecover": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      77717678
+                    ]
+                  }
+                },
+                "MDF_PropertyValue": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      938740920
+                    ]
+                  }
+                },
+                "MDF_PropertyValue2": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      -941578568
+                    ]
+                  }
+                }
+              },
+              "IsShowUIMessageOnUpdate": false
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.DamageByAttackProperty",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "AttackProperty": {
+            "$type": "RPG.GameCore.AttackData",
+            "DamageType": {
+              "DamageType": "Thunder"
+            },
+            "DamagePercentage": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQABAQIR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  -640302011,
+                  -937631090
+                ]
+              }
+            },
+            "StanceValue": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAAAAQR",
+                "FixedValues": [
+                  {
+                    "Value": 0.5
+                  }
+                ],
+                "DynamicHashes": [
+                  1659254037
+                ]
+              }
+            },
+            "HitSplitRatio": {
+              "FixedValue": {
+                "Value": 0.25
+              }
+            },
+            "SPHitRatio": {
+              "FixedValue": {
+                "Value": 1
+              }
+            },
+            "DamageTag": [
+              {
+                "EnumIndex": 3,
+                "Value": 40
+              }
+            ],
+            "CustomName": "AglasaPairsDamage",
+            "HitAnimation": "Hit_H",
+            "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Skill11_Hit.prefab",
+            "HitEffectHeight": 1,
+            "HitPosHeight": 1
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DamageByAttackProperty",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetAdjoinEntity"
+          },
+          "AttackProperty": {
+            "$type": "RPG.GameCore.AttackData",
+            "DamageType": {
+              "DamageType": "Thunder"
+            },
+            "DamagePercentage": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQABAQIR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  786328933,
+                  -937631090
+                ]
+              }
+            },
+            "StanceValue": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAAAAQR",
+                "FixedValues": [
+                  {
+                    "Value": 0.5
+                  }
+                ],
+                "DynamicHashes": [
+                  -1315627076
+                ]
+              }
+            },
+            "HitSplitRatio": {
+              "FixedValue": {
+                "Value": 0.25
+              }
+            },
+            "DamageTag": [
+              {
+                "EnumIndex": 3,
+                "Value": 40
+              }
+            ],
+            "CustomName": "AglasaPairsDamage",
+            "HitAnimation": "Hit_H",
+            "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Skill11_Hit.prefab",
+            "HitEffectHeight": 1,
+            "HitPosHeight": 1
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitParallelTimeStamp",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 1.4667
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DamageByAttackProperty",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "AttackProperty": {
+            "$type": "RPG.GameCore.AttackData",
+            "DamageType": {
+              "DamageType": "Thunder"
+            },
+            "DamagePercentage": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQABAQIR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  -640302011,
+                  -937631090
+                ]
+              }
+            },
+            "StanceValue": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAAAAQR",
+                "FixedValues": [
+                  {
+                    "Value": 0.5
+                  }
+                ],
+                "DynamicHashes": [
+                  1659254037
+                ]
+              }
+            },
+            "HitSplitRatio": {
+              "FixedValue": {
+                "Value": 0.25
+              }
+            },
+            "SPHitRatio": {
+              "FixedValue": {
+                "Value": 1
+              }
+            },
+            "DamageTag": [
+              {
+                "EnumIndex": 3,
+                "Value": 40
+              }
+            ],
+            "CustomName": "AglasaPairsDamage",
+            "HitAnimation": "Hit_H",
+            "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Skill11_Hit.prefab",
+            "HitEffectHeight": 1,
+            "HitPosHeight": 1
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DamageByAttackProperty",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetAdjoinEntity"
+          },
+          "AttackProperty": {
+            "$type": "RPG.GameCore.AttackData",
+            "DamageType": {
+              "DamageType": "Thunder"
+            },
+            "DamagePercentage": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQABAQIR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  786328933,
+                  -937631090
+                ]
+              }
+            },
+            "StanceValue": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAAAAQR",
+                "FixedValues": [
+                  {
+                    "Value": 0.5
+                  }
+                ],
+                "DynamicHashes": [
+                  -1315627076
+                ]
+              }
+            },
+            "HitSplitRatio": {
+              "FixedValue": {
+                "Value": 0.25
+              }
+            },
+            "DamageTag": [
+              {
+                "EnumIndex": 3,
+                "Value": 40
+              }
+            ],
+            "CustomName": "AglasaPairsDamage",
+            "HitAnimation": "Hit_H",
+            "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Skill11_Hit.prefab",
+            "HitEffectHeight": 1,
+            "HitPosHeight": 1
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitParallelTimeStamp",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 1.783
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DamageByAttackProperty",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "AttackProperty": {
+            "$type": "RPG.GameCore.AttackData",
+            "DamageType": {
+              "DamageType": "Thunder"
+            },
+            "DamagePercentage": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQABAQIR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  -640302011,
+                  -937631090
+                ]
+              }
+            },
+            "StanceValue": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAAAAQR",
+                "FixedValues": [
+                  {
+                    "Value": 0.5
+                  }
+                ],
+                "DynamicHashes": [
+                  1659254037
+                ]
+              }
+            },
+            "HitSplitRatio": {
+              "FixedValue": {
+                "Value": 0.25
+              }
+            },
+            "SPHitRatio": {
+              "FixedValue": {
+                "Value": 1
+              }
+            },
+            "DamageTag": [
+              {
+                "EnumIndex": 3,
+                "Value": 40
+              }
+            ],
+            "CustomName": "AglasaPairsDamage",
+            "HitAnimation": "Hit_H",
+            "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Skill11_Hit.prefab",
+            "HitEffectHeight": 1,
+            "HitPosHeight": 1
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DamageByAttackProperty",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetAdjoinEntity"
+          },
+          "AttackProperty": {
+            "$type": "RPG.GameCore.AttackData",
+            "DamageType": {
+              "DamageType": "Thunder"
+            },
+            "DamagePercentage": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQABAQIR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  786328933,
+                  -937631090
+                ]
+              }
+            },
+            "StanceValue": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAAAAQR",
+                "FixedValues": [
+                  {
+                    "Value": 0.5
+                  }
+                ],
+                "DynamicHashes": [
+                  -1315627076
+                ]
+              }
+            },
+            "HitSplitRatio": {
+              "FixedValue": {
+                "Value": 0.25
+              }
+            },
+            "DamageTag": [
+              {
+                "EnumIndex": 3,
+                "Value": 40
+              }
+            ],
+            "CustomName": "AglasaPairsDamage",
+            "HitAnimation": "Hit_H",
+            "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Skill11_Hit.prefab",
+            "HitEffectHeight": 1,
+            "HitPosHeight": 1
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitParallelTimeStamp",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 2.1
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DamageByAttackProperty",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "AttackProperty": {
+            "$type": "RPG.GameCore.AttackData",
+            "DamageType": {
+              "DamageType": "Thunder"
+            },
+            "DamagePercentage": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQABAQIR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  -640302011,
+                  -937631090
+                ]
+              }
+            },
+            "StanceValue": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAAAAQR",
+                "FixedValues": [
+                  {
+                    "Value": 0.5
+                  }
+                ],
+                "DynamicHashes": [
+                  1659254037
+                ]
+              }
+            },
+            "HitSplitRatio": {
+              "FixedValue": {
+                "Value": 0.25
+              }
+            },
+            "SPHitRatio": {
+              "FixedValue": {
+                "Value": 1
+              }
+            },
+            "DamageTag": [
+              {
+                "EnumIndex": 3,
+                "Value": 40
+              }
+            ],
+            "CustomName": "AglasaPairsDamage",
+            "HitAnimation": "Hit_H",
+            "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Skill11_Hit.prefab",
+            "HitEffectHeight": 1,
+            "HitPosHeight": 1
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DamageByAttackProperty",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetAdjoinEntity"
+          },
+          "AttackProperty": {
+            "$type": "RPG.GameCore.AttackData",
+            "DamageType": {
+              "DamageType": "Thunder"
+            },
+            "DamagePercentage": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQABAQIR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  786328933,
+                  -937631090
+                ]
+              }
+            },
+            "StanceValue": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAAAAQR",
+                "FixedValues": [
+                  {
+                    "Value": 0.5
+                  }
+                ],
+                "DynamicHashes": [
+                  -1315627076
+                ]
+              }
+            },
+            "HitSplitRatio": {
+              "FixedValue": {
+                "Value": 0.25
+              }
+            },
+            "DamageTag": [
+              {
+                "EnumIndex": 3,
+                "Value": 40
+              }
+            ],
+            "CustomName": "AglasaPairsDamage",
+            "HitAnimation": "Hit_H",
+            "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Skill11_Hit.prefab",
+            "HitEffectHeight": 1,
+            "HitPosHeight": 1
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitParallelTimeStamp",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 3.3
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DamagePerformFinish",
+          "SkipDeathSettlement": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitParallelTimeStamp",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 4.433
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitParallelTimeStamp",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 4.45
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SkillPerformFinish"
+        }
+      ]
+    },
+    {
+      "Name": "Avatar_Aglaea_00_Bonus",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.SetCharacterCustomTeamFormation",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "FormationType": "Follow",
+          "LocationConfig": {
+            "Width": 0.8,
+            "FormationFollowOffset": {
+              "X": -0.8
+            }
+          },
+          "FollowOffsetMode": "Target"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Avatar_Aglaea_00_Bonus_Camera"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 0.01
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "AnimLogicState": "Idle",
+          "AnimStateName": "Skill01_Ready",
+          "NormalizedTransitionDuration": {
+            "FixedValue": {
+              "Value": 0.01
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.LookAt",
+          "TargetType": "TeamFormation"
+        }
+      ]
+    },
+    {
+      "Name": "Avatar_Aglaea_00_Bonus_Camera",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.VCameraConfigChange",
+          "CameraConfig": {
+            "NormalConfig": {
+              "CameraState": "SelectDarkTeamEntity",
+              "IsLocalOffset": true,
+              "AnchorOffset": {
+                "X": 0.5,
+                "Y": 0.24,
+                "Z": -0.56
+              },
+              "AimOffset": {
+                "X": -2.8,
+                "Y": 0.45
+              },
+              "FollowRadius": 3,
+              "AnchorToAimAngle": 30,
+              "Dutch": 2
+            },
+            "BlendConfig": {
+              "BlendType": "Cut"
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "AnimStateName": "Skill01_Ready",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.02
+            }
+          },
+          "IgnoreStateChangeCheck": true
+        },
+        {
+          "$type": "RPG.GameCore.VCameraConfigChange",
+          "CameraConfig": {
+            "NormalConfig": {
+              "CameraState": "SelectDarkTeamEntity",
+              "IsLocalOffset": true,
+              "AnchorOffset": {
+                "X": -0.01,
+                "Y": 0.11,
+                "Z": -0.25
+              },
+              "AimOffset": {
+                "X": -2.8,
+                "Y": 0.45
+              },
+              "FollowRadius": 2.57,
+              "AnchorToAimAngle": 26
+            },
+            "BlendConfig": {
+              "BlendType": "Custom",
+              "CustomCurveName": "BlendCut_00to1",
+              "BlendTime": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Avatar_Aglaea_00_Skill03_EnterReady",
+      "TargetInfo": {
+        "TargetType": "InherentTargetEntity"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.AlignTargetToTeamCenter",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AlignTargetToTeamCenter",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetCharacterAnimFollow",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "FollowTarget": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 0.5
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SyncCharLightAndCameraDir"
+        },
+        {
+          "$type": "RPG.GameCore.VCameraConfigChange",
+          "CameraConfig": {
+            "NormalConfig": {
+              "CameraState": "UseSkillPerform",
+              "AnchorTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "IsLocalOffset": true,
+              "AimTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AimOffset": {
+                "X": -0.4,
+                "Y": 0.15,
+                "Z": -0.226
+              },
+              "FollowPoleAngle": 30.25,
+              "FollowElevationAngle": -40,
+              "FollowRadius": 4,
+              "Dutch": 9,
+              "FOV": 28
+            },
+            "BlendConfig": {
+              "BlendType": "Cut"
+            },
+            "ShowEntityConfig": {
+              "ShowTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster+CasterServant"
+              }
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 0.5
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.VCameraConfigChange",
+          "CameraConfig": {
+            "NormalConfig": {
+              "CameraState": "UseSkillPerform",
+              "AnchorTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "IsLocalOffset": true,
+              "AimTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AimOffset": {
+                "X": -0.4,
+                "Y": 0.15,
+                "Z": -0.226
+              },
+              "FollowPoleAngle": 3,
+              "FollowElevationAngle": -40,
+              "FollowRadius": 4,
+              "Dutch": 9,
+              "FOV": 28
+            },
+            "BlendConfig": {
+              "BlendType": "Custom",
+              "CustomCurveName": "Blend_UltraReady",
+              "BlendTime": 1.5
+            },
+            "ShowEntityConfig": {
+              "ShowTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster+CasterServant"
+              }
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 0.0009999999
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.VCameraNoiseChange",
+          "AmplitudeGain": 0.1,
+          "FrequencyGain": 1
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 0.1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Avatar_Aglaea_00_Skill03_Phase01",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.AlignTargetToTeamCenter",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetEntityVisible",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "Visible": true
+        },
+        {
+          "$type": "RPG.GameCore.SyncCharLightAndCameraDir",
+          "IsSync": false
+        },
+        {
+          "$type": "RPG.GameCore.ShowBattleUI"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Avatar_Aglaea_00_Skill03_Camera"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "AnimStateName": "Skill03"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Avatar_Aglaea_00_Skill03_Phase02"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "$type": "RPG.GameCore.HideLevelStage",
+          "IsHide": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill03",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.26
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitTimelineFinish",
+          "TimelineName": "Camera/TimeLine/Avatar/Character_Aglaea_00_Skill03_TimeLine.playable"
+        },
+        {
+          "$type": "RPG.GameCore.HideLevelStage"
+        },
+        {
+          "$type": "RPG.GameCore.GlobalMainIntensityEffect",
+          "IsRevert": true,
+          "FadeDuration": 0.5
+        },
+        {
+          "$type": "RPG.GameCore.ShowBattleUI",
+          "IsShow": true
+        },
+        {
+          "$type": "RPG.GameCore.MoveToTargetPosition",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "TeamFormation"
+          },
+          "IgnoreRadius": true,
+          "OffsetTargetDistance": {
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "Modifiers": {
+        "MAvatar_March7th_UltraTarget": {}
+      },
+      "Name": "Avatar_Aglaea_00_Skill03_Phase02",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.ForceKill",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetSequence",
+            "Sequence": [
+              {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AllTeamMemberCreatedBattleEvent"
+              },
+              {
+                "$type": "RPG.GameCore.TargetFilter",
+                "Predicate": {
+                  "$type": "RPG.GameCore.ByIsContainModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ParamEntity"
+                  },
+                  "ModifierName": {
+                    "Value": "MAvatar_Aglaea_00_PassiveSkill01_BattleEvent"
+                  }
+                }
+              }
+            ]
+          },
+          "MuteHpChange": true,
+          "MuteAllTriggerDeath": true
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareTargetCount",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "CasterServant"
+            },
+            "AliveOnly": true,
+            "Number": {
+              "FixedValue": {
+                "Value": 0
+              }
+            },
+            "CompareType": "LessEqual"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.CreateServant",
+              "ServantID": {
+                "FixedValue": {
+                  "Value": 11402
+                }
+              },
+              "DynamicValues": {
+                "_PointB3Layer": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      138415046
+                    ]
+                  }
+                },
+                "Skill11_DamagePercentage": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      -909740667
+                    ]
+                  }
+                },
+                "Skill11_DamagePercentageAD": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      1326964645
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerAnimState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "AnimStateName": "Skill03"
+            },
+            {
+              "$type": "RPG.GameCore.AlignTargetToTeamCenter",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AddModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "ModifierName": {
+                "Value": "MAvatar_Aglaea_00_Skill02_ChangeSkill"
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.DefineDynamicValue",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "DynamicKey": {
+                "Value": "ServantMaxHP"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.DefineDynamicValue",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "DynamicKey": {
+                "Value": "ServantCurrentHP"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.DefineDynamicValue",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "DynamicKey": {
+                "Value": "ServantHealValue"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicValueByProperty",
+              "DynamicKey": "ServantMaxHP",
+              "ReadTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "Value": "MaxHP"
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicValueByProperty",
+              "DynamicKey": "ServantCurrentHP",
+              "ReadTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "Value": "CurrentHP"
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicValue",
+              "Value": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQABAQMR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    -895427255,
+                    51370488
+                  ]
+                }
+              },
+              "DynamicKey": {
+                "Value": "ServantHealValue"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.HealHP",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "FormulaType": "HealByBaseValue",
+              "ModifyValue": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    528796210
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.SetCharacterAnimFollow",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "FollowTarget": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.GlobalMainIntensityEffect",
+          "TargetIntensity": 0.2,
+          "FadeDuration": 0.1
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill03",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.72
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Skill03_AglaeaServant_02.prefab"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Skill03_AglaeaServant_03.prefab"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Skill03_AglaeaServant_04.prefab"
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "MAvatar_Aglaea_Skill03"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.CreateBattleEvent",
+          "EventID": {
+            "FixedValue": {
+              "Value": 11402
+            }
+          },
+          "DynamicValues": {
+            "BattleEvent_Aglaea_00_BaseSpeed": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  1121220047
+                ]
+              }
+            }
+          },
+          "Team": "TeamLight"
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "MAvatar_Aglaea_Skill03_Sub"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByRankActivated",
+            "TriggerKey": {
+              "Hash": -1445815962
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.AddModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster + CasterServant"
+              },
+              "ModifierName": {
+                "Value": "MAvatar_Aglaea_Rank06_Effect"
+              },
+              "DynamicValues": {
+                "MDF_PropertyValue": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      -1975707320
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "MAvatar_Aglaea_Skill03_ForbidSkill"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetCharacterAnimFollow",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetActionDelay",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "Value": {
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitTimelineFinish",
+          "TimelineName": "Camera/TimeLine/Avatar/Character_Aglaea_00_Skill03_TimeLine.playable"
+        },
+        {
+          "$type": "RPG.GameCore.ModifySPNew",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AddRatio": {
+            "FixedValue": {
+              "Value": 1
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "AnimLogicState": "Idle",
+          "AnimStateName": "StandBy",
+          "ForceStart": true
+        },
+        {
+          "$type": "RPG.GameCore.SkillPerformFinish"
+        }
+      ],
+      "DynamicValues": {
+        "Floats": {
+          "-257805754": {},
+          "1560177992": {}
+        }
+      }
+    },
+    {
+      "Modifiers": {
+        "MAvatar_Aglaea_00_PassiveSkill01_BattleEvent": {
+          "_CallbackList": [
+            {
+              "Event": "OnPhase1",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.ChangeCharacterUIDisplay",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster.GetSummoner"
+                  },
+                  "SideHeadIconPath": "SpriteOutput/AvatarIconTeam/1402.png"
+                },
+                {
+                  "$type": "RPG.GameCore.Retarget",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllLightTeam"
+                  },
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByIsContainModifier",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "ModifierName": {
+                      "Value": "MServant_AglaeaServant_Passive"
+                    }
+                  },
+                  "TaskList": [
+                    {
+                      "$type": "RPG.GameCore.TurnInsertAbility",
+                      "AbilityName": {
+                        "Value": "Servant_Aglaea_00_PassiveSkill01_ForceKill_Insert"
+                      },
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ParamEntity"
+                      },
+                      "AbilityTarget": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ParamEntity"
+                      },
+                      "InsertAbilityPriority": "AvatarBuffOthers",
+                      "OwnerAliveState": "Anyone",
+                      "TargetAliveState": "Mask_AliveOrLimbo",
+                      "ShowInActionBar": true
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.RemoveModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "BattleEventCaster"
+                  },
+                  "ModifierName": {
+                    "Value": "MAvatar_Aglaea_Skill03"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.RemoveModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "BattleEventCaster"
+                  },
+                  "ModifierName": {
+                    "Value": "MAvatar_Aglaea_Skill03_Sub"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.RemoveModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "BattleEventCaster"
+                  },
+                  "ModifierName": {
+                    "Value": "MAvatar_Aglaea_00_Skill02_ChangeSkill"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.RemoveModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "BattleEventCaster"
+                  },
+                  "ModifierName": {
+                    "Value": "MAvatar_Aglaea_Skill03_ForbidSkill"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.RemoveModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "BattleEventCaster"
+                  },
+                  "ModifierName": {
+                    "Value": "MServant_AglaeaServant_00_SummonerAddSpeed"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.RemoveModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster + CasterServant"
+                  },
+                  "ModifierName": {
+                    "Value": "MAvatar_Aglaea_Rank06_Effect"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.ForceKill",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "MuteHpChange": true,
+                  "MuteAllTriggerDeath": true
+                }
+              ]
+            },
+            {
+              "Event": "OnStack",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.StackProperty",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "Property": "BaseSpeed",
+                  "PropertyValue": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -869333402
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "Stacking": "ReplaceByCaster"
+        }
+      },
+      "Name": "Avatar_Aglaea_00_PassiveSkill01_BattleEvent",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "MAvatar_Aglaea_00_PassiveSkill01_BattleEvent"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.LockActionDelayChange",
+          "LockTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "WhitelistSourceEntity": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "WhitelistChangeReason": "Bit_TurnBasedAdvance"
+        }
+      ]
+    },
+    {
+      "Modifiers": {
+        "MAvatar_Aglaea_Passive": {
+          "ModifierCreateEntityPreshowConfig": {
+            "SkillTypes": [
+              "Skill"
+            ],
+            "Condition": {
+              "$type": "RPG.GameCore.ByCompareTargetCount",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "AliveOnly": true,
+              "Number": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "CompareType": "LessEqual"
+            },
+            "ActionDelayPreshowConfig": {
+              "AddDelayRatio": {
+                "FixedValue": {
+                  "Value": -1
+                }
+              }
+            },
+            "CharacterType": "Servant",
+            "CharacterID": 11402
+          },
+          "_CallbackList": [
+            {
+              "Event": "OnListenCharacterDie",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByTargetListIntersects",
+                    "FirstTargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "CasterServant"
+                    },
+                    "FirstTargetAliveOnly": false,
+                    "SecondTargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "Value": {
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      },
+                      "DynamicKey": {
+                        "Value": "_Energy"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Event": "OnListenCharacterCreate",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByRankActivated",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "Caster"
+                    },
+                    "TriggerKey": {
+                      "Hash": 523552506
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "ModifierName": {
+                        "Value": "MAvatar_Aglaea_Rank02_Listen"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Event": "OnEnterBattle",
+              "Priority": -80,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValueByProperty",
+                  "DynamicKey": "_SPvalue",
+                  "ReadTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "Value": "CurrentSP"
+                },
+                {
+                  "$type": "RPG.GameCore.SetDynamicValueByProperty",
+                  "DynamicKey": "_MaxSp",
+                  "ReadTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "Value": "MaxSP"
+                },
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "Value": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQABAQUR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -1475402197,
+                        1560177992
+                      ]
+                    }
+                  },
+                  "DynamicKey": {
+                    "Value": "_SPRatio"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.BySkillPointActivated",
+                        "PointTriggerKey": "PointB3"
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareWaveCount",
+                        "CompareType": "Equal",
+                        "CompareValue": {
+                          "FixedValue": {
+                            "Value": 1
+                          }
+                        }
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "DynamicKey": {
+                          "Value": "_SPRatio"
+                        },
+                        "CompareType": "LessEqual",
+                        "CompareValue": {
+                          "FixedValue": {
+                            "Value": 0.5
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.ModifySPNew",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "SetMaxSPRatio": {
+                        "FixedValue": {
+                          "Value": 0.5
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerEffect",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "EffectPath": "Effects/Eff_Prefab/Eff_Common/Eff_Common_MAZ_RecoverSP.prefab"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "Stacking": "ReplaceByCaster",
+          "DynamicValues": {
+            "Floats": {
+              "-1475402197": {},
+              "1560177992": {},
+              "2142290525": {}
+            }
+          }
+        }
+      },
+      "Name": "Avatar_Aglaea_00_PassiveSkill01",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.SetCharacterPartsVisibility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AttachPoint": "EffectWeapon",
+          "ShowPartList": [
+            1,
+            2
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicValue",
+          "ContextScope": "AITag",
+          "Value": {
+            "FixedValue": {
+              "Value": 1
+            }
+          },
+          "DynamicKey": {
+            "Value": "DamageCarry"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetSummonerEnergyBarState",
+          "Active": "False",
+          "BarType": "Number",
+          "IconPath": "SpriteOutput/BuffIcon/ServantSkill/Icon11402Skill.png",
+          "ProgressColor": "#f582ff"
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "MAvatar_Aglaea_Passive"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "MAvatar_Aglaea_Skill03Preshow"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "MAvatar_Aglaea_Skill02Preshow"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByRankActivated",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "Caster"
+            },
+            "TriggerKey": {
+              "Hash": 523552506
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.AddModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "ModifierName": {
+                "Value": "MAvatar_Aglaea_Rank02_Listen"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Modifiers": {
+        "StageAbility_Maze_Aglaea_Modifier": {
+          "_CallbackList": [
+            {
+              "Event": "OnEnterBattle",
+              "Priority": -60,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByIsMazeSkillAffectCurrentWave"
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareWaveCount",
+                        "CompareType": "Equal",
+                        "CompareValue": {
+                          "FixedValue": {
+                            "Value": 1
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.WaitSecond",
+                      "WaitTime": {
+                        "FixedValue": {
+                          "Value": 0.5
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.ModifySPNew",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "AddValue": {
+                        "IsDynamic": true,
+                        "PostfixExpr": {
+                          "OpCodes": "AQAR",
+                          "FixedValues": [],
+                          "DynamicHashes": [
+                            -1744882912
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.DamageByAttackProperty",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "AllEnemy"
+                      },
+                      "AttackProperty": {
+                        "$type": "RPG.GameCore.AttackData",
+                        "DamageType": {
+                          "DamageType": "Thunder"
+                        },
+                        "DamagePercentage": {
+                          "IsDynamic": true,
+                          "PostfixExpr": {
+                            "OpCodes": "AQAR",
+                            "FixedValues": [],
+                            "DynamicHashes": [
+                              -958931369
+                            ]
+                          }
+                        },
+                        "SPHitRatio": {
+                          "FixedValue": {
+                            "Value": 1
+                          }
+                        },
+                        "AttackType": "Maze",
+                        "HitAnimation": "Hit",
+                        "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Servant/Eff_Servant_AglaeaServant_00_Skill01_Hit01.prefab",
+                        "HitEffectHeight": 1.2,
+                        "HitPosHeight": 1.2
+                      },
+                      "CanTriggerLastKill": true,
+                      "DisplayData": {
+                        "UIMessageHeight": 0.8,
+                        "DitherRangeX": 0.01,
+                        "DitherRangeY": 0.04
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.DamagePerformFinish"
+                    },
+                    {
+                      "$type": "RPG.GameCore.Retarget",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "AllDarkTeam"
+                      },
+                      "ByRandom": true,
+                      "MaxNumber": {
+                        "FixedValue": {
+                          "Value": 1
+                        }
+                      },
+                      "TaskList": [
+                        {
+                          "$type": "RPG.GameCore.AddModifier",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ParamEntity"
+                          },
+                          "AliveOnly": false,
+                          "ModifierName": {
+                            "Value": "MAvatar_Aglaea_00_GoldenSword_Mark"
+                          },
+                          "DynamicValues": {
+                            "BombDamagePercentage": {
+                              "IsDynamic": true,
+                              "PostfixExpr": {
+                                "OpCodes": "AQAR",
+                                "FixedValues": [],
+                                "DynamicHashes": [
+                                  938740920
+                                ]
+                              }
+                            },
+                            "_SpRecover": {
+                              "IsDynamic": true,
+                              "PostfixExpr": {
+                                "OpCodes": "AQAR",
+                                "FixedValues": [],
+                                "DynamicHashes": [
+                                  77717678
+                                ]
+                              }
+                            },
+                            "MDF_PropertyValue": {
+                              "IsDynamic": true,
+                              "PostfixExpr": {
+                                "OpCodes": "AQAR",
+                                "FixedValues": [],
+                                "DynamicHashes": [
+                                  938740920
+                                ]
+                              }
+                            },
+                            "MDF_PropertyValue2": {
+                              "IsDynamic": true,
+                              "PostfixExpr": {
+                                "OpCodes": "AQAR",
+                                "FixedValues": [],
+                                "DynamicHashes": [
+                                  -941578568
+                                ]
+                              }
+                            }
+                          },
+                          "IsShowUIMessageOnUpdate": false
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "Name": "Avatar_Aglaea_00_SkillMazeInLevel",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAnd",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByIsMazeSkillAffectCurrentWave"
+              },
+              {
+                "$type": "RPG.GameCore.ByCompareWaveCount",
+                "CompareType": "Equal",
+                "CompareValue": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                }
+              }
+            ]
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.CreateServant",
+              "ServantID": {
+                "FixedValue": {
+                  "Value": 11402
+                }
+              },
+              "DynamicValues": {
+                "_PointB3Layer": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      138415046
+                    ]
+                  }
+                },
+                "Skill11_DamagePercentage": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      -909740667
+                    ]
+                  }
+                },
+                "Skill11_DamagePercentageAD": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      1326964645
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.HideEntityForCurrentCamera",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.SetEntityPosition",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "PosTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "OffsetX": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "OffsetY": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "OffsetZ": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "YawAngle": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AddModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "ModifierName": {
+                "Value": "MAvatar_Aglaea_00_Skill02_ChangeSkill"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.SetCharacterPartsVisibility",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "AttachPoint": "WeaponA",
+              "ShowPartList": [
+                1,
+                2
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetAttachmentVisibility",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "AttachPoints": [
+                {
+                  "Name": "WeaponB"
+                }
+              ],
+              "Visibility": true
+            },
+            {
+              "$type": "RPG.GameCore.SetCharacterPartsVisibility",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "AttachPoint": "WeaponB",
+              "ShowPartList": [
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "StageAbility_Maze_Aglaea_Modifier"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Avatar_Aglaea_SkillTree02",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": []
+    },
+    {
+      "Modifiers": {},
+      "Name": "Avatar_Aglaea_SkillTree03",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": []
+    }
+  ],
+  "GlobalModifiers": {
+    "MAvatar_Aglaea_Skill02Preshow": {
+      "ModifierAffectedPreshowConfig": {
+        "SkillTypes": [
+          "Skill"
+        ],
+        "TargetType": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "ModifierOwnerEntity"
+        },
+        "ActionDelayPreshowConfig": {
+          "SetDelayValue": {
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        }
+      }
+    },
+    "MAvatar_Aglaea_Skill03Preshow": {
+      "ModifierAffectedPreshowConfig": {
+        "SkillTypes": [
+          "Ultra"
+        ],
+        "TargetType": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "ModifierOwnerEntity"
+        },
+        "ActionDelayPreshowConfig": {
+          "SetDelayValue": {
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        }
+      },
+      "ModifierCreateEntityPreshowConfig": {
+        "SkillTypes": [
+          "Ultra"
+        ],
+        "Condition": {
+          "$type": "RPG.GameCore.ByCompareTargetCount",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterServant"
+          },
+          "AliveOnly": true,
+          "Number": {
+            "FixedValue": {
+              "Value": 0
+            }
+          },
+          "CompareType": "LessEqual"
+        },
+        "ActionDelayPreshowConfig": {
+          "AddDelayRatio": {
+            "FixedValue": {
+              "Value": -1
+            }
+          }
+        },
+        "CharacterType": "Servant",
+        "CharacterID": 11402
+      }
+    },
+    "MAvatar_Aglaea_Skill03_Servant_PointB1": {
+      "OnAbilityPropertyChange": [
+        {
+          "Property": "Speed",
+          "Ranges": [
+            {
+              "OnChange": [
+                {
+                  "$type": "RPG.GameCore.AddModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster + CasterServant"
+                  },
+                  "ModifierName": {
+                    "Value": "MAvatar_Aglaea_Skill03_Servant_PointB1_AddAttack"
+                  },
+                  "IsShowUIMessageOnUpdate": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Property": "SpeedAddedRatio",
+          "Ranges": [
+            {
+              "OnChange": [
+                {
+                  "$type": "RPG.GameCore.AddModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster + CasterServant"
+                  },
+                  "ModifierName": {
+                    "Value": "MAvatar_Aglaea_Skill03_Servant_PointB1_AddAttack"
+                  },
+                  "IsShowUIMessageOnUpdate": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Property": "SpeedDelta",
+          "Ranges": [
+            {
+              "OnChange": [
+                {
+                  "$type": "RPG.GameCore.AddModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster + CasterServant"
+                  },
+                  "ModifierName": {
+                    "Value": "MAvatar_Aglaea_Skill03_Servant_PointB1_AddAttack"
+                  },
+                  "IsShowUIMessageOnUpdate": false
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "_CallbackList": [
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.AddModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster + CasterServant"
+              },
+              "ModifierName": {
+                "Value": "MAvatar_Aglaea_Skill03_Servant_PointB1_AddAttack"
+              },
+              "IsShowUIMessageOnUpdate": false
+            }
+          ]
+        }
+      ],
+      "Stacking": "ReplaceByCaster"
+    },
+    "MAvatar_Aglaea_Skill03_Servant_PointB1_AddAttack": {
+      "_CallbackList": [
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.SetDynamicValueByProperty",
+              "DynamicKey": "_CurrentSpeed",
+              "ReadTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "Value": "Speed"
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicValueByProperty",
+              "DynamicKey": "_CurrentSpeedConvert",
+              "ReadTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "Value": "SpeedConvert"
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByIsTargetValid",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "CasterServant"
+                },
+                "AliveOnly": true
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValueByProperty",
+                  "DynamicKey": "_ServantCurrentSpeed",
+                  "ReadTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "CasterServant"
+                  },
+                  "Value": "Speed"
+                },
+                {
+                  "$type": "RPG.GameCore.SetDynamicValueByProperty",
+                  "DynamicKey": "_ServantCurrentSpeedConvert",
+                  "ReadTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "CasterServant"
+                  },
+                  "Value": "SpeedConvert"
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicValue",
+              "Value": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQABAQMR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    44986865,
+                    -199603962
+                  ]
+                }
+              },
+              "DynamicKey": {
+                "Value": "_CurrentSpeed"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicValue",
+              "Value": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQABAQMR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    1276200804,
+                    -257851181
+                  ]
+                }
+              },
+              "DynamicKey": {
+                "Value": "_ServantCurrentSpeed"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicValue",
+              "Value": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQABAQQBAgEDBAIR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    44986865,
+                    -82305006,
+                    1276200804,
+                    -1594519176
+                  ]
+                }
+              },
+              "DynamicKey": {
+                "Value": "_AttackConvert"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.StackProperty",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "Property": "AttackConvert",
+              "PropertyValue": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    -307139910
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "Stacking": "Replace",
+      "DynamicValues": {
+        "Floats": {
+          "44986865": {},
+          "-199603962": {},
+          "1276200804": {},
+          "-257851181": {},
+          "-307139910": {}
+        }
+      }
+    },
+    "MServant_AglaeaServant_00_SummonerAddSpeed": {
+      "_CallbackList": [
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.SetDynamicValueByModifierValue",
+              "ValueType": "Layer",
+              "Multiplier": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              },
+              "DynamicKey": "_Layer"
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicValue",
+              "Value": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQABAQQR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    1912601768,
+                    1661975812
+                  ]
+                }
+              },
+              "DynamicKey": {
+                "Value": "SpeedAddTotal"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.StackProperty",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "Property": "SpeedAddedRatio",
+              "PropertyValue": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    -1477815290
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "Stacking": "Replace",
+      "DynamicValues": {
+        "Floats": {
+          "1912601768": {},
+          "-1477815290": {}
+        }
+      }
+    },
+    "MAvatar_Aglaea_Skill03_ForbidSkill": {
+      "_CallbackList": [
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.AttachSkillTypeDisable",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "Types": [
+                "Skill"
+              ],
+              "TextmapID": {
+                "Hash": 17470104881555170411
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "MAvatar_Aglaea_00_GoldenSword_Mark": {
+      "BehaviorFlagList": [
+        "RemoveWhenCasterDead"
+      ],
+      "_CallbackList": [
+        {
+          "Event": "OnCreate",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.Retarget",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AllDarkTeamWithAllDarkTeamUnselectable"
+              },
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareTarget",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ParamEntity"
+                },
+                "CompareType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ModifierOwnerEntity"
+                },
+                "Inverse": true
+              },
+              "ByRandom": true,
+              "IncludeLimbo": true,
+              "MaxNumber": {
+                "FixedValue": {
+                  "Value": 10
+                }
+              },
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.RemoveModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ParamEntity"
+                  },
+                  "ModifierName": {
+                    "Value": "MAvatar_Aglaea_00_GoldenSword_Mark"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Event": "OnBeforeBeingHitAll",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByRankActivated",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                },
+                "TriggerKey": {
+                  "Hash": 2089636447
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.ModifyDamageData",
+                  "Defender_AllDamageTypeTakenRatio": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -941578568
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByRankActivated",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                },
+                "TriggerKey": {
+                  "Hash": 2089636447
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.StackStatusDesc",
+                  "TextID": {
+                    "Hash": 12322842105759799268
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Event": "OnAfterBeingAttacked",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareTarget",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ParamEntity"
+                },
+                "CompareType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "CasterServant"
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByIsContainModifier",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "ModifierName": {
+                      "Value": "MServant_AglaeaServant_00_AddSpeed"
+                    },
+                    "AddedOrAlive": true
+                  },
+                  "SuccessTaskList": []
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByRankActivated",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "Caster"
+                    },
+                    "TriggerKey": {
+                      "Hash": 2089636447
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.ModifySPNew",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "AddValue": {
+                        "IsDynamic": true,
+                        "PostfixExpr": {
+                          "OpCodes": "AQAR",
+                          "FixedValues": [],
+                          "DynamicHashes": [
+                            77717678
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareTarget",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "CompareType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "Caster"
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByRankActivated",
+                        "TriggerKey": {
+                          "Hash": 1686351920
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByIsContainModifier",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetAlias",
+                              "Alias": "ParamEntity.GetServant"
+                            },
+                            "ModifierName": {
+                              "Value": "MServant_AglaeaServant_00_AddSpeed"
+                            }
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.SetDynamicValueByCopying",
+                              "FromTargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ParamEntity.GetServant"
+                              },
+                              "FromDynamicKey": {
+                                "Value": "_Layer"
+                              },
+                              "FromModifierName": {
+                                "Value": "MServant_AglaeaServant_00_AddSpeed"
+                              },
+                              "ToTargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ModifierOwnerEntity"
+                              },
+                              "ToDynamicKey": {
+                                "Value": "_Layer"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByRankActivated",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "TriggerKey": {
+                          "Hash": 2089636447
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.ModifySPNew",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "Caster"
+                          },
+                          "AddValue": {
+                            "IsDynamic": true,
+                            "PostfixExpr": {
+                              "OpCodes": "AQAR",
+                              "FixedValues": [],
+                              "DynamicHashes": [
+                                77717678
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                      "Name": "PursuedDamage_PerformanceDelay",
+                      "ParamTarget": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.DamageByAttackProperty",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "AttackProperty": {
+                        "$type": "RPG.GameCore.AttackData",
+                        "DamageType": {
+                          "DamageType": "Thunder"
+                        },
+                        "DamagePercentage": {
+                          "IsDynamic": true,
+                          "PostfixExpr": {
+                            "OpCodes": "AQAR",
+                            "FixedValues": [],
+                            "DynamicHashes": [
+                              1369902933
+                            ]
+                          }
+                        },
+                        "AttackType": "Pursued",
+                        "CustomName": "AglaeaBomb",
+                        "HitAnimation": "Hit",
+                        "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Servant/Eff_Servant_AglaeaServant_00_Passive_Hit.prefab",
+                        "HitEffectHeight": 1.25,
+                        "HitPosHeight": 1
+                      },
+                      "CanTriggerLastKill": true,
+                      "DisplayData": {
+                        "DitherRangeX": 0,
+                        "DitherRangeY": 0,
+                        "AttachPoint": "SelectRoot",
+                        "AdditionalDisplay": {
+                          "UIMessageHeight": {
+                            "FixedValue": {
+                              "Value": 0
+                            }
+                          },
+                          "DitherRangeX": {
+                            "FixedValue": {
+                              "Value": 0.05
+                            }
+                          },
+                          "DitherRangeY": {
+                            "FixedValue": {
+                              "Value": 0.05
+                            }
+                          }
+                        }
+                      },
+                      "PerformanceDelay": {
+                        "IsDynamic": true,
+                        "PostfixExpr": {
+                          "OpCodes": "AQAR",
+                          "FixedValues": [],
+                          "DynamicHashes": [
+                            1854514093
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "Stacking": "Replace",
+      "DynamicValues": {
+        "Floats": {
+          "1912601768": {},
+          "-915026508": {},
+          "61334525": {},
+          "1369902933": {},
+          "2128130574": {},
+          "-2125946860": {}
+        }
+      }
+    },
+    "MAvatar_Aglaea_Passive_SummonCount2": {
+      "_CallbackList": [
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.SetDynamicValue",
+              "Value": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQABAQQR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    -1393510179,
+                    -216142515
+                  ]
+                }
+              },
+              "DynamicKey": {
+                "Value": "MDF_PropertyValue2"
+              }
+            }
+          ]
+        },
+        {
+          "Event": "OnListenCharacterDie",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByTargetEntityType",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "EntityTypeMask": "Servant"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByTargetTeam",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "Team": "TeamLight"
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "Value": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAAAAMR",
+                      "FixedValues": [
+                        {
+                          "Value": 1
+                        }
+                      ],
+                      "DynamicHashes": [
+                        -216142515
+                      ]
+                    }
+                  },
+                  "DynamicKey": {
+                    "Value": "MDF_Count2"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "Value": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQABAQQR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -1393510179,
+                        -216142515
+                      ]
+                    }
+                  },
+                  "DynamicKey": {
+                    "Value": "MDF_PropertyValue2"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Event": "OnListenCharacterCreate",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByTargetEntityType",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "EntityTypeMask": "Servant"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByTargetTeam",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "Team": "TeamLight"
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "Value": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAAAAIR",
+                      "FixedValues": [
+                        {
+                          "Value": 1
+                        }
+                      ],
+                      "DynamicHashes": [
+                        -216142515
+                      ]
+                    }
+                  },
+                  "DynamicKey": {
+                    "Value": "MDF_Count2"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "Value": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQABAQQR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -1393510179,
+                        -216142515
+                      ]
+                    }
+                  },
+                  "DynamicKey": {
+                    "Value": "MDF_PropertyValue2"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Event": "OnListenBattleEventDie",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByTargetTeam",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "Team": "TeamLight"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByIsBattleEventEntity",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "ExpectSubType": "DummyCharacter"
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "Value": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAAAAMR",
+                      "FixedValues": [
+                        {
+                          "Value": 1
+                        }
+                      ],
+                      "DynamicHashes": [
+                        -216142515
+                      ]
+                    }
+                  },
+                  "DynamicKey": {
+                    "Value": "MDF_Count2"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "Value": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQABAQQR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -1393510179,
+                        -216142515
+                      ]
+                    }
+                  },
+                  "DynamicKey": {
+                    "Value": "MDF_PropertyValue2"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "DynamicValues": {
+        "Floats": {
+          "-1393510179": {},
+          "-2125946860": {},
+          "-216142515": {}
+        }
+      }
+    },
+    "MAvatar_Aglaea_Passive_SummonCount": {
+      "_CallbackList": [
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.StackProperty",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "Property": "AttackAddedRatio",
+              "PropertyValue": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    2128130574
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "Stacking": "ReplaceByCaster",
+      "DynamicValues": {
+        "Floats": {
+          "2128130574": {},
+          "-2027709849": {}
+        }
+      }
+    },
+    "MAvatar_Aglaea_00_Skill02_ChangeSkill": {
+      "_CallbackList": [
+        {
+          "Event": "OnDestroy",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.SetControlSkillMapping",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "ControlSkillType": "ControlSkill02",
+              "SkillTriggerKey": "Skill02"
+            },
+            {
+              "$type": "RPG.GameCore.AddModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "ModifierName": {
+                "Value": "MAvatar_Aglaea_Skill02Preshow"
+              }
+            }
+          ]
+        },
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.SetControlSkillMapping",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "ControlSkillType": "ControlSkill02",
+              "SkillTriggerKey": "Skill21"
+            },
+            {
+              "$type": "RPG.GameCore.RemoveModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "ModifierName": {
+                "Value": "MAvatar_Aglaea_Skill02Preshow"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "MAvatar_Aglaea_HPAddedRatio": {
+      "MaxLayer": 3,
+      "LayerAddWhenStack": {
+        "FixedValue": {
+          "Value": 1
+        }
+      },
+      "_CallbackList": [
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.SetDynamicValueByModifierValue",
+              "ValueType": "Layer",
+              "Multiplier": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              },
+              "DynamicKey": "_Layer"
+            },
+            {
+              "$type": "RPG.GameCore.StackProperty",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "Property": "HPAddedRatio",
+              "PropertyValue": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AAABAAQR",
+                  "FixedValues": [
+                    {
+                      "Value": 0.5
+                    }
+                  ],
+                  "DynamicHashes": [
+                    1912601768
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "Stacking": "ReplaceByCaster",
+      "DynamicValues": {
+        "Floats": {
+          "1912601768": {}
+        }
+      }
+    },
+    "MAvatar_Aglaea_SummonSpeedUp": {
+      "BehaviorFlagList": [
+        "STAT_SpeedUp"
+      ],
+      "_CallbackList": [
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.SetDynamicValueByModifierValue",
+              "ValueType": "Layer",
+              "Multiplier": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              },
+              "DynamicKey": "MDF_Layer"
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicValue",
+              "Value": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQABAQQR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    1662446059,
+                    -992855710
+                  ]
+                }
+              },
+              "DynamicKey": {
+                "Value": "MDF_PropertyValue"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.StackProperty",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "Property": "SpeedAddedRatio",
+              "PropertyValue": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    2128130574
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "Stacking": "ReplaceByCaster",
+      "DynamicValues": {
+        "Floats": {
+          "2128130574": {},
+          "1662446059": {},
+          "-992855710": {}
+        }
+      }
+    },
+    "MAvatar_Aglaea_SummonSpeedUp_Sub": {
+      "_CallbackList": [
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.SetDynamicValueByModifierValue",
+              "ValueType": "Layer",
+              "Multiplier": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              },
+              "DynamicKey": "MDF_Layer"
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicValue",
+              "Value": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQABAQQR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    1662446059,
+                    -992855710
+                  ]
+                }
+              },
+              "DynamicKey": {
+                "Value": "MDF_PropertyValue"
+              }
+            }
+          ]
+        }
+      ],
+      "Stacking": "ReplaceByCaster",
+      "DynamicValues": {
+        "Floats": {
+          "2128130574": {},
+          "1662446059": {},
+          "-992855710": {}
+        }
+      }
+    },
+    "MAvatar_Aglaea_Skill03": {
+      "UIConfig": {
+        "ModifierUIPriority": "HardControl"
+      },
+      "_CallbackList": [
+        {
+          "Event": "OnDestroy",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.RemoveModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster + CasterServant"
+              },
+              "ModifierName": {
+                "Value": "MAvatar_Aglaea_Skill03_Servant_PointB1"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.RemoveModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster + CasterServant"
+              },
+              "ModifierName": {
+                "Value": "MAvatar_Aglaea_Skill03_Servant_PointB1_AddAttack"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.RemoveModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster + CasterServant"
+              },
+              "ModifierName": {
+                "Value": "MAvatar_Aglaea_Rank06_Effect"
+              }
+            }
+          ]
+        },
+        {
+          "Event": "OnListenTurnEnd",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByIsContainModifier",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "Caster"
+                    },
+                    "ModifierName": {
+                      "Value": "MAvatar_Aglaea_Skill03"
+                    }
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                    "DynamicKey": {
+                      "Value": "_Energy"
+                    },
+                    "CompareType": "GreaterEqual",
+                    "CompareValue": {
+                      "IsDynamic": true,
+                      "PostfixExpr": {
+                        "OpCodes": "AAAR",
+                        "FixedValues": [
+                          {
+                            "Value": 1
+                          }
+                        ],
+                        "DynamicHashes": []
+                      }
+                    }
+                  }
+                ]
+              },
+              "SuccessTaskList": [],
+              "FailedTaskList": []
+            }
+          ]
+        },
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.RemoveModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "ModifierName": {
+                "Value": "MServant_AglaeaServant_00_SummonerAddSpeed"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByIsContainModifier",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "CasterServant"
+                },
+                "ModifierName": {
+                  "Value": "MServant_AglaeaServant_00_AddSpeed"
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValueByCopying",
+                  "FromTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "CasterServant"
+                  },
+                  "FromDynamicKey": {
+                    "Value": "_Layer"
+                  },
+                  "FromModifierName": {
+                    "Value": "MServant_AglaeaServant_00_AddSpeed"
+                  },
+                  "ToTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "ToDynamicKey": {
+                    "Value": "_SpeedLayer"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.AddModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "ModifierName": {
+                    "Value": "MServant_AglaeaServant_00_SummonerAddSpeed"
+                  },
+                  "LayerAddWhenStack": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        790820615
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.ShowBattleSkillEnhanced",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "IsShow": true
+            },
+            {
+              "$type": "RPG.GameCore.ChangeCharacterUIDisplay",
+              "SideHeadIconPath": "SpriteOutput/AvatarIconTeam/1402D.png"
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicValue",
+              "Value": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              },
+              "DynamicKey": {
+                "Value": "_EnergyReduce"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.BySkillPointActivated",
+                "PointTriggerKey": "PointB1"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AddModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster + CasterServant"
+                  },
+                  "ModifierName": {
+                    "Value": "MAvatar_Aglaea_Skill03_Servant_PointB1"
+                  },
+                  "IsShowUIMessageOnUpdate": false
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.ModifierAttachEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Weapon.prefab",
+              "MinMutexTime": -1,
+              "MutexType": "Entity"
+            },
+            {
+              "$type": "RPG.GameCore.SetCharacterPartsVisibility",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AttachPoint": "EffectWeapon",
+              "ShowPartList": [
+                1,
+                3
+              ],
+              "SyncEffect": true
+            },
+            {
+              "$type": "RPG.GameCore.SetCharacterPartsVisibility",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "AttachPoint": "WeaponA",
+              "ShowPartList": [
+                1,
+                3
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetAttachmentVisibility",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "AttachPoints": [
+                {
+                  "Name": "WeaponB"
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicValue",
+              "ContextScope": "AITag",
+              "Value": {
+                "FixedValue": {
+                  "Value": 2
+                }
+              },
+              "DynamicKey": {
+                "Value": "DamageCarry"
+              }
+            }
+          ]
+        },
+        {
+          "Event": "OnListenAfterAttackEnd",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByTargetTeam",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "Team": "TeamLight"
+                  }
+                ]
+              },
+              "SuccessTaskList": []
+            }
+          ]
+        }
+      ],
+      "Stacking": "ReplaceByCaster",
+      "DynamicValues": {
+        "Floats": {
+          "-978103959": {},
+          "401724795": {},
+          "790820615": {}
+        }
+      }
+    },
+    "MAvatar_Aglaea_Skill03_Sub": {
+      "_CallbackList": [
+        {
+          "Event": "OnDestroy",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.SetDynamicValue",
+              "Value": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "DynamicKey": {
+                "Value": "_EnergyReduce"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.ShowBattleSkillEnhanced",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.SetControlSkillMapping",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "SkillTriggerKey": "Skill01"
+            },
+            {
+              "$type": "RPG.GameCore.SetControlSkillMapping",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "SkillTriggerKey": "Skill01"
+            },
+            {
+              "$type": "RPG.GameCore.SetCharacterPartsVisibility",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AttachPoint": "EffectWeapon",
+              "ShowPartList": [
+                1,
+                2
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetCharacterPartsVisibility",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "AttachPoint": "WeaponA",
+              "ShowPartList": [
+                1,
+                2
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetAttachmentVisibility",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "AttachPoints": [
+                {
+                  "Name": "WeaponB"
+                }
+              ],
+              "Visibility": true
+            },
+            {
+              "$type": "RPG.GameCore.SetCharacterPartsVisibility",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "AttachPoint": "WeaponB",
+              "ShowPartList": [
+                1
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.RemoveModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "ModifierName": {
+                "Value": "MServant_Aglaea_Skill03_Summon"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.RemoveModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "ModifierName": {
+                "Value": "MAvatar_Aglaea_Skill03_ForbidSkill"
+              }
+            }
+          ]
+        },
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.AddModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "ModifierName": {
+                "Value": "MServant_Aglaea_Skill03_Summon"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.SetControlSkillMapping",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "SkillTriggerKey": "Skill11"
+            }
+          ]
+        },
+        {
+          "Event": "OnModifierAdd",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByContainBehaviorFlag",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                },
+                "Flag": "Charm"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetControlSkillMapping",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "SkillTriggerKey": "Skill01"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Event": "OnModifierRemove",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByContainBehaviorFlag",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                },
+                "Flag": "Charm",
+                "Inverse": true
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetControlSkillMapping",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "SkillTriggerKey": "Skill11"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "Stacking": "ReplaceByCaster",
+      "DynamicValues": {
+        "Floats": {
+          "-978103959": {},
+          "401724795": {}
+        }
+      }
+    },
+    "MAvatar_Aglaea_Skill11_Mark": {
+      "Stacking": "ReplaceByCaster"
+    },
+    "MServant_Aglaea_Skill11_Mark": {
+      "_CallbackList": [
+        {
+          "Event": "OnInsertAbilityFinish",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.RemoveSelfModifier"
+            }
+          ]
+        }
+      ],
+      "Stacking": "ReplaceByCaster"
+    },
+    "MAvatar_Aglaea_Skill03_PointB2": {
+      "_CallbackList": [
+        {
+          "Event": "OnStack",
+          "CallbackConfig": []
+        }
+      ]
+    },
+    "MAvatar_Aglaea_Skill03_PointB3": {
+      "_CallbackList": [
+        {
+          "Event": "OnTriggerDeath",
+          "CallbackConfig": []
+        },
+        {
+          "Event": "OnAfterAttackEnd",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.RemoveModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterServant"
+              },
+              "ModifierName": {
+                "Value": "MAvatar_Aglaea_Skill03_Servant_PointB3"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.RemoveSelfModifier"
+            }
+          ]
+        }
+      ],
+      "Stacking": "ReplaceByCaster"
+    },
+    "MAvatar_Aglaea_Skill03_Servant_PointB3": {
+      "_CallbackList": [
+        {
+          "Event": "OnTriggerDeath",
+          "CallbackConfig": []
+        }
+      ],
+      "Stacking": "ReplaceByCaster",
+      "DynamicValues": {
+        "Floats": {
+          "1398380315": {}
+        }
+      }
+    },
+    "MServant_Aglaea_Skill03_Summon": {
+      "BehaviorFlagList": [
+        "Endurance"
+      ],
+      "_CallbackList": [
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.SetDynamicValue",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "ContextScope": "AITag",
+              "Value": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "DynamicKey": {
+                "Value": "DamageCarry"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.ModifierAttachEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Aglaea_00/Eff_Avatar_Aglaea_00_Weapon.prefab",
+              "AttachPoint": "EffectWeapon",
+              "MinMutexTime": -1,
+              "MutexType": "Entity"
+            }
+          ]
+        }
+      ],
+      "Stacking": "ReplaceByCaster",
+      "DynamicValues": {
+        "Floats": {
+          "-992855710": {}
+        }
+      }
+    },
+    "MAvatar_Aglaea_Rank02_Listen": {
+      "BehaviorFlagList": [
+        "ListenBattleEventSkill"
+      ],
+      "_CallbackList": [
+        {
+          "Event": "OnListenBeforeSkillUse",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByTargetListIntersects",
+                "FirstTargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster + CasterServant"
+                },
+                "SecondTargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ParamEntity"
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AddModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster + CasterServant"
+                  },
+                  "ModifierName": {
+                    "Value": "MAvatar_Aglaea_Rank02_Effect"
+                  },
+                  "MaxLayer": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -481881088
+                      ]
+                    }
+                  },
+                  "LayerAddWhenStack": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  },
+                  "DynamicValues": {
+                    "_IgnoreDefenceRatio": {
+                      "IsDynamic": true,
+                      "PostfixExpr": {
+                        "OpCodes": "AQAR",
+                        "FixedValues": [],
+                        "DynamicHashes": [
+                          191785981
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.SetDynamicValueByModifierValue",
+                  "ModifierName": "MAvatar_Aglaea_Rank02_Effect",
+                  "ValueType": "Layer",
+                  "Multiplier": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  },
+                  "DynamicKey": "ModifierLayers"
+                },
+                {
+                  "$type": "RPG.GameCore.ShowAvatarHUDSpecialEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "EffectPrefabPath": "UI/Battle/Widget/TeamInfoStatusEff/TeamInfoStatusHint_1402.prefab",
+                  "UITextNodes": [
+                    {
+                      "TextPath": "Root/Icon/TextPanel/Text",
+                      "TextDynamicValue": {
+                        "IsDynamic": true,
+                        "PostfixExpr": {
+                          "OpCodes": "AQAR",
+                          "FixedValues": [],
+                          "DynamicHashes": [
+                            1458882163
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.RemoveModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster + CasterServant"
+                  },
+                  "ModifierName": {
+                    "Value": "MAvatar_Aglaea_Rank02_Effect"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Event": "OnListenInsertAbilityStart",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByTargetListIntersects",
+                "FirstTargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster + CasterServant"
+                },
+                "FirstTargetAliveOnly": false,
+                "SecondTargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ParamEntity"
+                },
+                "SecondTargetAliveOnly": false
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AddModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster + CasterServant"
+                  },
+                  "AliveOnly": false,
+                  "ModifierName": {
+                    "Value": "MAvatar_Aglaea_Rank02_Effect"
+                  },
+                  "MaxLayer": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -481881088
+                      ]
+                    }
+                  },
+                  "LayerAddWhenStack": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  },
+                  "DynamicValues": {
+                    "_IgnoreDefenceRatio": {
+                      "IsDynamic": true,
+                      "PostfixExpr": {
+                        "OpCodes": "AQAR",
+                        "FixedValues": [],
+                        "DynamicHashes": [
+                          191785981
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.SetDynamicValueByModifierValue",
+                  "ModifierName": "MAvatar_Aglaea_Rank02_Effect",
+                  "ValueType": "Layer",
+                  "Multiplier": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  },
+                  "DynamicKey": "ModifierLayers"
+                },
+                {
+                  "$type": "RPG.GameCore.ShowAvatarHUDSpecialEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "EffectPrefabPath": "UI/Battle/Widget/TeamInfoStatusEff/TeamInfoStatusHint_1402.prefab",
+                  "UITextNodes": [
+                    {
+                      "TextPath": "Root/Icon/TextPanel/Text",
+                      "TextDynamicValue": {
+                        "IsDynamic": true,
+                        "PostfixExpr": {
+                          "OpCodes": "AQAR",
+                          "FixedValues": [],
+                          "DynamicHashes": [
+                            1458882163
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "Stacking": "ReplaceByCaster",
+      "DynamicValues": {
+        "Floats": {
+          "1458882163": {}
+        }
+      }
+    },
+    "MAvatar_Aglaea_Rank02_Effect": {
+      "_CallbackList": [
+        {
+          "Event": "OnBeforeHitAll",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.ModifyDamageData",
+              "Defender_DefenceAddedRatio": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AAAOAQAEEQ==",
+                  "FixedValues": [
+                    {
+                      "Value": 1
+                    }
+                  ],
+                  "DynamicHashes": [
+                    -194503132
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.SetDynamicValueByModifierValue",
+              "ValueType": "Layer",
+              "Multiplier": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              },
+              "DynamicKey": "_Layer"
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicValue",
+              "Value": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQABAQQR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    1912601768,
+                    -606660942
+                  ]
+                }
+              },
+              "DynamicKey": {
+                "Value": "_IgnoreDefenceRatioTotal"
+              }
+            }
+          ]
+        }
+      ],
+      "Stacking": "Replace",
+      "DynamicValues": {
+        "Floats": {
+          "-606660942": {},
+          "1912601768": {},
+          "-194503132": {}
+        }
+      }
+    },
+    "MAvatar_Aglaea_Rank06_Effect": {
+      "OnAbilityPropertyChange": [
+        {
+          "Property": "Speed",
+          "Ranges": [
+            {
+              "OnChange": [
+                {
+                  "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                  "Name": "Aglaea_Rank06_SpeedValue"
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                    "DynamicKey": {
+                      "Value": "MDF_PropertyValue2"
+                    },
+                    "CompareType": "Greater",
+                    "CompareValue": {
+                      "FixedValue": {
+                        "Value": 0
+                      }
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.StackStatusDesc",
+                      "TextID": {
+                        "Hash": 9967360353678816292
+                      }
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.StackStatusDesc",
+                      "TextID": {
+                        "Hash": 3950043896593563450
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Property": "SpeedAddedRatio",
+          "Ranges": [
+            {
+              "OnChange": [
+                {
+                  "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                  "Name": "Aglaea_Rank06_SpeedValue"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Property": "SpeedDelta",
+          "Ranges": [
+            {
+              "OnChange": [
+                {
+                  "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                  "Name": "Aglaea_Rank06_SpeedValue"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "_CallbackList": [
+        {
+          "Event": "OnBeforeHitAll",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareDamageTag",
+                "DamageTagList": [
+                  {
+                    "EnumIndex": 3,
+                    "Value": 40
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                  "Name": "Aglaea_Rank06_SpeedValue"
+                },
+                {
+                  "$type": "RPG.GameCore.ModifyDamageData",
+                  "Attacker_AllDamageTypeAddedRatio": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -2125946860
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.StackProperty",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "Property": "ThunderPenetrate",
+              "PropertyValue": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    2128130574
+                  ]
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.IncludeTaskListTemplate",
+              "Name": "Aglaea_Rank06_SpeedValue"
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareDynamicValue",
+                "DynamicKey": {
+                  "Value": "MDF_PropertyValue2"
+                },
+                "CompareType": "Greater",
+                "CompareValue": {
+                  "FixedValue": {
+                    "Value": 0
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.StackStatusDesc",
+                  "TextID": {
+                    "Hash": 9967360353678816292
+                  }
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.StackStatusDesc",
+                  "TextID": {
+                    "Hash": 3950043896593563450
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "DynamicValues": {
+        "Floats": {
+          "2128130574": {},
+          "-2125946860": {}
+        }
+      }
+    }
+  },
+  "GlobalTemplates": [
+    {
+      "Name": "Aglaea_Rank06_SpeedValue",
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareAbilityProperty",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "ModifierOwnerEntity"
+            },
+            "Property": "Speed",
+            "CompareType": "Greater",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 320
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.SetModifierDynamicValue",
+              "ModifierName": {
+                "Value": "MAvatar_Aglaea_Rank06_Effect"
+              },
+              "DynamicKey": {
+                "Value": "MDF_PropertyValue2"
+              },
+              "NewValue": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    391626798
+                  ]
+                }
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareAbilityProperty",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ModifierOwnerEntity"
+                },
+                "Property": "Speed",
+                "CompareType": "Greater",
+                "CompareValue": {
+                  "FixedValue": {
+                    "Value": 240
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetModifierDynamicValue",
+                  "ModifierName": {
+                    "Value": "MAvatar_Aglaea_Rank06_Effect"
+                  },
+                  "DynamicKey": {
+                    "Value": "MDF_PropertyValue2"
+                  },
+                  "NewValue": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -1512758504
+                      ]
+                    }
+                  }
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareAbilityProperty",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "Property": "Speed",
+                    "CompareType": "Greater",
+                    "CompareValue": {
+                      "FixedValue": {
+                        "Value": 160
+                      }
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetModifierDynamicValue",
+                      "ModifierName": {
+                        "Value": "MAvatar_Aglaea_Rank06_Effect"
+                      },
+                      "DynamicKey": {
+                        "Value": "MDF_PropertyValue2"
+                      },
+                      "NewValue": {
+                        "IsDynamic": true,
+                        "PostfixExpr": {
+                          "OpCodes": "AQAR",
+                          "FixedValues": [],
+                          "DynamicHashes": [
+                            9133058
+                          ]
+                        }
+                      }
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetModifierDynamicValue",
+                      "ModifierName": {
+                        "Value": "MAvatar_Aglaea_Rank06_Effect"
+                      },
+                      "DynamicKey": {
+                        "Value": "MDF_PropertyValue2"
+                      },
+                      "NewValue": {
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "GlobalTargetAlias": {
+    "Aglaea_BattleEventEntity": {
+      "$type": "RPG.GameCore.TargetSequence",
+      "Sequence": [
+        {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "BattleEventEntityList"
+        },
+        {
+          "$type": "RPG.GameCore.TargetFilter",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByIsContainModifier",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "ParamEntity"
+            },
+            "ModifierName": {
+              "Value": "MWAvatar_Aglaea_Summon_Passive"
+            }
+          }
+        }
+      ]
+    },
+    "AglaeaServantEntity": {
+      "$type": "RPG.GameCore.TargetConcat",
+      "Targets": [
+        {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "CasterServant"
+        }
+      ]
+    },
+    "CasterWithAglaeaServantEntity": {
+      "$type": "RPG.GameCore.TargetConcat",
+      "Targets": [
+        {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "Caster"
+        },
+        {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "CasterServant"
+        }
+      ]
+    },
+    "CasterWithAglaeaServantEntityWithAllEnemy": {
+      "$type": "RPG.GameCore.TargetConcat",
+      "Targets": [
+        {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "Caster"
+        },
+        {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "AglaeaServantEntity"
+        },
+        {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "AllEnemy"
+        }
+      ]
+    },
+    "CasterWithAglaeaServantEntityWithAbilityTargetAndAdjoinEntity": {
+      "$type": "RPG.GameCore.TargetConcat",
+      "Targets": [
+        {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "Caster"
+        },
+        {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "AglaeaServantEntity"
+        },
+        {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "AbilityTargetAndAdjoinEntity"
+        }
+      ]
+    }
+  }
+}

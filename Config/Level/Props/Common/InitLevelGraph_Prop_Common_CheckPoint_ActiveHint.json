@@ -1,5 +1,28 @@
 {
-  "OnInitSequece": [],
+  "OnInitSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AnimSetParameter",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "ParameterName": "AnchorType",
+          "ParameterType": "Int",
+          "Value": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                -1104357971
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
   "OnStartSequece": [
     {
       "TaskList": [
@@ -9,17 +32,45 @@
           "ToState": "CheckPointEnable",
           "OnChange": [
             {
-              "$type": "RPG.GameCore.PropTriggerAnimState",
-              "AnimStateName": "Activing",
-              "TargetType": {
-                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
-              }
-            },
-            {
-              "$type": "RPG.GameCore.ToastPile",
-              "DescTextID": {
-                "Hash": 558984476
-              }
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefGraphDynamicFloat",
+                "Name": "AnchorType"
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.NumberCaseContainer",
+                  "Case": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.ToastPile",
+                      "DescTextID": {
+                        "Hash": 17452269684094254257
+                      }
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.NumberCaseContainer",
+                  "Case": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  },
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.ToastPile",
+                      "DescTextID": {
+                        "Hash": 3505319184770055508
+                      }
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "TargetType": {
@@ -31,41 +82,118 @@
     {
       "TaskList": [
         {
-          "$type": "RPG.GameCore.PropSetupUITrigger",
-          "ColliderRelativePath": "TriggerUIBtn",
-          "ButtonCallback": [
+          "$type": "RPG.GameCore.AdvSetupButtonListTrigger",
+          "TriggerName": "InteractTrigger",
+          "ButtonsByName": [
+            "Interact"
+          ],
+          "ButtonConfigs": []
+        },
+        {
+          "$type": "RPG.GameCore.GenericSwitchCase",
+          "SwitchRef": {
+            "$type": "RPG.GameCore.SwitchRefPropState"
+          },
+          "Cases": [
             {
-              "$type": "RPG.GameCore.TriggerSpaceAnchorUI",
-              "OnUIEnter": [
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "Case": "CheckPointDisable",
+              "OnSuccess": [
                 {
-                  "$type": "RPG.GameCore.StartPropInteractMode",
-                  "TargetType": {
-                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
-                  },
-                  "Mode": "UseInteractiveProp",
-                  "UseOverrideData": true,
-                  "OverrideData01": {
-                    "AreasPath": "Level/Common_Adventure/UseCheckPoint.prefab",
-                    "AreaName": "UseCheckPoint",
-                    "AnchorName": "UseProp_Camera"
-                  }
+                  "$type": "RPG.GameCore.AdvEnableButtons",
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "Interact"
+                  ]
                 }
               ]
             },
             {
-              "$type": "RPG.GameCore.EndPropInteract"
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "Case": "CheckPointEnable",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.AdvEnableButtons",
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "Interact"
+                  ],
+                  "IsEnable": true
+                }
+              ]
             }
-          ],
-          "InteractAngleRange": 240,
-          "TargetType": {
-            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
-          }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitPropStateChange",
+          "FromAnyState": true,
+          "ToAnyState": true,
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefPropState"
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "CheckPointDisable",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.AdvEnableButtons",
+                      "TriggerName": "InteractTrigger",
+                      "ButtonsByName": [
+                        "Interact"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "CheckPointEnable",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.AdvEnableButtons",
+                      "TriggerName": "InteractTrigger",
+                      "ButtonsByName": [
+                        "Interact"
+                      ],
+                      "IsEnable": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvOnButtonPressed",
+          "ButtonName": "Interact",
+          "OnPressedCallback": [
+            {
+              "$type": "RPG.GameCore.ShowCurrentMapPage"
+            }
+          ]
         }
       ]
     }
   ],
   "ValueSource": {
-    "Values": []
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Key": "AnchorType"
+      }
+    ]
   },
-  "Type": "Entity"
+  "Type": "Entity",
+  "EntityEventList": []
 }

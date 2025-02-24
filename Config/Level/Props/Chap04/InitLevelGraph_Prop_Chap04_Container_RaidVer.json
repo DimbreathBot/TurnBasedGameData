@@ -1,0 +1,185 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AddHitByTimeRewindListener",
+          "Callback": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "DestroyBySelf"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEffectList",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "EffectList": [
+                {
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_TimeRewindBox_01_Breaking01_Lod0.prefab",
+                  "AttachPoint": "EffPoint"
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.TriggerSound",
+              "SoundName": {
+                "Value": "Ev_sfx_amphoreus_woodbox_large_break"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicString",
+              "Name": "isMainBox",
+              "TargetIDs": [],
+              "Value": {
+                "Custom": true,
+                "Key": "isMainBox"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEventV2",
+          "EventName": {
+            "Value": "DestroyBySelf"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PropDestruct",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "IsPreshow": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEventV2",
+          "EventName": {
+            "Value": "SwitchHand_RocketPunchHit"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "DestroyBySelf"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                "Name": "isMainBox",
+                "Value": {
+                  "Value": "1"
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerGroupEvent",
+                  "EventName": {
+                    "Value": "SwitchHand_BoxDestroy"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.GenericSwitchCase",
+          "SwitchRef": {
+            "$type": "RPG.GameCore.SwitchRefPropState"
+          },
+          "Cases": [
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "Case": "Open",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.PropSetVisibility",
+                  "SpecifiedRelativePaths": [],
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.PropEnableCollider",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitPropStateChange",
+          "FromAnyState": true,
+          "ToAnyState": true,
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefPropState"
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "Open",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.PropEnableCollider",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "0",
+        "Key": "isMainBox"
+      }
+    ]
+  },
+  "Type": "Entity",
+  "EntityEventList": [
+    {
+      "Name": "DestroyBySelf"
+    },
+    {
+      "Name": "SwitchHand_RocketPunchHit"
+    }
+  ]
+}

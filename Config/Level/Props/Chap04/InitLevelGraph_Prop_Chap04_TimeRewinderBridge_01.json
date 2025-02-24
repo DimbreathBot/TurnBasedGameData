@@ -1,0 +1,609 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByRegionEraState"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.PropSwitchMaterial",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "MatID": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.PropSwitchMaterial",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "MatID": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupCustomTaskTrigger",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "TriggerName": "ActivateTrigger",
+          "OnEnter": [],
+          "OnExit": [
+            {
+              "$type": "RPG.GameCore.SetTimeRewindEntityDisableControl",
+              "Target": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCheckTimelineEntityState",
+                "Target": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                },
+                "StateName": {
+                  "Value": "L0_Idle"
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                    "Name": "Danger",
+                    "Value": {
+                      "FixedValue": {
+                        "Value": 1
+                      }
+                    },
+                    "CompareType": "Equal"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                      "Name": "Danger",
+                      "TargetIDs": [],
+                      "Value": {
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByTimeRewindTargetMotionPause",
+                        "Target": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        }
+                      },
+                      "SuccessTaskList": [],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                            "Name": "collapse_state",
+                            "Value": {
+                              "FixedValue": {
+                                "Value": 0
+                              }
+                            },
+                            "CompareType": "Equal"
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.SetTimelineEntityState",
+                              "Target": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "Caster"
+                              },
+                              "StateName": {
+                                "Value": "L1_Collapse"
+                              },
+                              "CutIn": false
+                            }
+                          ],
+                          "FailedTaskList": [
+                            {
+                              "$type": "RPG.GameCore.PredicateTaskList",
+                              "Predicate": {
+                                "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                                "Name": "collapse_state",
+                                "Value": {
+                                  "FixedValue": {
+                                    "Value": 1
+                                  }
+                                },
+                                "CompareType": "Equal"
+                              },
+                              "SuccessTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.SetTimelineEntityState",
+                                  "Target": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "Caster"
+                                  },
+                                  "StateName": {
+                                    "Value": "L1_Destroy"
+                                  },
+                                  "CutIn": false
+                                }
+                              ],
+                              "FailedTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.PredicateTaskList",
+                                  "Predicate": {
+                                    "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                                    "Name": "collapse_state",
+                                    "Value": {
+                                      "FixedValue": {
+                                        "Value": 2
+                                      }
+                                    },
+                                    "CompareType": "Equal"
+                                  },
+                                  "SuccessTaskList": [
+                                    {
+                                      "$type": "RPG.GameCore.SetTimelineEntityState",
+                                      "Target": {
+                                        "$type": "RPG.GameCore.TargetAlias",
+                                        "Alias": "Caster"
+                                      },
+                                      "StateName": {
+                                        "Value": "L1_HighCollapse"
+                                      },
+                                      "CutIn": false
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupCustomTaskTrigger",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "TriggerName": "DangerTrigger",
+          "OnEnter": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByTimeRewindTargetMotionPause",
+                "Target": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.ToastPile",
+                  "DescTextID": {
+                    "Hash": 7102577144157730621
+                  }
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                  "Name": "Danger",
+                  "TargetIDs": [],
+                  "Value": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.AnimSetParameter",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "ParameterName": "Danger",
+                  "ParameterType": "Int",
+                  "Value": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerSound",
+                  "SoundName": {
+                    "Value": "Ev_sfx_amphoreus_timeline_bridge_shake"
+                  },
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  }
+                }
+              ]
+            }
+          ],
+          "OnExit": [
+            {
+              "$type": "RPG.GameCore.AnimSetParameter",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "ParameterName": "Danger",
+              "ParameterType": "Int"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.RegionEraStateChangeListener",
+          "OnSwitchToState1": [
+            {
+              "$type": "RPG.GameCore.PropSwitchMaterial",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "MatID": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            }
+          ],
+          "OnSwitchToState2": [
+            {
+              "$type": "RPG.GameCore.PropSwitchMaterial",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "MatID": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.ListenStepOnTarget",
+          "Target": {
+            "$type": "RPG.GameCore.TargetFetchOwnerEntity"
+          },
+          "OnTargetStepOn": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCheckTimelineEntityState",
+                "Target": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                },
+                "StateName": {
+                  "Value": "L0_Idle"
+                }
+              },
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetTimeRewindEntityDisableControl",
+                  "Target": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "Disable": true
+                }
+              ]
+            }
+          ],
+          "OnNoTargetStepOn": [
+            {
+              "$type": "RPG.GameCore.SetTimeRewindEntityDisableControl",
+              "Target": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCheckTimelineEntityState",
+            "Target": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "Caster"
+            },
+            "StateName": {
+              "Value": "L0_Idle"
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.AdvSetColliderLayerState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "Layer": "AirWallColliderLayer"
+            },
+            {
+              "$type": "RPG.GameCore.SetNavMeshState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "Name": {
+                "Value": "State01"
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.AdvSetColliderLayerState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "Layer": "AirWallColliderLayer",
+              "Enable": true
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCheckTimelineEntityState",
+                "Target": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                },
+                "StateName": {
+                  "Value": "L1_Collapse"
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetNavMeshState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "Name": {
+                    "Value": "State02"
+                  }
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCheckTimelineEntityState",
+                    "Target": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "Caster"
+                    },
+                    "StateName": {
+                      "Value": "L1_HighCollapse"
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetNavMeshState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "Name": {
+                        "Value": "State03"
+                      }
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCheckTimelineEntityState",
+                        "Target": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        },
+                        "StateName": {
+                          "Value": "L1_Destroy"
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.SetNavMeshState",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                          },
+                          "Name": {
+                            "Value": "State04"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AddTimelineEntityEventListener",
+          "Target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "StateEnterListener": [
+            {
+              "ListenState": [
+                "L0_Idle"
+              ],
+              "Callback": [
+                {
+                  "$type": "RPG.GameCore.AdvSetColliderLayerState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "Layer": "AirWallColliderLayer"
+                },
+                {
+                  "$type": "RPG.GameCore.SetNavMeshState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "Name": {
+                    "Value": "State01"
+                  }
+                }
+              ]
+            },
+            {
+              "ListenState": [
+                "L1_Collapse"
+              ],
+              "Callback": [
+                {
+                  "$type": "RPG.GameCore.SetNavMeshState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "Name": {
+                    "Value": "State02"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEventV2",
+                  "EventName": {
+                    "Value": "BridgeBreak02"
+                  }
+                }
+              ]
+            },
+            {
+              "ListenState": [
+                "L1_HighCollapse"
+              ],
+              "Callback": [
+                {
+                  "$type": "RPG.GameCore.SetNavMeshState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "Name": {
+                    "Value": "State03"
+                  }
+                }
+              ]
+            },
+            {
+              "ListenState": [
+                "L1_Destroy"
+              ],
+              "Callback": [
+                {
+                  "$type": "RPG.GameCore.SetNavMeshState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "Name": {
+                    "Value": "State04"
+                  }
+                }
+              ]
+            }
+          ],
+          "StateLeaveListener": [
+            {
+              "ListenState": [
+                "L1_Collapse"
+              ],
+              "Callback": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEventV2",
+                  "EventName": {
+                    "Value": "BridgeBreak01"
+                  }
+                }
+              ]
+            },
+            {
+              "ListenState": [
+                "L0_Idle"
+              ],
+              "Callback": [
+                {
+                  "$type": "RPG.GameCore.AdvSetColliderLayerState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "Layer": "AirWallColliderLayer",
+                  "Enable": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Key": "collapse_state"
+      },
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Key": "Danger"
+      }
+    ]
+  },
+  "Type": "Entity",
+  "EntityEventList": []
+}

@@ -1,0 +1,321 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.MemoryVisionPuzzleInit",
+          "SubmissionID": 500040707
+        }
+      ]
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "Puzzle2LG_OnMemoryVisionOpen"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+              "Name": "Loc_EntityAsync",
+              "TargetIDs": [],
+              "Value": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AdvCreateEntityAsync",
+              "InstanceIDList": [],
+              "AdvancedSpawnList": [
+                {
+                  "IsCreateAllEntityType": true
+                },
+                {
+                  "InstanceID": 300003,
+                  "SpawnEntityType": "Prop"
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+              "Name": "Loc_EntityAsync",
+              "TargetIDs": [],
+              "Value": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "Puzzle2LG_OnMemoryVisionClose"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.AdvDestroyEntityAsync",
+              "NeedDisappear": true,
+              "InstanceIDList": [],
+              "AdvancedSpawnList": [
+                {
+                  "IsDestroyAllEntityType": true
+                },
+                {
+                  "InstanceID": 300003,
+                  "SpawnEntityType": "Prop"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvDistrictSetupTrigger",
+          "GroupID": {
+            "FixedValue": {
+              "Value": 679
+            }
+          },
+          "DistrictID": {
+            "FixedValue": {
+              "Value": 1
+            }
+          },
+          "TickInterval": 0.1,
+          "OnExit": [
+            {
+              "$type": "RPG.GameCore.TriggerGroupEvent",
+              "EventName": {
+                "Value": "LG2Puzzle_CloseMemoryVision"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_TriggerClose"
+              },
+              "InstanceID": {
+                "FixedValue": {
+                  "Value": 300001
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "MissionFinish"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerGroupEvent",
+          "EventName": {
+            "Value": "LG2Puzzle_CloseMemoryVision"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerClose"
+          },
+          "InstanceID": {
+            "FixedValue": {
+              "Value": 300001
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.CollectDataConditions",
+          "TaskIDList": [
+            500040714
+          ],
+          "MainMissionIDList": [],
+          "PerformanceIDList": [],
+          "PerformanceIDDsList": [],
+          "CustomValueMainMissionIDList": []
+        },
+        {
+          "$type": "RPG.GameCore.AdvSetupCustomTaskTrigger",
+          "TargetType": {
+            "$type": "RPG.GameCore.GroupFetchLocalTarget",
+            "TargetType": "Prop",
+            "Targets": [
+              300002
+            ]
+          },
+          "TriggerName": "MissionTrigger",
+          "OnEnter": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareSubMissionState",
+                "SubMissionID": 500040714,
+                "SubMissionState": "Started"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PlayMissionTalk",
+                  "SimpleTalkList": [
+                    {
+                      "TalkSentenceID": 500047601,
+                      "ProtectTime": 2
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.ClientFinishMission",
+                  "SubmissionID": 500040714
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitSubMissionStateChange",
+          "SubMissions": [
+            500040714
+          ],
+          "State": "Finish",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.AdvDestroyGroupEntity",
+              "InstanceIDList": [
+                300002
+              ]
+            }
+          ],
+          "TriggerOnMissionInit": false
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.CollectDataConditions",
+          "TaskIDList": [
+            500040714
+          ],
+          "MainMissionIDList": [],
+          "PerformanceIDList": [],
+          "PerformanceIDDsList": [],
+          "CustomValueMainMissionIDList": []
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareSubMissionState",
+            "SubMissionID": 500040714,
+            "SubMissionState": "Finish"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.AdvDestroyGroupEntity",
+              "InstanceIDList": [
+                300002
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGraphDynamicValueChange",
+          "Name": "Loc_EntityAsync",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefGraphDynamicFloat",
+                "Name": "Loc_EntityAsync"
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.NumberCaseContainer",
+                  "Case": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.TriggerEntityEvent",
+                      "EventName": {
+                        "Value": "Clt_TriggerDisableInteract"
+                      },
+                      "InstanceID": {
+                        "FixedValue": {
+                          "Value": 300001
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.NumberCaseContainer",
+                  "Case": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  },
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.TriggerEntityEvent",
+                      "EventName": {
+                        "Value": "Clt_TriggerEnableInteract"
+                      },
+                      "InstanceID": {
+                        "FixedValue": {
+                          "Value": 300001
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Value": 1,
+        "Key": "Loc_EntityAsync"
+      }
+    ]
+  },
+  "Type": "Group",
+  "EntityEventList": []
+}

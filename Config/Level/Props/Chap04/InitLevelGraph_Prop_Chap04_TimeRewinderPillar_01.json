@@ -1,0 +1,207 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": []
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEventV2",
+          "EventName": {
+            "Value": "Clt_Break"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.SetTimelineEntityState",
+              "Target": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "StateName": {
+                "Value": "L1_Break"
+              },
+              "CutIn": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AddTimelineEntityEventListener",
+          "Target": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "StateEnterListener": [
+            {
+              "ListenState": [
+                "L0_Idle"
+              ],
+              "Callback": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                    "Name": "isStable",
+                    "Value": {
+                      "FixedValue": {
+                        "Value": 1
+                      }
+                    },
+                    "CompareType": "Equal"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetTimelineEntityState",
+                      "Target": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "StateName": {
+                        "Value": "L1_Break"
+                      },
+                      "CutIn": false
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "StateLeaveListener": [],
+          "StateListener": [],
+          "OnEndControlEntity": []
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEventV2",
+          "EventName": {
+            "Value": "Clt_TriggerOpen"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareEntityAuthoritySide"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvClientChangePropState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "ToState": "Open"
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PropReqInteract",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "InteractID": {
+                    "FixedValue": {
+                      "Value": 1010
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+            "Name": "isStable",
+            "Value": {
+              "FixedValue": {
+                "Value": 1
+              }
+            },
+            "CompareType": "Equal"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerEffectList",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "EffectList": [
+                {
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_VirusClamp_01_Clamp02_Lod0.prefab",
+                  "AttachPoint": "Root",
+                  "Scale": {
+                    "X": 3.5,
+                    "Y": 5,
+                    "Z": 3.5
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetTimelineEntityState",
+              "Target": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "StateName": {
+                "Value": "L1_Break"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitServerTimelineStateChange"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupCustomTaskTrigger",
+          "TriggerName": "Die",
+          "OnEnter": [
+            {
+              "$type": "RPG.GameCore.SetPlayerMotionSync"
+            }
+          ],
+          "OnExit": [
+            {
+              "$type": "RPG.GameCore.SetPlayerMotionSync",
+              "Enable": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Key": "isStable"
+      }
+    ]
+  },
+  "Type": "Entity",
+  "EntityEventList": [
+    {
+      "Name": "Clt_Break"
+    },
+    {
+      "Name": "Clt_TriggerOpen"
+    }
+  ]
+}

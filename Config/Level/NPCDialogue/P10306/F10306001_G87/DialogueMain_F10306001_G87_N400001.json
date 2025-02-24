@@ -1,0 +1,192 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.CollectDataConditions",
+          "TaskIDList": [
+            802611006,
+            802610503,
+            802612003
+          ],
+          "MainMissionIDList": [],
+          "PerformanceIDList": [],
+          "PerformanceIDDsList": [],
+          "CustomValueMainMissionIDList": []
+        },
+        {
+          "$type": "RPG.GameCore.SwitchCase",
+          "TaskList": [
+            {
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareSubMissionState",
+                "SubMissionID": 802611006,
+                "SubMissionState": "Started"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerPerformance",
+                  "ValueSource": {},
+                  "PerformanceType": "E",
+                  "PerformanceID": 802611004,
+                  "MaskConfig": {}
+                },
+                {
+                  "$type": "RPG.GameCore.ClientFinishMission",
+                  "SubmissionID": 802611006
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerGroupEvent",
+                  "EventName": {
+                    "Value": "802611006FinishedOpenMainEntranceUI"
+                  }
+                }
+              ]
+            },
+            {
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareSubMissionState",
+                "SubMissionID": 802612003,
+                "SubMissionState": "Started"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerPerformance",
+                  "ValueSource": {},
+                  "PerformanceType": "E",
+                  "PerformanceID": 802612001,
+                  "MaskConfig": {}
+                },
+                {
+                  "$type": "RPG.GameCore.ClientFinishMission",
+                  "SubmissionID": 802612003
+                },
+                {
+                  "$type": "RPG.GameCore.FinishLevelGraph"
+                }
+              ]
+            },
+            {
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareSubMissionState",
+                "SubMissionID": 802610503,
+                "SubMissionState": "Finish"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerPerformance",
+                  "ValueSource": {},
+                  "PerformanceType": "E",
+                  "PerformanceID": 802610239,
+                  "MaskConfig": {}
+                },
+                {
+                  "$type": "RPG.GameCore.FinishLevelGraph"
+                }
+              ]
+            }
+          ],
+          "DefaultTask": [
+            {
+              "$type": "RPG.GameCore.TriggerPerformance",
+              "ValueSource": {},
+              "PerformanceType": "E",
+              "PerformanceID": 802610224,
+              "MaskConfig": {}
+            },
+            {
+              "$type": "RPG.GameCore.FinishLevelGraph"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "802611006FinishedOpenMainEntranceUI"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.ShowTransitionLoadingUI",
+              "Name": "Ui.MusicRhythm.MusicRhythmTransitionDialog"
+            },
+            {
+              "$type": "RPG.GameCore.ShowUI",
+              "Name": "Ui.MusicRhythm.MusicRhythmMainEntrancePage",
+              "WaitForExit": true,
+              "OnUIEnter": [
+                {
+                  "$type": "RPG.GameCore.ExitTransitionLoadingUI"
+                },
+                {
+                  "$type": "RPG.GameCore.BlockInputController",
+                  "Enable": true,
+                  "ActionNameList": []
+                },
+                {
+                  "$type": "RPG.GameCore.SetLocalPlayerDitherAlpha"
+                },
+                {
+                  "$type": "RPG.GameCore.LockPlayerControl"
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerGroupEvent",
+                  "EventName": {
+                    "Value": "802611006Cam"
+                  }
+                }
+              ],
+              "OnUIExitImmediately": [
+                {
+                  "$type": "RPG.GameCore.SetLocalPlayerDitherAlpha",
+                  "DitherAlpha": 1
+                },
+                {
+                  "$type": "RPG.GameCore.UnLockPlayerControl"
+                },
+                {
+                  "$type": "RPG.GameCore.BlockInputController",
+                  "ActionNameList": []
+                },
+                {
+                  "$type": "RPG.GameCore.ActiveVirtualCamera",
+                  "AreaName": "LevelArea_P10306_F10306001_G87",
+                  "AnchorName": "cam01",
+                  "IsActive": false,
+                  "DynamicParams": {},
+                  "ImmediatelyRefresh": true
+                },
+                {
+                  "$type": "RPG.GameCore.FinishLevelGraph"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "802611006Cam"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.ActiveVirtualCamera",
+              "AreaName": "LevelArea_P10306_F10306001_G87",
+              "AnchorName": "cam01",
+              "DynamicParams": {},
+              "EnableCameraProtectAfterBlendOut": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

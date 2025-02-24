@@ -1,0 +1,140 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": []
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareGroupState",
+            "EquationType": "Equal"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.AdvCreateGroupEntity",
+              "InstanceIDList": [
+                300001,
+                300002,
+                300004
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.BindPropsCablelines",
+              "StartPropInstanceID": 300001,
+              "EndPropInstanceID": 300002,
+              "LinePropInstanceID": 300004,
+              "LineEffectPath": {
+                "Value": "Gameplays/OraclePuzzle/Lines/OracleLine_41401008_G5.prefab"
+              },
+              "MoveEffectPath": {
+                "Value": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_OracleMachine_01_Ball_Lod0.prefab"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300002
+                ]
+              },
+              "Flags": [],
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_OracleMachine_01_Hint_Lod0.prefab",
+              "AttachPoint": "Root",
+              "Scale": {
+                "X": 0.6,
+                "Y": 0.4,
+                "Z": 0.6
+              },
+              "SubObjectModifyDataList": []
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGroupState",
+                "EquationType": "Equal",
+                "Value": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "OraclePuzzleFinish"
+          },
+          "OnEvent": []
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEventV2",
+          "EventName": {
+            "Value": "OraclePuzzle_Finish1"
+          },
+          "OnEvent": [],
+          "TargetType": {
+            "$type": "RPG.GameCore.GroupFetchLocalTarget",
+            "TargetType": "Prop",
+            "Targets": [
+              300001
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitServerGroupStateChange"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "OraclePuzzleEndLinePerform"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.SetFloorCustomFloat",
+              "Name": {
+                "Value": "FCV_OracleMachine_Door_1"
+              },
+              "Value": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              },
+              "ExtraInfo": {
+                "Lock": true,
+                "Source": "Performance",
+                "RecoverWhenUnLock": true
+              }
+            },
+            {
+              "$type": "RPG.GameCore.RequestGroupStateChange",
+              "TargetState": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Type": "Group"
+}

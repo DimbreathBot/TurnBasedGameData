@@ -1,0 +1,331 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.GenericSwitchCase",
+          "SwitchRef": {
+            "$type": "RPG.GameCore.SwitchRefPropState"
+          },
+          "Cases": [
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.TriggerEffectList",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "EffectList": [
+                    {
+                      "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_BlockLine_01_Idle_Lod0.prefab",
+                      "PositionOffset": {
+                        "Y": 1.13
+                      }
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.AdvSetColliderGroupState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "GroupName": "Closed"
+                },
+                {
+                  "$type": "RPG.GameCore.SetNavMeshState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "Name": {
+                    "Value": "Closed"
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "Case": "Open",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.AdvSetColliderGroupState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "GroupName": "Open"
+                },
+                {
+                  "$type": "RPG.GameCore.SetNavMeshState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "Name": {
+                    "Value": "Open"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "ToState": "Open",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.RemoveEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_BlockLine_01_Idle_Lod0.prefab",
+              "Flags": []
+            },
+            {
+              "$type": "RPG.GameCore.AdvSetColliderGroupState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "GroupName": "Open"
+            },
+            {
+              "$type": "RPG.GameCore.SetNavMeshState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "Name": {
+                "Value": "Open"
+              }
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "FromState": "Open",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEffectList",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "EffectList": [
+                {
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_BlockLine_01_Idle_Lod0.prefab",
+                  "PositionOffset": {
+                    "Y": 1.13
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.AdvSetColliderGroupState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "GroupName": "Closed"
+            },
+            {
+              "$type": "RPG.GameCore.SetNavMeshState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "Name": {
+                "Value": "Closed"
+              }
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerOpen"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareEntityAuthoritySide"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvClientChangePropState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "ToState": "Open"
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PropReqInteract",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "InteractID": {
+                    "FixedValue": {
+                      "Value": 1010
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "InstanceID": {
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerClose"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareEntityAuthoritySide"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvClientChangePropState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "FromState": "Open"
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PropReqInteract",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "InteractID": {
+                    "FixedValue": {
+                      "Value": 1100
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "InstanceID": {
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitEntityServerEvent"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitEntityServerEvent"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerToggle"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefPropState"
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.AdvClientChangePropState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "ToState": "Open"
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "Open",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.AdvClientChangePropState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "FromState": "Open"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "InstanceID": {
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": []
+  },
+  "Type": "Entity",
+  "EntityEventList": [
+    {
+      "Name": "Clt_TriggerClose"
+    },
+    {
+      "Name": "Clt_TriggerOpen"
+    },
+    {
+      "Name": "Srv_TriggerClose",
+      "IsClient": false
+    },
+    {
+      "Name": "Srv_TriggerOpen",
+      "IsClient": false
+    },
+    {
+      "Name": "Clt_TriggerToggle"
+    }
+  ]
+}

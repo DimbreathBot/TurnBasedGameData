@@ -1,0 +1,122 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerUnlock"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareEntityAuthoritySide"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvClientChangePropState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "FromState": "CustomState01",
+                  "ToState": "CustomState02"
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PropReqInteract",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "InteractID": {
+                    "FixedValue": {
+                      "Value": 1010102
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityServerEvent"
+        },
+        {
+          "$type": "RPG.GameCore.ChangePropState"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitPropStateChange",
+          "FromAnyState": true,
+          "ToAnyState": true,
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefPropState"
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "CustomState02",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.AnimSetParameter",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "ParameterName": "TriggerBreak",
+                      "ParameterType": "Trigger"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Value": 1,
+        "Key": "Loc_CanInteract"
+      },
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Value": 1,
+        "Key": "CanInteractInLock"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "PropInteractTitle_317",
+        "Key": "LockedText"
+      },
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Key": "CanToggle"
+      }
+    ]
+  },
+  "Type": "Entity",
+  "EntityEventList": [
+    {
+      "Name": "Clt_TriggerUnlock"
+    },
+    {
+      "Name": "Srv_TriggerUnlock",
+      "IsClient": false
+    }
+  ]
+}

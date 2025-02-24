@@ -1,0 +1,210 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": []
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitServerPropStateChange"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "ToState": "Open",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+                "DynamicName": {
+                  "Value": "FSV_SStatueRight01_Day"
+                },
+                "CompareType": "Equal",
+                "CompareValue": 1
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+                    "DynamicName": {
+                      "Value": "SceneStateByMainMission"
+                    },
+                    "CompareType": "Equal"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.BlockInputController",
+                      "Enable": true,
+                      "ActionNameList": []
+                    },
+                    {
+                      "$type": "RPG.GameCore.WaitSecond",
+                      "WaitTime": {
+                        "FixedValue": {
+                          "Value": 1.25
+                        }
+                      },
+                      "IsRealtime": true
+                    },
+                    {
+                      "$type": "RPG.GameCore.EnterFlipperLightDeviceControl",
+                      "TargetDevice": {
+                        "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                        "TargetType": "Prop",
+                        "Targets": [
+                          300002
+                        ]
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.ClosePage",
+                      "PageNames": [
+                        "MiniGameEraFlipperChooseTargetPage"
+                      ],
+                      "PageRootNames": [],
+                      "IsSilentExit": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.BlockInputController",
+                      "ActionNameList": []
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                      "Name": "DelayRecoverCD",
+                      "TargetSelf": false,
+                      "TargetIDs": [
+                        300002
+                      ],
+                      "Value": {
+                        "FixedValue": {
+                          "Value": 10
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.WaitSecond",
+                      "WaitTime": {
+                        "FixedValue": {
+                          "Value": 10
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                      "Name": "DelayRecoverCD",
+                      "TargetSelf": false,
+                      "TargetIDs": [
+                        300002
+                      ],
+                      "Value": {
+                        "FixedValue": {
+                          "Value": 1
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.GroupFetchLocalTarget",
+            "TargetType": "Prop",
+            "Targets": [
+              300003
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+            "DynamicName": {
+              "Value": "FSV_R11_Puzzle_State"
+            },
+            "CompareType": "Equal",
+            "CompareValue": 1
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "Clt_TriggerClose "
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300002
+                ]
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 0.5
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "Clt_TriggerLock"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300002
+                ]
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+                "DynamicName": {
+                  "Value": "FSV_R11_Puzzle_State"
+                },
+                "CompareType": "Equal",
+                "CompareValue": 2
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEventV2",
+                  "EventName": {
+                    "Value": "Clt_TriggerClose"
+                  },
+                  "TargetType": {
+                    "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                    "TargetType": "Prop",
+                    "Targets": [
+                      300002
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {},
+  "Type": "Group",
+  "EntityEventList": []
+}

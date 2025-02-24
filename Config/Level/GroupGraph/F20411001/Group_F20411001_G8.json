@@ -1,0 +1,226 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": []
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "ToState": "Open",
+          "FromAnyState": true,
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 0.7
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "TryOpenDoor"
+              }
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.GroupFetchLocalTarget",
+            "TargetType": "Prop",
+            "Targets": [
+              300002
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.RegionEraStateChangeListener",
+          "OnSwitchToState2": [
+            {
+              "$type": "RPG.GameCore.DebugLog",
+              "Message": "Task Test:转到昼监听成功"
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByRegionEraState",
+                "EaraState": "State02"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.DebugLog",
+                  "Message": "Task Test:转到昼判断成功"
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.DebugLog",
+                  "Message": "Task Test:转到昼判断失败"
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "TryOpenDoor"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "TryOpenDoor"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByComparePropState",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                      "TargetType": "Prop",
+                      "Targets": [
+                        300002
+                      ]
+                    },
+                    "State": "Open"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByRegionEraState",
+                    "EaraState": "State02"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCheckTimelineEntityState",
+                    "Target": {
+                      "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                      "FetchType": "SinglePropByPropKey",
+                      "SinglePropKey": {
+                        "Custom": true,
+                        "Key": "LeftBall"
+                      }
+                    },
+                    "StateName": {
+                      "Value": "L1_Run4"
+                    }
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCheckTimelineEntityState",
+                    "Target": {
+                      "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                      "FetchType": "SinglePropByPropKey",
+                      "SinglePropKey": {
+                        "Custom": true,
+                        "Key": "RightBall"
+                      }
+                    },
+                    "StateName": {
+                      "Value": "L1_Run5"
+                    }
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "CltSrv_TriggerOpen"
+                  },
+                  "InstanceID": {
+                    "FixedValue": {
+                      "Value": 300004
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.WaitSecond",
+                  "WaitTime": {
+                    "FixedValue": {
+                      "Value": 0.5
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.LockPlayerControl"
+                },
+                {
+                  "$type": "RPG.GameCore.HideTopPage",
+                  "Hide": true
+                },
+                {
+                  "$type": "RPG.GameCore.ActiveVirtualCamera",
+                  "LevelAreaCameraKey": {
+                    "Custom": true,
+                    "Key": "LookAtDoorCam"
+                  },
+                  "BlendConfig": {
+                    "ExportToJson": true,
+                    "BlendType": "Cut"
+                  },
+                  "DynamicParams": {}
+                },
+                {
+                  "$type": "RPG.GameCore.WaitSecond",
+                  "WaitTime": {
+                    "FixedValue": {
+                      "Value": 2
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.ActiveVirtualCamera",
+                  "LevelAreaCameraKey": {
+                    "Custom": true,
+                    "Key": "LookAtDoorCam"
+                  },
+                  "IsActive": false,
+                  "BlendConfig": {
+                    "ExportToJson": true,
+                    "BlendType": "Cut"
+                  },
+                  "DynamicParams": {}
+                },
+                {
+                  "$type": "RPG.GameCore.HideTopPage"
+                },
+                {
+                  "$type": "RPG.GameCore.UnLockPlayerControl"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "LeftBall"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "RightBall"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "LookAtDoorCam"
+      }
+    ]
+  },
+  "Type": "Group"
+}

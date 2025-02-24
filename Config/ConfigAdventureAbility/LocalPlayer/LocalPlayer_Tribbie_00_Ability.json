@@ -1,0 +1,410 @@
+{
+  "AbilityList": [
+    {
+      "OnAbort": [
+        {
+          "$type": "RPG.GameCore.RadialBlurEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "Active": false
+        }
+      ],
+      "Name": "LocalPlayer_Tribbie_NormalAtk01",
+      "TargetInfo": {
+        "TargetType": "SkillPointEntityOrNone"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.VCameraConfigChange",
+          "CameraConfig": {
+            "Freelook3rdConfig": {
+              "DampChangeParam": {
+                "TargetValue": {
+                  "X": 1,
+                  "Y": 1,
+                  "Z": 1
+                },
+                "ChangeCurvePath": "Camera/BlendCurve/AttackDampCurve.asset",
+                "RecoveryTime": 0.25,
+                "RecoveryCurvePath": "Camera/BlendCurve/AttackDampRecoverCurve.asset"
+              }
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByHaveAbilityTarget"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.LookAt",
+              "TargetType": "AbilityTargetEntity",
+              "Duration": 0.1
+            },
+            {
+              "$type": "RPG.GameCore.AdventureTriggerAnimStateWithMove",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AnimLogicState": "NormalAtk",
+              "AnimStateName": "Attack_1"
+            },
+            {
+              "$type": "RPG.GameCore.WaitAnimState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AnimStateName": "Attack_1",
+              "NormalizedTimeEnd": {
+                "FixedValue": {
+                  "Value": 0.005
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.LookAt",
+              "TargetType": "AbilityTargetEntity",
+              "Duration": 0.1
+            },
+            {
+              "$type": "RPG.GameCore.WaitAnimState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AnimStateName": "Attack_1",
+              "NormalizedTimeEnd": {
+                "FixedValue": {
+                  "Value": 0.062
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.RadialBlurEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "Duration": 0.02,
+              "BlurY": 0.4,
+              "Iteration": 4,
+              "BlurStart": 0.005,
+              "BlurFeather": 0.01
+            },
+            {
+              "$type": "RPG.GameCore.AdventureFireProjectile",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AbilityTargetEntity"
+              },
+              "Projectile": {
+                "ColliderTemplate": "CapsuleZ_MazeCommonBullet",
+                "Behavior": "LinearWithHitDetect",
+                "FlySpeed": 30,
+                "EnableRayCast": true,
+                "Gravity": -40,
+                "MaxLifeTime": 1.8,
+                "AttachPoint": "Shell",
+                "TargetAttachPoint": "Root",
+                "FlyEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Tribbie_00/Eff_Avatar_Tribbie_00_MazeAttack_Bullet.prefab",
+                "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Tribbie_00/Eff_Avatar_Tribbie_00_MazeAttack_Hit.prefab",
+                "FlyEffectFadeOut": true,
+                "LinearPitchAngle": {
+                  "FixedValue": {
+                    "Value": 10
+                  }
+                }
+              },
+              "OnProjectileHit": [
+                {
+                  "$type": "RPG.GameCore.AdventureTriggerAttack",
+                  "AttackTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllEnemy"
+                  },
+                  "AttackRootTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ProjectileHitEntity"
+                  },
+                  "TriggerBattleDelay": 0.1,
+                  "AttackDetectConfig": {
+                    "$type": "RPG.GameCore.AdventureAttackDetectCircleConfig",
+                    "MaxRadius": 1,
+                    "FanAngle": 360,
+                    "Hight": 2,
+                    "Offset": {
+                      "Y": -1
+                    }
+                  },
+                  "HitConfig": {
+                    "HitAnimation": "Hit"
+                  }
+                }
+              ],
+              "OnProjectileLifetimeFinish": [
+                {
+                  "$type": "RPG.GameCore.AdventureTriggerAttack",
+                  "AttackTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllEnemy"
+                  },
+                  "AttackRootTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ProjectileHitEntity"
+                  },
+                  "TriggerBattleDelay": 0.1,
+                  "AttackDetectConfig": {
+                    "$type": "RPG.GameCore.AdventureAttackDetectCircleConfig",
+                    "MaxRadius": 1,
+                    "FanAngle": 360,
+                    "Hight": 2,
+                    "Offset": {
+                      "Y": -1
+                    }
+                  },
+                  "HitConfig": {
+                    "HitAnimation": "Hit"
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.VCameraConfigChange",
+              "CameraConfig": {
+                "ShakeTemplateName": "LocalPlayer_Bronya_Attack"
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.AdventureTriggerAnimStateWithMove",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AnimLogicState": "NormalAtk",
+              "AnimStateName": "Attack_1"
+            },
+            {
+              "$type": "RPG.GameCore.WaitAnimState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AnimStateName": "Attack_1",
+              "NormalizedTimeEnd": {
+                "FixedValue": {
+                  "Value": 0.062
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.RadialBlurEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "Duration": 0.02,
+              "BlurY": 0.4,
+              "Iteration": 4,
+              "BlurStart": 0.005,
+              "BlurFeather": 0.01
+            },
+            {
+              "$type": "RPG.GameCore.AdventureFireProjectile",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "None"
+              },
+              "Projectile": {
+                "ColliderTemplate": "CapsuleZ_MazeCommonBullet",
+                "Behavior": "LinearWithHitDetect",
+                "FlySpeed": 30,
+                "EnableRayCast": true,
+                "Gravity": -40,
+                "MaxLifeTime": 1.8,
+                "AttachPoint": "Shell",
+                "TargetAttachPoint": "Root",
+                "FlyEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Tribbie_00/Eff_Avatar_Tribbie_00_MazeAttack_Bullet.prefab",
+                "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Tribbie_00/Eff_Avatar_Tribbie_00_MazeAttack_Hit.prefab",
+                "FlyEffectFadeOut": true,
+                "LinearPitchAngle": {
+                  "FixedValue": {
+                    "Value": 10
+                  }
+                }
+              },
+              "OnProjectileHit": [
+                {
+                  "$type": "RPG.GameCore.AdventureTriggerAttack",
+                  "AttackTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllEnemy"
+                  },
+                  "AttackRootTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ProjectileHitEntity"
+                  },
+                  "TriggerBattleDelay": 0.1,
+                  "AttackDetectConfig": {
+                    "$type": "RPG.GameCore.AdventureAttackDetectCircleConfig",
+                    "MaxRadius": 1,
+                    "FanAngle": 360,
+                    "Hight": 2,
+                    "Offset": {
+                      "Y": -1
+                    }
+                  },
+                  "HitConfig": {
+                    "HitAnimation": "Hit"
+                  }
+                }
+              ],
+              "OnProjectileLifetimeFinish": [
+                {
+                  "$type": "RPG.GameCore.AdventureTriggerAttack",
+                  "AttackTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllEnemy"
+                  },
+                  "AttackRootTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ProjectileHitEntity"
+                  },
+                  "TriggerBattleDelay": 0.1,
+                  "AttackDetectConfig": {
+                    "$type": "RPG.GameCore.AdventureAttackDetectCircleConfig",
+                    "MaxRadius": 1,
+                    "FanAngle": 360,
+                    "Hight": 2,
+                    "Offset": {
+                      "Y": -1
+                    }
+                  },
+                  "HitConfig": {
+                    "HitAnimation": "Hit"
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.VCameraConfigChange",
+              "CameraConfig": {
+                "ShakeTemplateName": "LocalPlayer_Bronya_Attack"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "LocalPlayer_Tribbie_MazeSkill",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.AdventureTriggerAnimStateWithMove",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AdvLocalPlayer"
+          },
+          "AnimLogicState": "MazeSkill",
+          "AnimStateName": "MazeSkill"
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "MazeSkill",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.03
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.VCameraConfigChange",
+          "CameraConfig": {
+            "Freelook3rdConfig": {
+              "ZoomChangeParam": {
+                "TargetValue": -0.3,
+                "ChangeCurvePath": "Camera/BlendCurve/BlendCut06.asset",
+                "RecoveryCurvePath": "Camera/BlendCurve/BlendCut06.asset"
+              }
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "MazeSkill",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.064
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.VCameraConfigChange",
+          "CameraConfig": {
+            "Freelook3rdConfig": {
+              "ZoomChangeParam": {
+                "TargetValue": 0.15,
+                "Time": 0.6,
+                "ChangeCurvePath": "Camera/BlendCurve/Blend_MazeSkill.asset",
+                "RecoveryTime": 0.1,
+                "RecoveryCurvePath": "Camera/BlendCurve/BlendCut06.asset"
+              }
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "MazeSkill",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.11
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AddMazeBuff",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ID": 140301,
+          "LifeTime": {
+            "FixedValue": {
+              "Value": -1
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AdventureSubmitSkill"
+        }
+      ]
+    }
+  ],
+  "GlobalModifiers": {
+    "ADV_StageAbility_Maze_Tribbie": {
+      "Count": 1,
+      "Stacking": "Merge"
+    }
+  }
+}

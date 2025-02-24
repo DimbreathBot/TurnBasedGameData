@@ -335,12 +335,93 @@
           },
           {
             "$type": "RPG.GameCore.StateTreeStateConfig",
+            "SubStateList": [
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "EnterCondition": {
+                  "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+                  "States": [
+                    "NpcChase"
+                  ]
+                },
+                "TransitionList": [
+                  {
+                    "TransitionToState": "ExitCombatState",
+                    "BoolVariableList": [],
+                    "FloatVariableList": []
+                  }
+                ],
+                "SubStateList": [
+                  {
+                    "$type": "RPG.GameCore.StateTreeSubTreeConfig",
+                    "EnterCondition": {
+                      "$type": "RPG.GameCore.ByAnd",
+                      "PredicateList": [
+                        {
+                          "$type": "RPG.GameCore.ST_ByCompareVariableFloat",
+                          "VarName": "Int_AIStrategy",
+                          "CompareType": "GreaterEqual",
+                          "CompareValue": 100
+                        },
+                        {
+                          "$type": "RPG.GameCore.ST_ByCompareVariableFloat",
+                          "VarName": "Int_AIStrategy",
+                          "CompareType": "LessEqual",
+                          "CompareValue": 199
+                        }
+                      ]
+                    },
+                    "FilePath": "Config/ConfigAI/Adventure/NPCMonster/ST_NPCMonster_Sub_NPCInteract_Chase.json",
+                    "Name": "NPCChaseState_Chase"
+                  },
+                  {
+                    "$type": "RPG.GameCore.StateTreeSubTreeConfig",
+                    "EnterCondition": {
+                      "$type": "RPG.GameCore.ByAnd",
+                      "PredicateList": [
+                        {
+                          "$type": "RPG.GameCore.ST_ByCompareVariableFloat",
+                          "VarName": "Int_AIStrategy",
+                          "CompareType": "GreaterEqual",
+                          "CompareValue": 200
+                        },
+                        {
+                          "$type": "RPG.GameCore.ST_ByCompareVariableFloat",
+                          "VarName": "Int_AIStrategy",
+                          "CompareType": "LessEqual",
+                          "CompareValue": 299
+                        }
+                      ]
+                    },
+                    "FilePath": "Config/ConfigAI/Adventure/NPCMonster/ST_NPCMonster_Sub_NPCInteract_Steer.json",
+                    "Name": "NPCChaseState_Steer"
+                  }
+                ],
+                "Name": "NPCChaseState"
+              }
+            ],
+            "Name": "NPCInteractLayer"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
             "TransitionList": [
               {
                 "Trigger": "OnTick",
                 "TransitionToState": "HangUpState",
                 "Condition": {
                   "$type": "RPG.GameCore.ST_ByAIHangUp"
+                },
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnTick",
+                "TransitionToState": "HangUpState",
+                "Condition": {
+                  "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+                  "States": [
+                    "None"
+                  ]
                 },
                 "BoolVariableList": [],
                 "FloatVariableList": []
@@ -491,6 +572,18 @@
                         },
                         "SubStateList": [
                           {
+                            "$type": "RPG.GameCore.StateTreeSubTreeConfig",
+                            "EnterCondition": {
+                              "$type": "RPG.GameCore.ST_ByCompareVariableFloat",
+                              "VarName": "Int_AIStrategy",
+                              "CompareType": "Equal",
+                              "CompareValue": 101
+                            },
+                            "TransitionList": [],
+                            "FilePath": "Config/ConfigAI/Adventure/NPCMonster/ST_NPCMonster_Sub_Combat_Chase.json",
+                            "Name": "CombatState_Chase_Default"
+                          },
+                          {
                             "$type": "RPG.GameCore.StateTreeStateConfig",
                             "EnterCondition": {
                               "$type": "RPG.GameCore.ST_ByCompareVariableFloat",
@@ -598,12 +691,11 @@
                             "EnterCondition": {
                               "$type": "RPG.GameCore.ST_ByCompareVariableFloat",
                               "VarName": "Int_AIStrategy",
-                              "CompareType": "NotEqual",
-                              "CompareValue": 102
+                              "CompareType": "Equal",
+                              "CompareValue": 103
                             },
-                            "TransitionList": [],
-                            "FilePath": "Config/ConfigAI/Adventure/NPCMonster/ST_NPCMonster_Sub_Combat_Chase.json",
-                            "Name": "CombatState_Chase_Default"
+                            "FilePath": "Config/ConfigAI/Adventure/NPCMonster/ST_NPCMonster_Sub_Combat_Chase_Flash.json",
+                            "Name": "CombatState_Chase_Flash"
                           }
                         ],
                         "Name": "CombatState_Chase"
@@ -664,6 +756,18 @@
                   },
                   {
                     "$type": "RPG.GameCore.StateTreeSubTreeConfig",
+                    "EnterCondition": {
+                      "$type": "RPG.GameCore.ByAnd",
+                      "PredicateList": [
+                        {
+                          "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+                          "States": [
+                            "NpcChase"
+                          ],
+                          "Inverse": true
+                        }
+                      ]
+                    },
                     "TransitionList": [
                       {
                         "TransitionToType": "TreeSucceed",

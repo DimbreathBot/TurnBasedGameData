@@ -1,0 +1,172 @@
+{
+  "AbilityList": [
+    {
+      "Name": "MazeMonster_W4_Shooter_00_MazeAttack",
+      "TargetInfo": {
+        "TargetType": "SkillPointEntity"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.LookAt",
+          "TargetType": "AbilityTargetEntity",
+          "Duration": 0.45
+        },
+        {
+          "$type": "RPG.GameCore.AdventureTriggerAnimStateWithMove",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimLogicState": "NormalAtk",
+          "AnimStateName": "Attack",
+          "MovingRangeList": [
+            {
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AbilityTargetEntity"
+              },
+              "SteerNormalizedTimeStart": {
+                "FixedValue": {
+                  "Value": 0.005
+                }
+              },
+              "SteerNormalizedTimeEnd": {
+                "FixedValue": {
+                  "Value": 0.31
+                }
+              },
+              "MaxSteerSpeed": {
+                "FixedValue": {
+                  "Value": 300
+                }
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.StartAim",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "TargetAttachPoint": "Head",
+          "HorizontalAlpha": 0.4,
+          "TraceTarget": true,
+          "LimitTargetRange": {
+            "X": 4,
+            "Y": 1
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Attack",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.345
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AdventureFireProjectile",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "None"
+          },
+          "Projectile": {
+            "ColliderTemplate": "CapsuleZ_MazeCommonBullet",
+            "Behavior": "LinearWithHitDetect",
+            "FlySpeed": 50,
+            "EnableRayCast": true,
+            "Gravity": 0,
+            "MaxLifeTime": 5,
+            "AttachPoint": "Gun",
+            "AlignWithAttachPoint": true,
+            "AttachPointAxis": "Z",
+            "AttachOffset": {
+              "Y": -0.2
+            },
+            "TargetAttachPoint": "Root",
+            "FlyEffect": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Shooter_00/Eff_Monster_W4_Shooter_00_MazeAttack_Bullet_01.prefab",
+            "FlyEffectFadeOut": true,
+            "LinearPitchAngle": {
+              "FixedValue": {
+                "Value": -5
+              }
+            }
+          },
+          "OnProjectileHit": [
+            {
+              "$type": "RPG.GameCore.AdventureTriggerAttack",
+              "AttackTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AllEnemy"
+              },
+              "AttackRootTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ProjectileHitEntity"
+              },
+              "TriggerBattleDelay": 0.1,
+              "AttackDetectConfig": {
+                "$type": "RPG.GameCore.AdventureAttackDetectCircleConfig",
+                "MaxRadius": 0.1,
+                "FanAngle": 360
+              },
+              "HitConfig": {
+                "HitAnimation": "Hit",
+                "HitEffect": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Shooter_00/Eff_Monster_W4_Shooter_00_MazeAttack_Hit.prefab"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.VCameraConfigChange",
+              "CameraConfig": {
+                "ShakeTemplateName": "Punch_Middle",
+                "OverrideShakeConfigV2": {
+                  "ShakeScale": 0.4,
+                  "ShakeTime": 0.2,
+                  "ShakeDir": {
+                    "Y": 0.1
+                  },
+                  "RangeAttenuationDelay": 999,
+                  "RangeAttenuationTarget": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Attack",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "Name": "MazeMonster_W4_Shooter_00_FreezeStopAim",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.AddAdventureModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": "ADV_Monster_W4_Shooter_00_FreezeStopAim"
+        }
+      ]
+    }
+  ]
+}

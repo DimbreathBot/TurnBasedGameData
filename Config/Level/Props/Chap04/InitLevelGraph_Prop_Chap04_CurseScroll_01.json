@@ -1,0 +1,367 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerOpen"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareEntityAuthoritySide"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvClientChangePropState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "ToState": "Open"
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PropReqInteract",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "InteractID": {
+                    "FixedValue": {
+                      "Value": 1010
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerClose"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareEntityAuthoritySide"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvClientChangePropState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "FromState": "Open"
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PropReqInteract",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "InteractID": {
+                    "FixedValue": {
+                      "Value": 1100
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitEntityServerEvent"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitEntityServerEvent"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerOpenPerf"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.AdvClientChangePropState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "ToState": "Open",
+              "CanChangeServerProp": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerClosePerf"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.AdvClientChangePropState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "FromState": "Open",
+              "CanChangeServerProp": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupButtonListTrigger",
+          "TriggerName": "InteractTrigger",
+          "ButtonsByName": [
+            "Interact"
+          ],
+          "ButtonConfigs": [],
+          "ConsiderAngleLimit": true,
+          "ConsiderOwnerForwardAngleLimit": true
+        },
+        {
+          "$type": "RPG.GameCore.GenericSwitchCase",
+          "SwitchRef": {
+            "$type": "RPG.GameCore.SwitchRefPropState"
+          },
+          "Cases": [
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.AdvEnableButtons",
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "Interact"
+                  ]
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "Case": "Open",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.AdvEnableButtons",
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "Interact"
+                  ],
+                  "IsEnable": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvOnButtonPressed",
+          "ButtonName": "Interact",
+          "OnPressedCallback": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Self_Use"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Self_Use"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_OnUseStart"
+              },
+              "InstanceID": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.StartDialogueEntityInteract",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "LevelGraphPath": "Config/Level/Props/InteractMode/TriggerEvent_TriggerType_08.json",
+              "UseOverrideData": true,
+              "ValueSource": {
+                "Values": [
+                  {
+                    "$type": "RPG.GameCore.SharedString",
+                    "Value": "Level/Common_Adventure/UseInteractActivityLuckyScroll.prefab",
+                    "Key": "DialogueEntityInteract_AreaPath"
+                  },
+                  {
+                    "$type": "RPG.GameCore.SharedString",
+                    "Value": "UseInteractActivityLuckyScroll,UseInteractActivityLuckyScroll_Camera",
+                    "Key": "DialogueEntityInteract_CameraKey"
+                  },
+                  {
+                    "$type": "RPG.GameCore.SharedString",
+                    "Value": "UseInteractActivityLuckyScroll",
+                    "Key": "DialogueEntityInteract_AreaName"
+                  },
+                  {
+                    "$type": "RPG.GameCore.SharedFloat",
+                    "Key": "ResetEntityTransform"
+                  }
+                ]
+              }
+            },
+            {
+              "$type": "RPG.GameCore.ShowHalfScreenPage",
+              "Name": "Ui.ActivityTelevision.SeasonTwo.ActivityTelevisionSeasonTwoEnterPage",
+              "Param": {
+                "Custom": true,
+                "Key": "TelevisionID"
+              }
+            }
+          ],
+          "InstanceID": {
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitTransferFinishedEvent"
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEntityEvent",
+          "EventName": {
+            "Value": "Self_Use"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitPropStateChange",
+          "FromAnyState": true,
+          "ToAnyState": true,
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefPropState"
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.AdvEnableButtons",
+                      "TriggerName": "InteractTrigger",
+                      "ButtonsByName": [
+                        "Interact"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "Open",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.AdvEnableButtons",
+                      "TriggerName": "InteractTrigger",
+                      "ButtonsByName": [
+                        "Interact"
+                      ],
+                      "IsEnable": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "TelevisionID"
+      }
+    ]
+  },
+  "Type": "Entity",
+  "EntityEventList": [
+    {
+      "Name": "Clt_TriggerOpen"
+    },
+    {
+      "Name": "Clt_TriggerClose"
+    },
+    {
+      "Name": "Srv_TriggerOpen",
+      "IsClient": false
+    },
+    {
+      "Name": "Srv_TriggerClose",
+      "IsClient": false
+    },
+    {
+      "Name": "Clt_TriggerOpenPerf"
+    },
+    {
+      "Name": "Clt_TriggerClosePerf"
+    },
+    {
+      "Name": "Self_Use",
+      "IsPrivate": true
+    },
+    {
+      "Name": "Clt_OnUseStart"
+    }
+  ]
+}

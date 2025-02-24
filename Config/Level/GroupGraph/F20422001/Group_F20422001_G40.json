@@ -1,0 +1,92 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": []
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "ToState": "Open",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGroupProperty",
+                "DynamicName": {
+                  "Value": "ExitDevice"
+                },
+                "CompareType": "Equal"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+                    "DynamicName": {
+                      "Value": "FSV_CrossBridge"
+                    },
+                    "CompareType": "Equal"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.LockPlayerControl",
+                      "LockCameraControl": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.WaitSecond",
+                      "WaitTime": {
+                        "FixedValue": {
+                          "Value": 0.6
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.UnLockPlayerControl"
+                    },
+                    {
+                      "$type": "RPG.GameCore.EnterFlipperLightDeviceControl",
+                      "TargetDevice": {
+                        "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                        "TargetType": "Prop",
+                        "Targets": [
+                          300001
+                        ]
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.ClosePage",
+                      "PageNames": [
+                        "MiniGameEraFlipperChooseTargetPage"
+                      ],
+                      "PageRootNames": []
+                    },
+                    {
+                      "$type": "RPG.GameCore.RequestSetServerGroupProperty",
+                      "DynamicName": {
+                        "Value": "ExitDevice"
+                      },
+                      "Value": 1
+                    }
+                  ]
+                }
+              ],
+              "FailedTaskList": []
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.GroupFetchLocalTarget",
+            "TargetType": "Prop",
+            "Targets": [
+              300001
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "Type": "Group",
+  "EntityEventList": []
+}

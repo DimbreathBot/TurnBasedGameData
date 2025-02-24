@@ -1,0 +1,411 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": []
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.RegionEraStateChangeListener",
+          "OnSwitchToState2": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+                "DynamicName": {
+                  "Value": "FSV_Era_Switched_ScaleRoom"
+                },
+                "CompareType": "Equal"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.RequestGroupStateChange",
+                  "TargetState": 1
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareFloorCustomFloatV2",
+                "Name": {
+                  "Value": "FCV_BeforeEraSwitched"
+                },
+                "CompareType": "Equal",
+                "CompareValue": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.RequestSetServerGroupProperty",
+                  "DynamicName": {
+                    "Value": "EraSwitched_SideQuest"
+                  },
+                  "Value": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitServerGroupStateChange"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorCustomValueChange",
+          "Name": {
+            "Value": "FCV_TPRoomEraState"
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareFloorCustomFloat",
+                "Name": {
+                  "Value": "FCV_TPRoomEraState"
+                },
+                "CompareType": "Greater",
+                "CompareValue": {
+                  "FixedValue": {
+                    "Value": 0.5
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByRegionEraState"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.FlipEraRegion"
+                    }
+                  ]
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByRegionEraState",
+                    "EaraState": "State02"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.FlipEraRegion"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitServerFloorSavedValueChange"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+            "Name": "FSV_UnlockEraSwitchProp",
+            "CompareType": "Equal",
+            "CompareValue": 1
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByComparePropState",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                  "FetchType": "SinglePropByPropID",
+                  "SinglePropID": {
+                    "GroupID": {
+                      "FixedValue": {
+                        "Value": 73
+                      }
+                    },
+                    "ID": {
+                      "FixedValue": {
+                        "Value": 300001
+                      }
+                    }
+                  }
+                },
+                "State": "Open",
+                "Inverse": true
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEventV2",
+                  "EventName": {
+                    "Value": "Clt_TriggerOpen"
+                  },
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                    "FetchType": "SinglePropByPropID",
+                    "SinglePropID": {
+                      "GroupID": {
+                        "FixedValue": {
+                          "Value": 73
+                        }
+                      },
+                      "ID": {
+                        "FixedValue": {
+                          "Value": 300001
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorSavedValueChangeV2",
+          "Name": {
+            "Value": "FSV_SwitchPerformanceFinished"
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+              "Name": "ManualEnableInteract",
+              "TargetSelf": false,
+              "TargetIDs": [
+                300001
+              ],
+              "Value": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "EnableInteract"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                "FetchType": "SinglePropByPropID",
+                "SinglePropID": {
+                  "GroupID": {
+                    "FixedValue": {
+                      "Value": 73
+                    }
+                  },
+                  "ID": {
+                    "FixedValue": {
+                      "Value": 300001
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+            "DynamicName": {
+              "Value": "FSV_SwitchPerformanceFinished"
+            },
+            "CompareType": "Equal",
+            "CompareValue": 1
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareFloorCustomFloatV2",
+                "Name": {
+                  "Value": "FCV_BeforeEraSwitched"
+                },
+                "CompareType": "Equal",
+                "CompareValue": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                  "Name": "ManualEnableInteract",
+                  "TargetSelf": false,
+                  "TargetIDs": [
+                    300001
+                  ],
+                  "Value": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                  "Name": "ManualEnableInteract",
+                  "TargetSelf": false,
+                  "TargetIDs": [
+                    300001
+                  ],
+                  "Value": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+              "Name": "ManualEnableInteract",
+              "TargetSelf": false,
+              "TargetIDs": [
+                300001
+              ],
+              "Value": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitServerGroupPropertyChange"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorSavedValueChangeV2",
+          "Name": {
+            "Value": "FSV_SwitchPerformanceFinished_2"
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+              "Name": "ManualEnableInteract",
+              "TargetSelf": false,
+              "TargetIDs": [
+                300001
+              ],
+              "Value": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "EnableInteract"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                "FetchType": "SinglePropByPropID",
+                "SinglePropID": {
+                  "GroupID": {
+                    "FixedValue": {
+                      "Value": 73
+                    }
+                  },
+                  "ID": {
+                    "FixedValue": {
+                      "Value": 300001
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorCustomValueChangeV2",
+          "Name": {
+            "Value": "FCV_BeforeEraSwitched"
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareFloorCustomFloatV2",
+                "Name": {
+                  "Value": "FCV_BeforeEraSwitched"
+                },
+                "CompareType": "Equal",
+                "CompareValue": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                  "Name": "ManualEnableInteract",
+                  "TargetSelf": false,
+                  "TargetIDs": [
+                    300001
+                  ],
+                  "Value": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Type": "Group",
+  "EntityEventList": []
+}

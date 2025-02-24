@@ -1,6 +1,11 @@
 {
   "AIName": "Pam",
-  "VariableList": [],
+  "VariableList": [
+    {
+      "$type": "RPG.GameCore.AIVariableInt",
+      "Name": "IsNaviSuccess"
+    }
+  ],
   "DecisionList": [
     {
       "$type": "RPG.GameCore.AIDecisionConfig",
@@ -36,7 +41,6 @@
               {
                 "$type": "RPG.GameCore.WaitSecond",
                 "WaitTime": {
-                  "IsDynamic": false,
                   "FixedValue": {
                     "Value": 10
                   }
@@ -102,7 +106,6 @@
               {
                 "$type": "RPG.GameCore.WaitSecond",
                 "WaitTime": {
-                  "IsDynamic": false,
                   "FixedValue": {
                     "Value": 5
                   }
@@ -137,7 +140,6 @@
                 },
                 "CompareType": "LessEqual",
                 "CompareValue": {
-                  "IsDynamic": false,
                   "FixedValue": {
                     "Value": 2
                   }
@@ -167,6 +169,11 @@
             "$type": "RPG.GameCore.CharacterTriggerAnimState",
             "AnimStateName": "StandBy",
             "NormalizedTransitionDuration": 0.25
+          },
+          {
+            "$type": "RPG.GameCore.ModifyAIVariableInt",
+            "VarName": "IsNaviSuccess",
+            "ModifyFunc": "Set"
           },
           {
             "$type": "RPG.GameCore.PredicateTaskList",
@@ -201,6 +208,12 @@
                     "PlayerLookAtNpc": false,
                     "StopLookAtOnGraphEnd": false,
                     "TurnBackOnGraphEnd": false
+                  },
+                  {
+                    "$type": "RPG.GameCore.ModifyAIVariableInt",
+                    "VarName": "IsNaviSuccess",
+                    "ModifyFunc": "Set",
+                    "ChangeValue": 1
                   }
                 ]
               }
@@ -217,7 +230,14 @@
                   "Custom": true,
                   "Key": "PamNavigateToAreaAnchorName"
                 },
-                "WaitFinish": true
+                "WaitFinish": true,
+                "TurnInPlaceInEnd": true
+              },
+              {
+                "$type": "RPG.GameCore.ModifyAIVariableInt",
+                "VarName": "IsNaviSuccess",
+                "ModifyFunc": "Set",
+                "ChangeValue": 1
               }
             ]
           },
@@ -228,25 +248,41 @@
             "$type": "RPG.GameCore.TriggerPamActionPhaseSettle"
           },
           {
-            "$type": "RPG.GameCore.CharacterTriggerFreeStyleGraph",
-            "TargetAlias": {
-              "$type": "RPG.GameCore.TargetFetchModifierOwner"
+            "$type": "RPG.GameCore.PredicateTaskList",
+            "Predicate": {
+              "$type": "RPG.GameCore.ByCompareAIVariableInt",
+              "VarName": "IsNaviSuccess",
+              "EquationType": "Equal",
+              "TargetValue": 1
             },
-            "GraphName": {
-              "Custom": true,
-              "Key": "PamAnimName"
-            }
-          },
-          {
-            "$type": "RPG.GameCore.WaitRandomSecond",
-            "MinWaitTime": 15,
-            "MaxWaitTime": 25
-          },
-          {
-            "$type": "RPG.GameCore.CharacterStopFreeStyle"
-          },
-          {
-            "$type": "RPG.GameCore.TriggerPamActionPhaseDone"
+            "SuccessTaskList": [
+              {
+                "$type": "RPG.GameCore.CharacterTriggerFreeStyleGraph",
+                "TargetAlias": {
+                  "$type": "RPG.GameCore.TargetFetchModifierOwner"
+                },
+                "GraphName": {
+                  "Custom": true,
+                  "Key": "PamAnimName"
+                }
+              },
+              {
+                "$type": "RPG.GameCore.WaitRandomSecond",
+                "MinWaitTime": 15,
+                "MaxWaitTime": 25
+              },
+              {
+                "$type": "RPG.GameCore.CharacterStopFreeStyle"
+              },
+              {
+                "$type": "RPG.GameCore.TriggerPamActionPhaseDone"
+              }
+            ],
+            "FailedTaskList": [
+              {
+                "$type": "RPG.GameCore.TriggerPamActionPhaseDone"
+              }
+            ]
           }
         ]
       },

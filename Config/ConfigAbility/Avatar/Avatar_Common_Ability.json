@@ -18,7 +18,6 @@
           },
           "DynamicValues": {
             "MDF_AddValue": {
-              "IsDynamic": false,
               "FixedValue": {
                 "Value": 10
               }
@@ -34,10 +33,20 @@
           "ModifierName": {
             "Value": "TriggerStanceCountDown_Test"
           }
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "ModifierName": {
+            "Value": "MAvatar_Common_TriggerDeparted"
+          }
         }
       ],
       "DynamicValues": {
-        "Values": {
+        "Floats": {
           "-1800273296": {},
           "142612140": {},
           "-1293338785": {},
@@ -48,10 +57,135 @@
     },
     {
       "Modifiers": {
+        "Summoner_Common_PassiveModifier": {
+          "_CallbackList": [
+            {
+              "Event": "OnBeforeSkillUse",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCurrentSkillType",
+                    "SkillType": "Skill"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByIsTargetValid",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster.GetServant"
+                        },
+                        "AliveOnly": true
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.DispelStatus",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "Caster.GetServant"
+                          },
+                          "BehaviorFlags": [
+                            "STAT_CTRL",
+                            "DisableAction"
+                          ],
+                          "MuteAllVisualEffect": true
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Event": "OnUltraSkillPrepare",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByIsTargetValid",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "Caster.GetServant"
+                    },
+                    "AliveOnly": true
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.DispelStatus",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster.GetServant"
+                      },
+                      "BehaviorFlags": [
+                        "STAT_CTRL",
+                        "DisableAction"
+                      ],
+                      "MuteAllVisualEffect": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "Name": "Summoner_Common_PassiveSkill",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "ModifierName": {
+            "Value": "Summoner_Common_PassiveModifier"
+          }
+        }
+      ]
+    },
+    {
+      "Modifiers": {
         "Servant_Common_PassiveModifier": {
           "BehaviorFlagList": [
-            "Endurance",
-            "EnduranceEnemyOnly"
+            "KeepAllModifierOnDeathRattle"
+          ],
+          "_CallbackList": [
+            {
+              "Event": "OnListenCharacterDie",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByHasSummonRelation",
+                    "SummonerType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "ServantType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.ForceKill",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "AbortUnusedInsertAbility": true,
+                      "MuteHpChange": true,
+                      "MuteAllTriggerDeath": true
+                    }
+                  ]
+                }
+              ]
+            }
           ]
         }
       },
@@ -72,7 +206,6 @@
           },
           "DynamicValues": {
             "MDF_AddValue": {
-              "IsDynamic": false,
               "FixedValue": {
                 "Value": 10
               }
@@ -101,7 +234,7 @@
         }
       ],
       "DynamicValues": {
-        "Values": {
+        "Floats": {
           "-1800273296": {},
           "142612140": {},
           "-1293338785": {},
@@ -125,16 +258,15 @@
               "Key": {
                 "Hash": -1948081863
               },
+              "ContextScope": "ContextOwner",
               "Ranges": [
                 {
                   "Min": {
-                    "IsDynamic": false,
                     "FixedValue": {
                       "Value": 1
                     }
                   },
                   "Max": {
-                    "IsDynamic": false,
                     "FixedValue": {
                       "Value": 2
                     }
@@ -149,7 +281,6 @@
                         },
                         "CompareType": "Equal",
                         "CompareValue": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 1
                           }
@@ -174,13 +305,11 @@
                 },
                 {
                   "Min": {
-                    "IsDynamic": false,
                     "FixedValue": {
                       "Value": 2
                     }
                   },
                   "Max": {
-                    "IsDynamic": false,
                     "FixedValue": {
                       "Value": 3
                     }
@@ -195,7 +324,6 @@
                         },
                         "CompareType": "Equal",
                         "CompareValue": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 2
                           }
@@ -220,13 +348,11 @@
                 },
                 {
                   "Min": {
-                    "IsDynamic": false,
                     "FixedValue": {
                       "Value": 3
                     }
                   },
                   "Max": {
-                    "IsDynamic": false,
                     "FixedValue": {
                       "Value": 4
                     }
@@ -241,7 +367,6 @@
                         },
                         "CompareType": "GreaterEqual",
                         "CompareValue": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 3
                           }
@@ -276,7 +401,7 @@
                   "Value": {
                     "IsDynamic": true,
                     "PostfixExpr": {
-                      "OpCodes": "AQAAAAIK",
+                      "OpCodes": "AQAAAAIR",
                       "FixedValues": [
                         {
                           "Value": 1
@@ -295,7 +420,6 @@
                   "$type": "RPG.GameCore.ModifyTeamBoostPoint",
                   "ModifyFunction": "Add",
                   "ModifyValue": {
-                    "IsDynamic": false,
                     "FixedValue": {
                       "Value": 5
                     }
@@ -321,7 +445,7 @@
           ],
           "Stacking": "ReplaceByCaster",
           "DynamicValues": {
-            "Values": {
+            "Floats": {
               "115980124": {}
             }
           }
@@ -381,7 +505,7 @@
               "AddValue": {
                 "IsDynamic": true,
                 "PostfixExpr": {
-                  "OpCodes": "AQAK",
+                  "OpCodes": "AQAR",
                   "FixedValues": [],
                   "DynamicHashes": [
                     901482104
@@ -394,7 +518,7 @@
       ],
       "Stacking": "Replace",
       "DynamicValues": {
-        "Values": {
+        "Floats": {
           "901482104": {}
         }
       }
@@ -421,7 +545,6 @@
                     },
                     "CompareType": "GreaterEqual",
                     "CompareValue": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 1
                       }
@@ -461,19 +584,16 @@
                       "Name": "StanceCountDown_Physical",
                       "DynamicValues": {
                         "DitherRangeX": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "DitherRangeY": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "UIMessageHeight": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
@@ -498,19 +618,16 @@
                       "Name": "StanceCountDown_Ice",
                       "DynamicValues": {
                         "DitherRangeX": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "DitherRangeY": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "UIMessageHeight": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
@@ -535,19 +652,16 @@
                       "Name": "StanceCountDown_Fire",
                       "DynamicValues": {
                         "DitherRangeX": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "DitherRangeY": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "UIMessageHeight": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
@@ -572,19 +686,16 @@
                       "Name": "StanceCountDown_Wind",
                       "DynamicValues": {
                         "DitherRangeX": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "DitherRangeY": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "UIMessageHeight": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
@@ -609,19 +720,16 @@
                       "Name": "StanceCountDown_Thunder",
                       "DynamicValues": {
                         "DitherRangeX": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "DitherRangeY": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "UIMessageHeight": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
@@ -646,19 +754,16 @@
                       "Name": "StanceCountDown_Imaginary",
                       "DynamicValues": {
                         "DitherRangeX": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "DitherRangeY": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "UIMessageHeight": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
@@ -683,19 +788,16 @@
                       "Name": "StanceCountDown_Quantum",
                       "DynamicValues": {
                         "DitherRangeX": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "DitherRangeY": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "UIMessageHeight": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
@@ -737,19 +839,16 @@
                   "Name": "StanceBreak_Physical",
                   "DynamicValues": {
                     "DitherRangeX": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "DitherRangeY": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "UIMessageHeight": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0
                       }
@@ -774,19 +873,16 @@
                   "Name": "StanceBreak_Ice",
                   "DynamicValues": {
                     "DitherRangeX": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "DitherRangeY": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "UIMessageHeight": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0
                       }
@@ -811,19 +907,16 @@
                   "Name": "StanceBreak_Fire",
                   "DynamicValues": {
                     "DitherRangeX": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "DitherRangeY": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "UIMessageHeight": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0
                       }
@@ -848,19 +941,16 @@
                   "Name": "StanceBreak_Wind",
                   "DynamicValues": {
                     "DitherRangeX": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "DitherRangeY": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "UIMessageHeight": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0
                       }
@@ -885,19 +975,16 @@
                   "Name": "StanceBreak_Thunder",
                   "DynamicValues": {
                     "DitherRangeX": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "DitherRangeY": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "UIMessageHeight": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0
                       }
@@ -922,19 +1009,16 @@
                   "Name": "StanceBreak_Imaginary",
                   "DynamicValues": {
                     "DitherRangeX": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "DitherRangeY": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "UIMessageHeight": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0
                       }
@@ -959,19 +1043,16 @@
                   "Name": "StanceBreak_Quantum",
                   "DynamicValues": {
                     "DitherRangeX": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "DitherRangeY": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "UIMessageHeight": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0
                       }
@@ -1006,7 +1087,6 @@
                     },
                     "CompareType": "GreaterEqual",
                     "CompareValue": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 1
                       }
@@ -1041,19 +1121,16 @@
                       "Name": "StanceCountDown_Physical",
                       "DynamicValues": {
                         "DitherRangeX": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "DitherRangeY": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "UIMessageHeight": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
@@ -1078,19 +1155,16 @@
                       "Name": "StanceCountDown_Ice",
                       "DynamicValues": {
                         "DitherRangeX": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "DitherRangeY": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "UIMessageHeight": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
@@ -1115,19 +1189,16 @@
                       "Name": "StanceCountDown_Fire",
                       "DynamicValues": {
                         "DitherRangeX": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "DitherRangeY": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "UIMessageHeight": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
@@ -1152,19 +1223,16 @@
                       "Name": "StanceCountDown_Wind",
                       "DynamicValues": {
                         "DitherRangeX": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "DitherRangeY": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "UIMessageHeight": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
@@ -1189,19 +1257,16 @@
                       "Name": "StanceCountDown_Thunder",
                       "DynamicValues": {
                         "DitherRangeX": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "DitherRangeY": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "UIMessageHeight": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
@@ -1226,19 +1291,16 @@
                       "Name": "StanceCountDown_Imaginary",
                       "DynamicValues": {
                         "DitherRangeX": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "DitherRangeY": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "UIMessageHeight": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
@@ -1263,19 +1325,16 @@
                       "Name": "StanceCountDown_Quantum",
                       "DynamicValues": {
                         "DitherRangeX": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "DitherRangeY": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
                         },
                         "UIMessageHeight": {
-                          "IsDynamic": false,
                           "FixedValue": {
                             "Value": 0
                           }
@@ -1337,19 +1396,16 @@
                   "Name": "StanceBreak_Physical",
                   "DynamicValues": {
                     "DitherRangeX": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "DitherRangeY": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "UIMessageHeight": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0
                       }
@@ -1374,19 +1430,16 @@
                   "Name": "StanceBreak_Ice",
                   "DynamicValues": {
                     "DitherRangeX": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "DitherRangeY": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "UIMessageHeight": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0
                       }
@@ -1411,19 +1464,16 @@
                   "Name": "StanceBreak_Fire",
                   "DynamicValues": {
                     "DitherRangeX": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "DitherRangeY": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "UIMessageHeight": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0
                       }
@@ -1448,19 +1498,16 @@
                   "Name": "StanceBreak_Wind",
                   "DynamicValues": {
                     "DitherRangeX": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "DitherRangeY": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "UIMessageHeight": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0
                       }
@@ -1485,19 +1532,16 @@
                   "Name": "StanceBreak_Thunder",
                   "DynamicValues": {
                     "DitherRangeX": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "DitherRangeY": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "UIMessageHeight": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0
                       }
@@ -1522,19 +1566,16 @@
                   "Name": "StanceBreak_Imaginary",
                   "DynamicValues": {
                     "DitherRangeX": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "DitherRangeY": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "UIMessageHeight": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0
                       }
@@ -1559,19 +1600,16 @@
                   "Name": "StanceBreak_Quantum",
                   "DynamicValues": {
                     "DitherRangeX": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "DitherRangeY": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0.05
                       }
                     },
                     "UIMessageHeight": {
-                      "IsDynamic": false,
                       "FixedValue": {
                         "Value": 0
                       }
@@ -1583,6 +1621,235 @@
           ]
         }
       ]
+    },
+    "MAvatar_Common_TriggerDeparted": {
+      "_CallbackList": [
+        {
+          "Event": "OnBeforeAction",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByIsContainModifier",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ModifierOwnerEntity"
+                },
+                "ModifierName": {
+                  "Value": "MAvatar_Common_Departed"
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetEntityUnselectable",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.AddEntityToTeamFormation",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Event": "OnAfterAction",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByIsContainModifier",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ModifierOwnerEntity"
+                },
+                "ModifierName": {
+                  "Value": "MAvatar_Common_Departed"
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetEntityUnselectable",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "Unselectable": true
+                },
+                {
+                  "$type": "RPG.GameCore.RemoveEntityFromTeamFormation",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "RemainInTeam": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Event": "OnDepartedStart",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.AddModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "ModifierName": {
+                "Value": "MAvatar_Common_Departed"
+              }
+            }
+          ]
+        },
+        {
+          "Event": "OnDepartedEnd",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.RemoveModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "ModifierName": {
+                "Value": "MAvatar_Common_Departed"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "MAvatar_Common_Departed": {
+      "BehaviorFlagList": [
+        "Stealth"
+      ],
+      "_CallbackList": [
+        {
+          "Event": "OnCreate",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.RemoveModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "ModifierName": {
+                "Value": "Monster_Beast02_Attack_Sign"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.RemoveModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "ModifierName": {
+                "Value": "Monster_W2_Beast02_00_RLElite_Attack_Sign"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.RemoveModifierByBehaviorFlag",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "ModifierBehaviorFlags": [
+                "AttackSign",
+                "TeamAction"
+              ]
+            }
+          ]
+        },
+        {
+          "Event": "OnDestroy",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByIsContainModifier",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ModifierOwnerEntity"
+                },
+                "ModifierName": {
+                  "Value": "MAvatar_Common_Departed"
+                },
+                "Inverse": true
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetEntityActionState",
+                  "UniqueName": "MAvatar_Common_Departed",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.SetEntityVisible",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "Visible": true
+                },
+                {
+                  "$type": "RPG.GameCore.SetEntityUnselectable",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.AddEntityToTeamFormation",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.SetEntityActionState",
+              "UniqueName": "MAvatar_Common_Departed",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "ActionState": false
+            },
+            {
+              "$type": "RPG.GameCore.SetEntityUnselectable",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "Unselectable": true
+            },
+            {
+              "$type": "RPG.GameCore.RemoveEntityFromTeamFormation",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "RemainInTeam": true
+            }
+          ]
+        }
+      ],
+      "Stacking": "ReplaceByCaster"
     }
   }
 }

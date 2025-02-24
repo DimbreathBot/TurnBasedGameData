@@ -1,0 +1,306 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_OnShowSuccessed"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.ShowTalkUI",
+              "Show": true,
+              "ShowDialogControlUI": false
+            },
+            {
+              "$type": "RPG.GameCore.CollectionPlaySimpleTalk",
+              "TalkTemplate": {},
+              "TalkSentenceIdList": {
+                "Custom": true,
+                "Key": "SimpleTalkList03",
+                "Value": []
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_TriggerPullOnly"
+              },
+              "InstanceID": {
+                "FixedValue": {
+                  "Value": 300001
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitEntityEvent",
+              "EventName": {
+                "Value": "Clt_OnShow"
+              },
+              "OnEvent": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "Clt_TriggerOpen"
+                  },
+                  "InstanceID": {
+                    "FixedValue": {
+                      "Value": 300003
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.WaitEntityEvent",
+                  "EventName": {
+                    "Value": "Clt_FadeInReady"
+                  },
+                  "OnEvent": [
+                    {
+                      "$type": "RPG.GameCore.CollectionPlaySimpleTalk",
+                      "TalkTemplate": {},
+                      "TalkSentenceIdList": {
+                        "Custom": true,
+                        "Key": "SimpleTalkList04",
+                        "Value": []
+                      },
+                      "KeepDisplay": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerEntityEvent",
+                      "EventName": {
+                        "Value": "Clt_TriggerClose"
+                      },
+                      "InstanceID": {
+                        "FixedValue": {
+                          "Value": 300003
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.WaitEntityEvent",
+                      "EventName": {
+                        "Value": "Clt_FadeOutReady"
+                      },
+                      "OnEvent": [
+                        {
+                          "$type": "RPG.GameCore.ShowTalkUI",
+                          "ShowDialogControlUI": false
+                        },
+                        {
+                          "$type": "RPG.GameCore.TriggerEntityEvent",
+                          "EventName": {
+                            "Value": "Clt_TriggerPerformanceFinish"
+                          },
+                          "InstanceID": {
+                            "FixedValue": {
+                              "Value": 300001
+                            }
+                          }
+                        }
+                      ],
+                      "InstanceID": {
+                        "FixedValue": {
+                          "Value": 300003
+                        }
+                      },
+                      "IsLoop": false
+                    }
+                  ],
+                  "InstanceID": {
+                    "FixedValue": {
+                      "Value": 300003
+                    }
+                  },
+                  "IsLoop": false
+                }
+              ],
+              "InstanceID": {
+                "FixedValue": {
+                  "Value": 300001
+                }
+              },
+              "IsLoop": false
+            }
+          ],
+          "InstanceID": {
+            "FixedValue": {
+              "Value": 300001
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitServerPropStateChange"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_OnInteracted"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_TriggerPull"
+              },
+              "InstanceID": {
+                "FixedValue": {
+                  "Value": 300001
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.StopNPCBubbleTalk",
+              "UniqueIDList": [
+                0
+              ]
+            }
+          ],
+          "InstanceID": {
+            "FixedValue": {
+              "Value": 300001
+            }
+          },
+          "IsLoop": false
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByRegionEraState",
+            "EaraState": "State02"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "ReChangeBubble"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300001
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByRegionEraState"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "ChangeBubble"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300001
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.RegionEraStateChangeListener",
+          "OnSwitchToState1": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "ChangeBubble"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300001
+                ]
+              }
+            }
+          ],
+          "OnSwitchToState2": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "ReChangeBubble"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300001
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "300001",
+        "Key": "Origami"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "300002",
+        "Key": "TargetIcon"
+      },
+      {
+        "$type": "RPG.GameCore.SharedStringList",
+        "Value": [],
+        "Key": "SimpleTalkList"
+      },
+      {
+        "$type": "RPG.GameCore.SharedStringList",
+        "Value": [],
+        "Key": "SimpleTalkList02"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "AnswerTarget"
+      },
+      {
+        "$type": "RPG.GameCore.SharedStringList",
+        "Value": [],
+        "Key": "SimpleTalkList03"
+      },
+      {
+        "$type": "RPG.GameCore.SharedStringList",
+        "Value": [],
+        "Key": "SimpleTalkList04"
+      }
+    ]
+  },
+  "Type": "Group",
+  "EntityEventList": []
+}

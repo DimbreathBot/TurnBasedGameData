@@ -1,0 +1,200 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEventV2",
+          "EventName": {
+            "Value": "Crv_TriggerClose"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.AdvClientChangePropState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "FromState": "Open"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEventV2",
+          "EventName": {
+            "Value": "Crv_TriggerOpen"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.AdvClientChangePropState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "ToState": "Open"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AddTimelineEntityEventListener",
+          "Target": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+            "FetchType": "SinglePropByPropKey",
+            "SinglePropKey": {
+              "Custom": true,
+              "Key": "AttachedToProp"
+            }
+          },
+          "StateEnterListener": [
+            {
+              "ListenState": [
+                "L2_LiftUp"
+              ],
+              "Callback": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEventV2",
+                  "EventName": {
+                    "Value": "Crv_TriggerOpen"
+                  }
+                }
+              ]
+            },
+            {
+              "ListenState": [
+                "L1_LiftUp"
+              ],
+              "Callback": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEventV2",
+                  "EventName": {
+                    "Value": "Crv_TriggerOpen"
+                  }
+                }
+              ]
+            }
+          ],
+          "StateLeaveListener": [
+            {
+              "ListenState": [
+                "L1_LiftUp"
+              ],
+              "Callback": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEventV2",
+                  "EventName": {
+                    "Value": "Crv_TriggerClose"
+                  }
+                }
+              ]
+            },
+            {
+              "ListenState": [
+                "L2_LiftUp"
+              ],
+              "Callback": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEventV2",
+                  "EventName": {
+                    "Value": "Crv_TriggerClose"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitPropStateChangeV2",
+          "FromAnyState": true,
+          "ToAnyState": true,
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByComparePropState",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                },
+                "State": "Open"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PropEnableCollider",
+                  "Enabled": true,
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  }
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PropEnableCollider",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByComparePropState",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+            },
+            "State": "Open"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.PropEnableCollider",
+              "Enabled": true,
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.PropEnableCollider",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "AttachedToProp"
+      }
+    ]
+  },
+  "Type": "Entity",
+  "EntityEventList": [
+    {
+      "Name": "Crv_TriggerClose"
+    },
+    {
+      "Name": "Crv_TriggerOpen"
+    }
+  ]
+}

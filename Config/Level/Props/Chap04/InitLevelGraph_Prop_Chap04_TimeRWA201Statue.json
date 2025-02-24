@@ -1,0 +1,198 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": []
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AddTimelineEntityEventListener",
+          "Target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "StateEnterListener": [
+            {
+              "ListenState": [
+                "L0_NoBreak"
+              ],
+              "Callback": [
+                {
+                  "$type": "RPG.GameCore.PropSetupHitBox",
+                  "OnBeHit": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByTimeRewindTargetMotionPause",
+                        "Target": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "Caster"
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.ToastPile",
+                          "DescTextID": {
+                            "Hash": 7102577144157730621
+                          }
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.SetTimelineEntityState",
+                          "Target": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "Caster"
+                          },
+                          "StateName": {
+                            "Value": "L1_Break"
+                          },
+                          "CutIn": false
+                        },
+                        {
+                          "$type": "RPG.GameCore.PropUnloadHitBox"
+                        }
+                      ]
+                    }
+                  ],
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "Clt_ToIdle"
+                  }
+                }
+              ]
+            },
+            {
+              "ListenState": [
+                "L1_Break"
+              ],
+              "Callback": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "Clt_ToBreak"
+                  }
+                }
+              ]
+            }
+          ],
+          "StateLeaveListener": [
+            {
+              "ListenState": [
+                "L0_NoBreak"
+              ],
+              "Callback": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "Clt_TriggerMissionTalk"
+                  }
+                }
+              ]
+            },
+            {
+              "ListenState": [
+                "L1_Break"
+              ],
+              "Callback": [
+                {
+                  "$type": "RPG.GameCore.PropUnloadHitBox"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCheckTimelineEntityState",
+            "Target": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "Caster"
+            },
+            "StateName": {
+              "Value": "L0_NoBreak"
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.PropSetupHitBox",
+              "OnBeHit": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByTimeRewindTargetMotionPause",
+                    "Target": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "Caster"
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.ToastPile",
+                      "DescTextID": {
+                        "Hash": 7102577144157730621
+                      }
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetTimelineEntityState",
+                      "Target": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "StateName": {
+                        "Value": "L1_Break"
+                      },
+                      "CutIn": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.PropUnloadHitBox"
+                    }
+                  ]
+                }
+              ],
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitServerTimelineStateChange"
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": []
+  },
+  "Type": "Entity",
+  "EntityEventList": [
+    {
+      "Name": "Clt_ToBreak"
+    },
+    {
+      "Name": "Clt_ToIdle"
+    },
+    {
+      "Name": "Clt_TriggerMissionTalk"
+    }
+  ]
+}

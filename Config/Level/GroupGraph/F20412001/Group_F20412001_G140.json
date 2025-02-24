@@ -1,0 +1,59 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": []
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareGroupState",
+            "EquationType": "Equal"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.AdvCreateGroupEntity",
+              "InstanceIDList": [
+                300001
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.BindPropsCablelines",
+              "StartPropInstanceID": 300001,
+              "EndPropInstanceID": 300002
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGroupState",
+                "EquationType": "Equal",
+                "Value": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "OraclePuzzleFinish"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.UnBindPropsCablelines"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "Type": "Group"
+}

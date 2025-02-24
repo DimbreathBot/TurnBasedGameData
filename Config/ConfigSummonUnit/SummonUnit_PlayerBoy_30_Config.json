@@ -1,0 +1,169 @@
+{
+  "GroupConfigName": "Field",
+  "ConfigEntityPath": "Config/ConfigEntity/SummonUnit/SummonUnit_Common_TeamField_Entity.json",
+  "ResidentEffects": [
+    {
+      "$type": "RPG.GameCore.TriggerEffect",
+      "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_PlayerBoy_30/Servant/Eff_Servant_PlayerBoyServant_30_MazeSkill_Room.prefab"
+    }
+  ],
+  "OnCreate": [
+    {
+      "$type": "RPG.GameCore.RemoveEffect",
+      "TargetType": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "Caster"
+      },
+      "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_PlayerBoy_30/Servant/Eff_Servant_PlayerBoyServant_30_MazeSkill_01.prefab",
+      "IsNeedFadeOut": false
+    },
+    {
+      "$type": "RPG.GameCore.TriggerEffect",
+      "TargetType": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "Caster"
+      },
+      "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_PlayerBoy_30/Servant/Eff_Servant_PlayerBoyServant_30_MazeSkill_01.prefab"
+    },
+    {
+      "$type": "RPG.GameCore.TriggerEffect",
+      "TargetType": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "Caster"
+      },
+      "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_PlayerBoy_30/Servant/Eff_Servant_PlayerBoyServant_30_MazeSkill_Start.prefab"
+    },
+    {
+      "$type": "RPG.GameCore.WaitSecond",
+      "WaitTime": {
+        "FixedValue": {
+          "Value": 0.25
+        }
+      }
+    },
+    {
+      "$type": "RPG.GameCore.RadialBlurEffect",
+      "TargetType": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "Caster"
+      },
+      "Duration": 0.1,
+      "BlurY": 0.4,
+      "BlurRadius": 1,
+      "Iteration": 4,
+      "BlurStart": 0.1,
+      "BlurFeather": 0.2
+    },
+    {
+      "$type": "RPG.GameCore.SetSummonUnitTriggerEnable",
+      "SummonUnit": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "Caster"
+      },
+      "TriggerNames": [
+        "PlayerBoy_30_FieldTrigger",
+        "PlayerBoy_30_FieldTrigger_Prop"
+      ],
+      "Enable": true
+    }
+  ],
+  "OnDestroy": [
+    {
+      "$type": "RPG.GameCore.RemoveEffect",
+      "TargetType": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "Caster"
+      },
+      "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_PlayerBoy_30/Servant/Eff_Servant_PlayerBoyServant_30_MazeSkill_01.prefab"
+    }
+  ],
+  "OnBeReplaced": [
+    {
+      "$type": "RPG.GameCore.RemoveEffect",
+      "TargetType": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "Caster"
+      },
+      "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_PlayerBoy_30/Servant/Eff_Servant_PlayerBoyServant_30_MazeSkill_01.prefab"
+    }
+  ],
+  "TriggerConfig": {
+    "CustomTriggers": [
+      {
+        "TriggerName": "PlayerBoy_30_FieldTrigger",
+        "DefaultEnable": false,
+        "Radius": {
+          "FixedValue": {
+            "Value": 9.2
+          }
+        },
+        "CenterOffset": {
+          "Y": 2
+        },
+        "UseVerticalBound": true,
+        "NeedRaycast": true,
+        "TargetTypes": [
+          "NPCMonster"
+        ],
+        "ColliderRelativePath": "Trigger",
+        "OnTriggerEnter": [
+          {
+            "$type": "RPG.GameCore.AddMazeBuff",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "TaskActionTarget"
+            },
+            "ID": 800701
+          }
+        ],
+        "OnTriggerExit": [
+          {
+            "$type": "RPG.GameCore.RemoveMazeBuff",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "TaskActionTarget"
+            },
+            "ID": 800701
+          }
+        ]
+      },
+      {
+        "TriggerName": "PlayerBoy_30_FieldTrigger_Prop",
+        "DefaultEnable": false,
+        "Radius": {
+          "FixedValue": {
+            "Value": 9.2
+          }
+        },
+        "CenterOffset": {
+          "Y": 2
+        },
+        "TargetTypes": [
+          "Prop"
+        ],
+        "ColliderRelativePath": "Trigger",
+        "OnTriggerEnter": [
+          {
+            "$type": "RPG.GameCore.PauseTimeRewindTarget",
+            "Target": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "TaskActionTarget"
+            },
+            "IsSkill": true
+          }
+        ],
+        "OnTriggerExit": [
+          {
+            "$type": "RPG.GameCore.PauseTimeRewindTarget",
+            "IsPause": false,
+            "Target": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "TaskActionTarget"
+            },
+            "IsSkill": true
+          }
+        ]
+      }
+    ]
+  }
+}

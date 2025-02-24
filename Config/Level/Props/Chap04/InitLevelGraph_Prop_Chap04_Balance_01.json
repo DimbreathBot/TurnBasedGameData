@@ -1,0 +1,684 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.GenericSwitchCase",
+          "SwitchRef": {
+            "$type": "RPG.GameCore.SwitchRefGraphDynamicFloat",
+            "Name": "IsLeft"
+          },
+          "Cases": [
+            {
+              "$type": "RPG.GameCore.NumberCaseContainer",
+              "Case": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.AnimSetParameter",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "ParameterName": "Left",
+                  "ParameterType": "Bool"
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.NumberCaseContainer",
+              "Case": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              },
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.AnimSetParameter",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "ParameterName": "Left",
+                  "ParameterType": "Bool",
+                  "Value": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.GenericSwitchCase",
+          "SwitchRef": {
+            "$type": "RPG.GameCore.SwitchRefPropState"
+          },
+          "Cases": [
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.PropTriggerAnimState",
+                  "AnimStateName": "Down01",
+                  "TransitionDuration": 0,
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.AnimSetParameter",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "ParameterName": "PropState",
+                  "ParameterType": "Int"
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "Case": "Locked",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.PropTriggerAnimState",
+                  "AnimStateName": "Up01",
+                  "TransitionDuration": 0,
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.AnimSetParameter",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "ParameterName": "PropState",
+                  "ParameterType": "Int",
+                  "Value": {
+                    "FixedValue": {
+                      "Value": 2
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "Case": "Open",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.PropTriggerAnimState",
+                  "AnimStateName": "Balance01",
+                  "TransitionDuration": 0,
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.AnimSetParameter",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "ParameterName": "PropState",
+                  "ParameterType": "Int",
+                  "Value": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitEntityServerEvent"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitEntityServerEvent"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitEntityServerEvent"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerOpenPerformance"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefPropState"
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.AdvClientChangePropState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "ToState": "Open",
+                      "CanChangeServerProp": true
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "Locked",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.AdvClientChangePropState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "FromState": "Locked",
+                      "ToState": "Open",
+                      "CanChangeServerProp": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerClosePerformance"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefPropState"
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "Open",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.AdvClientChangePropState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "FromState": "Open",
+                      "CanChangeServerProp": true
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "Locked",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.AdvClientChangePropState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "FromState": "Locked",
+                      "CanChangeServerProp": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerLockPerformance"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefPropState"
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.AdvClientChangePropState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "ToState": "Locked",
+                      "CanChangeServerProp": true
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "Open",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.AdvClientChangePropState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "FromState": "Open",
+                      "ToState": "Locked",
+                      "CanChangeServerProp": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitAnimStateChange",
+          "StateName": "U2B01",
+          "IsEnter": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffectList",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "EffectList": [
+            {
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_Balance_01_Dust_Lod0.prefab",
+              "IsAttachToTargetEntity": true,
+              "AttachPoint": "AttachPoint",
+              "PositionOffset": {
+                "Y": 8
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEntityEventV2",
+          "EventName": {
+            "Value": "Clt_OnMove"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitAnimStateChange",
+          "StateName": "B2D01",
+          "IsEnter": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffectList",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "EffectList": [
+            {
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_Balance_01_Dust_Lod0.prefab",
+              "IsAttachToTargetEntity": true,
+              "AttachPoint": "AttachPoint",
+              "PositionOffset": {
+                "Y": 8
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEntityEventV2",
+          "EventName": {
+            "Value": "Clt_OnMove"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitAnimStateChange",
+          "StateName": "B2U01",
+          "IsEnter": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffectList",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "EffectList": [
+            {
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_Balance_01_Dust_Lod0.prefab",
+              "IsAttachToTargetEntity": true,
+              "AttachPoint": "AttachPoint",
+              "PositionOffset": {
+                "Y": 8
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEntityEventV2",
+          "EventName": {
+            "Value": "Clt_OnMove"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitAnimStateChange",
+          "StateName": "D2B01",
+          "IsEnter": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffectList",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "EffectList": [
+            {
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_Balance_01_Dust_Lod0.prefab",
+              "IsAttachToTargetEntity": true,
+              "AttachPoint": "AttachPoint",
+              "PositionOffset": {
+                "Y": 8
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEntityEventV2",
+          "EventName": {
+            "Value": "Clt_OnMove"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitAnimStateChange",
+          "StateName": "D2U01",
+          "IsEnter": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffectList",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "EffectList": [
+            {
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_Balance_01_Dust_Lod0.prefab",
+              "IsAttachToTargetEntity": true,
+              "AttachPoint": "AttachPoint",
+              "PositionOffset": {
+                "Y": 8
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEntityEventV2",
+          "EventName": {
+            "Value": "Clt_OnMove"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitAnimStateChange",
+          "StateName": "U2D01",
+          "IsEnter": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffectList",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "EffectList": [
+            {
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_Balance_01_Dust_Lod0.prefab",
+              "IsAttachToTargetEntity": true,
+              "AttachPoint": "AttachPoint",
+              "PositionOffset": {
+                "Y": 8
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEntityEventV2",
+          "EventName": {
+            "Value": "Clt_OnMove"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitAnimStateChange",
+          "StateName": "Balanced01",
+          "IsEnter": true
+        },
+        {
+          "$type": "RPG.GameCore.RemoveEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_Balance_01_Dust_Lod0.prefab",
+          "Flags": []
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEntityEventV2",
+          "EventName": {
+            "Value": "Clt_OnOpening"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitAnimStateChange",
+          "StateName": "Down01",
+          "IsEnter": true
+        },
+        {
+          "$type": "RPG.GameCore.RemoveEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_Balance_01_Dust_Lod0.prefab",
+          "Flags": []
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEntityEventV2",
+          "EventName": {
+            "Value": "Clt_OnOpening"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitAnimStateChange",
+          "StateName": "Up01",
+          "IsEnter": true
+        },
+        {
+          "$type": "RPG.GameCore.RemoveEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_Balance_01_Dust_Lod0.prefab",
+          "Flags": []
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEntityEventV2",
+          "EventName": {
+            "Value": "Clt_OnOpening"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.RegionEraStateChangeListener",
+          "OnSwitchToState1": [
+            {
+              "$type": "RPG.GameCore.AnimSetParameter",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "ParameterName": "LightOn",
+              "ParameterType": "Bool"
+            }
+          ],
+          "OnSwitchToState2": [
+            {
+              "$type": "RPG.GameCore.AnimSetParameter",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "ParameterName": "LightOn",
+              "ParameterType": "Bool",
+              "Value": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByRegionEraState"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.AnimSetParameter",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "ParameterName": "LightOn",
+              "ParameterType": "Bool"
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.AnimSetParameter",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "ParameterName": "LightOn",
+              "ParameterType": "Bool",
+              "Value": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Value": 1,
+        "Key": "IsLeft"
+      }
+    ]
+  },
+  "Type": "Entity",
+  "EntityEventList": [
+    {
+      "Name": "Srv_TriggerOpen",
+      "IsClient": false
+    },
+    {
+      "Name": "Srv_TriggerClose",
+      "IsClient": false
+    },
+    {
+      "Name": "Srv_TriggerLock",
+      "IsClient": false
+    },
+    {
+      "Name": "Clt_TriggerOpenPerformance"
+    },
+    {
+      "Name": "Clt_TriggerClosePerformance"
+    },
+    {
+      "Name": "Clt_TriggerLockPerformance"
+    },
+    {
+      "Name": "Clt_OnMove"
+    },
+    {
+      "Name": "Clt_OnOpening"
+    }
+  ]
+}

@@ -1,0 +1,755 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": []
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEventV2",
+          "EventName": {
+            "Value": "is_open"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByComparePropState",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                  "FetchType": "SinglePropByPropKey",
+                  "SinglePropKey": {
+                    "Custom": true,
+                    "Key": "EraPoint_Right"
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByComparePropState",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                      "TargetType": "Prop",
+                      "Targets": [
+                        300002
+                      ]
+                    },
+                    "State": "Open"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.TriggerEntityEventV2",
+                      "EventName": {
+                        "Value": "open"
+                      },
+                      "TargetType": {
+                        "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                        "TargetType": "Prop",
+                        "Targets": [
+                          300003
+                        ]
+                      }
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.TriggerEntityEventV2",
+                      "EventName": {
+                        "Value": "close"
+                      },
+                      "TargetType": {
+                        "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                        "TargetType": "Prop",
+                        "Targets": [
+                          300003
+                        ]
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.ToastPile",
+                      "DescTextID": {
+                        "Hash": 7003381810164237694
+                      }
+                    }
+                  ]
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEventV2",
+                  "EventName": {
+                    "Value": "close"
+                  },
+                  "TargetType": {
+                    "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                    "TargetType": "Prop",
+                    "Targets": [
+                      300003
+                    ]
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.ToastPile",
+                  "DescTextID": {
+                    "Hash": 11472836324308107279
+                  }
+                }
+              ]
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.GroupFetchLocalTarget",
+            "TargetType": "Prop",
+            "Targets": [
+              300003
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitServerPropStateChange"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitPropStateChange",
+          "InstanceID": 300002,
+          "FromAnyState": true,
+          "ToState": "Open",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.OverrideTimeRewindSpecularMatStyle",
+              "Target": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300003
+                ]
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "SwitchHand_DisableCatchable"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300002
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvDistrictSetupTrigger",
+          "GroupID": {
+            "FixedValue": {
+              "Value": 154
+            }
+          },
+          "DistrictID": {
+            "FixedValue": {
+              "Value": 1
+            }
+          },
+          "OnEnter": [
+            {
+              "$type": "RPG.GameCore.SetIgnoreTimeRewindLockRangeLimit",
+              "Target": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300003
+                ]
+              }
+            }
+          ],
+          "OnExit": [
+            {
+              "$type": "RPG.GameCore.SetIgnoreTimeRewindLockRangeLimit",
+              "Target": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300003
+                ]
+              },
+              "Ignore": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+            "DynamicName": {
+              "Value": "SceneStateByMainMission"
+            },
+            "CompareType": "Equal",
+            "CompareValue": 1
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "Clt_TriggerLocked"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300002
+                ]
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 3
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PropSetVisibility",
+              "SpecifiedRelativePaths": [],
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300002
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByComparePropState",
+            "TargetType": {
+              "$type": "RPG.GameCore.GroupFetchLocalTarget",
+              "TargetType": "Prop",
+              "Targets": [
+                300002
+              ]
+            },
+            "State": "Open"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "SwitchHand_DisableCatchable"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300002
+                ]
+              }
+            },
+            {
+              "$type": "RPG.GameCore.OverrideTimeRewindSpecularMatStyle",
+              "Target": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300003
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+            "DynamicName": {
+              "Value": "SceneStateByMainMission"
+            },
+            "CompareType": "Equal",
+            "CompareValue": 1
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityServerEvent"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorCustomValueChangeV2",
+          "Name": {
+            "Value": "FCV_Catchable_isHand"
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "Catchable_isHand"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300001,
+                  300002
+                ]
+              }
+            }
+          ],
+          "Condition": {
+            "$type": "RPG.GameCore.ByCompareFloorCustomFloatV2",
+            "Name": {
+              "Value": "FCV_Catchable_isHand"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorCustomValueChangeV2",
+          "Name": {
+            "Value": "FCV_Catchable_isHand"
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "Catchable_isPlayer"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300001,
+                  300002
+                ]
+              }
+            }
+          ],
+          "Condition": {
+            "$type": "RPG.GameCore.ByCompareFloorCustomFloatV2",
+            "Name": {
+              "Value": "FCV_Catchable_isHand"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorCustomValueChangeV2",
+          "Name": {
+            "Value": "FCV_SwitchHand_P12"
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "SwitchHand_DisableCatchable"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300002
+                ]
+              }
+            }
+          ],
+          "Condition": {
+            "$type": "RPG.GameCore.ByCompareFloorCustomFloatV2",
+            "Name": {
+              "Value": "FCV_SwitchHand_P12"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorCustomValueChangeV2",
+          "Name": {
+            "Value": "FCV_SwitchHand_P12"
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "SwitchHand_EnableCatchable"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300002
+                ]
+              }
+            }
+          ],
+          "Condition": {
+            "$type": "RPG.GameCore.ByCompareFloorCustomFloatV2",
+            "Name": {
+              "Value": "FCV_SwitchHand_P12"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "SwitchHand_ResetGame"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "Clt_TriggerOpen"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300001
+                ]
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "Clt_TriggerClosed"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300002
+                ]
+              }
+            },
+            {
+              "$type": "RPG.GameCore.DebugLog",
+              "Message": "###触发抓取物重置###"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "SwitchHand_ResetGameAllClosed"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "Clt_TriggerClosed"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300001
+                ]
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "Clt_TriggerClosed"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300002
+                ]
+              }
+            },
+            {
+              "$type": "RPG.GameCore.DebugLog",
+              "Message": "###重置所有电池状态为Closed###"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByComparePropState",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+              "FetchType": "SinglePropByPropID",
+              "SinglePropID": {
+                "GroupID": {
+                  "FixedValue": {
+                    "Value": 153
+                  }
+                },
+                "ID": {
+                  "FixedValue": {
+                    "Value": 300002
+                  }
+                }
+              }
+            },
+            "State": "CustomState04"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAny",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByComparePropState",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                      "TargetType": "Prop",
+                      "Targets": [
+                        300001
+                      ]
+                    },
+                    "State": "Open"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByComparePropState",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                      "TargetType": "Prop",
+                      "Targets": [
+                        300002
+                      ]
+                    },
+                    "State": "Open"
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerGroupEvent",
+                  "EventName": {
+                    "Value": "SwitchHand_ResetGameAllClosed"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByComparePropState",
+            "TargetType": {
+              "$type": "RPG.GameCore.GroupFetchLocalTarget",
+              "TargetType": "Prop",
+              "Targets": [
+                300001
+              ]
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByComparePropState",
+                "TargetType": {
+                  "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                  "TargetType": "Prop",
+                  "Targets": [
+                    300002
+                  ]
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByComparePropState",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                      "FetchType": "SinglePropByPropID",
+                      "SinglePropID": {
+                        "GroupID": {
+                          "FixedValue": {
+                            "Value": 153
+                          }
+                        },
+                        "ID": {
+                          "FixedValue": {
+                            "Value": 300002
+                          }
+                        }
+                      }
+                    },
+                    "State": "CustomState04"
+                  },
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.TriggerGroupEvent",
+                      "EventName": {
+                        "Value": "SwitchHand_ResetGame"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByComparePropState",
+            "TargetType": {
+              "$type": "RPG.GameCore.GroupFetchLocalTarget",
+              "TargetType": "Prop",
+              "Targets": [
+                300001
+              ]
+            },
+            "State": "Open"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByComparePropState",
+                "TargetType": {
+                  "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                  "TargetType": "Prop",
+                  "Targets": [
+                    300002
+                  ]
+                },
+                "State": "Open"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByComparePropState",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                      "FetchType": "SinglePropByPropID",
+                      "SinglePropID": {
+                        "GroupID": {
+                          "FixedValue": {
+                            "Value": 153
+                          }
+                        },
+                        "ID": {
+                          "FixedValue": {
+                            "Value": 300002
+                          }
+                        }
+                      }
+                    },
+                    "State": "CustomState04"
+                  },
+                  "SuccessTaskList": [],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.TriggerGroupEvent",
+                      "EventName": {
+                        "Value": "SwitchHand_ResetGame"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "EraPoint_Right"
+      }
+    ]
+  },
+  "Type": "Group",
+  "EntityEventList": []
+}

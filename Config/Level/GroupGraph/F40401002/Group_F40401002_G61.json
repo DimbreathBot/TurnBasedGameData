@@ -1,0 +1,132 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": []
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorSavedValueChangeV2",
+          "Name": {
+            "Value": "EraFlipper_LightFollowState"
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+                "Name": "EraFlipper_LightFollowState",
+                "CompareType": "Equal",
+                "CompareValue": 1
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetEntityFollowAttachPoint",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                    "TargetType": "Prop",
+                    "Targets": [
+                      300001
+                    ]
+                  },
+                  "AttachTarget": {
+                    "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                    "FetchType": "SingleNpcByNpcKey",
+                    "SingleNpcKey": {
+                      "Custom": true,
+                      "Key": "TargetNPC"
+                    }
+                  },
+                  "AttachPoint": "Origin"
+                },
+                {
+                  "$type": "RPG.GameCore.SetEntityFollowAttachPoint",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                    "TargetType": "Prop",
+                    "Targets": [
+                      300002
+                    ]
+                  },
+                  "AttachTarget": {
+                    "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                    "FetchType": "SingleNpcByNpcKey",
+                    "SingleNpcKey": {
+                      "Custom": true,
+                      "Key": "TargetNPC"
+                    }
+                  },
+                  "AttachPoint": "Origin"
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "InitLightDevice"
+                  },
+                  "InstanceID": {
+                    "FixedValue": {
+                      "Value": 300001
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "OpenCollider"
+                  },
+                  "InstanceID": {
+                    "FixedValue": {
+                      "Value": 300002
+                    }
+                  }
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "CloseCollider"
+                  },
+                  "InstanceID": {
+                    "FixedValue": {
+                      "Value": 300002
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": []
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitServerFloorSavedValueChange"
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "TargetNPC"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "TargetLight"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "TargetPoint"
+      }
+    ]
+  },
+  "Type": "Group"
+}

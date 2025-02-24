@@ -1,0 +1,1328 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerUnlock"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareEntityAuthoritySide"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvClientChangePropState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "FromState": "Locked",
+                  "ToState": "ChestLocked"
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PropReqInteract",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "InteractID": {
+                    "FixedValue": {
+                      "Value": 1211
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitEntityServerEvent"
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_PuzzleStart"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.InitLittleGameWithLevelConfig",
+              "LittleGameOwner": {
+                "$type": "RPG.GameCore.TargetFetchOwnerEntity"
+              },
+              "LevelConfigPath": {
+                "Custom": true,
+                "Key": "PuzzleLevelConfigPath"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.LockPlayerControl"
+            },
+            {
+              "$type": "RPG.GameCore.EnablePlayerPlayIdleShow",
+              "Enable": false
+            },
+            {
+              "$type": "RPG.GameCore.LoadLittleGameArea",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "Area": {
+                "Value": "TimeRelayFlamePuzzleBG"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitStreamingJobFinished"
+            },
+            {
+              "$type": "RPG.GameCore.WaitTimeRelayFlameLoaded"
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "CustomTime": 0.5
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "CheckTutorial"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.TimeRelayFlameEventListener",
+          "Finish": [
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "Mode": "SwitchOut",
+              "CustomTime": 0.25
+            },
+            {
+              "$type": "RPG.GameCore.StopCurrentLittleGame"
+            },
+            {
+              "$type": "RPG.GameCore.ToastPage",
+              "MessageOne": {
+                "Hash": 2012001348524219443
+              },
+              "MessageTwo": {
+                "Hash": 12099637580904401829
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Self_InteractBtnUpdateCheck"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.UnloadLittleGameArea",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitStreamingJobFinished"
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "CustomTime": 0.25
+            },
+            {
+              "$type": "RPG.GameCore.TriggerGroupEvent",
+              "EventName": {
+                "Value": "ExitPuzzle"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.EndPropInteract"
+            },
+            {
+              "$type": "RPG.GameCore.HideSummonUnit",
+              "SummonUnit": {
+                "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                "UniqueName": "SUMMON_UNIT_LocalplayerPet"
+              },
+              "Hide": false
+            },
+            {
+              "$type": "RPG.GameCore.EnablePlayerPlayIdleShow"
+            },
+            {
+              "$type": "RPG.GameCore.UnLockPlayerControl"
+            },
+            {
+              "$type": "RPG.GameCore.UnLockPlayerControl"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_TriggerChestUnlock"
+              }
+            }
+          ],
+          "Quit": [
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "Mode": "SwitchOut",
+              "CustomTime": 0.25
+            },
+            {
+              "$type": "RPG.GameCore.StopCurrentLittleGame"
+            },
+            {
+              "$type": "RPG.GameCore.UnloadLittleGameArea",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitStreamingJobFinished"
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "CustomTime": 0.25
+            },
+            {
+              "$type": "RPG.GameCore.TriggerGroupEvent",
+              "EventName": {
+                "Value": "ExitPuzzle"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.EndPropInteract"
+            },
+            {
+              "$type": "RPG.GameCore.HideSummonUnit",
+              "SummonUnit": {
+                "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                "UniqueName": "SUMMON_UNIT_LocalplayerPet"
+              },
+              "Hide": false
+            },
+            {
+              "$type": "RPG.GameCore.EnablePlayerPlayIdleShow"
+            },
+            {
+              "$type": "RPG.GameCore.UnLockPlayerControl"
+            },
+            {
+              "$type": "RPG.GameCore.UnLockPlayerControl"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerSound",
+              "SoundName": {
+                "Value": "Ev_sfx_amphoreus_trf_goathead_idle"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            }
+          ],
+          "Reset": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_ResetGame"
+              }
+            }
+          ],
+          "TraceBackFail": [],
+          "FallFail": [
+            {
+              "$type": "RPG.GameCore.ShowGuideDetailDialog",
+              "GuideID": {
+                "Custom": true,
+                "Key": "TutorialUnlockId_GroundDeath"
+              },
+              "WaitForExit": true,
+              "SkipIfAlreadySeen": true
+            },
+            {
+              "$type": "RPG.GameCore.ToastPile",
+              "DescTextID": {
+                "Hash": 3953486631543770508
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_ResetGame"
+              }
+            }
+          ],
+          "HpZeroFail": [
+            {
+              "$type": "RPG.GameCore.ShowGuideDetailDialog",
+              "GuideID": {
+                "Custom": true,
+                "Key": "TutorialUnlockId_SelfCollideDeath"
+              },
+              "WaitForExit": true,
+              "SkipIfAlreadySeen": true
+            },
+            {
+              "$type": "RPG.GameCore.ToastPile",
+              "DescTextID": {
+                "Hash": 17173431384931649541
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_ResetGame"
+              }
+            }
+          ],
+          "BoxCrushFail": [],
+          "ClonePlayerStart": [
+            {
+              "$type": "RPG.GameCore.ToastPile",
+              "DescTextID": {
+                "Hash": 18327568689344237509
+              }
+            },
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefGraphDynamicFloat",
+                "Name": "TutorialNum",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                }
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.NumberCaseContainer",
+                  "Case": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  },
+                  "OnSuccess": []
+                }
+              ]
+            }
+          ],
+          "ClonePlayerEnd": [
+            {
+              "$type": "RPG.GameCore.ToastPile",
+              "DescTextID": {
+                "Hash": 3203336469244399068
+              }
+            },
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefGraphDynamicFloat",
+                "Name": "TutorialNum",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                }
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.NumberCaseContainer",
+                  "Case": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  },
+                  "OnSuccess": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_ResetGame"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "Mode": "SwitchOut",
+              "CustomTime": 0.25
+            },
+            {
+              "$type": "RPG.GameCore.ResetTimeRelayFlame"
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 0.25
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "CustomTime": 0.25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.TriggerSound",
+          "SoundName": {
+            "Value": "Ev_sfx_amphoreus_trf_goathead_idle"
+          },
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.GenericSwitchCase",
+          "SwitchRef": {
+            "$type": "RPG.GameCore.SwitchRefPropState"
+          },
+          "Cases": [
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "Case": "Locked",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.AdvSetupButtonListTrigger",
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "Interact"
+                  ],
+                  "ButtonConfigs": [],
+                  "ConsiderAngleLimit": true,
+                  "InteractAngleRange": 90,
+                  "ConsiderOwnerForwardAngleLimit": true,
+                  "OwnerForwardAngleRange": 180,
+                  "IsOverrideValidGuestConfig": true,
+                  "OverridedValidGuestConfig": {},
+                  "MustNotInDanger": true
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEffectList",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "EffectList": [
+                    {
+                      "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_GameplayProp_TrfGoldenGoat_Thorn_Lod0.prefab",
+                      "IsAttachToTargetEntity": true,
+                      "AttachPoint": "Eff_Root_01",
+                      "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                      },
+                      "SyncPropState": true
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "Case": "ChestLocked",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.AdvSetupButtonListTrigger",
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "Interact"
+                  ],
+                  "ButtonConfigs": [],
+                  "ConsiderAngleLimit": true,
+                  "InteractAngleRange": 90,
+                  "ConsiderOwnerForwardAngleLimit": true,
+                  "OwnerForwardAngleRange": 180,
+                  "IsOverrideValidGuestConfig": true,
+                  "OverridedValidGuestConfig": {},
+                  "MustNotInDanger": true
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEffectList",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "EffectList": [
+                    {
+                      "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_GameplayProp_TrfGoldenGoat_Thorn_Lod0.prefab",
+                      "IsAttachToTargetEntity": true,
+                      "AttachPoint": "Eff_Root_01",
+                      "Scale": {
+                        "X": 1,
+                        "Y": 1,
+                        "Z": 1
+                      },
+                      "SyncPropState": true
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.ShowWaypointByProp",
+                  "UseOwnerEntity": true,
+                  "GroupID": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "InstanceID": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "MaxRange": 10,
+                  "IconPath": "SpriteOutput/MapPics/NaviIcons/IconMapPlay6.png",
+                  "OnNameBoard": true
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "Case": "ChestClosed",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.AdvSetupButtonListTrigger",
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "GetReward"
+                  ],
+                  "ButtonConfigs": [],
+                  "ConsiderAngleLimit": true,
+                  "InteractAngleRange": 90,
+                  "ConsiderOwnerForwardAngleLimit": true,
+                  "OwnerForwardAngleRange": 180,
+                  "IsOverrideValidGuestConfig": true,
+                  "OverridedValidGuestConfig": {},
+                  "MustNotInDanger": true
+                },
+                {
+                  "$type": "RPG.GameCore.ShowWaypointByProp",
+                  "UseOwnerEntity": true,
+                  "GroupID": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "InstanceID": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "MaxRange": 10,
+                  "IconPath": "SpriteOutput/MapPics/Billboard/IconBillboardBox.png",
+                  "OnNameBoard": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvOnButtonPressed",
+          "ButtonName": "Interact",
+          "OnPressedCallback": [
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefPropState"
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "Locked",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.ToastPile",
+                      "DescTextID": {
+                        "Hash": 7860974746336610504
+                      }
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "ChestLocked",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.TriggerEntityEvent",
+                      "EventName": {
+                        "Value": "Self_TriggerPlay"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "ChestClosed",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                        "Name": "CanReplay",
+                        "Value": {
+                          "FixedValue": {
+                            "Value": 1
+                          }
+                        },
+                        "CompareType": "Equal"
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.TriggerEntityEvent",
+                          "EventName": {
+                            "Value": "Self_TriggerPlay"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "ChestUsed",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.AdvSetColliderGroupState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "GroupName": "Disappeared"
+                    },
+                    {
+                      "$type": "RPG.GameCore.AdvEnableTrigger",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "TriggerName": "InteractTrigger"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvOnButtonPressed",
+          "ButtonName": "GetReward",
+          "OnPressedCallback": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_TriggerChestUse"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitPropStateChange",
+          "FromState": "ChestLocked",
+          "ToState": "ChestClosed",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_OnChestClosed"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 0.5
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AnimSetParameter",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "ParameterName": "TriggerChestUnlock",
+              "ParameterType": "Trigger"
+            },
+            {
+              "$type": "RPG.GameCore.HideWaypointByProp",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "UseOwnerEntity": true,
+              "GroupID": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "InstanceID": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "OnNameBoard": true
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                "Name": "NoChestVersion",
+                "Value": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                },
+                "CompareType": "Equal"
+              },
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.ShowWaypointByProp",
+                  "UseOwnerEntity": true,
+                  "GroupID": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "InstanceID": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "MaxRange": 10,
+                  "IconPath": "SpriteOutput/MapPics/Billboard/IconBillboardBox.png",
+                  "OnNameBoard": true
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                    "Name": "CanReplay",
+                    "Value": {
+                      "FixedValue": {
+                        "Value": 1
+                      }
+                    },
+                    "CompareType": "Equal"
+                  },
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AdvSetupButtonListTrigger",
+                      "TriggerName": "InteractTrigger",
+                      "ButtonsByName": [
+                        "GetReward"
+                      ],
+                      "ButtonConfigs": [],
+                      "ConsiderAngleLimit": true,
+                      "InteractAngleRange": 90,
+                      "ConsiderOwnerForwardAngleLimit": true,
+                      "OwnerForwardAngleRange": 180,
+                      "IsOverrideValidGuestConfig": true,
+                      "OverridedValidGuestConfig": {},
+                      "MustNotInDanger": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerChestUnlock"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareEntityAuthoritySide"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvClientChangePropState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "FromState": "ChestLocked",
+                  "ToState": "ChestClosed"
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PropReqInteract",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "InteractID": {
+                    "FixedValue": {
+                      "Value": 111120
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerChestUse"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareEntityAuthoritySide"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvClientChangePropState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "FromState": "ChestClosed",
+                  "ToState": "ChestUsed"
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PropReqInteract",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "InteractID": {
+                    "FixedValue": {
+                      "Value": 112131
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Self_TriggerPlay"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.LockPlayerControl"
+            },
+            {
+              "$type": "RPG.GameCore.StartPropInteractMode",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "Mode": "UsePose02"
+            },
+            {
+              "$type": "RPG.GameCore.HideSummonUnit",
+              "SummonUnit": {
+                "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                "UniqueName": "SUMMON_UNIT_LocalplayerPet"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.LensDistortionCurveEffect",
+              "XMultiplier": 2,
+              "YMultiplier": 2,
+              "Intensity": 2,
+              "Scale": 2.5,
+              "XCurvePath": "Camera/BlendCurve/Blend_SlowToFast.asset",
+              "YCurvePath": "Camera/BlendCurve/Blend_SlowToFast.asset",
+              "IntensityCurvePath": "Camera/BlendCurve/Blend_SlowToFast.asset",
+              "ScaleCurvePath": "Camera/BlendCurve/Blend_SlowToFast.asset",
+              "Duration": 1.8
+            },
+            {
+              "$type": "RPG.GameCore.EnablePlayerPlayIdleShow",
+              "Enable": false
+            },
+            {
+              "$type": "RPG.GameCore.TriggerSound",
+              "SoundName": {
+                "Value": "Ev_sfx_amphoreus_trf_teleportin"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEffect",
+              "IsAttachToTargetEntity": true,
+              "Flags": [],
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_TrfGoldenGoatMaskProp_01_TeleportIn_Lod0.prefab",
+              "Scale": {
+                "X": 0.1,
+                "Y": 0.1,
+                "Z": 0.1
+              },
+              "TowardTarget": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "SubObjectModifyDataList": []
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 1.2
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "Mode": "SwitchOut",
+              "CustomTime": 0.5
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 0.6
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_PuzzleStart"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerSound",
+              "SoundName": {
+                "Value": "Ev_sfx_amphoreus_trf_goathead_idle_stop"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitPropStateChange",
+          "FromState": "ChestClosed",
+          "ToState": "ChestUsed",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_OnChestUsed"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEffectList",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "EffectList": [
+                {
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_GameplayProp_TrfGoldenGoat_Dis_Lod0.prefab",
+                  "IsAttachToTargetEntity": true,
+                  "AttachPoint": "Eff_Root_01",
+                  "Scale": {
+                    "X": 1,
+                    "Y": 1,
+                    "Z": 1
+                  },
+                  "SyncPropState": true
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.AdvSetColliderGroupState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "GroupName": "Disappeared"
+            },
+            {
+              "$type": "RPG.GameCore.AdvEnableTrigger",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "TriggerName": "InteractTrigger"
+            },
+            {
+              "$type": "RPG.GameCore.HideWaypointByProp",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "UseOwnerEntity": true,
+              "GroupID": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "InstanceID": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "OnNameBoard": true
+            },
+            {
+              "$type": "RPG.GameCore.TriggerSound",
+              "SoundName": {
+                "Value": "Ev_sfx_amphoreus_trf_goathead_fire_disappear"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 3
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.RemoveEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_GameplayProp_TrfGoldenGoat_Fire_Lod0.prefab",
+              "AttachPointName": "Eff_Root_01",
+              "Flags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "CheckTutorial"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefGraphDynamicFloat",
+                "Name": "TutorialNum",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                }
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.NumberCaseContainer",
+                  "Case": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  },
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.TutorialTaskUnlock",
+                      "TriggerParam": {
+                        "Custom": true,
+                        "Key": "TutorialUnlockId_Basic"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.NumberCaseContainer",
+                  "Case": {
+                    "FixedValue": {
+                      "Value": 2
+                    }
+                  },
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.TutorialTaskUnlock",
+                      "TriggerParam": {
+                        "Custom": true,
+                        "Key": "TutorialUnlockId_Stair"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitAnimStateChange",
+          "StateName": "ChestClosed",
+          "IsEnter": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffectList",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "EffectList": [
+            {
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_GameplayProp_TrfGoldenGoat_Change_Lod0.prefab",
+              "IsAttachToTargetEntity": true,
+              "AttachPoint": "Eff_Root_01",
+              "PositionOffset": {
+                "Y": -0.07
+              },
+              "Scale": {
+                "X": 1,
+                "Y": 1,
+                "Z": 1
+              },
+              "SyncPropState": true
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEffectList",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "EffectList": [
+            {
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_GameplayProp_TrfGoldenGoat_Fire_Lod0.prefab",
+              "IsAttachToTargetEntity": true,
+              "AttachPoint": "Eff_Root_01",
+              "PositionOffset": {
+                "Y": -0.07
+              },
+              "Scale": {
+                "X": 1,
+                "Y": 1,
+                "Z": 1
+              },
+              "SyncPropState": true
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.TriggerSound",
+          "SoundName": {
+            "Value": "Ev_sfx_amphoreus_trf_goathead_fire"
+          },
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Self_InteractBtnUpdateCheck"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                "Name": "CanReplay",
+                "Value": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                },
+                "CompareType": "Equal"
+              },
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvEnableButtons",
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "Interact"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeServerListenerConfig"
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByComparePropState",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetFetchAdvProp",
+              "TargetIsOwner": true,
+              "MultiGroupFetch": []
+            },
+            "State": "ChestUsed"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.AdvSetColliderGroupState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "GroupName": "Disappeared"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "Config/Gameplays/LittleGame/TimeRelayFlame/Level/Config_TrfLevel_03.json",
+        "Key": "PuzzleLevelConfigPath"
+      },
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Value": 1,
+        "Key": "TutorialNum"
+      },
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Key": "CanReplay"
+      },
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Key": "NoChestVersion"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "6114",
+        "Key": "TutorialUnlockId_Basic"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "6116",
+        "Key": "TutorialUnlockId_Stair"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "6122",
+        "Key": "TutorialUnlockId_GroundDeath"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "6124",
+        "Key": "TutorialUnlockId_SelfCollideDeath"
+      }
+    ]
+  },
+  "Type": "Entity",
+  "EntityEventList": [
+    {
+      "Name": "Clt_TriggerUnlock"
+    },
+    {
+      "Name": "Srv_TriggerUnlock",
+      "IsClient": false
+    },
+    {
+      "Name": "Clt_PuzzleStart"
+    },
+    {
+      "Name": "CheckTutorial"
+    },
+    {
+      "Name": "Self_InteractBtnUpdateCheck",
+      "IsPrivate": true
+    },
+    {
+      "Name": "Clt_TriggerChestUnlock"
+    },
+    {
+      "Name": "Clt_ResetGame"
+    },
+    {
+      "Name": "Self_TriggerPlay",
+      "IsPrivate": true
+    },
+    {
+      "Name": "Clt_TriggerChestUse"
+    },
+    {
+      "Name": "Clt_OnChestClosed"
+    },
+    {
+      "Name": "Clt_OnChestUsed"
+    },
+    {
+      "Name": "Srv_PuzzleFinished",
+      "IsClient": false
+    }
+  ]
+}

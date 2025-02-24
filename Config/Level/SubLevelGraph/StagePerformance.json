@@ -158,7 +158,6 @@
             {
               "$type": "RPG.GameCore.WaitSecond",
               "WaitTime": {
-                "IsDynamic": false,
                 "FixedValue": {
                   "Value": 1.5
                 }
@@ -376,7 +375,6 @@
             {
               "$type": "RPG.GameCore.WaitSecond",
               "WaitTime": {
-                "IsDynamic": false,
                 "FixedValue": {
                   "Value": 1.5
                 }
@@ -564,7 +562,6 @@
                 "Alias": "DarkTeamCenter"
               },
               "AimOffset": {
-                "X": 0,
                 "Y": 1,
                 "Z": -1
               },
@@ -649,9 +646,7 @@
                 "Alias": "FightMVPEntity"
               },
               "AimOffset": {
-                "X": 0,
-                "Y": 1.07,
-                "Z": 0
+                "Y": 1.07
               },
               "Override": true
             },
@@ -726,7 +721,6 @@
             {
               "$type": "RPG.GameCore.SetDynamicValue",
               "Value": {
-                "IsDynamic": false,
                 "FixedValue": {
                   "Value": 1
                 }
@@ -740,7 +734,6 @@
             {
               "$type": "RPG.GameCore.SetDynamicValue",
               "Value": {
-                "IsDynamic": false,
                 "FixedValue": {
                   "Value": 0
                 }
@@ -760,7 +753,6 @@
             },
             "CompareType": "Equal",
             "CompareValue": {
-              "IsDynamic": false,
               "FixedValue": {
                 "Value": 1
               }
@@ -866,24 +858,55 @@
                     {
                       "$type": "RPG.GameCore.PredicateTaskList",
                       "Predicate": {
-                        "$type": "RPG.GameCore.ByCompareTarget",
-                        "TargetType": {
-                          "$type": "RPG.GameCore.TargetAlias",
-                          "Alias": "BattleDataViewUISelectEnter"
-                        },
-                        "CompareType": {
-                          "$type": "RPG.GameCore.TargetAlias",
-                          "Alias": "BattleDataViewUISelectLeave.GetServant"
-                        }
+                        "$type": "RPG.GameCore.ByViewModeSwitchEmptyServant",
+                        "SwitchType": "Enter"
                       },
                       "SuccessTaskList": [
                         {
-                          "$type": "RPG.GameCore.TriggerEntityColliderCameraConfig",
-                          "TargetType": {
-                            "$type": "RPG.GameCore.TargetAlias",
-                            "Alias": "BattleDataViewUISelectEnter"
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByViewModeSwitchEmptyServant",
+                            "SwitchType": "Exist"
                           },
-                          "KeyName": "AvatarSummonerToServant"
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.TriggerEntityColliderCameraConfig",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "BattleDataViewUISelectEnter"
+                              },
+                              "KeyName": "EmptyServantToEmptyServant"
+                            }
+                          ],
+                          "FailedTaskList": [
+                            {
+                              "$type": "RPG.GameCore.PredicateTaskList",
+                              "Predicate": {
+                                "$type": "RPG.GameCore.ByViewModeSwitchEmptyServant",
+                                "SwitchType": "EnterTransition"
+                              },
+                              "SuccessTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.TriggerEntityColliderCameraConfig",
+                                  "TargetType": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "BattleDataViewUISelectEnter"
+                                  },
+                                  "KeyName": "AvatarToEmptyServant"
+                                }
+                              ],
+                              "FailedTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.TriggerEntityColliderCameraConfig",
+                                  "TargetType": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "BattleDataViewUISelectEnter"
+                                  },
+                                  "KeyName": "EmptyServantToEmptyServant"
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ],
                       "FailedTaskList": [
@@ -897,7 +920,7 @@
                             },
                             "CompareType": {
                               "$type": "RPG.GameCore.TargetAlias",
-                              "Alias": "BattleDataViewUISelectLeave.GetSummoner"
+                              "Alias": "BattleDataViewUISelectLeave.GetServant"
                             }
                           },
                           "SuccessTaskList": [
@@ -907,19 +930,31 @@
                                 "$type": "RPG.GameCore.TargetAlias",
                                 "Alias": "BattleDataViewUISelectEnter"
                               },
-                              "KeyName": "AvatarServantToSummoner"
+                              "KeyName": "AvatarSummonerToServant"
                             }
                           ],
                           "FailedTaskList": [
                             {
                               "$type": "RPG.GameCore.PredicateTaskList",
                               "Predicate": {
-                                "$type": "RPG.GameCore.ByTargetEntityType",
-                                "TargetType": {
-                                  "$type": "RPG.GameCore.TargetAlias",
-                                  "Alias": "BattleDataViewUISelectEnter"
-                                },
-                                "EntityTypeMask": "Servant"
+                                "$type": "RPG.GameCore.ByAny",
+                                "PredicateList": [
+                                  {
+                                    "$type": "RPG.GameCore.ByViewModeSwitchEmptyServant",
+                                    "SwitchType": "ExistTransition"
+                                  },
+                                  {
+                                    "$type": "RPG.GameCore.ByCompareTarget",
+                                    "TargetType": {
+                                      "$type": "RPG.GameCore.TargetAlias",
+                                      "Alias": "BattleDataViewUISelectEnter"
+                                    },
+                                    "CompareType": {
+                                      "$type": "RPG.GameCore.TargetAlias",
+                                      "Alias": "BattleDataViewUISelectLeave.GetSummoner"
+                                    }
+                                  }
+                                ]
                               },
                               "SuccessTaskList": [
                                 {
@@ -928,17 +963,40 @@
                                     "$type": "RPG.GameCore.TargetAlias",
                                     "Alias": "BattleDataViewUISelectEnter"
                                   },
-                                  "KeyName": "OtherToServant"
+                                  "KeyName": "AvatarServantToSummoner"
                                 }
                               ],
                               "FailedTaskList": [
                                 {
-                                  "$type": "RPG.GameCore.TriggerEntityColliderCameraConfig",
-                                  "TargetType": {
-                                    "$type": "RPG.GameCore.TargetAlias",
-                                    "Alias": "BattleDataViewUISelectEnter"
+                                  "$type": "RPG.GameCore.PredicateTaskList",
+                                  "Predicate": {
+                                    "$type": "RPG.GameCore.ByTargetEntityType",
+                                    "TargetType": {
+                                      "$type": "RPG.GameCore.TargetAlias",
+                                      "Alias": "BattleDataViewUISelectEnter"
+                                    },
+                                    "EntityTypeMask": "Servant"
                                   },
-                                  "KeyName": "AvatarSwitch"
+                                  "SuccessTaskList": [
+                                    {
+                                      "$type": "RPG.GameCore.TriggerEntityColliderCameraConfig",
+                                      "TargetType": {
+                                        "$type": "RPG.GameCore.TargetAlias",
+                                        "Alias": "BattleDataViewUISelectEnter"
+                                      },
+                                      "KeyName": "OtherToServant"
+                                    }
+                                  ],
+                                  "FailedTaskList": [
+                                    {
+                                      "$type": "RPG.GameCore.TriggerEntityColliderCameraConfig",
+                                      "TargetType": {
+                                        "$type": "RPG.GameCore.TargetAlias",
+                                        "Alias": "BattleDataViewUISelectEnter"
+                                      },
+                                      "KeyName": "AvatarSwitch"
+                                    }
+                                  ]
                                 }
                               ]
                             }
@@ -1155,7 +1213,6 @@
             {
               "$type": "RPG.GameCore.WaitSecond",
               "WaitTime": {
-                "IsDynamic": false,
                 "FixedValue": {
                   "Value": 0.3
                 }
@@ -1191,7 +1248,6 @@
         {
           "$type": "RPG.GameCore.WaitSecond",
           "WaitTime": {
-            "IsDynamic": false,
             "FixedValue": {
               "Value": 0.25
             }

@@ -1,0 +1,851 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "TribbieEarly"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 0.5
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AdvSetAILeadWay",
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "Targets": [
+                  400001
+                ]
+              },
+              "EntityInstanceID": {
+                "FixedValue": {
+                  "Value": 400001
+                }
+              },
+              "PathwayGroupID": 36,
+              "PathwayID": 1,
+              "MotionFlag": "Walk",
+              "CenterOffset": 3,
+              "SpeedScale": 1.2,
+              "WaitForPlayer": true,
+              "StartWaitDistance": 6.5,
+              "StopWaitDistance": 6.2,
+              "StartWalkDistance": 4,
+              "EndWalkDistance": 5,
+              "OverrideOverStepRadius": true,
+              "OverStepRadius": 1.2,
+              "OnReach": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "Walk2"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.AnimSetParameter",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                    "TargetType": "Prop",
+                    "Targets": [
+                      300003
+                    ]
+                  },
+                  "ParameterName": "OptionIndex",
+                  "ParameterType": "Int",
+                  "Value": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                }
+              ],
+              "PathOffset": [],
+              "MoveWhenPlayerMove": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "EnterArea_G36"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.ClientFinishMission",
+              "SubmissionID": 104010241
+            },
+            {
+              "$type": "RPG.GameCore.SetFloorCustomBool",
+              "Name": {
+                "Value": "FCV_OnTBWalkEnd"
+              },
+              "Value": {
+                "Value": true
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupCustomTaskTrigger",
+          "TargetType": {
+            "$type": "RPG.GameCore.GroupFetchLocalTarget",
+            "TargetType": "Prop",
+            "Targets": [
+              300001
+            ]
+          },
+          "TriggerName": "MissionTrigger",
+          "OnEnter": [],
+          "DisableAfterTriggered": true
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorSavedValueChangeV2",
+          "Name": {
+            "Value": "EraFlipper_LightFollowState"
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+                "Name": "EraFlipper_LightFollowState",
+                "CompareType": "Equal",
+                "CompareValue": 1
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetEntityFollowAttachPoint",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                    "TargetType": "Prop",
+                    "Targets": [
+                      300002
+                    ]
+                  },
+                  "AttachTarget": {
+                    "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                    "FetchType": "SingleNpcByNpcKey",
+                    "SingleNpcKey": {
+                      "Custom": true,
+                      "Key": "TargetNPC"
+                    }
+                  },
+                  "AttachPoint": "Origin"
+                },
+                {
+                  "$type": "RPG.GameCore.SetEntityFollowAttachPoint",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                    "TargetType": "Prop",
+                    "Targets": [
+                      300003
+                    ]
+                  },
+                  "AttachTarget": {
+                    "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                    "FetchType": "SingleNpcByNpcKey",
+                    "SingleNpcKey": {
+                      "Custom": true,
+                      "Key": "TargetNPC"
+                    }
+                  },
+                  "AttachPoint": "Origin"
+                },
+                {
+                  "$type": "RPG.GameCore.WaitSecond"
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "InitLightDevice"
+                  },
+                  "InstanceID": {
+                    "FixedValue": {
+                      "Value": 300002
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "OpenCollider"
+                  },
+                  "InstanceID": {
+                    "FixedValue": {
+                      "Value": 300003
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.HideSummonUnit",
+                  "SummonUnit": {
+                    "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                    "UniqueName": "SUMMON_UNIT_LocalplayerPet"
+                  }
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "CloseCollider"
+                  },
+                  "InstanceID": {
+                    "FixedValue": {
+                      "Value": 300003
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerSound",
+                  "SoundName": {
+                    "Value": "Ev_sfx_amphoreus_eraflip_searchlight_off"
+                  },
+                  "EmitterType": "LocalPlayer"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitServerFloorSavedValueChange"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+            "Name": "EraFlipper_LightFollowState",
+            "CompareType": "Equal",
+            "CompareValue": 1
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.SetEntityFollowAttachPoint",
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300002
+                ]
+              },
+              "AttachTarget": {
+                "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                "FetchType": "SingleNpcByNpcKey",
+                "SingleNpcKey": {
+                  "Custom": true,
+                  "Key": "TargetNPC"
+                }
+              },
+              "AttachPoint": "Origin"
+            },
+            {
+              "$type": "RPG.GameCore.SetEntityFollowAttachPoint",
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300003
+                ]
+              },
+              "AttachTarget": {
+                "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                "FetchType": "SingleNpcByNpcKey",
+                "SingleNpcKey": {
+                  "Custom": true,
+                  "Key": "TargetNPC"
+                }
+              },
+              "AttachPoint": "Origin"
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "InitLightDevice"
+              },
+              "InstanceID": {
+                "FixedValue": {
+                  "Value": 300002
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 1.2
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.HideSummonUnit",
+              "SummonUnit": {
+                "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                "UniqueName": "SUMMON_UNIT_LocalplayerPet"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCheckFloorCustomBool",
+                "Name": {
+                  "Value": "FCV_JustExitPreTrigger"
+                }
+              },
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.LockFov"
+                },
+                {
+                  "$type": "RPG.GameCore.VCameraConfigChange",
+                  "CameraConfig": {
+                    "Freelook3rdConfig": {
+                      "ExportToJson": true,
+                      "BaseChangeParam": {
+                        "ExportToJson": true,
+                        "ZoomRatio": 3,
+                        "CenterPos": {
+                          "X": 0.5,
+                          "Y": 0.5
+                        },
+                        "Time": 2,
+                        "ChangeCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve.asset",
+                        "RecoveryTime": 2,
+                        "RecoveryCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve2.asset"
+                      },
+                      "AxisYChangeParam": {
+                        "ExportToJson": true,
+                        "TargetValue": 0.75,
+                        "Time": 2,
+                        "ChangeCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve.asset"
+                      }
+                    },
+                    "OverrideShakeConfigV2": {},
+                    "NoiseConfig": {}
+                  }
+                }
+              ]
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "CloseCollider"
+              },
+              "InstanceID": {
+                "FixedValue": {
+                  "Value": 300003
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+            "Name": "EraFlipper_LightFollowState",
+            "CompareType": "Equal"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.ChangePropState"
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+            "Name": "EraFlipper_LightFollowState",
+            "CompareType": "Equal",
+            "CompareValue": 1
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.ChangePropState"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AnimSetParameter",
+          "TargetType": {
+            "$type": "RPG.GameCore.GroupFetchLocalTarget",
+            "TargetType": "Prop",
+            "Targets": [
+              300003
+            ]
+          },
+          "ParameterName": "OptionIndex",
+          "ParameterType": "Int"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Walk2"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.AdvSetAILeadWay",
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "Targets": [
+                  400001
+                ]
+              },
+              "EntityInstanceID": {
+                "FixedValue": {
+                  "Value": 400001
+                }
+              },
+              "PathwayGroupID": 36,
+              "PathwayID": 2,
+              "MotionFlag": "Walk",
+              "CenterOffset": 0.3,
+              "SpeedScale": 1.2,
+              "WaitForPlayer": true,
+              "StartWaitDistance": 2.8,
+              "StopWaitDistance": 2.6,
+              "StartWalkDistance": 4,
+              "EndWalkDistance": 5,
+              "OverrideOverStepRadius": true,
+              "OverStepRadius": 0.3,
+              "OnReach": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "Walk3"
+                  }
+                }
+              ],
+              "PathOffset": [],
+              "MoveWhenPlayerMove": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Walk3"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.AdvSetAILeadWay",
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "Targets": [
+                  400001
+                ]
+              },
+              "EntityInstanceID": {
+                "FixedValue": {
+                  "Value": 400001
+                }
+              },
+              "PathwayGroupID": 36,
+              "PathwayID": 3,
+              "MotionFlag": "Walk",
+              "CenterOffset": 0.3,
+              "SpeedScale": 1.2,
+              "WaitForPlayer": true,
+              "StartWaitDistance": 2.4,
+              "StopWaitDistance": 2.2,
+              "StartWalkDistance": 4,
+              "EndWalkDistance": 5,
+              "OnReach": [
+                {
+                  "$type": "RPG.GameCore.TriggerSound",
+                  "SoundName": {
+                    "Value": "Ev_GamePlay_EraFlipper_Spot_TurnOff"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "Walk4"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerGroupEvent",
+                  "EventName": {
+                    "Value": "EnterArea_G36"
+                  }
+                }
+              ],
+              "PathOffset": [],
+              "MoveWhenPlayerMove": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Walk4"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.AdvSetAILeadWay",
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "Targets": [
+                  400001
+                ]
+              },
+              "EntityInstanceID": {
+                "FixedValue": {
+                  "Value": 400001
+                }
+              },
+              "PathwayGroupID": 36,
+              "PathwayID": 4,
+              "MotionFlag": "Walk",
+              "CenterOffset": 3,
+              "SpeedScale": 1.3,
+              "WaitForPlayer": true,
+              "StartWalkDistance": 4,
+              "EndWalkDistance": 5,
+              "OnReach": [
+                {
+                  "$type": "RPG.GameCore.ClientFinishMission",
+                  "SubmissionID": 104010263
+                }
+              ],
+              "PathOffset": [],
+              "MoveWhenPlayerMove": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "TribbieLate"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PlayFullScreenTransfer",
+              "PrevDuration": -1,
+              "KeepDuration": 0,
+              "Action": [
+                {
+                  "$type": "RPG.GameCore.ScrTrfActTaskList",
+                  "TaskList": [
+                    {
+                      "$type": "RPG.GameCore.CaptureEntity",
+                      "UniqueName": {
+                        "Value": "Tribbie_104010241"
+                      },
+                      "TargetType": {
+                        "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                        "Targets": [
+                          400001
+                        ]
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.SwitchCharacterAnchorV2",
+                      "SwitchCharacterAnchorConfig": {
+                        "CharacterUniqueName": "Tribbie_104010241",
+                        "AreaName": {
+                          "Value": "LevelArea_P40401_F40401002_G36"
+                        },
+                        "AnchorName": {
+                          "Value": "Anchor4"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Walk4"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerGroupEvent",
+              "EventName": {
+                "Value": "EnterArea_G36"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.CollectDataConditions",
+          "TaskIDList": [
+            104010241
+          ],
+          "MainMissionIDList": [],
+          "PerformanceIDList": [],
+          "PerformanceIDDsList": [],
+          "CustomValueMainMissionIDList": []
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareSubMissionState",
+            "SubMissionID": 104010241,
+            "SubMissionState": "Finish"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "TribbieLate"
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "TribbieEarly"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "EnterArea_G36"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PlayMissionTalk",
+              "SimpleTalkList": [
+                {
+                  "TalkSentenceID": 140122001,
+                  "ProtectTime": 2
+                },
+                {
+                  "TalkSentenceID": 140122002,
+                  "ProtectTime": 2
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvDistrictSetupTrigger",
+          "GroupID": {
+            "FixedValue": {
+              "Value": 36
+            }
+          },
+          "DistrictID": {
+            "FixedValue": {
+              "Value": 2
+            }
+          },
+          "DisableAfterTrigger": true,
+          "TickInterval": 0.2,
+          "OnEnter": [
+            {
+              "$type": "RPG.GameCore.ClientFinishMission",
+              "SubmissionID": 104010263
+            }
+          ],
+          "OnExit": [],
+          "OverridedValidGuestConfig": {
+            "TargetList": []
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorSavedValueChangeV2",
+          "Name": {
+            "Value": "EraFlipper_LightFollowState"
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+                "DynamicName": {
+                  "Value": "EraFlipper_LightFollowState"
+                },
+                "CompareType": "Equal"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PropEnableCollider",
+                  "OPType": "ColliderOnly",
+                  "SpecifiedRelativePaths": [],
+                  "TargetType": {
+                    "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                    "TargetType": "Prop",
+                    "Targets": [
+                      300006
+                    ]
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.PropEnableCollider",
+                  "OPType": "ColliderOnly",
+                  "SpecifiedRelativePaths": [],
+                  "TargetType": {
+                    "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                    "TargetType": "Prop",
+                    "Targets": [
+                      300007
+                    ]
+                  }
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PropEnableCollider",
+                  "OPType": "ColliderOnly",
+                  "Enabled": true,
+                  "SpecifiedRelativePaths": [],
+                  "TargetType": {
+                    "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                    "TargetType": "Prop",
+                    "Targets": [
+                      300006
+                    ]
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.PropEnableCollider",
+                  "OPType": "ColliderOnly",
+                  "Enabled": true,
+                  "SpecifiedRelativePaths": [],
+                  "TargetType": {
+                    "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                    "TargetType": "Prop",
+                    "Targets": [
+                      300007
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+            "DynamicName": {
+              "Value": "EraFlipper_LightFollowState"
+            },
+            "CompareType": "Equal"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.PropEnableCollider",
+              "OPType": "ColliderOnly",
+              "SpecifiedRelativePaths": [],
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300006
+                ]
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PropEnableCollider",
+              "OPType": "ColliderOnly",
+              "SpecifiedRelativePaths": [],
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300007
+                ]
+              }
+            }
+          ],
+          "FailedTaskList": []
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "TargetNPC"
+      }
+    ]
+  },
+  "Type": "Group",
+  "EntityEventList": []
+}

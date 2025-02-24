@@ -1,0 +1,381 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.CreateLevelAreas",
+          "AssetPath": {
+            "Custom": true,
+            "Key": "TrackCameraArea"
+          }
+        }
+      ]
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFrame",
+          "WaitFrameCount": 2
+        },
+        {
+          "$type": "RPG.GameCore.AdvDistrictSetupTrigger",
+          "DistrictID": {
+            "FixedValue": {
+              "Value": 1
+            }
+          },
+          "TickInterval": 0.1,
+          "OnEnter": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByInTrackCamera",
+                "UseOwnerGroup": true
+              },
+              "SuccessTaskList": [],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerGroupEvent",
+                  "EventName": {
+                    "Value": "BeginTrack"
+                  }
+                }
+              ]
+            }
+          ],
+          "OnExit": []
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "BeginTrack"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.ActiveVirtualCamera",
+              "LevelAreaCameraKey": {
+                "Custom": true,
+                "Key": "LevelAreaCameraKey"
+              },
+              "SelectFollowTargetType": "Anchor",
+              "SelectLookAtTargetType": "Anchor",
+              "DynamicParams": {}
+            },
+            {
+              "$type": "RPG.GameCore.AdvHideMazeBtn"
+            },
+            {
+              "$type": "RPG.GameCore.AdvHideMazeBtn",
+              "SkillType": "MazeSkill"
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                "Name": "IsSetMoveInputToAxis",
+                "Value": {
+                  "FixedValue": {
+                    "Value": 0
+                  }
+                },
+                "CompareType": "Equal"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.ActiveTrackCamera",
+                  "Enable": true,
+                  "LevelAreaCameraKey": {
+                    "Custom": true,
+                    "Key": "LevelAreaCameraKey"
+                  },
+                  "UseOwnerGroup": true,
+                  "PathGroupID": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "PathID": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  },
+                  "BlendInEndIndex": 1,
+                  "BlendOutStartIndex": 2,
+                  "TrackWidth": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        655055761
+                      ]
+                    }
+                  },
+                  "ExitFromStart": [
+                    {
+                      "$type": "RPG.GameCore.TriggerGroupEvent",
+                      "EventName": {
+                        "Value": "EndTrack"
+                      }
+                    }
+                  ],
+                  "ExitFromEnd": [
+                    {
+                      "$type": "RPG.GameCore.TriggerGroupEvent",
+                      "EventName": {
+                        "Value": "EndTrack"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                        "Name": "IsDoOnlyOnce",
+                        "Value": {
+                          "FixedValue": {
+                            "Value": 0
+                          }
+                        },
+                        "CompareType": "Equal"
+                      },
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.AdvDistrictEnableTrigger",
+                          "DistrictID": {
+                            "FixedValue": {
+                              "Value": 1
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "OnOutOfRange": [
+                    {
+                      "$type": "RPG.GameCore.TriggerGroupEvent",
+                      "EventName": {
+                        "Value": "EndTrack"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.ActiveTrackCamera",
+                  "Enable": true,
+                  "LevelAreaCameraKey": {
+                    "Custom": true,
+                    "Key": "LevelAreaCameraKey"
+                  },
+                  "UseOwnerGroup": true,
+                  "PathGroupID": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "PathID": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  },
+                  "BlendInEndIndex": 1,
+                  "BlendOutStartIndex": 2,
+                  "TrackWidth": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        655055761
+                      ]
+                    }
+                  },
+                  "ExitFromStart": [
+                    {
+                      "$type": "RPG.GameCore.TriggerGroupEvent",
+                      "EventName": {
+                        "Value": "EndTrack"
+                      }
+                    }
+                  ],
+                  "ExitFromEnd": [
+                    {
+                      "$type": "RPG.GameCore.TriggerGroupEvent",
+                      "EventName": {
+                        "Value": "EndTrack"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                        "Name": "IsDoOnlyOnce",
+                        "Value": {
+                          "FixedValue": {
+                            "Value": 0
+                          }
+                        },
+                        "CompareType": "Equal"
+                      },
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.AdvDistrictEnableTrigger",
+                          "DistrictID": {
+                            "FixedValue": {
+                              "Value": 1
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "OnOutOfRange": [
+                    {
+                      "$type": "RPG.GameCore.TriggerGroupEvent",
+                      "EventName": {
+                        "Value": "EndTrack"
+                      }
+                    }
+                  ],
+                  "OverrideInputByTrack": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFrame",
+          "WaitFrameCount": 2
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByInTrackCameraByPathID",
+            "UseOwnerGroup": true,
+            "PathID": {
+              "FixedValue": {
+                "Value": 1
+              }
+            },
+            "DetectRange": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  655055761
+                ]
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerGroupEvent",
+              "EventName": {
+                "Value": "BeginTrack"
+              }
+            }
+          ],
+          "FailedTaskList": []
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "EndTrack"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.ActiveVirtualCamera",
+              "LevelAreaCameraKey": {
+                "Custom": true,
+                "Key": "LevelAreaCameraKey"
+              },
+              "IsActive": false,
+              "DynamicParams": {}
+            },
+            {
+              "$type": "RPG.GameCore.AdvHideMazeBtn",
+              "IsHide": false
+            },
+            {
+              "$type": "RPG.GameCore.AdvHideMazeBtn",
+              "SkillType": "MazeSkill",
+              "IsHide": false
+            },
+            {
+              "$type": "RPG.GameCore.ActiveTrackCamera",
+              "LevelAreaCameraKey": {
+                "Custom": true,
+                "Key": "LevelAreaCameraKey"
+              },
+              "UseOwnerGroup": true,
+              "PathGroupID": {
+                "FixedValue": {
+                  "Value": 51
+                }
+              },
+              "PathID": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              },
+              "BlendInEndIndex": 1,
+              "BlendOutStartIndex": 2,
+              "TrackWidth": {
+                "FixedValue": {
+                  "Value": -1
+                }
+              },
+              "ExitFromStart": [],
+              "ExitFromEnd": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "Level/Common_Adventure/DollyTrackPrefab/Default_DollyTrack.prefab",
+        "Key": "TrackCameraArea"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "Default_DollyTrack,VC",
+        "Key": "LevelAreaCameraKey"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "IsDoOnlyOnce"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "IsSetMoveInputToAxis"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Value": 10,
+        "Key": "TrackWidth"
+      }
+    ]
+  },
+  "Type": "Group",
+  "EntityEventList": []
+}

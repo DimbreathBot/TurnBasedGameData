@@ -1,0 +1,1710 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerOpen"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareEntityAuthoritySide"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvClientChangePropState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "ToState": "Open"
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PropReqInteract",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "InteractID": {
+                    "FixedValue": {
+                      "Value": 1010
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerClose"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareEntityAuthoritySide"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvClientChangePropState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "FromState": "Open"
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PropReqInteract",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "InteractID": {
+                    "FixedValue": {
+                      "Value": 1100
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitEntityServerEvent"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitEntityServerEvent"
+        }
+      ]
+    },
+    {
+      "Order": 100,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupButtonListTrigger",
+          "TriggerName": "InteractTrigger",
+          "ButtonsByName": [
+            "PrepareInteract"
+          ],
+          "ButtonConfigs": []
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+            "Name": "ManualEnableInteract",
+            "Value": {
+              "FixedValue": {
+                "Value": 0.5
+              }
+            },
+            "CompareType": "Greater"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.AdvEnableButtons",
+              "TriggerName": "InteractTrigger",
+              "ButtonsByName": [
+                "PrepareInteract"
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.PropStateExecute",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "Execute": [
+            {
+              "$type": "RPG.GameCore.AdvEnableButtons",
+              "TriggerName": "InteractTrigger",
+              "ButtonsByName": [
+                "PrepareInteract"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.ParallelConfig",
+          "TaskList": [
+            {
+              "$type": "RPG.GameCore.WaitEntityEvent",
+              "EventName": {
+                "Value": "EnterInteract"
+              },
+              "OnEvent": [
+                {
+                  "$type": "RPG.GameCore.ParallelConfig",
+                  "TaskList": [
+                    {
+                      "$type": "RPG.GameCore.SequenceConfig",
+                      "TaskList": [
+                        {
+                          "$type": "RPG.GameCore.TriggerEntityEvent",
+                          "EventName": {
+                            "Value": "DoAchievementCount"
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.AdvEnableButtons",
+                          "TriggerName": "InteractTrigger",
+                          "ButtonsByName": [
+                            "PrepareInteract"
+                          ]
+                        },
+                        {
+                          "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                          "Name": "JustInteracted",
+                          "TargetIDs": [],
+                          "Value": {
+                            "FixedValue": {
+                              "Value": 1
+                            }
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.PresetColliderStateBeforeFlipEraRegion"
+                        },
+                        {
+                          "$type": "RPG.GameCore.WaitSecond",
+                          "WaitTime": {
+                            "IsDynamic": true,
+                            "PostfixExpr": {
+                              "OpCodes": "AQAR",
+                              "FixedValues": [],
+                              "DynamicHashes": [
+                                -1063144969
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByComparePropAnimState",
+                            "State": "Unlocking01",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                            },
+                            "Inverse": true
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.AnimSetParameter",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                              },
+                              "ParameterName": "TriggerUseLight",
+                              "ParameterType": "Trigger"
+                            },
+                            {
+                              "$type": "RPG.GameCore.AnimSetParameter",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                              },
+                              "ParameterName": "TriggerUse",
+                              "ParameterType": "Trigger"
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                            "Name": "GoClockwise",
+                            "Value": {
+                              "FixedValue": {
+                                "Value": 0.5
+                              }
+                            },
+                            "CompareType": "Greater"
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.AnimSetParameter",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                              },
+                              "ParameterName": "GoClockwise",
+                              "ParameterType": "Bool",
+                              "Value": {
+                                "FixedValue": {
+                                  "Value": 1
+                                }
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                              "Name": "GoClockwise",
+                              "TargetIDs": [],
+                              "Value": {
+                                "FixedValue": {
+                                  "Value": 0
+                                }
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.RemoveEffect",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                              },
+                              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_EraFlipperConsole_01_Switching_Lod0.prefab",
+                              "AttachPointName": "EffPoint",
+                              "Flags": []
+                            },
+                            {
+                              "$type": "RPG.GameCore.TriggerEffect",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                              },
+                              "Flags": [],
+                              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_EraFlipperConsole_01_Switching_Lod0.prefab",
+                              "AttachPoint": "EffPoint",
+                              "SubObjectModifyDataList": [],
+                              "SyncPropState": true
+                            },
+                            {
+                              "$type": "RPG.GameCore.TriggerSound",
+                              "SoundName": {
+                                "Value": "Ev_sfx_amphoreus_eraflip_prop_daytonight"
+                              }
+                            }
+                          ],
+                          "FailedTaskList": [
+                            {
+                              "$type": "RPG.GameCore.AnimSetParameter",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                              },
+                              "ParameterName": "GoClockwise",
+                              "ParameterType": "Bool"
+                            },
+                            {
+                              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                              "Name": "GoClockwise",
+                              "TargetIDs": [],
+                              "Value": {
+                                "FixedValue": {
+                                  "Value": 1
+                                }
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.RemoveEffect",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                              },
+                              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_EraFlipperConsole_01_Switching_Lod0.prefab",
+                              "AttachPointName": "EffPoint",
+                              "Flags": []
+                            },
+                            {
+                              "$type": "RPG.GameCore.TriggerEffect",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                              },
+                              "Flags": [],
+                              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_EraFlipperConsole_01_Switching_Lod0.prefab",
+                              "AttachPoint": "EffPoint",
+                              "SubObjectModifyDataList": [],
+                              "SyncPropState": true
+                            },
+                            {
+                              "$type": "RPG.GameCore.TriggerSound",
+                              "SoundName": {
+                                "Value": "Ev_sfx_amphoreus_eraflip_prop_nighttoday"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "RPG.GameCore.WaitSecond",
+                          "WaitTime": {
+                            "FixedValue": {
+                              "Value": 0.2
+                            }
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.RemoveEffect",
+                          "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_EraFlipperConsole_01_Switch_Lod0.prefab",
+                          "Flags": []
+                        },
+                        {
+                          "$type": "RPG.GameCore.TriggerEffect",
+                          "Flags": [],
+                          "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_EraFlipperConsole_01_Switch_Lod0.prefab",
+                          "SubObjectModifyDataList": []
+                        },
+                        {
+                          "$type": "RPG.GameCore.PPFilterStackEffect",
+                          "PriorityGroup": "MazeGroupHigh",
+                          "Priority": "High",
+                          "StartRate": 0,
+                          "Duration": 0.6,
+                          "RecoverDuration": 0.6,
+                          "AssetPath": "EnviroSystem/PostProcessFilterAsset/EraFlipperFlash.asset"
+                        },
+                        {
+                          "$type": "RPG.GameCore.WaitSecond",
+                          "WaitTime": {
+                            "FixedValue": {
+                              "Value": 0.3
+                            }
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByRegionEraState"
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.TriggerSound",
+                              "SoundName": {
+                                "Value": "Ev_GamePlay_EraFlipper_Global_NightToDay"
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.TriggerSound",
+                              "SoundName": {
+                                "Value": "Ev_sfx_amphoreus_eraflip_nighttoday"
+                              }
+                            }
+                          ],
+                          "FailedTaskList": [
+                            {
+                              "$type": "RPG.GameCore.TriggerSound",
+                              "SoundName": {
+                                "Value": "Ev_GamePlay_EraFlipper_Global_DayToNight"
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.TriggerSound",
+                              "SoundName": {
+                                "Value": "Ev_sfx_amphoreus_eraflip_daytonight"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "RPG.GameCore.FlipEraRegion"
+                        },
+                        {
+                          "$type": "RPG.GameCore.WaitSecond",
+                          "WaitTime": {
+                            "FixedValue": {
+                              "Value": 0.32
+                            }
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.PPFilterStackEffect",
+                          "Active": false,
+                          "PriorityGroup": "MazeGroupHigh",
+                          "StartRate": 0,
+                          "Rate": 0,
+                          "AssetPath": "EnviroSystem/PostProcessFilterAsset/EraFlipperFlash.asset"
+                        },
+                        {
+                          "$type": "RPG.GameCore.WaitSecond",
+                          "WaitTime": {
+                            "FixedValue": {
+                              "Value": 0.6
+                            }
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                            "Name": "ManualEnableInteract",
+                            "Value": {
+                              "FixedValue": {
+                                "Value": 0.5
+                              }
+                            },
+                            "CompareType": "Greater"
+                          },
+                          "FailedTaskList": [
+                            {
+                              "$type": "RPG.GameCore.PredicateTaskList",
+                              "Predicate": {
+                                "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                                "Name": "IsInteractMasked",
+                                "Value": {
+                                  "FixedValue": {
+                                    "Value": 0.5
+                                  }
+                                },
+                                "CompareType": "Greater"
+                              },
+                              "FailedTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.AdvEnableButtons",
+                                  "TriggerName": "InteractTrigger",
+                                  "ButtonsByName": [
+                                    "PrepareInteract"
+                                  ],
+                                  "IsEnable": true
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.SequenceConfig",
+                      "TaskList": []
+                    }
+                  ]
+                }
+              ],
+              "InstanceID": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitEntityEvent",
+              "EventName": {
+                "Value": "ExitInteract"
+              },
+              "InstanceID": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitEntityEvent",
+              "EventName": {
+                "Value": "EnableInteract"
+              },
+              "OnEvent": [
+                {
+                  "$type": "RPG.GameCore.AdvEnableButtons",
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "PrepareInteract"
+                  ],
+                  "IsEnable": true
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.WaitEntityEvent",
+              "EventName": {
+                "Value": "SetupButton"
+              },
+              "OnEvent": [
+                {
+                  "$type": "RPG.GameCore.AdvSetupButtonListTrigger",
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "PrepareInteract"
+                  ],
+                  "ButtonConfigs": []
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.WaitEntityEvent",
+              "EventName": {
+                "Value": "ManualDoCamera"
+              },
+              "OnEvent": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                    "Name": "EnableCamera",
+                    "Value": {
+                      "FixedValue": {
+                        "Value": 0.5
+                      }
+                    },
+                    "CompareType": "Greater"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                      "Name": "IsInRange",
+                      "TargetIDs": [],
+                      "Value": {
+                        "FixedValue": {
+                          "Value": 1
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerEntityEvent",
+                      "EventName": {
+                        "Value": "DelayUseCamera"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvOnButtonPressed",
+          "ButtonName": "PrepareInteract",
+          "OnPressedCallback": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "EnterInteract"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "ToState": "Open",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+              "Name": "GoClockwise",
+              "TargetIDs": [],
+              "Value": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                "Name": "IsAutoUnlock",
+                "Value": {
+                  "FixedValue": {
+                    "Value": 0.5
+                  }
+                },
+                "CompareType": "Greater"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.WaitSecond",
+                  "WaitTime": {
+                    "FixedValue": {
+                      "Value": 2.5
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                    "Name": "UseRaidG",
+                    "Value": {
+                      "FixedValue": {
+                        "Value": 0.5
+                      }
+                    },
+                    "CompareType": "Greater"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.TutorialTaskUnlock",
+                      "TriggerParam": {
+                        "Value": "6320"
+                      }
+                    }
+                  ],
+                  "FailedTaskList": []
+                },
+                {
+                  "$type": "RPG.GameCore.AdvEnableButtons",
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "PrepareInteract"
+                  ],
+                  "IsEnable": true
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvEnableButtons",
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "PrepareInteract"
+                  ],
+                  "IsEnable": true
+                }
+              ]
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "FromState": "Open",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.AdvEnableButtons",
+              "TriggerName": "InteractTrigger",
+              "ButtonsByName": [
+                "PrepareInteract"
+              ]
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "DelayRecoverFov"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 5
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                    "Name": "IsInRange",
+                    "Value": {
+                      "FixedValue": {
+                        "Value": 0.5
+                      }
+                    },
+                    "CompareType": "Less"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                    "Name": "IsUsingCamera",
+                    "Value": {
+                      "FixedValue": {
+                        "Value": 0.5
+                      }
+                    },
+                    "CompareType": "Less"
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.LockFov",
+                  "Lock": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupCustomTaskTrigger",
+          "TriggerName": "CameraTrigger",
+          "OnEnter": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByComparePropState",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                    },
+                    "State": "Open"
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                  "Name": "IsInRange",
+                  "TargetIDs": [],
+                  "Value": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "DelayUseCamera"
+                  }
+                }
+              ]
+            }
+          ],
+          "OnExit": []
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "UnlockG"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 0.8
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefGraphDynamicFloat",
+                "Name": "UseRaidG",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                }
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.NumberCaseContainer",
+                  "Case": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  },
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.TutorialTaskUnlock",
+                      "TriggerParam": {
+                        "Value": "6320"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.NumberCaseContainer",
+                  "Case": {
+                    "FixedValue": {
+                      "Value": 2
+                    }
+                  },
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.TutorialTaskUnlock",
+                      "TriggerParam": {
+                        "Value": "6324"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "TryUnlock"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PropReqInteract",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "InteractID": {
+                "FixedValue": {
+                  "Value": 1010
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Order": 999,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "DelayUseCamera"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 0.1
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "UnlockG"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 0.3
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                    "Name": "IsInRange",
+                    "Value": {
+                      "FixedValue": {
+                        "Value": 0.5
+                      }
+                    },
+                    "CompareType": "Greater"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                    "Name": "IsUsingCamera",
+                    "Value": {
+                      "FixedValue": {
+                        "Value": 0.5
+                      }
+                    },
+                    "CompareType": "Less"
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                    "Name": "EnableCamera",
+                    "Value": {
+                      "FixedValue": {
+                        "Value": 0.5
+                      }
+                    },
+                    "CompareType": "Greater"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AnimSetParameter",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "ParameterName": "Near",
+                      "ParameterType": "Int",
+                      "Value": {
+                        "FixedValue": {
+                          "Value": 1
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.LockFov"
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerEntityEvent",
+                      "EventName": {
+                        "Value": "SetCloseCamera"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                      "Name": "IsUsingCamera",
+                      "TargetIDs": [],
+                      "Value": {
+                        "FixedValue": {
+                          "Value": 1
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupCustomTaskTrigger",
+          "TriggerName": "CameraExitTrigger",
+          "OnExit": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "DoExitCamera"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Order": 9999,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "SetCloseCamera"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                "Name": "CloseCameraAxisYLevel",
+                "Value": {
+                  "FixedValue": {
+                    "Value": 1.5
+                  }
+                },
+                "CompareType": "Greater"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.VCameraConfigChange",
+                  "CameraConfig": {
+                    "Freelook3rdConfig": {
+                      "ExportToJson": true,
+                      "BaseChangeParam": {
+                        "ExportToJson": true,
+                        "ZoomRatio": 2,
+                        "CenterPos": {
+                          "X": 0.5,
+                          "Y": 0.8
+                        },
+                        "Time": 1,
+                        "ChangeCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve.asset",
+                        "RecoveryTime": 1,
+                        "RecoveryCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve2.asset"
+                      },
+                      "AxisYChangeParam": {
+                        "ExportToJson": true,
+                        "TargetValue": 0.8,
+                        "Time": 1,
+                        "ChangeCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve.asset"
+                      }
+                    },
+                    "OverrideShakeConfigV2": {},
+                    "NoiseConfig": {}
+                  }
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                    "Name": "CloseCameraAxisYLevel",
+                    "Value": {
+                      "FixedValue": {
+                        "Value": 0.5
+                      }
+                    },
+                    "CompareType": "Greater"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.VCameraConfigChange",
+                      "CameraConfig": {
+                        "Freelook3rdConfig": {
+                          "ExportToJson": true,
+                          "BaseChangeParam": {
+                            "ExportToJson": true,
+                            "ZoomRatio": 2,
+                            "CenterPos": {
+                              "X": 0.5,
+                              "Y": 0.8
+                            },
+                            "Time": 1,
+                            "ChangeCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve.asset",
+                            "RecoveryTime": 1,
+                            "RecoveryCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve2.asset"
+                          },
+                          "AxisYChangeParam": {
+                            "ExportToJson": true,
+                            "TargetValue": 0.7,
+                            "Time": 1,
+                            "ChangeCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve.asset"
+                          }
+                        },
+                        "OverrideShakeConfigV2": {},
+                        "NoiseConfig": {}
+                      }
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                        "Name": "CloseCameraAxisYLevel",
+                        "Value": {
+                          "FixedValue": {
+                            "Value": -0.5
+                          }
+                        },
+                        "CompareType": "Greater"
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.VCameraConfigChange",
+                          "CameraConfig": {
+                            "Freelook3rdConfig": {
+                              "ExportToJson": true,
+                              "BaseChangeParam": {
+                                "ExportToJson": true,
+                                "ZoomRatio": 2,
+                                "CenterPos": {
+                                  "X": 0.5,
+                                  "Y": 0.8
+                                },
+                                "Time": 1,
+                                "ChangeCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve.asset",
+                                "RecoveryTime": 1,
+                                "RecoveryCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve2.asset"
+                              },
+                              "AxisYChangeParam": {
+                                "ExportToJson": true,
+                                "TargetValue": 0.65,
+                                "Time": 1,
+                                "ChangeCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve.asset"
+                              }
+                            },
+                            "OverrideShakeConfigV2": {},
+                            "NoiseConfig": {}
+                          }
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                            "Name": "CloseCameraAxisYLevel",
+                            "Value": {
+                              "FixedValue": {
+                                "Value": -1.5
+                              }
+                            },
+                            "CompareType": "Greater"
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.VCameraConfigChange",
+                              "CameraConfig": {
+                                "Freelook3rdConfig": {
+                                  "ExportToJson": true,
+                                  "BaseChangeParam": {
+                                    "ExportToJson": true,
+                                    "ZoomRatio": 2,
+                                    "CenterPos": {
+                                      "X": 0.5,
+                                      "Y": 0.8
+                                    },
+                                    "Time": 1,
+                                    "ChangeCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve.asset",
+                                    "RecoveryTime": 1,
+                                    "RecoveryCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve2.asset"
+                                  },
+                                  "AxisYChangeParam": {
+                                    "ExportToJson": true,
+                                    "TargetValue": 0.35,
+                                    "Time": 1,
+                                    "ChangeCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve.asset"
+                                  }
+                                },
+                                "OverrideShakeConfigV2": {},
+                                "NoiseConfig": {}
+                              }
+                            }
+                          ],
+                          "FailedTaskList": [
+                            {
+                              "$type": "RPG.GameCore.VCameraConfigChange",
+                              "CameraConfig": {
+                                "Freelook3rdConfig": {
+                                  "ExportToJson": true,
+                                  "BaseChangeParam": {
+                                    "ExportToJson": true,
+                                    "ZoomRatio": 2,
+                                    "CenterPos": {
+                                      "X": 0.5,
+                                      "Y": 0.8
+                                    },
+                                    "Time": 1,
+                                    "ChangeCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve.asset",
+                                    "RecoveryTime": 1,
+                                    "RecoveryCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve2.asset"
+                                  },
+                                  "AxisYChangeParam": {
+                                    "ExportToJson": true,
+                                    "TargetValue": 0.2,
+                                    "Time": 1,
+                                    "ChangeCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve.asset"
+                                  }
+                                },
+                                "OverrideShakeConfigV2": {},
+                                "NoiseConfig": {}
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Order": 9999,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.RegionEraStateChangeListener",
+          "OnSwitchToState1": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                "Name": "JustInteracted",
+                "Value": {
+                  "FixedValue": {
+                    "Value": 0.5
+                  }
+                },
+                "CompareType": "Greater"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "Clt_EraFlipFinished"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                  "Name": "JustInteracted",
+                  "TargetIDs": [],
+                  "Value": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "OnSwitchToState2": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                "Name": "JustInteracted",
+                "Value": {
+                  "FixedValue": {
+                    "Value": 0.5
+                  }
+                },
+                "CompareType": "Greater"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "Clt_EraFlipFinished"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                  "Name": "JustInteracted",
+                  "TargetIDs": [],
+                  "Value": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "DoExitCamera"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+              "Name": "IsInRange",
+              "TargetIDs": [],
+              "Value": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                "Name": "IsUsingCamera",
+                "Value": {
+                  "FixedValue": {
+                    "Value": 0.5
+                  }
+                },
+                "CompareType": "Greater"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AnimSetParameter",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "ParameterName": "Near",
+                  "ParameterType": "Int"
+                },
+                {
+                  "$type": "RPG.GameCore.VCameraConfigChange",
+                  "CameraConfig": {
+                    "Freelook3rdConfig": {
+                      "ExportToJson": true,
+                      "BaseChangeParam": {
+                        "ExportToJson": true,
+                        "Reset": true,
+                        "ZoomRatio": 1.5,
+                        "CenterPos": {
+                          "X": 0.5,
+                          "Y": 0.5
+                        },
+                        "Time": 1,
+                        "ChangeCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve.asset",
+                        "RecoveryTime": 1,
+                        "RecoveryCurvePath": "Camera/BlendCurve/EraFlipperCameraCurve2.asset"
+                      }
+                    },
+                    "OverrideShakeConfigV2": {},
+                    "NoiseConfig": {}
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                  "Name": "IsUsingCamera",
+                  "TargetIDs": [],
+                  "Value": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "DelayRecoverFov"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "DoAchievementCount"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                "Name": "IsCountingAchievement",
+                "Value": {
+                  "FixedValue": {
+                    "Value": 0.5
+                  }
+                },
+                "CompareType": "Greater"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                  "Name": "AchievementCount",
+                  "TargetIDs": [],
+                  "Value": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAAAAIR",
+                      "FixedValues": [
+                        {
+                          "Value": 1
+                        }
+                      ],
+                      "DynamicHashes": [
+                        -898834796
+                      ]
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                    "Name": "AchievementCount",
+                    "Value": {
+                      "FixedValue": {
+                        "Value": 4.5
+                      }
+                    },
+                    "CompareType": "Greater"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetAdvAchievement",
+                      "AchievementID": 4084001
+                    }
+                  ]
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                  "Name": "IsCountingAchievement",
+                  "TargetIDs": [],
+                  "Value": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                  "Name": "AchievementCount",
+                  "TargetIDs": [],
+                  "Value": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.WaitSecond",
+                  "WaitTime": {
+                    "FixedValue": {
+                      "Value": 30
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                  "Name": "IsCountingAchievement",
+                  "TargetIDs": [],
+                  "Value": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Order": 9999,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "SetInteractHideMask"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.AdvEnableButtons",
+              "TriggerName": "InteractTrigger",
+              "ButtonsByName": [
+                "PrepareInteract"
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+              "Name": "IsInteractMasked",
+              "TargetIDs": [],
+              "Value": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Order": 9999,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "RemoveInteractHideMask"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+              "Name": "IsInteractMasked",
+              "TargetIDs": [],
+              "Value": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                "Name": "JustInteracted",
+                "Value": {
+                  "FixedValue": {
+                    "Value": 0.5
+                  }
+                },
+                "CompareType": "Greater"
+              },
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByComparePropState",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                    }
+                  },
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AdvEnableButtons",
+                      "TriggerName": "InteractTrigger",
+                      "ButtonsByName": [
+                        "PrepareInteract"
+                      ],
+                      "IsEnable": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Value": 1,
+        "Key": "GoClockwise"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "IsInRange"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "IsAutoUnlock"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "VC"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "IsUsingCamera"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Value": 1,
+        "Key": "EnableCamera"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "CloseCameraAxisYLevel"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "UseRaidG"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "ManualEnableInteract"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "JustInteracted"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "DelayFlipTime"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "IsCountingAchievement"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "AchievementCount"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "IsInteractMasked"
+      }
+    ]
+  },
+  "Type": "Entity",
+  "EntityEventList": [
+    {
+      "Name": "Clt_TriggerOpen"
+    },
+    {
+      "Name": "Clt_TriggerClose"
+    },
+    {
+      "Name": "Srv_TriggerOpen",
+      "IsClient": false
+    },
+    {
+      "Name": "Srv_TriggerClose",
+      "IsClient": false
+    },
+    {
+      "Name": "EnterInteract"
+    },
+    {
+      "Name": "DoAchievementCount"
+    },
+    {
+      "Name": "ExitInteract"
+    },
+    {
+      "Name": "EnableInteract"
+    },
+    {
+      "Name": "SetupButton"
+    },
+    {
+      "Name": "ManualDoCamera"
+    },
+    {
+      "Name": "DelayUseCamera"
+    },
+    {
+      "Name": "DelayRecoverFov"
+    },
+    {
+      "Name": "UnlockG"
+    },
+    {
+      "Name": "TryUnlock"
+    },
+    {
+      "Name": "SetCloseCamera"
+    },
+    {
+      "Name": "DoExitCamera"
+    },
+    {
+      "Name": "Clt_EraFlipFinished"
+    },
+    {
+      "Name": "SetInteractHideMask"
+    },
+    {
+      "Name": "RemoveInteractHideMask"
+    }
+  ]
+}

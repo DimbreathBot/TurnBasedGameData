@@ -1,0 +1,644 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.MemoryVisionPuzzleInit"
+        }
+      ]
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "Puzzle2LG_OnMemoryVisionOpen"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+              "Name": "Loc_EntityAsync",
+              "TargetIDs": [],
+              "Value": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.AdvCreateEntityAsync",
+              "InstanceIDList": [],
+              "AdvancedSpawnList": [
+                {
+                  "IsCreateAllEntityType": true
+                },
+                {
+                  "InstanceID": 300002,
+                  "SpawnEntityType": "Prop"
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+              "Name": "Loc_EntityAsync",
+              "TargetIDs": [],
+              "Value": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "Puzzle2LG_OnMemoryVisionClose"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.AdvDestroyEntityAsync",
+              "NeedDisappear": true,
+              "InstanceIDList": [],
+              "AdvancedSpawnList": [
+                {
+                  "InstanceID": 400001
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.TriggerGroupEvent",
+              "EventName": {
+                "Value": "Puzzle2LG_OnMemoryPropClose"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerGroupEvent",
+              "EventName": {
+                "Value": "Puzzle2LG_OnMemoryNPCClose"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvDistrictSetupTrigger",
+          "GroupID": {
+            "FixedValue": {
+              "Value": 179
+            }
+          },
+          "DistrictID": {
+            "FixedValue": {
+              "Value": 1
+            }
+          },
+          "OnExit": [
+            {
+              "$type": "RPG.GameCore.TriggerGroupEvent",
+              "EventName": {
+                "Value": "LG2Puzzle_CloseMemoryVision"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_TriggerClose"
+              },
+              "InstanceID": {
+                "FixedValue": {
+                  "Value": 300001
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "MissionFinish"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerGroupEvent",
+          "EventName": {
+            "Value": "LG2Puzzle_CloseMemoryVision"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerClose"
+          },
+          "InstanceID": {
+            "FixedValue": {
+              "Value": 300001
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGraphDynamicValueChange",
+          "Name": "Loc_EntityAsync",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefGraphDynamicFloat",
+                "Name": "Loc_EntityAsync"
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.NumberCaseContainer",
+                  "Case": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.TriggerEntityEvent",
+                      "EventName": {
+                        "Value": "Clt_TriggerDisableInteract"
+                      },
+                      "InstanceID": {
+                        "FixedValue": {
+                          "Value": 300001
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.NumberCaseContainer",
+                  "Case": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  },
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.TriggerEntityEvent",
+                      "EventName": {
+                        "Value": "Clt_TriggerEnableInteract"
+                      },
+                      "InstanceID": {
+                        "FixedValue": {
+                          "Value": 300001
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "Puzzle2LG_OnMemoryNPCClose"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.AdvByEntityExist",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                  "FetchType": "SingleNpcByNpcID",
+                  "SingleNpcID": {
+                    "GroupID": {
+                      "FixedValue": {
+                        "Value": 179
+                      }
+                    },
+                    "GroupNpcID": {
+                      "FixedValue": {
+                        "Value": 400003
+                      }
+                    }
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetTargetEntityFadeWithAnim",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                    "FetchType": "SingleNpcByNpcID",
+                    "SingleNpcID": {
+                      "GroupID": {
+                        "FixedValue": {
+                          "Value": 179
+                        }
+                      },
+                      "GroupNpcID": {
+                        "FixedValue": {
+                          "Value": 400003
+                        }
+                      }
+                    }
+                  },
+                  "Duration": 0.5
+                },
+                {
+                  "$type": "RPG.GameCore.WaitSecond",
+                  "WaitTime": {
+                    "FixedValue": {
+                      "Value": 0.5
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.AdvDestroyEntityAsync",
+                  "NeedDisappear": true,
+                  "InstanceIDList": [],
+                  "AdvancedSpawnList": [
+                    {
+                      "InstanceID": 400003
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "Puzzle2LG_OnMemoryNPCClose"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.AdvByEntityExist",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                  "FetchType": "SingleNpcByNpcID",
+                  "SingleNpcID": {
+                    "GroupID": {
+                      "FixedValue": {
+                        "Value": 179
+                      }
+                    },
+                    "GroupNpcID": {
+                      "FixedValue": {
+                        "Value": 400004
+                      }
+                    }
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetTargetEntityFadeWithAnim",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                    "FetchType": "SingleNpcByNpcID",
+                    "SingleNpcID": {
+                      "GroupID": {
+                        "FixedValue": {
+                          "Value": 179
+                        }
+                      },
+                      "GroupNpcID": {
+                        "FixedValue": {
+                          "Value": 400004
+                        }
+                      }
+                    }
+                  },
+                  "Duration": 0.5
+                },
+                {
+                  "$type": "RPG.GameCore.WaitSecond",
+                  "WaitTime": {
+                    "FixedValue": {
+                      "Value": 0.5
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.AdvDestroyEntityAsync",
+                  "NeedDisappear": true,
+                  "InstanceIDList": [],
+                  "AdvancedSpawnList": [
+                    {
+                      "InstanceID": 400004
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "Puzzle2LG_OnMemoryNPCClose"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.AdvByEntityExist",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                  "FetchType": "SingleNpcByNpcID",
+                  "SingleNpcID": {
+                    "GroupID": {
+                      "FixedValue": {
+                        "Value": 179
+                      }
+                    },
+                    "GroupNpcID": {
+                      "FixedValue": {
+                        "Value": 400002
+                      }
+                    }
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetTargetEntityFadeWithAnim",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                    "FetchType": "SingleNpcByNpcID",
+                    "SingleNpcID": {
+                      "GroupID": {
+                        "FixedValue": {
+                          "Value": 179
+                        }
+                      },
+                      "GroupNpcID": {
+                        "FixedValue": {
+                          "Value": 400002
+                        }
+                      }
+                    }
+                  },
+                  "Duration": 1
+                },
+                {
+                  "$type": "RPG.GameCore.WaitSecond",
+                  "WaitTime": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.AdvDestroyEntityAsync",
+                  "NeedDisappear": true,
+                  "InstanceIDList": [],
+                  "AdvancedSpawnList": [
+                    {
+                      "InstanceID": 400002
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "Puzzle2LG_OnMemoryNPCClose"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.AdvByEntityExist",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                  "FetchType": "SingleNpcByNpcID",
+                  "SingleNpcID": {
+                    "GroupID": {
+                      "FixedValue": {
+                        "Value": 179
+                      }
+                    },
+                    "GroupNpcID": {
+                      "FixedValue": {
+                        "Value": 400005
+                      }
+                    }
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetTargetEntityFadeWithAnim",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                    "FetchType": "SingleNpcByNpcID",
+                    "SingleNpcID": {
+                      "GroupID": {
+                        "FixedValue": {
+                          "Value": 179
+                        }
+                      },
+                      "GroupNpcID": {
+                        "FixedValue": {
+                          "Value": 400005
+                        }
+                      }
+                    }
+                  },
+                  "Duration": 1
+                },
+                {
+                  "$type": "RPG.GameCore.WaitSecond",
+                  "WaitTime": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.AdvDestroyEntityAsync",
+                  "NeedDisappear": true,
+                  "InstanceIDList": [],
+                  "AdvancedSpawnList": [
+                    {
+                      "InstanceID": 400005
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "Puzzle2LG_OnMemoryNPCClose"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.AdvByEntityExist",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                  "FetchType": "SingleNpcByNpcID",
+                  "SingleNpcID": {
+                    "GroupID": {
+                      "FixedValue": {
+                        "Value": 179
+                      }
+                    },
+                    "GroupNpcID": {
+                      "FixedValue": {
+                        "Value": 400006
+                      }
+                    }
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetTargetEntityFadeWithAnim",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvNpcEx",
+                    "FetchType": "SingleNpcByNpcID",
+                    "SingleNpcID": {
+                      "GroupID": {
+                        "FixedValue": {
+                          "Value": 179
+                        }
+                      },
+                      "GroupNpcID": {
+                        "FixedValue": {
+                          "Value": 400006
+                        }
+                      }
+                    }
+                  },
+                  "Duration": 1
+                },
+                {
+                  "$type": "RPG.GameCore.WaitSecond",
+                  "WaitTime": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.AdvDestroyEntityAsync",
+                  "NeedDisappear": true,
+                  "InstanceIDList": [],
+                  "AdvancedSpawnList": [
+                    {
+                      "InstanceID": 400006
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "Puzzle2LG_OnMemoryPropClose"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.AdvByEntityExist",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                  "FetchType": "SinglePropByPropID",
+                  "SinglePropID": {
+                    "GroupID": {
+                      "FixedValue": {
+                        "Value": 179
+                      }
+                    },
+                    "ID": {
+                      "FixedValue": {
+                        "Value": 300002
+                      }
+                    }
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvDestroyEntityAsync",
+                  "NeedDisappear": true,
+                  "InstanceIDList": [],
+                  "AdvancedSpawnList": [
+                    {
+                      "InstanceID": 300002,
+                      "SpawnEntityType": "Prop"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Value": 1,
+        "Key": "Loc_EntityAsync"
+      }
+    ]
+  },
+  "Type": "Group",
+  "EntityEventList": []
+}

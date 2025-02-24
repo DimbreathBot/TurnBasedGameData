@@ -1,0 +1,2074 @@
+{
+  "AbilityList": [
+    {
+      "Name": "Monster_W4_Herta_00_WeaponControl",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.SetAttachmentScale",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AttachPoints": [
+            {
+              "Name": "WeaponB01"
+            }
+          ],
+          "Scale": {}
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "Monster_W4_Herta_00_Basic"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Monster_W4_Herta_00_Skill01_Phase01",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Monster_W4_Herta_00_Skill01_Phase02"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Monster_W4_Herta_00_Skill01_Camera"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 1
+            }
+          },
+          "NormalizedTimeWait": {
+            "FixedValue": {
+              "Value": 0.72
+            }
+          },
+          "NormalizedTransitionDuration": {
+            "FixedValue": {
+              "Value": 0.15
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "AnimLogicState": "Idle"
+        }
+      ]
+    },
+    {
+      "Modifiers": {
+        "Monster_W4_Herta_00_SummonMonsterEnd": {
+          "_CallbackList": [
+            {
+              "Event": "OnActionEnd",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.CharacterLeaveStage",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "AliveOnly": false,
+                  "ReasonKey": "Vanish"
+                }
+              ]
+            },
+            {
+              "Event": "OnListenCharacterDie",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareTargetCount",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerSummonedMinions"
+                    },
+                    "AliveOnly": true,
+                    "Number": {
+                      "FixedValue": {
+                        "Value": 0
+                      }
+                    },
+                    "CompareType": "Equal"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.DestroyBattleCharacter",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerSummoner"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "Stacking": "Replace"
+        },
+        "Monster_W4_Herta_00_SummonMonsterKillTogether": {
+          "UseSnapshotEntity": true,
+          "_CallbackList": [
+            {
+              "Event": "OnDestroy",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.Retarget",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllTeammate"
+                  },
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByIsContainModifier",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "ModifierName": {
+                      "Value": "Monster_W4_Herta_00_SummonMonsterKillTogether"
+                    }
+                  },
+                  "MaxNumber": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  },
+                  "TaskList": [
+                    {
+                      "$type": "RPG.GameCore.DebugLog",
+                      "Message": "==============1106 Listen1======================"
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.DebugLog",
+                      "Message": "==============1106 Listen2======================"
+                    },
+                    {
+                      "$type": "RPG.GameCore.DestroyBattleCharacter",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerSummoner"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "Name": "Monster_W4_Herta_00_Skill01_Phase02",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.SkillExecutionStart"
+        },
+        {
+          "$type": "RPG.GameCore.SetTeamFormation",
+          "Team": "TeamDark",
+          "FormationType": "DarkTeamNormal"
+        },
+        {
+          "$type": "RPG.GameCore.MoveToTargetPosition",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "DarkTeamCenter"
+          },
+          "IgnoreRadius": true,
+          "OffsetTargetDistance": {
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.05
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareDynamicValue",
+            "DynamicKey": {
+              "Value": "SummonType"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 1
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.IncludeGlobalTaskListTemplate",
+              "Name": "MonsterHerta_SummonOnce",
+              "DynamicValues": {
+                "TP_SummonLocation": {
+                  "FixedValue": {
+                    "Value": 0
+                  }
+                },
+                "TP_DelayRatio": {
+                  "FixedValue": {
+                    "Value": 0.75
+                  }
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.IncludeGlobalTaskListTemplate",
+              "Name": "MonsterHerta_SummonOnce",
+              "DynamicValues": {
+                "TP_SummonLocation": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                },
+                "TP_DelayRatio": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.IncludeGlobalTaskListTemplate",
+              "Name": "MonsterHerta_SummonOnce",
+              "DynamicValues": {
+                "TP_SummonLocation": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                },
+                "TP_DelayRatio": {
+                  "FixedValue": {
+                    "Value": 1.5
+                  }
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.IncludeGlobalTaskListTemplate",
+              "Name": "MonsterHerta_SummonOnce",
+              "DynamicValues": {
+                "TP_SummonLocation": {
+                  "FixedValue": {
+                    "Value": 2
+                  }
+                },
+                "TP_DelayRatio": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.IncludeGlobalTaskListTemplate",
+              "Name": "MonsterHerta_SummonOnce",
+              "DynamicValues": {
+                "TP_SummonLocation": {
+                  "FixedValue": {
+                    "Value": 2
+                  }
+                },
+                "TP_DelayRatio": {
+                  "FixedValue": {
+                    "Value": 1.5
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareDynamicValue",
+            "DynamicKey": {
+              "Value": "SummonType"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 2
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.IncludeGlobalTaskListTemplate",
+              "Name": "MonsterHerta_SummonOnce",
+              "DynamicValues": {
+                "TP_SummonLocation": {
+                  "FixedValue": {
+                    "Value": 0
+                  }
+                },
+                "TP_DelayRatio": {
+                  "FixedValue": {
+                    "Value": 0.75
+                  }
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.IncludeGlobalTaskListTemplate",
+              "Name": "MonsterHerta_SummonOnce",
+              "DynamicValues": {
+                "TP_SummonLocation": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                },
+                "TP_DelayRatio": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.IncludeGlobalTaskListTemplate",
+              "Name": "MonsterHerta_SummonOnce",
+              "DynamicValues": {
+                "TP_SummonLocation": {
+                  "FixedValue": {
+                    "Value": 2
+                  }
+                },
+                "TP_DelayRatio": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.2
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareDynamicValue",
+            "DynamicKey": {
+              "Value": "SummonType"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 1
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerParallelTaskListTemplate",
+              "Templates": [
+                {
+                  "Name": "MonsterHerta_Explode",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "Name": "MonsterHerta_FireOnce",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "Name": "MonsterHerta_FireOnce",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0.0666
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "Name": "MonsterHerta_FireOnce",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0.0666
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "Name": "MonsterHerta_FireOnce",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0.1
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "Name": "MonsterHerta_FireOnce",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0.1
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareDynamicValue",
+            "DynamicKey": {
+              "Value": "SummonType"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 2
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerParallelTaskListTemplate",
+              "Templates": [
+                {
+                  "Name": "MonsterHerta_Explode",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "Name": "MonsterHerta_FireOnce",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "Name": "MonsterHerta_FireOnce",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0.0666
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "Name": "MonsterHerta_FireOnce",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0.0666
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterSummonedMinions"
+          },
+          "ModifierName": {
+            "Value": "Monster_W4_Herta_00_SummonMonsterKillTogether"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "Monster_W4_Herta_00_SummonMonsterEnd"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.ClearRecordEntityFormation",
+          "Team": "TeamDark"
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 0.5
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetEntityVisible",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 1
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SkillPerformFinish"
+        }
+      ],
+      "DynamicValues": {
+        "Floats": {
+          "-1625654895": {}
+        }
+      }
+    },
+    {
+      "Name": "Monster_W4_Herta_00_Skill01_Phase01_Insert",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.RemoveModifierByBehaviorFlag",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierBehaviorFlags": [
+            "STAT_CTRL"
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Monster_W4_Herta_00_Skill01_Phase02_Insert"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Monster_W4_Herta_00_Skill01_Camera"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 1
+            }
+          },
+          "NormalizedTimeWait": {
+            "FixedValue": {
+              "Value": 0.72
+            }
+          },
+          "NormalizedTransitionDuration": {
+            "FixedValue": {
+              "Value": 0.15
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerAnimState",
+          "AnimLogicState": "Idle"
+        }
+      ]
+    },
+    {
+      "Modifiers": {
+        "Monster_W4_Herta_00_SummonMonsterEnd": {
+          "_CallbackList": [
+            {
+              "Event": "OnActionEnd",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.CharacterLeaveStage",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "AliveOnly": false,
+                  "ReasonKey": "Vanish"
+                }
+              ]
+            },
+            {
+              "Event": "OnListenCharacterDie",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareTargetCount",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerSummonedMinions"
+                    },
+                    "AliveOnly": true,
+                    "Number": {
+                      "FixedValue": {
+                        "Value": 0
+                      }
+                    },
+                    "CompareType": "Equal"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.DestroyBattleCharacter",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerSummoner"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Event": "OnInsertAbilityFinish",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.CharacterLeaveStage",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "AliveOnly": false,
+                  "ReasonKey": "Vanish"
+                }
+              ]
+            }
+          ],
+          "Stacking": "Replace"
+        },
+        "Monster_W4_Herta_00_SummonMonsterKillTogether": {
+          "UseSnapshotEntity": true,
+          "_CallbackList": [
+            {
+              "Event": "OnDestroy",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.Retarget",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllTeammate"
+                  },
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByIsContainModifier",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "ModifierName": {
+                      "Value": "Monster_W4_Herta_00_SummonMonsterKillTogether"
+                    }
+                  },
+                  "MaxNumber": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  },
+                  "TaskList": [
+                    {
+                      "$type": "RPG.GameCore.DebugLog",
+                      "Message": "==============1106 Listen1======================"
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.DebugLog",
+                      "Message": "==============1106 Listen2======================"
+                    },
+                    {
+                      "$type": "RPG.GameCore.DestroyBattleCharacter",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerSummoner"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "Name": "Monster_W4_Herta_00_Skill01_Phase02_Insert",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.SetTeamFormation",
+          "Team": "TeamDark",
+          "FormationType": "DarkTeamNormal"
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.05
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareDynamicValue",
+            "DynamicKey": {
+              "Value": "SummonType"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 1
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.IncludeGlobalTaskListTemplate",
+              "Name": "MonsterHerta_SummonOnce",
+              "DynamicValues": {
+                "TP_SummonLocation": {
+                  "FixedValue": {
+                    "Value": 0
+                  }
+                },
+                "TP_DelayRatio": {
+                  "FixedValue": {
+                    "Value": 0.75
+                  }
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.IncludeGlobalTaskListTemplate",
+              "Name": "MonsterHerta_SummonOnce",
+              "DynamicValues": {
+                "TP_SummonLocation": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                },
+                "TP_DelayRatio": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.IncludeGlobalTaskListTemplate",
+              "Name": "MonsterHerta_SummonOnce",
+              "DynamicValues": {
+                "TP_SummonLocation": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                },
+                "TP_DelayRatio": {
+                  "FixedValue": {
+                    "Value": 1.5
+                  }
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.IncludeGlobalTaskListTemplate",
+              "Name": "MonsterHerta_SummonOnce",
+              "DynamicValues": {
+                "TP_SummonLocation": {
+                  "FixedValue": {
+                    "Value": 2
+                  }
+                },
+                "TP_DelayRatio": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.IncludeGlobalTaskListTemplate",
+              "Name": "MonsterHerta_SummonOnce",
+              "DynamicValues": {
+                "TP_SummonLocation": {
+                  "FixedValue": {
+                    "Value": 2
+                  }
+                },
+                "TP_DelayRatio": {
+                  "FixedValue": {
+                    "Value": 1.5
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareDynamicValue",
+            "DynamicKey": {
+              "Value": "SummonType"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 2
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.IncludeGlobalTaskListTemplate",
+              "Name": "MonsterHerta_SummonOnce",
+              "DynamicValues": {
+                "TP_SummonLocation": {
+                  "FixedValue": {
+                    "Value": 0
+                  }
+                },
+                "TP_DelayRatio": {
+                  "FixedValue": {
+                    "Value": 0.75
+                  }
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.IncludeGlobalTaskListTemplate",
+              "Name": "MonsterHerta_SummonOnce",
+              "DynamicValues": {
+                "TP_SummonLocation": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                },
+                "TP_DelayRatio": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.IncludeGlobalTaskListTemplate",
+              "Name": "MonsterHerta_SummonOnce",
+              "DynamicValues": {
+                "TP_SummonLocation": {
+                  "FixedValue": {
+                    "Value": 2
+                  }
+                },
+                "TP_DelayRatio": {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "FixedValue": {
+              "Value": 0.2
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareDynamicValue",
+            "DynamicKey": {
+              "Value": "SummonType"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 1
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerParallelTaskListTemplate",
+              "Templates": [
+                {
+                  "Name": "MonsterHerta_Explode",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "Name": "MonsterHerta_FireOnce",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "Name": "MonsterHerta_FireOnce",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0.0666
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "Name": "MonsterHerta_FireOnce",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0.0666
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "Name": "MonsterHerta_FireOnce",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0.1
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "Name": "MonsterHerta_FireOnce",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0.1
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareDynamicValue",
+            "DynamicKey": {
+              "Value": "SummonType"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 2
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerParallelTaskListTemplate",
+              "Templates": [
+                {
+                  "Name": "MonsterHerta_Explode",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "Name": "MonsterHerta_FireOnce",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "Name": "MonsterHerta_FireOnce",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0.0666
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                },
+                {
+                  "Name": "MonsterHerta_FireOnce",
+                  "BaseDelay": {
+                    "FixedValue": {
+                      "Value": 0.0666
+                    }
+                  },
+                  "DelayInterval": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "ParallelCount": {
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterSummonedMinions"
+          },
+          "ModifierName": {
+            "Value": "Monster_W4_Herta_00_SummonMonsterKillTogether"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "Monster_W4_Herta_00_SummonMonsterEnd"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.ClearRecordEntityFormation",
+          "Team": "TeamDark"
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 0.5
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetEntityVisible",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 1
+            }
+          }
+        }
+      ],
+      "DynamicValues": {
+        "Floats": {
+          "-1625654895": {}
+        }
+      }
+    }
+  ],
+  "GlobalModifiers": {
+    "Monster_W4_Herta_00_SummonMark": {},
+    "Monster_W4_Herta_00_Basic": {
+      "BehaviorFlagList": [
+        "MuteHitFly",
+        "MuteHitH",
+        "Endurance"
+      ],
+      "_CallbackList": [
+        {
+          "Event": "OnStack",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.LockHP",
+              "Threshold": {
+                "FixedValue": {
+                  "Value": 0.01
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.DebugLog",
+              "Message": "==============PowerDeliver Listen======================"
+            }
+          ]
+        },
+        {
+          "Event": "OnEnterBattle",
+          "Priority": -70,
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.TurnInsertAbility",
+              "AbilityName": {
+                "Value": "Monster_W4_Herta_00_Skill01_Phase01_Insert"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "AbilityTarget": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "InsertAbilityPriority": "PROG_MonsterLowest",
+              "OwnerAliveState": "Mask_AliveOrLimbo"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "GlobalTemplates": [
+    {
+      "Name": "Random_MonsterIDKey",
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareDynamicValue",
+            "DynamicKey": {
+              "Value": "SummonType"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 1
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.RandomConfig",
+              "OddsList": [
+                {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                },
+                {
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                }
+              ],
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "ContextScope": "TargetEntity",
+                  "Value": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -289960725
+                      ]
+                    }
+                  },
+                  "DynamicKey": {
+                    "Value": "Summon_MonsterIDKey"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "ContextScope": "TargetEntity",
+                  "Value": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -1856044666
+                      ]
+                    }
+                  },
+                  "DynamicKey": {
+                    "Value": "Summon_MonsterIDKey"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareDynamicValue",
+            "DynamicKey": {
+              "Value": "SummonType"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 2
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareDynamicValue",
+                "DynamicKey": {
+                  "Value": "TP_SummonLocation"
+                },
+                "CompareType": "Equal",
+                "CompareValue": {
+                  "FixedValue": {
+                    "Value": 0
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.RandomConfig",
+                  "OddsList": [
+                    {
+                      "FixedValue": {
+                        "Value": 1
+                      }
+                    }
+                  ],
+                  "TaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "ContextScope": "TargetEntity",
+                      "Value": {
+                        "IsDynamic": true,
+                        "PostfixExpr": {
+                          "OpCodes": "AQAR",
+                          "FixedValues": [],
+                          "DynamicHashes": [
+                            -289960725
+                          ]
+                        }
+                      },
+                      "DynamicKey": {
+                        "Value": "Summon_MonsterIDKey"
+                      }
+                    }
+                  ]
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.RandomConfig",
+                  "OddsList": [
+                    {
+                      "FixedValue": {
+                        "Value": 1
+                      }
+                    }
+                  ],
+                  "TaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "ContextScope": "TargetEntity",
+                      "Value": {
+                        "IsDynamic": true,
+                        "PostfixExpr": {
+                          "OpCodes": "AQAR",
+                          "FixedValues": [],
+                          "DynamicHashes": [
+                            -1856044666
+                          ]
+                        }
+                      },
+                      "DynamicKey": {
+                        "Value": "Summon_MonsterIDKey"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Name": "MonsterHerta_SummonOnce",
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.IncludeTaskListTemplate",
+          "Name": "Random_MonsterIDKey",
+          "DynamicValues": {
+            "TP_SummonLocation": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  -2120770719
+                ]
+              }
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareDynamicValue",
+            "DynamicKey": {
+              "Value": "TP_SummonLocation"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 0
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.RecordEntityFormationIndex",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.RemoveEntityFromTeamFormation",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.SummonMonster",
+              "SummonMonsterDataList": [
+                {
+                  "MonsterID": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        688786812
+                      ]
+                    }
+                  },
+                  "LocationType": "FormationRecord",
+                  "InitAnimStateName": "StandBy"
+                }
+              ],
+              "DelayRatio": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    956981631
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareDynamicValue",
+            "DynamicKey": {
+              "Value": "TP_SummonLocation"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 1
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.SummonMonster",
+              "SummonMonsterDataList": [
+                {
+                  "MonsterID": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        688786812
+                      ]
+                    }
+                  },
+                  "LocationType": "First",
+                  "InitAnimStateName": "StandBy"
+                }
+              ],
+              "DelayRatio": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    956981631
+                  ]
+                }
+              },
+              "RefreshTeamLocation": false
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareDynamicValue",
+            "DynamicKey": {
+              "Value": "TP_SummonLocation"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 2
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.SummonMonster",
+              "SummonMonsterDataList": [
+                {
+                  "MonsterID": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        688786812
+                      ]
+                    }
+                  },
+                  "LocationType": "Last",
+                  "InitAnimStateName": "StandBy"
+                }
+              ],
+              "DelayRatio": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    956981631
+                  ]
+                }
+              },
+              "RefreshTeamLocation": false
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.SetEntityPosition",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "LastSummonMonsters"
+          },
+          "PosTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "LastSummonMonsters"
+          },
+          "OffsetZ": {
+            "FixedValue": {
+              "Value": 1.5
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicValueByProperty",
+          "DynamicKey": "_CasterMaxHP",
+          "ReadTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "Value": "MaxHP"
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicValueByProperty",
+          "DynamicKey": "_CasterCurrHP",
+          "ReadTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "Value": "CurrentHP"
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicValueByProperty",
+          "DynamicKey": "_SummonMaxHP",
+          "ReadTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "LastSummonMonsters"
+          },
+          "Value": "MaxHP"
+        },
+        {
+          "$type": "RPG.GameCore.SetHP",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "LastSummonMonsters"
+          },
+          "ModifyValue": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQABAQECBQQR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                -1567448902,
+                1820033431,
+                1675396605
+              ]
+            }
+          },
+          "ShowText": false
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicValueByProperty",
+          "DynamicKey": "_CasterMaxStance",
+          "ReadTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "Value": "MaxStance"
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicValueByProperty",
+          "DynamicKey": "_CasterCurrStance",
+          "ReadTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "Value": "CurrentStance"
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareDynamicValue",
+            "DynamicKey": {
+              "Value": "_CasterCurrStance"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "FixedValue": {
+                "Value": 0
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.ReduceStanceRatio",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "LastSummonMonsters"
+              },
+              "ReduceValue": {
+                "FixedValue": {
+                  "Value": 0.99
+                }
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.ReduceStanceRatio",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "LastSummonMonsters"
+              },
+              "ReduceValue": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AAABAAEBBQMR",
+                  "FixedValues": [
+                    {
+                      "Value": 1
+                    }
+                  ],
+                  "DynamicHashes": [
+                    63021653,
+                    997359791
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.SetEntityVisible",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "LastSummonMonsters"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetEntityActionState",
+          "UniqueName": "Monster_Herta",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "LastSummonMonsters"
+          },
+          "ActionState": false
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "LastSummonMonsters"
+          },
+          "ModifierName": {
+            "Value": "Monster_W4_Herta_00_SummonMark"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "MonsterHerta_Explode",
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitParallelTimeStamp",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 0.027999999
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.MakeCharacterHUDVisible",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "IndependentControl": true
+        },
+        {
+          "$type": "RPG.GameCore.WaitParallelTimeStamp",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 0.105
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitParallelTimeStamp",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 1.188
+            }
+          }
+        }
+      ]
+    },
+    {
+      "Name": "MonsterHerta_FireOnce",
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitParallelTimeStamp",
+          "WaitTime": {
+            "FixedValue": {
+              "Value": 0.0009999999
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DebugLog",
+          "Message": "==============IncludeParallelTaskListTemplate FireProjectile======================"
+        },
+        {
+          "$type": "RPG.GameCore.Retarget",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetSequence",
+            "Sequence": [
+              {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "CasterSummonedMinions"
+              },
+              {
+                "$type": "RPG.GameCore.TargetSortByActionOrder"
+              }
+            ]
+          },
+          "Predicate": {
+            "$type": "RPG.GameCore.ByIsContainModifier",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "ParamEntity"
+            },
+            "ModifierName": {
+              "Value": "Monster_W4_Herta_00_SummonMark"
+            }
+          },
+          "MaxNumber": {
+            "FixedValue": {
+              "Value": 1
+            }
+          },
+          "TaskList": [
+            {
+              "$type": "RPG.GameCore.RemoveModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ParamEntity"
+              },
+              "ModifierName": {
+                "Value": "Monster_W4_Herta_00_SummonMark"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.FireProjectile",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ParamEntity"
+              },
+              "Projectile": {
+                "FlyTime": 0.7,
+                "SpeedEaseType": "OutCubic",
+                "AttachPoint": "Root",
+                "TargetAttachPoint": "Root",
+                "IgnoreTargetHitbox": true,
+                "FlyEffect": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Herta_00/Eff_Monster_W4_Herta_00_Skill01_pre02.prefab",
+                "FlyEffectFadeOut": true
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitParallelTimeStamp",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 0.701
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ParamEntity"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Herta_00/Eff_Monster_W4_Herta_00_Skill01_atk.prefab"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ParamEntity"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Herta_00/Eff_Monster_W4_Herta_00_Skill01_pre04.prefab"
+            },
+            {
+              "$type": "RPG.GameCore.WaitParallelTimeStamp",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 0.702
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.SetEntityVisible",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ParamEntity"
+              },
+              "Visible": true
+            },
+            {
+              "$type": "RPG.GameCore.RefreshWeaknessUI",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ParamEntity"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.SetEntityActionState",
+              "UniqueName": "Monster_Herta",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ParamEntity"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.MakeCharacterHUDVisible",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ParamEntity"
+              },
+              "Visible": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

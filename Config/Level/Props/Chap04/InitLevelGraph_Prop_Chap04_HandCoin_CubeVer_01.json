@@ -1,0 +1,460 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.GenericSwitchCase",
+          "SwitchRef": {
+            "$type": "RPG.GameCore.SwitchRefPropState"
+          },
+          "Cases": [
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "Case": "Open",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.PropSetVisibility",
+                  "SpecifiedRelativePaths": [],
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.AdvSetupCustomTaskTrigger",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "TriggerName": "InteractTrigger",
+                  "OnEnter": [
+                    {
+                      "$type": "RPG.GameCore.TriggerEntityEvent",
+                      "EventName": {
+                        "Value": "SwitchHand_GetCoin"
+                      },
+                      "InstanceID": {
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      }
+                    }
+                  ],
+                  "DisableAfterTriggered": true,
+                  "IsOverrideValidGuestConfig": true,
+                  "OverridedValidGuestConfig": {
+                    "Teammember": false,
+                    "FakePlayer": true
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "Flags": [],
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_HandCoin_01_CoinIdle_Lod0.prefab",
+                  "SubObjectModifyDataList": [],
+                  "SyncPropState": true
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "Case": "Locked",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.PropSetVisibility",
+                  "SpecifiedRelativePaths": [],
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "SwitchHand_GetCoin"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "SwitchHand_ChangeCoinState"
+              },
+              "InstanceID": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            }
+          ],
+          "InstanceID": {
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitPropStateChange",
+          "ToState": "Open",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.SwitchHandCoinFlyTo",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+              },
+              "TargetPoint": {
+                "Value": "Root"
+              },
+              "Duration": 0.25
+            },
+            {
+              "$type": "RPG.GameCore.AnimSetParameter",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "ParameterName": "TriggerGet",
+              "ParameterType": "Trigger"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "Flags": [],
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_HandCoin_01_GetCoin_Lod0.prefab",
+              "AttachPoint": "Root",
+              "SubObjectModifyDataList": [],
+              "SyncPropState": true
+            },
+            {
+              "$type": "RPG.GameCore.RemoveEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_HandCoin_01_CoinIdle_Lod0.prefab",
+              "Flags": []
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PropSetVisibility",
+              "SpecifiedRelativePaths": [],
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TutorialTaskUnlock",
+              "TriggerParam": {
+                "Value": "6317"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "ToState": "Open",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefPropState"
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "Locked",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.TriggerGroupEvent",
+                      "EventName": {
+                        "Value": "DisableCube"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.SwitchHandForbidUIOperate",
+                      "Forbid": true
+                    },
+                    {
+                      "$type": "RPG.GameCore.WaitSecond",
+                      "WaitTime": {
+                        "FixedValue": {
+                          "Value": 0.7
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.ActiveVirtualCamera",
+                      "LevelAreaCameraKey": {
+                        "Custom": true,
+                        "Key": "CoinCam"
+                      },
+                      "WaitBlendFinish": true,
+                      "BlendConfig": {
+                        "ExportToJson": true,
+                        "BlendType": "Custom",
+                        "CustomCurveName": "BlendCut01",
+                        "BlendTime": 1
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.WaitSecond",
+                      "WaitTime": {
+                        "FixedValue": {
+                          "Value": 0.7
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerEffect",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "IsHideTargetEntityWhenLoading": true,
+                      "Flags": [],
+                      "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_SwitchHand_01_Catchable01_Lod0.prefab",
+                      "AttachPoint": "Root",
+                      "SubObjectModifyDataList": [],
+                      "SyncPropState": true
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerSound",
+                      "SoundName": {
+                        "Value": "Ev_sfx_amphoreus_switchhand_coin_appear"
+                      },
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.PropSetVisibility",
+                      "Visible": true,
+                      "SpecifiedRelativePaths": [],
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerEntityEventV2",
+                      "EventName": {
+                        "Value": "Self_CoinUnlock"
+                      },
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.WaitSecond",
+                      "WaitTime": {
+                        "FixedValue": {
+                          "Value": 1.5
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.ActiveVirtualCamera",
+                      "LevelAreaCameraKey": {
+                        "Custom": true,
+                        "Key": "CoinCam"
+                      },
+                      "IsActive": false,
+                      "WaitBlendFinish": true,
+                      "BlendConfig": {
+                        "ExportToJson": true,
+                        "BlendType": "Custom",
+                        "CustomCurveName": "BlendCut01",
+                        "BlendTime": 1
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.SwitchHandForbidUIOperate"
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerGroupEvent",
+                      "EventName": {
+                        "Value": "EnableCube"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.TutorialTaskUnlock",
+                      "TriggerParam": {
+                        "Value": "6318"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+            "FetchType": "SinglePropByPropKey",
+            "SinglePropKey": {
+              "Custom": true,
+              "Key": "Cube_1"
+            },
+            "SinglePropID": {}
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEventV2",
+          "EventName": {
+            "Value": "Self_CoinUnlock"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PropReqInteract",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "InteractID": {
+                "FixedValue": {
+                  "Value": 1200
+                }
+              }
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+          "FromState": "Locked",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.AdvSetupCustomTaskTrigger",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "TriggerName": "InteractTrigger",
+              "OnEnter": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEvent",
+                  "EventName": {
+                    "Value": "SwitchHand_GetCoin"
+                  },
+                  "InstanceID": {
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  }
+                }
+              ],
+              "DisableAfterTriggered": true,
+              "IsOverrideValidGuestConfig": true,
+              "OverridedValidGuestConfig": {
+                "Teammember": false,
+                "FakePlayer": true
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "Flags": [],
+              "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_HandCoin_01_CoinIdle_Lod0.prefab",
+              "SubObjectModifyDataList": [],
+              "SyncPropState": true
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "SwitchHand_ChangeCoinState"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PropReqInteract",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "InteractID": {
+                "FixedValue": {
+                  "Value": 1011
+                }
+              }
+            }
+          ],
+          "InstanceID": {
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "Cube_1"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "CoinCam"
+      }
+    ]
+  },
+  "Type": "Entity",
+  "EntityEventList": [
+    {
+      "Name": "SwitchHand_GetCoin"
+    },
+    {
+      "Name": "SwitchHand_ChangeCoinState"
+    },
+    {
+      "Name": "Self_CoinUnlock",
+      "IsPrivate": true
+    }
+  ]
+}

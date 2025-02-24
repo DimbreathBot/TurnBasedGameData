@@ -1,0 +1,204 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupButtonListTrigger",
+          "TriggerName": "InteractTrigger",
+          "ButtonsByName": [],
+          "ButtonConfigs": [
+            {
+              "ID": "Interact",
+              "IconType": "CheckIcon",
+              "ButtonText": {
+                "Custom": true,
+                "Key": "KeyID"
+              }
+            }
+          ],
+          "ConsiderOwnerForwardAngleLimit": true,
+          "OverridedValidGuestConfig": {
+            "FakePlayer": true
+          }
+        },
+        {
+          "$type": "RPG.GameCore.GenericSwitchCase",
+          "SwitchRef": {
+            "$type": "RPG.GameCore.SwitchRefPropState"
+          },
+          "Cases": [
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.AdvEnableButtons",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "Interact"
+                  ],
+                  "IsEnable": true
+                },
+                {
+                  "$type": "RPG.GameCore.EnableBillboard",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "Enable": true
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "Case": "Locked",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.AdvEnableButtons",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "Interact"
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.EnableBillboard",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "Enable": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvOnButtonPressed",
+          "ButtonName": "Interact",
+          "OnPressedCallback": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_OnInteract"
+              },
+              "InstanceID": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefPropState"
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.TriggerEntityEvent",
+                      "EventName": {
+                        "Value": "Self_TriggerUse"
+                      },
+                      "InstanceID": {
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "Locked",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.ToastPile",
+                      "DescTextKey": {
+                        "Custom": true,
+                        "Key": "LockedText"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Self_TriggerUse"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_OnUseStart"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerPerformance",
+              "PerformanceType": "E",
+              "PerformanceID_DS": {
+                "Custom": true,
+                "Key": "PerformenceID"
+              },
+              "MaskConfig": {}
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "LockedText"
+      },
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Key": "IsBlendCam"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "KeyID"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "PerformenceID"
+      },
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Key": "HasPerformence"
+      }
+    ]
+  },
+  "Type": "Entity",
+  "EntityEventList": [
+    {
+      "Name": "Clt_OnInteract"
+    },
+    {
+      "Name": "Self_TriggerUse",
+      "IsPrivate": true
+    },
+    {
+      "Name": "Clt_OnUseStart"
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.CollectDataConditions",
+          "TaskIDList": [
+            104010112
+          ],
+          "MainMissionIDList": [],
+          "PerformanceIDList": [],
+          "PerformanceIDDsList": [],
+          "CustomValueMainMissionIDList": []
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareSubMissionState",
+            "SubMissionID": 104010112,
+            "SubMissionState": "Finish"
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerPerformance",
+              "ValueSource": {},
+              "PerformanceType": "E",
+              "PerformanceID": 104010126,
+              "MaskConfig": {
+                "UseExcelData": false,
+                "StartBlack": "None",
+                "EndBlack": "None"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PerformanceEndSeq",
+              "Cases": [
+                {
+                  "Case": 1,
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.TriggerGroupEventOnDialogEnd",
+                      "EventName": {
+                        "Value": "1040101_EnterRaid"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.FinishLevelGraph"
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerPerformance",
+              "ValueSource": {},
+              "PerformanceType": "D",
+              "PerformanceID": 104010125,
+              "MaskConfig": {
+                "UseExcelData": false
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PerformanceEndSeq",
+              "Cases": [
+                {
+                  "Case": 1,
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.SetLoadingStratageType",
+                      "StratageType": "Plain",
+                      "RollBackWhenMissionFail": true,
+                      "SubmissionID": 104010112
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerGroupEventOnDialogEnd",
+                      "EventName": {
+                        "Value": "1040101_EnterRaid"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.ClientFinishMission",
+              "SubmissionID": 104010112
+            },
+            {
+              "$type": "RPG.GameCore.FinishLevelGraph"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

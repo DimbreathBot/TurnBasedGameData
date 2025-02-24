@@ -1,0 +1,259 @@
+{
+  "AIName": "MazeMonster_Patrol_Loop",
+  "VariableList": [],
+  "DecisionList": [
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Patrol",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.AdvSetNpcVisionsConfig",
+            "VisionsByName": [
+              "GlobalVisionConfig_Front_Slow"
+            ]
+          },
+          {
+            "$type": "RPG.GameCore.AdvNPCPatrol",
+            "StayOnWaypoint": true,
+            "StayOnWaypointDuration": 2
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "AdventureDefaultDSE",
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAlertValueInRange",
+            "AlertValueMax": 5
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Guarding",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.AdvNPCGuarding",
+            "SearchOffset": 5.5,
+            "OnGuardStart": {
+              "$type": "RPG.GameCore.TaskConfig"
+            },
+            "OnGuardEnd": {
+              "$type": "RPG.GameCore.TaskConfig"
+            }
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "AdventureDefaultDSE",
+      "Weight": {
+        "Value": 2
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAlertValueInRange",
+            "AlertValueMin": 5,
+            "AlertValueMax": 25
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Chase",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.AdvSetNpcVisionsConfig",
+            "VisionsByName": [
+              "GlobalVisionConfig_W3_Yeager_RunAlert"
+            ]
+          },
+          {
+            "$type": "RPG.GameCore.AdvNPCChase",
+            "ChaseRadius": 50
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "AdventureDefaultDSE",
+      "Weight": {
+        "Value": 3
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAlertValueInRange",
+            "AlertValueMin": 25,
+            "AlertValueMax": 45
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "GoBack",
+      "RootTask": {
+        "$type": "RPG.GameCore.AdvNPCGoback",
+        "OnBeforeGoBack": {
+          "$type": "RPG.GameCore.SequenceConfig",
+          "TaskList": []
+        }
+      },
+      "ScoreEvaluatorType": "AdventureDefaultDSE",
+      "Weight": {
+        "Value": 7
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByNPCStatus",
+            "NPCStatus": "GoBack"
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Attack",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.AdvNPCAttack",
+            "AttackCD": 3
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "AdventureDefaultDSE",
+      "Weight": {
+        "Value": 6
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAny",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByDistance",
+                    "From": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "Caster"
+                    },
+                    "To": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "AdvLocalPlayer"
+                    },
+                    "CompareType": "LessEqual",
+                    "CompareValue": {
+                      "FixedValue": {
+                        "Value": 5
+                      }
+                    }
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByAlertValueInRange",
+                    "AlertValueMin": 25,
+                    "AlertValueMax": 45
+                  }
+                ]
+              },
+              {
+                "$type": "RPG.GameCore.ByNPCStatus",
+                "NPCStatus": "Attack"
+              }
+            ]
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "Attack",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.AdvNPCUseMazeSkill",
+            "SkillCD": 10
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "AdventureDefaultDSE",
+      "Weight": {
+        "Value": 5
+      },
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckPredicateAxis",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAny",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByAlertValueInRange",
+                    "AlertValueMin": 30,
+                    "AlertValueMax": 45
+                  },
+                  {
+                    "$type": "RPG.GameCore.AdventureByNpcMazeSkillCooldown"
+                  }
+                ]
+              },
+              {
+                "$type": "RPG.GameCore.ByNPCStatus",
+                "NPCStatus": "UseMazeSkill"
+              }
+            ]
+          },
+          "SuccessScore": {
+            "Value": 1
+          }
+        }
+      ]
+    }
+  ],
+  "OnDisable": {
+    "$type": "RPG.GameCore.AdvNPCIdle"
+  },
+  "OnInit": {
+    "$type": "RPG.GameCore.AdvSetNpcAlertConfig",
+    "TargetType": {
+      "$type": "RPG.GameCore.TargetFetchAdvNpcEx"
+    },
+    "AlertLimitMax": 45,
+    "AlertGuardLimitMin": 5,
+    "AlertGuardLimitMax": 25,
+    "AlertDeclineSpeed": 10
+  }
+}

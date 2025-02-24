@@ -1,0 +1,96 @@
+{
+  "AIName": "ST_NPCMonster_SmartObject_Test",
+  "VariableList": [],
+  "DecisionList": [],
+  "TransitionTable": [],
+  "RootState": {
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ByOnHit"
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_Wait",
+            "Time": -1
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToType": "TreeSucceed",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByOnHit",
+              "Inverse": true
+            }
+          }
+        ],
+        "Name": "ControlledState"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+          "States": [
+            "Taunt"
+          ]
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_Wait",
+            "Time": -1
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToType": "TreeSucceed",
+            "TransitionToState": "ControlledState",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+              "States": [
+                "Taunt"
+              ],
+              "Inverse": true
+            }
+          }
+        ],
+        "Name": "AbnormalState"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ByHasBornSmartObject"
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_PlaySmartObject",
+            "ParamType": "BornSmartOjbect",
+            "RecordContext": true
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "ControlledState",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByOnHit"
+            }
+          },
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "AbnormalState",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByHasAbnormalState",
+              "States": [
+                "Taunt"
+              ]
+            }
+          }
+        ],
+        "Name": "SOState"
+      }
+    ]
+  }
+}

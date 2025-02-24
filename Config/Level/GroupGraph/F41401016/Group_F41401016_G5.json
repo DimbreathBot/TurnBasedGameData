@@ -1,0 +1,235 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitServerFloorSavedValueChange"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorSavedValueChangeV2",
+          "Name": {
+            "Value": "FSV_BoxDestory"
+          },
+          "Condition": {
+            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+            "DynamicName": {
+              "Value": "FSV_BoxDestory"
+            },
+            "CompareType": "Equal",
+            "CompareValue": 1
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "SwitchHand_ Camera"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                "TargetType": "Prop",
+                "Targets": [
+                  300020
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorCustomValueChange",
+          "Name": {
+            "Value": "FCV_isHand"
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.SetFloorCustomFloat",
+              "Name": {
+                "Value": "FCV_SwitchPlayer"
+              },
+              "Value": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            }
+          ],
+          "Condition": {
+            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+            "DynamicName": {
+              "Value": "FSV_FinishSwitchHand"
+            },
+            "CompareType": "Equal",
+            "CompareValue": 1
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorSavedValueChangeV2",
+          "Name": {
+            "Value": "FSV_FinishSwitchHand"
+          },
+          "Condition": {
+            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+            "DynamicName": {
+              "Value": "FSV_FinishSwitchHand"
+            },
+            "CompareType": "Equal",
+            "CompareValue": 1
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.SwitchHandShowPuzzleFinishToast",
+              "IsRaid": true
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.ShowMiniGameFuncBtnEffect",
+              "CustomFuncBtnName": "SwitchHand_ExitGame"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+            "DynamicName": {
+              "Value": "FSV_FinishSwitchHand"
+            },
+            "CompareType": "Equal",
+            "CompareValue": 1
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.SetFloorCustomFloat",
+              "Name": {
+                "Value": "FCV_SwitchPlayer"
+              },
+              "Value": {
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+            "DynamicName": {
+              "Value": "FSV_BoxDestory"
+            },
+            "CompareType": "Equal",
+            "CompareValue": 1
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+                "DynamicName": {
+                  "Value": "FSV_FinishSwitchHand"
+                },
+                "CompareType": "Equal"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEntityEventV2",
+                  "EventName": {
+                    "Value": "SwitchHand_ Camera"
+                  },
+                  "TargetType": {
+                    "$type": "RPG.GameCore.GroupFetchLocalTarget",
+                    "TargetType": "Prop",
+                    "Targets": [
+                      300020
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFloorSavedValueChangeV2",
+          "Name": {
+            "Value": "FSV_FinishSwitchHand"
+          },
+          "Condition": {
+            "$type": "RPG.GameCore.ByCompareFloorSavedValue",
+            "DynamicName": {
+              "Value": "FSV_FinishSwitchHand"
+            },
+            "CompareType": "Equal",
+            "CompareValue": 1
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareFloorCustomFloatV2",
+                "Name": {
+                  "Custom": true,
+                  "Key": "FCV_CrashNum"
+                },
+                "CompareType": "Equal",
+                "CompareValue": {
+                  "FixedValue": {
+                    "Value": 0
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetAdvAchievement",
+                  "QuestID": 4044032
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "FCV_CrashNum",
+        "Key": "FCV_CrashNum"
+      }
+    ]
+  },
+  "Type": "Group",
+  "EntityEventList": []
+}
