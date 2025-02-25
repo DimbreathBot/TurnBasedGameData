@@ -1,6 +1,13 @@
 # StarRailData
 Repository containing the release data for Honkai: Star Rail.
 
+## TextMap Hashing
+The new hashes for text map use xxhash. You can find various implementations:
+
+* **JavaScript:** https://github.com/pierrec/js-xxhash
+* **Python:** https://github.com/ifduyue/python-xxhash
+
+
 ## Support
 
 If you would like to support the work done to create and maintain the data repositories, you can do so here: [here](https://patreon.com/Dimbreath).
