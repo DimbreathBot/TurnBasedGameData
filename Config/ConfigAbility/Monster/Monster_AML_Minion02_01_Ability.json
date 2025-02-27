@@ -983,6 +983,75 @@
               ]
             }
           ]
+        },
+        {
+          "Property": "HPAddedRatio",
+          "Ranges": [
+            {
+              "Min": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "Max": {
+                "FixedValue": {
+                  "Value": 1E+09
+                }
+              },
+              "OnChange": [
+                {
+                  "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                  "Name": "TaskList_Common_RallyHP_ListenMaxHPChange"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Property": "HPConvert",
+          "Ranges": [
+            {
+              "Min": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "Max": {
+                "FixedValue": {
+                  "Value": 1E+09
+                }
+              },
+              "OnChange": [
+                {
+                  "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                  "Name": "TaskList_Common_RallyHP_ListenMaxHPChange"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Property": "HPDelta",
+          "Ranges": [
+            {
+              "Min": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "Max": {
+                "FixedValue": {
+                  "Value": 1E+09
+                }
+              },
+              "OnChange": [
+                {
+                  "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                  "Name": "TaskList_Common_RallyHP_ListenMaxHPChange"
+                }
+              ]
+            }
+          ]
         }
       ],
       "_CallbackList": [
@@ -1405,6 +1474,131 @@
               "FailedTaskList": []
             }
           ]
+        },
+        {
+          "Name": "TaskList_Common_RallyHP_ListenMaxHPChange",
+          "TaskList": [
+            {
+              "$type": "RPG.GameCore.SetDynamicValueByProperty",
+              "DynamicKey": "MDF_CurrentHP",
+              "ReadTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "Value": "CurrentHP"
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicValueByProperty",
+              "DynamicKey": "MDF_MaxHP",
+              "ReadTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "Value": "MaxHP"
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareAbilityProperty",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ModifierOwnerEntity"
+                },
+                "Property": "RallyHP",
+                "CompareType": "Greater",
+                "CompareValue": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      -1610876898
+                    ]
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareAbilityProperty",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "Property": "CurrentHP",
+                    "CompareType": "Less",
+                    "CompareValue": {
+                      "IsDynamic": true,
+                      "PostfixExpr": {
+                        "OpCodes": "AQAR",
+                        "FixedValues": [],
+                        "DynamicHashes": [
+                          -1610876898
+                        ]
+                      }
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "ModifierName": {
+                        "Value": "MMonster_AML_Minion02_01_RallyHP_V2"
+                      },
+                      "DynamicValues": {
+                        "MDF_RallyHP": {
+                          "IsDynamic": true,
+                          "PostfixExpr": {
+                            "OpCodes": "AQAR",
+                            "FixedValues": [],
+                            "DynamicHashes": [
+                              -1610876898
+                            ]
+                          }
+                        },
+                        "MDF_HealPercentage": {
+                          "IsDynamic": true,
+                          "PostfixExpr": {
+                            "OpCodes": "AQAR",
+                            "FixedValues": [],
+                            "DynamicHashes": [
+                              -1950642111
+                            ]
+                          }
+                        },
+                        "MDF_HealUpRatio": {
+                          "IsDynamic": true,
+                          "PostfixExpr": {
+                            "OpCodes": "AQAR",
+                            "FixedValues": [],
+                            "DynamicHashes": [
+                              1644848941
+                            ]
+                          }
+                        },
+                        "MDF_Strongth_AllDamageTypeAddedRatio": {
+                          "IsDynamic": true,
+                          "PostfixExpr": {
+                            "OpCodes": "AQAR",
+                            "FixedValues": [],
+                            "DynamicHashes": [
+                              848741910
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "FailedTaskList": []
+                }
+              ],
+              "FailedTaskList": []
+            }
+          ]
         }
       ]
     },
@@ -1601,6 +1795,75 @@
       "OnAbilityPropertyChange": [
         {
           "Property": "HPAddedRatio",
+          "Ranges": [
+            {
+              "Min": {
+                "FixedValue": {
+                  "Value": 0
+                }
+              },
+              "Max": {
+                "FixedValue": {
+                  "Value": 1E+09
+                }
+              },
+              "OnChange": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareAbilityProperty",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "Property": "CurrentHP",
+                    "CompareType": "GreaterEqual",
+                    "CompareValue": {
+                      "IsDynamic": true,
+                      "PostfixExpr": {
+                        "OpCodes": "AQAR",
+                        "FixedValues": [],
+                        "DynamicHashes": [
+                          -872062464
+                        ]
+                      }
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "ModifierName": {
+                        "Value": "MMonster_AML_Minion02_01_RallyHP_V2_Strongth"
+                      },
+                      "DynamicValues": {
+                        "MDF_AllDamageTypeAddedRatio": {
+                          "IsDynamic": true,
+                          "PostfixExpr": {
+                            "OpCodes": "AQAR",
+                            "FixedValues": [],
+                            "DynamicHashes": [
+                              -1461397389
+                            ]
+                          }
+                        }
+                      },
+                      "ShowUIMessageDelayTime": 0.5
+                    },
+                    {
+                      "$type": "RPG.GameCore.RemoveSelfModifier"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Property": "HPConvert",
           "Ranges": [
             {
               "Min": {
@@ -2163,6 +2426,16 @@
     "MMonster_AML_Minion02_01_RallyHP_HealMark": {
       "BehaviorFlagList": [
         "KeepOnDeathrattle"
+      ],
+      "_CallbackList": [
+        {
+          "Event": "OnAfterBeingAttacked",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.RemoveSelfModifier"
+            }
+          ]
+        }
       ]
     },
     "MMonster_AML_Minion02_01_SkillP01_AttackUp": {
