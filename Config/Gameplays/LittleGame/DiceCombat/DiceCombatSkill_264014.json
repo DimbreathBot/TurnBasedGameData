@@ -1,0 +1,222 @@
+{
+  "RootAbility": {
+    "OnAdd": [
+      {
+        "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+        "ModifierID": 26401401,
+        "LifeTime": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -1
+          }
+        }
+      }
+    ]
+  },
+  "InsertAbilitys": [
+    {
+      "Name": "again_264014",
+      "AbilityTarget": "Enemy",
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillCutin",
+          "CutinID": 1
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 0.5
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerEffect"
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 0.5
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_AttackDamage",
+          "AttackConfig": {
+            "IgnorePartialDefendPointValue": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  1664928803
+                ]
+              }
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 0.5
+        }
+      ]
+    }
+  ],
+  "Modifiers": [
+    {
+      "ModifierID": 26401401,
+      "Flags": [],
+      "OnTurnPrepare": [
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.DiceCombatPredicateConfig_HPFull",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.DiceCombatTaskConfig_StackAdditiveProperty",
+                  "Value": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -1063954552
+                      ]
+                    }
+                  },
+                  "OP": "Set"
+                }
+              ],
+              "OnFail": [
+                {
+                  "$type": "RPG.GameCore.DiceCombatTaskConfig_StackAdditiveProperty",
+                  "Value": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "OP": "Set"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "OnAttackerConfirm": [
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.DiceCombatPredicateConfig_HasDicePair",
+              "PairCount": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    -1467239079
+                  ]
+                }
+              },
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+                  "ModifierID": 26401402
+                },
+                {
+                  "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillHint"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "OnBeforeCombat": [],
+      "OnAfterCombat": []
+    },
+    {
+      "ModifierID": 26401402,
+      "Flags": [],
+      "OnAfterCombat": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_InsertAbility",
+          "AbilityName": "again_264014"
+        }
+      ]
+    }
+  ],
+  "PreviewOnRollFinish": {
+    "OnStart": [
+      {
+        "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+        "OnSuccess": [
+          {
+            "$type": "RPG.GameCore.DiceCombatTaskConfig_MarkRecommendDice",
+            "Selector": {
+              "$type": "RPG.GameCore.DiceCombatDiceSelectorConfig_Pair",
+              "AtLeastPairCount": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    -1467239079
+                  ]
+                }
+              }
+            },
+            "IconPath": "SpriteOutput/Quest/DiceCombat/BuffIcon/36x36/IconDiceCombat_BuffIcon02.png"
+          }
+        ]
+      }
+    ]
+  },
+  "PreviewOnSelectDice": {
+    "OnStart": [
+      {
+        "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+        "OnSuccess": [
+          {
+            "$type": "RPG.GameCore.DiceCombatTaskConfig_MarkSkillDice",
+            "Selector": {
+              "$type": "RPG.GameCore.DiceCombatDiceSelectorConfig_Pair",
+              "AtLeastPairCount": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    -1467239079
+                  ]
+                }
+              }
+            },
+            "OnSuccess": []
+          }
+        ]
+      }
+    ]
+  },
+  "AIEffect": {
+    "Effects": [
+      {
+        "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+        "OnSuccess": [
+          {
+            "$type": "RPG.GameCore.DiceCombatTaskConfig_AIEffectScore",
+            "EffectEvaluator": {
+              "$type": "RPG.GameCore.DiceCombatAIEffectEvaluatorConfig_DiceHasNOfAKind",
+              "Num": 2,
+              "Count": 2
+            },
+            "EffectScoreWeight": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  -1467239082
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

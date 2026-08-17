@@ -316,6 +316,32 @@
           ]
         },
         "MAvatar_GridFight_Jiaoqiu_00_PassiveSkill01": {
+          "_CallbackList": [
+            {
+              "Event": "OnListenModifierAdd",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCheckModifierCallBackName",
+                    "ModifierName": "MAvatar_Jiaoqiu_00_Aura"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "ModifierName": {
+                        "Value": "MAvatar_GridFight_Jiaoqiu_00_Skill03_AuraCompanion"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
           "AdditionConfig": {
             "SubModifierList": [
               {
@@ -338,6 +364,126 @@
               }
             ]
           }
+        },
+        "MAvatar_GridFight_Jiaoqiu_00_Skill03_AuraCompanion": {
+          "AdditionConfig": {
+            "DependencyOnRemove": {
+              "DependentModifier": "MAvatar_Jiaoqiu_00_Aura"
+            },
+            "SubModifierList": [
+              {
+                "Name": "MAvatar_GridFight_Jiaoqiu_00_Skill03_DotTakenUp",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "AllEnemyWithUnSelectable"
+                },
+                "DynamicValues": {
+                  "MDF_DotTakenRatio": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        827314819
+                      ]
+                    }
+                  }
+                },
+                "IsHaloStatus": true
+              }
+            ]
+          },
+          "Stacking": "ReplaceByCaster"
+        },
+        "MAvatar_GridFight_Jiaoqiu_00_Skill03_DotTakenUp": {
+          "_CallbackList": [
+            {
+              "Event": "OnBeforeBeingHitAll",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAttackType",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "AttackTypes": [
+                      "DOT"
+                    ]
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.ModifyDamageData",
+                      "Defender_AllDamageTypeTakenRatio": {
+                        "IsDynamic": true,
+                        "PostfixExpr": {
+                          "OpCodes": "AQAR",
+                          "FixedValues": [],
+                          "DynamicHashes": [
+                            -1747328869
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "Stacking": "ReplaceByCaster",
+          "DynamicValues": {
+            "Floats": {
+              "-1747328869": {
+                "ReadInfo": {
+                  "Type": "None",
+                  "Index": 0
+                }
+              }
+            }
+          }
+        },
+        "MAvatar_GridFight_Jiaoqiu_00_Skill03_EnterBattleSP": {
+          "_CallbackList": [
+            {
+              "Event": "OnEnterBattle",
+              "Priority": -80,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareWaveCount",
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 1
+                      }
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.ModifySPNew",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "FixedAddValue": {
+                        "IsDynamic": true,
+                        "PostfixExpr": {
+                          "OpCodes": "AQAR",
+                          "FixedValues": [],
+                          "DynamicHashes": [
+                            -1594441976
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         }
       },
       "Name": "Avatar_GridFight_Jiaoqiu_00_PassiveSkill01",
@@ -353,6 +499,16 @@
           },
           "ModifierName": {
             "Value": "MAvatar_GridFight_Jiaoqiu_00_PassiveSkill01"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "MAvatar_GridFight_Jiaoqiu_00_Skill03_EnterBattleSP"
           }
         }
       ],

@@ -1,0 +1,193 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": []
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "Order": 10,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitServerGroupPropertyChange"
+        }
+      ]
+    },
+    {
+      "Order": 10,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitServerGroupPropertyChange"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.DebugLog",
+          "Message": "Dim_D0Server_On"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareGroupProperty",
+            "GroupID": 10,
+            "DynamicName": {
+              "Value": "Server02"
+            },
+            "CompareValue": 1
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.RequestSetServerGroupProperty",
+              "DynamicName": {
+                "Value": "Server02"
+              },
+              "Value": 10
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.WaitGroupPropertyChange",
+              "GroupID": 10,
+              "Name": {
+                "Value": "Server02"
+              },
+              "Condition": {
+                "$type": "RPG.GameCore.ByCompareGroupProperty",
+                "GroupID": 10,
+                "DynamicName": {
+                  "Value": "Server02"
+                },
+                "CompareValue": 1
+              },
+              "OnChange": [
+                {
+                  "$type": "RPG.GameCore.RequestSetServerGroupProperty",
+                  "GroupID": 10,
+                  "DynamicName": {
+                    "Value": "Server02"
+                  },
+                  "Value": 10
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareGroupProperty",
+            "GroupID": 10,
+            "DynamicName": {
+              "Value": "Server02"
+            },
+            "CompareValue": 10
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.SetClientGroupProperty",
+              "GroupID": 10,
+              "DynamicName": {
+                "Value": "Client01"
+              },
+              "Value": 4
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.WaitGroupPropertyChange",
+              "GroupID": 10,
+              "Name": {
+                "Value": "Server02"
+              },
+              "Condition": {
+                "$type": "RPG.GameCore.ByCompareGroupProperty",
+                "GroupID": 10,
+                "DynamicName": {
+                  "Value": "Server02"
+                },
+                "CompareValue": 10
+              },
+              "OnChange": [
+                {
+                  "$type": "RPG.GameCore.SetClientGroupProperty",
+                  "GroupID": 10,
+                  "DynamicName": {
+                    "Value": "Client01"
+                  },
+                  "Value": 4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupPropertyChange",
+          "GroupID": 10,
+          "Name": {
+            "Value": "Client01"
+          },
+          "Condition": {
+            "$type": "RPG.GameCore.ByCompareGroupProperty",
+            "GroupID": 10,
+            "DynamicName": {
+              "Value": "Client01"
+            },
+            "CompareValue": 4
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.SetClientGroupProperty",
+              "GroupID": 10,
+              "DynamicName": {
+                "Value": "Client02"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.SetServerGroupProperty"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 5
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.RequestSetServerGroupProperty",
+          "DynamicName": {
+            "Value": "Server01"
+          },
+          "Value": 40
+        }
+      ]
+    }
+  ],
+  "Type": "Group",
+  "EntityEventList": []
+}

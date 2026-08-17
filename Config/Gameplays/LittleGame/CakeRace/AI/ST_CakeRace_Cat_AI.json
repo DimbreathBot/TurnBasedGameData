@@ -1,0 +1,382 @@
+{
+  "AIName": "CakeCatAI",
+  "VariableList": [],
+  "DecisionList": [],
+  "RootState": {
+    "Name": "Root",
+    "TaskList": [],
+    "TransitionList": [
+      {
+        "Trigger": "OnEvent",
+        "UserDefineEvent": "Idle",
+        "TransitionToState": "Idle",
+        "BoolVariableList": [],
+        "FloatVariableList": []
+      },
+      {
+        "Trigger": "OnEvent",
+        "UserDefineEvent": "ForceTransfer",
+        "TransitionToState": "Transfer",
+        "BoolVariableList": [],
+        "FloatVariableList": []
+      }
+    ],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_LittleGame_DoNothing",
+            "Duration": -1
+          },
+          {
+            "$type": "RPG.Client.LittleGameShare.ST_Side_CakeRaceSetAIState",
+            "State": "Idle"
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnEvent",
+            "UserDefineEvent": "GmIdle",
+            "TransitionToState": "GmIdle",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "Trigger": "OnEvent",
+            "UserDefineEvent": "StartFight",
+            "TransitionToState": "Stable",
+            "Condition": {
+              "$type": "RPG.Client.LittleGameShare.ST_CakeRaceByIdleCanEnterAIState"
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "Trigger": "OnEvent",
+            "UserDefineEvent": "StartFight",
+            "TransitionToState": "Transfer",
+            "Condition": {
+              "$type": "RPG.Client.LittleGameShare.ST_CakeRaceByIdleCanEnterAIState",
+              "State": "Transfer"
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "Trigger": "OnEvent",
+            "UserDefineEvent": "StartFight",
+            "TransitionToState": "Fall",
+            "Condition": {
+              "$type": "RPG.Client.LittleGameShare.ST_CakeRaceByIdleCanEnterAIState",
+              "State": "Fall"
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "Trigger": "OnEvent",
+            "UserDefineEvent": "StartFight",
+            "TransitionToState": "Move",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "Name": "Idle"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TaskList": [],
+        "TransitionList": [
+          {
+            "Trigger": "OnEvent",
+            "UserDefineEvent": "Transfer",
+            "TransitionToState": "Transfer",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "Trigger": "OnEvent",
+            "UserDefineEvent": "Move",
+            "TransitionToState": "Move",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "Trigger": "OnEvent",
+            "UserDefineEvent": "Fall",
+            "TransitionToState": "Fall",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "EnterCondition": {
+              "$type": "RPG.Client.LittleGameShare.ST_CakeRaceByCanEnterLock"
+            },
+            "TaskList": [
+              {
+                "$type": "RPG.Client.LittleGameShare.ST_Main_LittleGameShare_DoNothing",
+                "DurationMs": -1
+              },
+              {
+                "$type": "RPG.Client.LittleGameShare.ST_Side_CakeRaceSetAIState",
+                "State": "Lock"
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "Stable",
+                "TransitionToState": "Stable",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "Lock"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TransitionList": [
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "Lock",
+                "TransitionToState": "Lock",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "Move",
+                "TransitionToState": "Move",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "SubStateList": [
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "TaskList": [
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Side_CakeRaceSetAIState"
+                  },
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRacePathFind",
+                    "MinDuration": 150,
+                    "MaxDuration": 500
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "Trigger": "OnStateSucceeded",
+                    "TransitionToType": "NextState",
+                    "TransitionToState": "Turn",
+                    "BoolVariableList": [],
+                    "FloatVariableList": []
+                  }
+                ],
+                "SubStateList": [],
+                "Name": "Wait"
+              },
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "TaskList": [
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRaceTurn",
+                    "Duration": 150
+                  },
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Side_CakeRaceSetAIState",
+                    "State": "Turn"
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "TransitionToType": "NextState",
+                    "BoolVariableList": [],
+                    "FloatVariableList": []
+                  }
+                ],
+                "Name": "Turn"
+              }
+            ],
+            "Name": "PreparePathFindMove"
+          }
+        ],
+        "Name": "Stable"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TransitionList": [
+          {
+            "Trigger": "OnEvent",
+            "UserDefineEvent": "MoveEnd",
+            "TransitionToState": "Stable",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "Trigger": "OnEvent",
+            "UserDefineEvent": "Float",
+            "TransitionToState": "Float",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TransitionList": [
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "Transfer",
+                "TransitionToState": "Transfer",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "SubStateList": [
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "TaskList": [
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Main_LittleGameShare_DoNothing",
+                    "DurationMs": -1
+                  },
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Side_CakeRaceSetAIState",
+                    "State": "Move"
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "Trigger": "OnEvent",
+                    "UserDefineEvent": "Fall",
+                    "TransitionToState": "Fall",
+                    "BoolVariableList": [],
+                    "FloatVariableList": []
+                  }
+                ],
+                "Name": "Move"
+              },
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "TaskList": [
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Main_LittleGameShare_DoNothing",
+                    "DurationMs": -1
+                  },
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Side_CakeRaceFall",
+                    "Duration": 2000
+                  },
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Side_CakeRaceSetAIState",
+                    "State": "Fall"
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "Trigger": "OnEvent",
+                    "UserDefineEvent": "Transfer",
+                    "TransitionToState": "Transfer",
+                    "BoolVariableList": [],
+                    "FloatVariableList": []
+                  },
+                  {
+                    "Trigger": "OnEvent",
+                    "UserDefineEvent": "Move",
+                    "TransitionToState": "Move",
+                    "BoolVariableList": [],
+                    "FloatVariableList": []
+                  }
+                ],
+                "Name": "Fall"
+              }
+            ],
+            "Name": "PhysicalMove"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.Client.LittleGameShare.ST_Side_CakeRaceSetAIState",
+                "State": "Transfer"
+              },
+              {
+                "$type": "RPG.Client.LittleGameShare.ST_Main_LittleGameShare_DoNothing",
+                "DurationMs": -1
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "Fall",
+                "TransitionToState": "Fall",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "Move",
+                "TransitionToState": "Move",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "Transfer"
+          }
+        ],
+        "Name": "GenericMove"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.Client.LittleGameShare.ST_Side_CakeRaceSetAIState",
+            "State": "Float"
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnEvent",
+            "UserDefineEvent": "FloatEnd",
+            "TransitionToState": "Stable",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "Trigger": "OnEvent",
+            "UserDefineEvent": "Transfer",
+            "TransitionToState": "Transfer",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "Name": "Float"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_LittleGame_DoNothing",
+            "Duration": -1
+          },
+          {
+            "$type": "RPG.Client.LittleGameShare.ST_Side_CakeRaceSetAIState",
+            "State": "Idle"
+          }
+        ],
+        "Name": "GmIdle"
+      }
+    ]
+  },
+  "OnDisable": {
+    "$type": "RPG.GameCore.TaskConfig"
+  },
+  "OnInit": {
+    "$type": "RPG.GameCore.TaskConfig"
+  }
+}

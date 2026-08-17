@@ -1,0 +1,169 @@
+{
+  "GroupConfigName": "Field",
+  "ConfigEntityPath": "Config/ConfigEntity/SummonUnit/SummonUnit_Common_TeamField_Entity.json",
+  "ResidentEffects": [
+    {
+      "$type": "RPG.GameCore.TriggerEffect",
+      "EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Gilgamesh_00/Eff_Avatar_Gilgamesh_00_MazeSkill_Lock_az_2.prefab",
+      "ForceSimulateImmediately": false
+    }
+  ],
+  "OnCreate": [
+    {
+      "$type": "RPG.GameCore.WaitSecond"
+    },
+    {
+      "$type": "RPG.GameCore.SetSummonUnitTriggerEnable",
+      "SummonUnit": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "Caster"
+      },
+      "TriggerNames": [
+        "AddDebuffOnEnemyTrigger",
+        "PausePropTrigger"
+      ],
+      "Enable": true
+    },
+    {
+      "$type": "RPG.GameCore.WaitSecond",
+      "WaitTime": {
+        "IsDynamic": false,
+        "FixedValue": {
+          "Value": 0.46
+        }
+      }
+    },
+    {
+      "$type": "RPG.GameCore.SetSummonUnitTriggerEnable",
+      "SummonUnit": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "Caster"
+      },
+      "TriggerNames": [
+        "HitPropTrigger"
+      ],
+      "Enable": true
+    }
+  ],
+  "TriggerConfig": {
+    "CustomTriggers": [
+      {
+        "TriggerName": "AddDebuffOnEnemyTrigger",
+        "DefaultEnable": false,
+        "Radius": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": 6
+          }
+        },
+        "UseVerticalBound": true,
+        "NeedRaycast": true,
+        "TargetTypes": [
+          "NPCMonster"
+        ],
+        "ColliderRelativePath": "Trigger",
+        "OnTriggerEnter": [
+          {
+            "$type": "RPG.GameCore.AddMazeBuff",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "TaskActionTarget"
+            },
+            "ID": 150901
+          }
+        ],
+        "OnTriggerExit": [
+          {
+            "$type": "RPG.GameCore.RemoveMazeBuff",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "TaskActionTarget"
+            },
+            "ID": 150901
+          }
+        ]
+      },
+      {
+        "TriggerName": "HitPropTrigger",
+        "DefaultEnable": false,
+        "Radius": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": 6
+          }
+        },
+        "UseVerticalBound": true,
+        "NeedRaycast": true,
+        "TargetTypes": [
+          "Prop"
+        ],
+        "TargetFilter": {
+          "$type": "RPG.GameCore.ByComparePropType",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "ParamEntity"
+          },
+          "Types": [
+            "PROP_DESTRUCT"
+          ]
+        },
+        "OnTriggerEnter": [
+          {
+            "$type": "RPG.GameCore.TriggerHitProp",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "TaskActionTarget"
+            },
+            "ClientMode": "PreShow"
+          }
+        ],
+        "OnTriggerExit": [],
+        "OnTriggerEnterRollback": [
+          {
+            "$type": "RPG.GameCore.PropDestructReset",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "TaskActionTarget"
+            }
+          }
+        ]
+      },
+      {
+        "TriggerName": "PausePropTrigger",
+        "DefaultEnable": false,
+        "Radius": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": 6
+          }
+        },
+        "UseVerticalBound": true,
+        "NeedRaycast": true,
+        "TargetTypes": [
+          "Prop"
+        ],
+        "OnTriggerEnter": [
+          {
+            "$type": "RPG.GameCore.PauseTimeRewindTarget",
+            "Target": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "TaskActionTarget"
+            },
+            "IsSkill": true
+          }
+        ],
+        "OnTriggerExit": [
+          {
+            "$type": "RPG.GameCore.PauseTimeRewindTarget",
+            "IsPause": false,
+            "Target": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "TaskActionTarget"
+            },
+            "IsSkill": true
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,514 @@
+{
+  "AIName": "WaiterAI",
+  "VariableList": [],
+  "DecisionList": [],
+  "RootState": {
+    "Name": "Root",
+    "TaskList": [],
+    "TransitionList": [],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ElfByIsWaiterState",
+          "State": "Delivery"
+        },
+        "TaskList": [],
+        "TransitionList": [
+          {
+            "TransitionToType": "TreeSucceed",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfMoveToPosition",
+                "StartMoveDuration": 0.2
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "MoveToCookSlot"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfWaiterCarrayFood"
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnStateSucceeded",
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnStateFailed",
+                "TransitionToType": "TreeFail",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "FetchFood"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfMoveToPosition",
+                "StartMoveDuration": 0.2
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "MoveToCustomerSlot"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": 0.15
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_ElfInteractCurrentSlot",
+                "Duration": 0.15,
+                "ChangeAnim": false
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_ElfChangeAnimState",
+                "Delay": 0.14,
+                "State": 5,
+                "AudioEventName": "Ev_sfx_NPC_Fairy_00_Adv_Ani_ElfServeDish01"
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "InteractTable"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfWaiterPutdownFood",
+                "Duration": 1
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "TreeSucceed",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "PutdownFood"
+          }
+        ],
+        "Name": "Delivery"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ElfByIsWaiterState",
+          "State": "Wait"
+        },
+        "TaskList": [],
+        "TransitionList": [
+          {
+            "TransitionToType": "TreeSucceed",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfWaiterEnterWait"
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "准备休息"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfMoveToPosition",
+                "StartMoveDuration": 0.2
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnStateFailed",
+                "TransitionToType": "TreeFail",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "MoveToQueue"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfWaiterSleep",
+                "Duration": -1
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_ElfInteractCurrentSlot",
+                "Duration": 0.2
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "TreeSucceed",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "InteractQueue"
+          }
+        ],
+        "Name": "Wait"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ElfByIsWaiterState",
+          "State": "Cleaning"
+        },
+        "TaskList": [],
+        "TransitionList": [
+          {
+            "TransitionToType": "TreeSucceed",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfMoveToPosition"
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "MoveToDirtySlot"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfWaiterCleanTable"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_ElfInteractCurrentSlot",
+                "Duration": 0.1
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_ElfChangeAnimState",
+                "Delay": 0.1,
+                "State": 4,
+                "AudioEventName": "Ev_sfx_NPC_Fairy_00_Adv_Ani_ElfOperation01Loop"
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "TreeSucceed",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "CleanTable"
+          }
+        ],
+        "Name": "Cleaning"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ElfByIsWaiterState",
+          "State": "CleaningObstacle"
+        },
+        "TransitionList": [
+          {
+            "TransitionToType": "TreeSucceed",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfMoveToPosition",
+                "PositionType": "TargetPosition"
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "MoveToObstacle"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfWaiterCleanObstacle"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_ElfChangeAnimState",
+                "State": 4,
+                "AudioEventName": "Ev_sfx_NPC_Fairy_00_Adv_Ani_ElfOperation01Loop"
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "TreeSucceed",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "CleanTable"
+          }
+        ],
+        "Name": "CleaningObstacle"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ElfByIsWaiterState",
+          "State": "ProcessEvent"
+        },
+        "TransitionList": [
+          {
+            "TransitionToType": "TreeSucceed",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfMoveToPosition",
+                "PositionType": "TargetPosition"
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "MovetoCustomer"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfWaiterProcessEvent",
+                "LookAtDuration": 0.5
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "TreeSucceed",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "PeocessEventAction"
+          }
+        ],
+        "Name": "ProcessEvent"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ElfByIsWaiterState",
+          "State": "TimeOverPerform"
+        },
+        "TransitionList": [
+          {
+            "TransitionToType": "TreeSucceed",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfMoveToPosition",
+                "StartMoveDuration": 0.2
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "MoveToTimeOverPoint"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfWaiterTimeOverPerform",
+                "Duration": 3
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_ElfPlayEntityBehavior",
+                "BehaviorName": "TimeOverPerform"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_ElfInteractCurrentSlot",
+                "Duration": 0.2
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "TreeSucceed",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "StartTimeOverPerform"
+          }
+        ],
+        "Name": "TimeOverPerform"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ElfByIsWaiterState",
+          "State": "SuperEvent"
+        },
+        "TransitionList": [
+          {
+            "TransitionToType": "TreeSucceed",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfMoveToPosition"
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "MoveToSuperEvent"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfWaiterSuperEventReady"
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "SuperEventReady"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_LittleGame_DoNothing",
+                "Duration": -1
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_ElfInteractCurrentSlot",
+                "Duration": 0.2,
+                "ChangeAnim": false
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "EndSuperEvent",
+                "TransitionToType": "TreeSucceed",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "OnSuperEvent"
+          }
+        ],
+        "Name": "SuperEvent"
+      }
+    ]
+  },
+  "OnDisable": {
+    "$type": "RPG.GameCore.TaskConfig"
+  },
+  "OnInit": {
+    "$type": "RPG.GameCore.TaskConfig"
+  }
+}

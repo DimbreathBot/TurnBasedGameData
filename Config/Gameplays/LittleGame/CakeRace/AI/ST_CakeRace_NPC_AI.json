@@ -1,0 +1,311 @@
+{
+  "AIName": "CakeNPCAI",
+  "VariableList": [],
+  "DecisionList": [],
+  "RootState": {
+    "Name": "根节点决策",
+    "TaskList": [
+      {
+        "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRaceRootDecision"
+      }
+    ],
+    "TransitionList": [],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.Client.LittleGameShare.ST_Main_LittleGameShare_DoNothing",
+            "UseRandom": true,
+            "MinDurationMs": 20000,
+            "MaxDurationMs": 25000
+          }
+        ],
+        "TransitionList": [
+          {
+            "TransitionToType": "NextState",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "SubStateList": [],
+        "Name": "Wait"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRaceSelectSkillDecision"
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "UseItem_Trash",
+            "Condition": {
+              "$type": "RPG.Client.LittleGameShare.ST_ByRandom",
+              "LeftRandomMax": 100,
+              "RightValue": 50,
+              "CompareType": "LessEqual"
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "UseItem_Dessert",
+            "Condition": {
+              "$type": "RPG.Client.LittleGameShare.ST_ByRandom",
+              "LeftRandomMax": 100,
+              "RightValue": 100,
+              "CompareType": "LessEqual"
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_LittleGame_DoNothing",
+                "Duration": -1
+              }
+            ],
+            "Name": "WaitSelectSkill"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRaceUseItemDecision"
+              }
+            ],
+            "TransitionList": [],
+            "SubStateList": [
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "EnterCondition": {
+                  "$type": "RPG.GameCore.ByAnd",
+                  "PredicateList": [
+                    {
+                      "$type": "RPG.Client.LittleGameShare.ST_CakeRaceByCompareSupportCatID",
+                      "ID": 1,
+                      "CompareType": "Equal"
+                    },
+                    {
+                      "$type": "RPG.Client.LittleGameShare.ST_CakeRaceByCompareHasEffect",
+                      "EffectID": 4
+                    }
+                  ],
+                  "Inverse": true
+                },
+                "TaskList": [
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRaceUseTrashItemDecision",
+                    "SimulateStep": 2
+                  },
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRacePlayMessage"
+                  }
+                ],
+                "Name": "UseTrashItem01"
+              },
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "EnterCondition": {
+                  "$type": "RPG.GameCore.ByAnd",
+                  "PredicateList": [
+                    {
+                      "$type": "RPG.Client.LittleGameShare.ST_CakeRaceByCompareSupportCatRank",
+                      "Rank": 1,
+                      "CompareType": "Equal"
+                    },
+                    {
+                      "$type": "RPG.Client.LittleGameShare.ST_CakeRaceByCompareSupportCatBehindDistance",
+                      "DistanceMm": 5000,
+                      "CompareType": "LessEqual"
+                    }
+                  ]
+                },
+                "TaskList": [
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRaceUseTrashItemDecision",
+                    "TargetType": "BeforeSupportCat",
+                    "SimulateStep": 2
+                  },
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRacePlayMessage"
+                  }
+                ],
+                "Name": "UseTrashItem02"
+              },
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "EnterCondition": {
+                  "$type": "RPG.GameCore.ByAnd",
+                  "PredicateList": [
+                    {
+                      "$type": "RPG.Client.LittleGameShare.ST_CakeRaceByCompareSupportCatRank",
+                      "Rank": 1,
+                      "CompareType": "Equal"
+                    },
+                    {
+                      "$type": "RPG.Client.LittleGameShare.ST_CakeRaceByCompareSupportCatBehindDistance",
+                      "DistanceMm": 5000,
+                      "CompareType": "Greater"
+                    }
+                  ]
+                },
+                "TaskList": [
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRaceUseTrashItemDecision",
+                    "TargetType": "RankCat",
+                    "TargetParam": 2,
+                    "SimulateStep": 2
+                  }
+                ],
+                "Name": "UseTrashItem02"
+              },
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "EnterCondition": {
+                  "$type": "RPG.Client.LittleGameShare.ST_CakeRaceByCompareSupportCatRank",
+                  "CompareType": "Equal"
+                },
+                "TaskList": [
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRaceUseTrashItemDecision",
+                    "TargetType": "RankCat",
+                    "TargetParam": 1,
+                    "SimulateStep": 2
+                  }
+                ],
+                "Name": "UseTrashItem02"
+              },
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "EnterCondition": {
+                  "$type": "RPG.GameCore.ByAnd",
+                  "PredicateList": [
+                    {
+                      "$type": "RPG.Client.LittleGameShare.ST_CakeRaceByCompareSupportCatRank",
+                      "Rank": 2,
+                      "CompareType": "GreaterEqual"
+                    }
+                  ]
+                },
+                "TaskList": [
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRaceUseTrashItemDecision",
+                    "TargetType": "BeforeSupportCat",
+                    "SimulateStep": 2
+                  }
+                ],
+                "Name": "UseTrashItem02"
+              }
+            ],
+            "Name": "UseItem_Trash"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRaceUseItemDecision"
+              }
+            ],
+            "SubStateList": [
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "EnterCondition": {
+                  "$type": "RPG.GameCore.ByAnd",
+                  "PredicateList": [
+                    {
+                      "$type": "RPG.Client.LittleGameShare.ST_CakeRaceByCompareSupportCatRank",
+                      "Rank": 3,
+                      "CompareType": "Equal"
+                    },
+                    {
+                      "$type": "RPG.Client.LittleGameShare.ST_CakeRaceByCompareHasEffect",
+                      "EffectID": 4
+                    }
+                  ]
+                },
+                "TaskList": [
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRaceUseRocketItemDecision",
+                    "TargetType": "RankCat",
+                    "TargetParam": 4
+                  }
+                ],
+                "Name": "UseSpeedUpItem01"
+              },
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "TaskList": [
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRaceUseRocketItemDecision"
+                  }
+                ],
+                "Name": "UseSpeedUpItem01"
+              }
+            ],
+            "Name": "UseItem_SpeedUp"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRaceUseItemDecision"
+              }
+            ],
+            "SubStateList": [
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "EnterCondition": {
+                  "$type": "RPG.Client.LittleGameShare.ST_ByRandom",
+                  "LeftRandomMax": 100,
+                  "RightValue": 20,
+                  "CompareType": "LessEqual"
+                },
+                "TaskList": [
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRaceUseFoodItemDecision",
+                    "TargetType": "BeforeSupportCat",
+                    "ForwardRange": 1,
+                    "SideRange": 3
+                  }
+                ],
+                "Name": "UseFoodItem01"
+              },
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "TaskList": [
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRaceUseFoodItemDecision",
+                    "TargetType": "RankCat",
+                    "ForwardRange": 1,
+                    "SideRange": 5
+                  },
+                  {
+                    "$type": "RPG.Client.LittleGameShare.ST_Main_CakeRacePlayEmoji"
+                  }
+                ],
+                "Name": "UseFoodItem02"
+              }
+            ],
+            "Name": "UseItem_Dessert"
+          }
+        ],
+        "Name": "UseSkill"
+      }
+    ]
+  },
+  "OnDisable": {
+    "$type": "RPG.GameCore.TaskConfig"
+  },
+  "OnInit": {
+    "$type": "RPG.GameCore.TaskConfig"
+  }
+}

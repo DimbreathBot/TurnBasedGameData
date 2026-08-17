@@ -1,0 +1,115 @@
+{
+  "AIName": "CustomerAI",
+  "VariableList": [],
+  "DecisionList": [],
+  "RootState": {
+    "Name": "Root",
+    "TaskList": [],
+    "TransitionList": [],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ElfByIsTakeOutState",
+          "State": "Order"
+        },
+        "TaskList": [],
+        "TransitionList": [
+          {
+            "TransitionToType": "TreeSucceed",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfTakeOutTakeOrder"
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnStateSucceeded",
+                "TransitionToState": "WaitFood",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnStateFailed",
+                "TransitionToType": "TreeFail",
+                "TransitionToState": "Leave",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "OrderRecipe"
+          }
+        ],
+        "Name": "Order"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ElfByIsTakeOutState",
+          "State": "WaitTakeOut"
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_ElfTakeOutWait"
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnStateSucceeded",
+            "TransitionToState": "Eating",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "Trigger": "OnStateFailed",
+            "TransitionToType": "TreeFail",
+            "TransitionToState": "Leave",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "Name": "WaitFood"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ElfByIsTakeOutState",
+          "State": "DeliverTakeOut"
+        },
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfTakeOutDelivery"
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "TreeSucceed",
+                "TransitionToState": "Leave",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "DeliveryTakeOut"
+          }
+        ],
+        "Name": "Eating"
+      }
+    ]
+  },
+  "OnDisable": {
+    "$type": "RPG.GameCore.TaskConfig"
+  },
+  "OnInit": {
+    "$type": "RPG.GameCore.TaskConfig"
+  }
+}

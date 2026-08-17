@@ -1,0 +1,182 @@
+{
+  "RootAbility": {
+    "OnAdd": [
+      {
+        "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+        "ModifierID": 26403001,
+        "LifeTime": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -1
+          }
+        }
+      }
+    ]
+  },
+  "InsertAbilitys": [
+    {
+      "Name": "MoveThorn_264030",
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillHint"
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillCutin",
+          "CutinID": 31
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 1
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_ModifierData",
+          "Name": "Thorn_264030",
+          "ModifierID": 30011
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_RemoveModifier",
+          "ModifierID": 30011
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+          "Target": "Enemy",
+          "ModifierID": 30011,
+          "LifeTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": -1
+            }
+          },
+          "Stack": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                1628317203
+              ]
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 1
+        }
+      ]
+    }
+  ],
+  "Modifiers": [
+    {
+      "ModifierID": 26403001,
+      "Flags": [],
+      "OnAdd": [],
+      "OnAttackerConfirm": [
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.DiceCombatPredicateConfig_HasDicePair",
+              "OnFail": [
+                {
+                  "$type": "RPG.GameCore.DiceCombatPredicateConfig_HasModifier",
+                  "ModifierID": 30011,
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.DiceCombatTaskConfig_InsertAbility",
+                      "AbilityName": "MoveThorn_264030"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "OnDefenderConfirm": [],
+      "OnAfterCombat": [],
+      "OnDefendFail": [
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsDefender",
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+              "ModifierID": 30011,
+              "LifeTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": -1
+                }
+              },
+              "Stack": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    -1467239079
+                  ]
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+              "Target": "Enemy",
+              "ModifierID": 30011,
+              "LifeTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": -1
+                }
+              },
+              "Stack": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    -1467239079
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "OnDamage": []
+    }
+  ],
+  "PreviewOnSelectDice": {
+    "OnStart": []
+  },
+  "AIEffect": {
+    "Effects": [
+      {
+        "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+        "OnSuccess": [
+          {
+            "$type": "RPG.GameCore.DiceCombatPredicateConfig_HasModifier",
+            "ModifierID": 30011,
+            "OnSuccess": [
+              {
+                "$type": "RPG.GameCore.DiceCombatTaskConfig_AIEffectScore",
+                "EffectEvaluator": {
+                  "$type": "RPG.GameCore.DiceCombatAIEffectEvaluatorConfig_DiceAllDiff"
+                },
+                "EffectScoreWeight": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      -1467239082
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,676 @@
+{
+  "$type": "RPG.GameCore.RtBattleCharacterConfig",
+  "CameraConfigList": [
+    {
+      "Tags": [
+        "Idle",
+        "SkillUse"
+      ],
+      "Condition": {
+        "$type": "RPG.GameCore.ByTargetAliveState",
+        "TargetType": {
+          "$type": "RPG.GameCore.TargetSequence",
+          "Sequence": [
+            {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "AllDarkTeam"
+            },
+            {
+              "$type": "RPG.GameCore.TargetFilter",
+              "Predicate": {
+                "$type": "PDHJJNFJCJF",
+                "HILNFHCPEAD": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ParamEntity"
+                },
+                "IFNAGLOMHBK": {
+                  "Value": "RTMCommon_BossFlag"
+                }
+              }
+            }
+          ]
+        },
+        "AliveStateMask": "Anyone"
+      },
+      "CameraConfig": {
+        "NormalConfig": {
+          "CameraState": "CasterToTargetPerform",
+          "TemplateName": "RtCommon_Camera_Range_Focus",
+          "AnchorTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster.CameraRootRecord"
+          },
+          "AimTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "LockTarget"
+          }
+        },
+        "BlendConfig": {
+          "BlendType": "EaseInOut",
+          "BlendTime": 0.8
+        }
+      }
+    },
+    {
+      "Tags": [
+        "Move"
+      ],
+      "Condition": {
+        "$type": "RPG.GameCore.RtByHasLockTarget"
+      },
+      "CameraConfig": {
+        "NormalConfig": {
+          "CameraState": "UseSkillPerform",
+          "IsLocalOffset": true,
+          "AnchorOffset": {
+            "X": 1,
+            "Y": -0.1,
+            "Z": -2
+          },
+          "AimTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "LockTarget"
+          },
+          "AimOffset": {
+            "X": -1,
+            "Y": -0.7,
+            "Z": 0
+          },
+          "AimRatio": 1,
+          "Dutch": 3,
+          "ResetToDefault": false
+        },
+        "BlendConfig": {
+          "BlendType": "EaseInOut",
+          "BlendTime": 0.156081
+        }
+      }
+    }
+  ],
+  "BornGridEvaluator": {
+    "$type": "RPG.GameCore.VE_Group",
+    "Values": [
+      {
+        "$type": "RPG.GameCore.VE_Predicate",
+        "Predicate": {
+          "$type": "RPG.GameCore.QueryHoyoTag",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "ParamEntity"
+          },
+          "QueryType": "MatchAll",
+          "QuertInput": [
+            "RtBattle.Grid.Light.LongRange"
+          ]
+        },
+        "Weight": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": 1000
+          }
+        }
+      },
+      {
+        "$type": "RPG.GameCore.VE_RtDistance",
+        "From": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "ParamEntity"
+        },
+        "To": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "TankGrid"
+        },
+        "Weight": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -100
+          }
+        },
+        "PostProcess": [
+          {
+            "$type": "RPG.GameCore.VP_Sigmoid"
+          }
+        ]
+      }
+    ]
+  },
+  "CharacterHUDOffset": {
+    "X": 0,
+    "Y": 2.2,
+    "Z": 0
+  },
+  "HitBoxWidth": 0.3,
+  "HitBoxHeight": 1.5,
+  "VisualRadius": 0.3,
+  "AnimEventConfigList": [
+    "Config/ConfigAnimEvents/Avatar/Designer/Avatar_Welt_00_Designer_AnimEvent.json",
+    "Config/ConfigAnimEvents/Avatar/DesignerBaked/Avatar_Welt_00_Designer_AnimEvent_Baked.json",
+    "Config/Activity/RtBattle/AnimEvents/RtBattleAvatar_Welt_00_Effect_AnimEvent.json",
+    "Config/Activity/RtBattle/AnimEvents/Audio/RtBattleAvatar_Welt_00_Audio_AnimEvent.json",
+    "Config/ConfigAnimEvents/Avatar/Designer/Avatar_Common_Designer_AnimEvent.json",
+    "Config/ConfigAnimEvents/Avatar/Audio/Avatar_Common_ControllerVibration_AnimEvent.json"
+  ],
+  "DisableAnimEventLayers": [
+    "Riboon Layer"
+  ],
+  "SkillList": [
+    {
+      "Name": "Skill01",
+      "UseType": "SelectEntity",
+      "TargetInfo": {},
+      "EntryAbility": "RtBattleAvatar_Welt_00_Skill01_Phase01",
+      "DefaultDuration": {
+        "Value": 3
+      },
+      "CastDistance": {
+        "Value": 8
+      },
+      "SkillTargetAI": {
+        "Groups": [
+          {
+            "GroupName": "RtBattle_Common_MonsterRank",
+            "Weight": {
+              "Value": 10
+            }
+          },
+          {
+            "GroupName": "RtBattle_Common_Distance",
+            "Weight": {
+              "Value": -1
+            }
+          },
+          {
+            "GroupName": "RtBattle_Common_One",
+            "Weight": {
+              "Value": -1000
+            }
+          }
+        ]
+      },
+      "StanceParams": [
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        }
+      ]
+    },
+    {
+      "Name": "Skill02",
+      "SkillType": "Skill",
+      "UseType": "SelectEntity",
+      "TargetInfo": {},
+      "Tags": [
+        {
+          "EnumIndex": 10,
+          "Value": 2
+        },
+        {
+          "EnumIndex": 10,
+          "Value": 4
+        },
+        {
+          "EnumIndex": 10,
+          "Value": 6
+        },
+        {
+          "EnumIndex": 10,
+          "Value": 7
+        }
+      ],
+      "EntryAbility": "RtBattleAvatar_Welt_00_Skill02_Phase01",
+      "DefaultDuration": {
+        "Value": 4
+      },
+      "CD": {
+        "Value": 10
+      },
+      "CastDistance": {
+        "Value": 10
+      },
+      "SkillTargetAI": {
+        "Groups": [
+          {
+            "GroupName": "RtBattle_Common_MonsterRank",
+            "Weight": {
+              "Value": 10
+            }
+          },
+          {
+            "GroupName": "RtBattle_Common_Distance",
+            "Weight": {
+              "Value": -1
+            }
+          }
+        ]
+      },
+      "StanceParams": [
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        }
+      ]
+    },
+    {
+      "Name": "Skill03",
+      "SkillType": "Ultra",
+      "UseType": "SelectEntity",
+      "TargetInfo": {},
+      "Tags": [
+        {
+          "EnumIndex": 10,
+          "Value": 2
+        },
+        {
+          "EnumIndex": 10,
+          "Value": 3
+        }
+      ],
+      "EntryAbility": "RtBattleAvatar_Welt_00_Skill03_Phase01",
+      "DefaultDuration": {
+        "Value": 8
+      },
+      "CD": {
+        "Value": 3
+      },
+      "CastDistance": {
+        "Value": 10
+      },
+      "StanceParams": [
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        }
+      ]
+    },
+    {
+      "Name": "SkillP01",
+      "SkillType": "Passive",
+      "UseType": "Passive",
+      "TargetInfo": {
+        "TargetType": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "Caster"
+        }
+      },
+      "EntryAbility": "RtBattleAvatar_Welt_00_PassiveSkill01",
+      "DefaultDuration": {
+        "Value": 4.6
+      },
+      "CastDistance": {
+        "Value": 10
+      },
+      "StanceParams": [
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        }
+      ]
+    }
+  ],
+  "AbilityList": [
+    "RtCommon_InitPassiveSkill"
+  ],
+  "SkillAbilityList": [
+    {
+      "Skill": "Skill01",
+      "AbilityList": [
+        "RtBattleAvatar_Welt_00_Skill01_Phase01",
+        "RtBattleAvatar_Welt_00_Skill01_Camera"
+      ]
+    },
+    {
+      "Skill": "Skill02",
+      "AbilityList": [
+        "RtBattleAvatar_Welt_00_Skill02_Phase01",
+        "RtBattleAvatar_Welt_00_Skill02_Camera"
+      ]
+    },
+    {
+      "Skill": "Skill03",
+      "AbilityList": [
+        "RtBattleAvatar_Welt_00_Skill03_Phase01",
+        "RtBattleAvatar_Welt_00_Skill03_Phase02",
+        "RtBattleAvatar_Welt_00_Skill03_Camera"
+      ]
+    },
+    {
+      "Skill": "SkillP01",
+      "AbilityList": [
+        "RtBattleAvatar_Welt_00_PassiveSkill01"
+      ]
+    }
+  ],
+  "DynamicValues": {
+    "Floats": {
+      "-1126825319": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill01",
+          "Index": 0
+        }
+      },
+      "1928468918": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill01",
+          "Index": 1
+        }
+      },
+      "-1847083384": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill02",
+          "Index": 0
+        }
+      },
+      "-906382848": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill02",
+          "Index": 1
+        }
+      },
+      "1962158202": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill02",
+          "Index": 2
+        }
+      },
+      "-56289053": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill03",
+          "Index": 0
+        }
+      },
+      "-1831601054": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill03",
+          "Index": 1
+        }
+      },
+      "-43938171": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill03",
+          "Index": 2
+        }
+      },
+      "-1800326888": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "SkillP01",
+          "Index": 0
+        }
+      },
+      "2057227302": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "SkillP01",
+          "Index": 1
+        }
+      },
+      "-1481025815": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "SkillP01",
+          "Index": 2
+        }
+      },
+      "604983284": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "SkillP01",
+          "Index": 3
+        }
+      },
+      "-318951365": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "SkillP01",
+          "Index": 4
+        }
+      },
+      "-21168702": {
+        "ReadInfo": {
+          "Type": "SkillRank",
+          "TriggerKey": "Rank03",
+          "Index": 0
+        }
+      },
+      "-623440335": {
+        "ReadInfo": {
+          "Type": "SkillRank",
+          "TriggerKey": "Rank06",
+          "Index": 0
+        }
+      }
+    }
+  },
+  "WeaponType": "WP_Magic",
+  "CommonAnimZoneConfigPath": "Config/ConfigAnimZone/LocalPlayer/Common/LocalPlayer_Common_Male_AnimZone.json",
+  "AnimZoneConfigPath": "Config/ConfigAnimZone/LocalPlayer/LocalPlayer_Welt_00_AnimZone.json",
+  "AvatarType": "Mage",
+  "DamageType": "Imaginary",
+  "MotionParam": {
+    "WalkSpeed": {
+      "Value": 1.13
+    },
+    "RunSpeed": {
+      "Value": 5.13
+    },
+    "FastRunSpeed": {
+      "Value": 7.52
+    },
+    "RunStartSpeed": {
+      "Value": 2.25
+    },
+    "RunStartAcc": {
+      "Value": 2.51
+    },
+    "RunStopSpeed": {
+      "Value": 3.48
+    },
+    "RunStopAcc": {
+      "Value": -5.17
+    },
+    "RunStartTime": {
+      "Value": 0.72
+    },
+    "RunStopTime": {
+      "Value": 0.38
+    }
+  },
+  "AnimDurationMap": {
+    "Attack_1": {
+      "Value": 3.616667
+    },
+    "Common_IdleShow": {
+      "Value": 8.333334
+    },
+    "Die": {
+      "Value": 1.433333
+    },
+    "Die_Hit": {
+      "Value": 1.433333
+    },
+    "Die_Limbo": {
+      "Value": 1.433333
+    },
+    "Die_Loop": {
+      "Value": 2.25
+    },
+    "FastRun_TurnRight_L": {
+      "Value": 0.4833333
+    },
+    "FastRunStop_R": {
+      "Value": 2.85
+    },
+    "FreeStyle_Sequence1": {
+      "Value": 1
+    },
+    "FreeStyle_Sequence2": {
+      "Value": 1
+    },
+    "FreeStyle_Sequence3": {
+      "Value": 1
+    },
+    "FreeStyle_Sequence4": {
+      "Value": 1
+    },
+    "Hit": {
+      "Value": 1.016667
+    },
+    "Hit_H": {
+      "Value": 2.033334
+    },
+    "Hit_H_Break": {
+      "Value": 1.45
+    },
+    "Hit_H_Stun": {
+      "Value": 1.45
+    },
+    "Idle_Show_01": {
+      "Value": 6.75
+    },
+    "Idle_Show_02": {
+      "Value": 7.333333
+    },
+    "IdleTurnL": {
+      "Value": 1.916667
+    },
+    "IdleTurnR": {
+      "Value": 2.783334
+    },
+    "LookatPhoneAS": {
+      "Value": 1.216667
+    },
+    "LookatPhoneBS": {
+      "Value": 1.166667
+    },
+    "LookatPhoneLoop": {
+      "Value": 6
+    },
+    "MazeSkill": {
+      "Value": 4.866667
+    },
+    "Paralyze": {
+      "Value": 1.666667
+    },
+    "Revive": {
+      "Value": 1.5
+    },
+    "Run": {
+      "Value": 1.333333
+    },
+    "Run_TurnLeft_L": {
+      "Value": 0.6833334
+    },
+    "Run_TurnLeft_R": {
+      "Value": 0.7
+    },
+    "Run_TurnRight_L": {
+      "Value": 0.7
+    },
+    "Run_TurnRight_R": {
+      "Value": 0.6833334
+    },
+    "RunBS_L": {
+      "Value": 0.7166667
+    },
+    "RunBS_R": {
+      "Value": 0.7166667
+    },
+    "RunStop_L": {
+      "Value": 1.8
+    },
+    "RunStop_R": {
+      "Value": 1.8
+    },
+    "Skill01": {
+      "Value": 2.5
+    },
+    "Skill01_Ready": {
+      "Value": 1.5
+    },
+    "Skill01_Ready_Loop": {
+      "Value": 1.666667
+    },
+    "Skill01toSkill02": {
+      "Value": 2.333333
+    },
+    "Skill02": {
+      "Value": 3.433334
+    },
+    "Skill02_Ready_Loop": {
+      "Value": 1.666667
+    },
+    "Skill02toSkill01": {
+      "Value": 2.566667
+    },
+    "Skill03": {
+      "Value": 8
+    },
+    "Skill03_Ready": {
+      "Value": 1.666667
+    },
+    "Skill03_Ready_Loop": {
+      "Value": 1.666667
+    },
+    "Stagger": {
+      "Value": 1.783333
+    },
+    "Stagger_Loop": {
+      "Value": 2.5
+    },
+    "Stagger_Recover": {
+      "Value": 1.666667
+    },
+    "StandBy": {
+      "Value": 1.666667
+    },
+    "Stun_Loop": {
+      "Value": 2.5
+    },
+    "Stun_Occur": {
+      "Value": 1.783333
+    },
+    "Stun_Recover": {
+      "Value": 1.666667
+    },
+    "UseProp1": {
+      "Value": 2.366667
+    },
+    "UseProp2": {
+      "Value": 2.083333
+    },
+    "WalktoStop_L": {
+      "Value": 1.5
+    },
+    "WalktoStop_R": {
+      "Value": 1.5
+    }
+  }
+}

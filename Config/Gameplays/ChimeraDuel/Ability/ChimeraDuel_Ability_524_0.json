@@ -1,0 +1,190 @@
+{
+  "Nodes": [
+    {
+      "$type": "RPG.GameCore.ChimeraDuelPlayAnimationNode",
+      "Anim": "MagicAttack",
+      "TargetSelector": [
+        {
+          "$type": "RPG.GameCore.ChimeraDuelCasterSelectorConfig"
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.ChimeraDuelFireEffectNode",
+      "TargetSelector": [
+        {
+          "$type": "RPG.GameCore.ChimeraDuelCasterSelectorConfig"
+        }
+      ],
+      "AnchorName": "BuffAdd",
+      "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Chimera/Eff_ActivityProp_Chimera_Energy_00.prefab"
+    },
+    {
+      "$type": "RPG.GameCore.ChimeraDuelWaitSecondsNode",
+      "WaitTime": 0.7
+    },
+    {
+      "$type": "RPG.GameCore.ChimeraDuelFireBulletNode",
+      "CasterSelector": {
+        "$type": "RPG.GameCore.ChimeraDuelCasterSelectorConfig"
+      },
+      "TargetSelector": [
+        {
+          "$type": "RPG.GameCore.ChimeraDuelSavedEntitiesSelectorConfig",
+          "SaveName": "Target"
+        }
+      ],
+      "BulletEffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Chimera/Eff_ActivityProp_Chimera_Energy.prefab",
+      "HitEffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Chimera/Eff_ActivityProp_Chimera_Energy_Hit.prefab",
+      "StartAnchorName": "BulletStartEnergy",
+      "IsRotate": true
+    },
+    {
+      "$type": "RPG.GameCore.ChimeraDuelModifierContainerNode",
+      "Modifiers": [
+        {
+          "TargetSelector": [
+            {
+              "$type": "RPG.GameCore.ChimeraDuelSavedEntitiesSelectorConfig",
+              "SaveName": "Target"
+            }
+          ],
+          "Effects": [
+            {
+              "$type": "RPG.GameCore.ChimeraDuelEffectConfig",
+              "EffectType": "Damage",
+              "EffectParam": {
+                "$type": "RPG.GameCore.ChimeraDuelNormalEffectParam",
+                "ValueGetters": [
+                  {
+                    "$type": "RPG.GameCore.ChimeraDuelExcelValueGetter"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.ChimeraDuelWaitSecondsNode",
+      "WaitTime": 0.5
+    },
+    {
+      "$type": "RPG.GameCore.ChimeraDuelPlayAnimationNode",
+      "Anim": "Howl",
+      "TargetSelector": [
+        {
+          "$type": "RPG.GameCore.ChimeraDuelCasterSelectorConfig"
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.ChimeraDuelWaitSecondsNode",
+      "WaitTime": 0.5
+    },
+    {
+      "$type": "RPG.GameCore.ChimeraDuelFireEffectNode",
+      "TargetSelector": [
+        {
+          "$type": "RPG.GameCore.ChimeraDuelSavedEntitiesSelectorConfig",
+          "SaveName": "TargetRandom"
+        }
+      ],
+      "AnchorName": "Teleport",
+      "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_ChimeraDuel/Eff_ActivityProp_ChimeraDuel_Teleport.prefab",
+      "Scale": {
+        "X": 0.5,
+        "Y": 0.5,
+        "Z": 0.5
+      }
+    },
+    {
+      "$type": "RPG.GameCore.ChimeraDuelWaitSecondsNode",
+      "WaitTime": 0.5
+    },
+    {
+      "$type": "RPG.GameCore.ChimeraDuelDitherOutNode",
+      "TargetSelector": [
+        {
+          "$type": "RPG.GameCore.ChimeraDuelSavedEntitiesSelectorConfig",
+          "SaveName": "TargetRandom"
+        }
+      ],
+      "DitherTime": 1,
+      "IsDestroy": true
+    },
+    {
+      "$type": "RPG.GameCore.ChimeraDuelModifierContainerNode",
+      "Modifiers": [
+        {
+          "TargetSelector": [
+            {
+              "$type": "RPG.GameCore.ChimeraDuelRandomEntitiesSelectorConfig",
+              "Source": {
+                "$type": "RPG.GameCore.ChimeraDuelSavedEntitiesSelectorConfig",
+                "SaveName": "TargetRandom"
+              },
+              "MaxCount": {
+                "$type": "RPG.GameCore.SimpleChimeraDuelValueGetter",
+                "Value": {
+                  "Value": 1
+                }
+              }
+            }
+          ],
+          "Effects": [
+            {
+              "$type": "RPG.GameCore.ChimeraDuelEffectConfig",
+              "EffectType": "StealChimera"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.ChimeraDuelWaitSecondsNode",
+      "WaitTime": 0.25
+    }
+  ],
+  "SavedSelection": [
+    {
+      "$type": "RPG.GameCore.ChimeraDuelSaveEntitySelectionConfig",
+      "SaveName": "Target",
+      "Selector": {
+        "$type": "RPG.GameCore.ChimeraDuelEntitiesFilterSelectorConfig",
+        "Source": {
+          "$type": "RPG.GameCore.ChimeraDuelGroupEntitiesSelectorConfig",
+          "TeamSelectorType": "RelativeEnemy"
+        },
+        "KeepCondition": {
+          "$type": "RPG.GameCore.ChimeraDuelEntityAttributeComparePredicate",
+          "Left": "Attack",
+          "Right": {
+            "$type": "RPG.GameCore.ChimeraDuelCasterAttributeValueGetter",
+            "Attribute": "Attack"
+          },
+          "CompareType": "Less"
+        }
+      }
+    },
+    {
+      "$type": "RPG.GameCore.ChimeraDuelSaveEntitySelectionConfig",
+      "SaveName": "TargetRandom",
+      "Selector": {
+        "$type": "RPG.GameCore.ChimeraDuelRandomEntitiesSelectorConfig",
+        "Source": {
+          "$type": "RPG.GameCore.ChimeraDuelSavedEntitiesSelectorConfig",
+          "SaveName": "Target"
+        },
+        "MaxCount": {
+          "$type": "RPG.GameCore.SimpleChimeraDuelValueGetter",
+          "Value": {
+            "Value": 1
+          }
+        }
+      }
+    }
+  ],
+  "PreLoadResPaths": []
+}

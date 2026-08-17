@@ -1,0 +1,341 @@
+{
+  "$type": "RPG.GameCore.RtBattleCharacterConfig",
+  "CameraConfigList": [
+    {
+      "Tags": [
+        "Idle",
+        "SkillUse"
+      ],
+      "CameraConfig": {
+        "NormalConfig": {
+          "CameraState": "CasterToTargetPerform",
+          "TemplateName": "RtCommon_Camera_Range_Focus",
+          "AnchorTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster.CameraRootRecord"
+          },
+          "AimTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "LockTarget"
+          }
+        },
+        "BlendConfig": {
+          "BlendType": "EaseInOut",
+          "BlendTime": 0.8
+        }
+      }
+    },
+    {
+      "Tags": [
+        "Move"
+      ],
+      "CameraConfig": {
+        "NormalConfig": {
+          "CameraState": "CasterToTargetPerform",
+          "IsLocalOffset": true,
+          "AnchorOffset": {
+            "X": 1,
+            "Y": 1,
+            "Z": -2
+          },
+          "AimTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "DarkTeamBornPoint"
+          },
+          "AimOffset": {
+            "X": -1,
+            "Y": 1,
+            "Z": 0
+          },
+          "AimRatio": 1,
+          "Dutch": 3,
+          "ResetToDefault": false
+        },
+        "AdditiveNormalConfig": {
+          "CameraState": "CasterToTargetPerform",
+          "AnchorTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "LightTeamBornPoint"
+          },
+          "IsLocalOffset": true,
+          "AnchorOffset": {
+            "X": 0,
+            "Y": 1.5,
+            "Z": -3
+          },
+          "AimTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "DarkTeamBornPoint"
+          },
+          "AimOffset": {
+            "X": 0,
+            "Y": 1,
+            "Z": 0
+          },
+          "AimRatio": 1,
+          "Dutch": -3
+        },
+        "BlendConfig": {
+          "BlendType": "Linear",
+          "BlendTime": 3
+        }
+      }
+    }
+  ],
+  "BornGridEvaluator": {
+    "$type": "RPG.GameCore.VE_Group",
+    "Values": [
+      {
+        "$type": "RPG.GameCore.VE_Predicate",
+        "Predicate": {
+          "$type": "RPG.GameCore.QueryHoyoTag",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "ParamEntity"
+          },
+          "QueryType": "MatchAll",
+          "QuertInput": [
+            "RtBattle.Grid.Light.Tank"
+          ]
+        },
+        "Weight": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": 1000
+          }
+        }
+      },
+      {
+        "$type": "RPG.GameCore.VE_Predicate",
+        "Predicate": {
+          "$type": "RPG.GameCore.QueryHoyoTag",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "ParamEntity"
+          },
+          "QueryType": "MatchAll",
+          "QuertInput": [
+            "RtBattle.Grid.Light.Melee"
+          ]
+        },
+        "Weight": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": 500
+          }
+        }
+      },
+      {
+        "$type": "RPG.GameCore.VE_RtBattleGridOrder",
+        "TargetType": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "ParamEntity"
+        },
+        "Weight": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -100
+          }
+        },
+        "PostProcess": [
+          {
+            "$type": "RPG.GameCore.VP_Sigmoid"
+          }
+        ]
+      },
+      {
+        "$type": "RPG.GameCore.VE_RtDistance",
+        "From": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "ParamEntity"
+        },
+        "To": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "LightTeamBornPoint"
+        },
+        "Weight": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -10
+          }
+        },
+        "PostProcess": [
+          {
+            "$type": "RPG.GameCore.VP_Sigmoid"
+          }
+        ]
+      }
+    ]
+  },
+  "DefaultFlags": [
+    "WithoutGrid",
+    "HideHud"
+  ],
+  "HideWeaponList": [
+    "Weapon"
+  ],
+  "HitBoxOffset": {
+    "X": 0,
+    "Y": 1.2,
+    "Z": 0
+  },
+  "HitBoxWidth": 0.2,
+  "HitBoxHeight": 0.01,
+  "VisualRadius": 0.8,
+  "AnimEventConfigList": [
+    "Config/Activity/RtBattle/AnimEvents/RtBattleAvatar_Yanqing_01_Designer_AnimEvent.json",
+    "Config/Activity/RtBattle/AnimEvents/RtBattleAvatar_Yanqing_01_Effect_AnimEvent.json",
+    "Config/Activity/RtBattle/AnimEvents/Audio/RtBattleAvatar_Yanqing_01_Audio_AnimEvent.json"
+  ],
+  "DisableAnimEventLayers": [
+    "Riboon Layer"
+  ],
+  "SkillList": [
+    {
+      "Name": "Skill01",
+      "UseType": "SelectEntity",
+      "TargetInfo": {},
+      "EntryAbility": "RtBattleAvatar_Yanqing_01_Skill01",
+      "DefaultDuration": {
+        "Value": 3
+      },
+      "CD": {
+        "Value": 3
+      },
+      "CastDistance": {
+        "Value": 8
+      },
+      "SkillTargetAI": {
+        "Groups": [
+          {
+            "GroupName": "RtBattle_Common_MonsterRank",
+            "Weight": {
+              "Value": 10
+            }
+          },
+          {
+            "GroupName": "RtBattle_Common_Distance",
+            "Weight": {
+              "Value": -1
+            }
+          },
+          {
+            "GroupName": "RtBattle_Common_One",
+            "Weight": {
+              "Value": -1000
+            }
+          }
+        ]
+      },
+      "StanceParams": [
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        }
+      ]
+    }
+  ],
+  "AbilityList": [
+    "RtCommon_InitPassiveSkill"
+  ],
+  "SkillAbilityList": [
+    {
+      "Skill": "Skill01",
+      "AbilityList": [
+        "RtBattleAvatar_Yanqing_01_Skill01"
+      ]
+    }
+  ],
+  "DynamicValues": {
+    "Floats": {}
+  },
+  "WeaponType": "WP_Scythe",
+  "CommonAnimZoneConfigPath": "Config/ConfigAnimZone/NPCMonster/NPCMonster_Common_AnimZone.json",
+  "DamageType": "Ice",
+  "MotionParam": {},
+  "AnimDurationMap": {
+    "Appear": {
+      "Value": 3.216667
+    },
+    "Confine": {
+      "Value": 1.333333
+    },
+    "Confine_Loop": {
+      "Value": 2.666667
+    },
+    "Die": {
+      "Value": 2.666667
+    },
+    "Die_Fly": {
+      "Value": 2.666667
+    },
+    "Die_Hit": {
+      "Value": 2.666667
+    },
+    "Die_Limbo": {
+      "Value": 2.666667
+    },
+    "DieSpecial": {
+      "Value": 2.666667
+    },
+    "Hit_Fly": {
+      "Value": 0.3
+    },
+    "Hit_Fly_Loop": {
+      "Value": 0.01666668
+    },
+    "Hit_Fly_Recover": {
+      "Value": 1.65
+    },
+    "Hit_Fly_Recover_Break": {
+      "Value": 2.416667
+    },
+    "Hit_Fly_Recover_Stun": {
+      "Value": 2.416667
+    },
+    "Hit_H": {
+      "Value": 1.333333
+    },
+    "Hit_H_Break": {
+      "Value": 1.333333
+    },
+    "Hit_H_Stun": {
+      "Value": 1.333333
+    },
+    "Skill01": {
+      "Value": 2.5
+    },
+    "Stagger": {
+      "Value": 1.333333
+    },
+    "Stagger_Loop": {
+      "Value": 2.666667
+    },
+    "Stagger_Recover": {
+      "Value": 2.666667
+    },
+    "StandBy": {
+      "Value": 2.666667
+    },
+    "StandBy_Debuff": {
+      "Value": 2.666667
+    },
+    "StandBy_LowHP": {
+      "Value": 2.666667
+    },
+    "Stun_Loop": {
+      "Value": 2.666667
+    },
+    "Stun_Occur": {
+      "Value": 1.333333
+    },
+    "Stun_Recover": {
+      "Value": 2.666667
+    }
+  }
+}

@@ -1,0 +1,209 @@
+{
+  "AnimatorStateEvents": [
+    {
+      "AnimatorStateName": "Die",
+      "NormalizedTime": 0.9,
+      "EventList": [
+        {
+          "$type": "RPG.GameCore.TriggerDeadHandler"
+        }
+      ]
+    },
+    {
+      "AnimatorStateName": "Die_Fly",
+      "NormalizedTime": 0.9,
+      "EventList": [
+        {
+          "$type": "RPG.GameCore.TriggerDeadHandler"
+        }
+      ]
+    },
+    {
+      "AnimatorStateName": "Die_Hit",
+      "NormalizedTime": 0.9,
+      "EventList": [
+        {
+          "$type": "RPG.GameCore.TriggerDeadHandler"
+        }
+      ]
+    },
+    {
+      "AnimatorStateName": "Skill02",
+      "NormalizedTime": 0.85,
+      "EventList": [
+        {
+          "$type": "RPG.GameCore.TriggerDeadHandler"
+        }
+      ]
+    },
+    {
+      "AnimatorStateName": "Appear",
+      "NormalizedTime": 0.378,
+      "EventList": [
+        {
+          "$type": "RPG.GameCore.TriggerEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W5_Magical_00/Eff_Monster_W5_Magical_00_Rain_Loop.prefab",
+          "MinMutexTime": -1,
+          "MinMutexType": "Entity"
+        }
+      ]
+    }
+  ],
+  "AnimatorStateGroupEvents": [
+    {
+      "States": [
+        {
+          "Name": "Hit"
+        },
+        {
+          "Name": "Confine_Hit"
+        }
+      ],
+      "OnEnter": [
+        {
+          "$type": "RPG.GameCore.SetBaseHitStateSpeed",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        }
+      ],
+      "OnExit": [
+        {
+          "$type": "RPG.GameCore.SetBaseHitStateSpeed",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "Value": 1
+        }
+      ]
+    },
+    {
+      "States": [
+        {
+          "Name": "Hit_Fly"
+        },
+        {
+          "Name": "Confine"
+        }
+      ],
+      "OnEnter": [
+        {
+          "$type": "RPG.GameCore.RemoveEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W5_Magical_00/Eff_Monster_W5_Magical_00_Rain_Loop.prefab"
+        },
+        {
+          "$type": "RPG.GameCore.RemoveEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W5_Magical_00/Eff_Monster_W5_Magical_00_Sun_Loop.prefab"
+        }
+      ]
+    },
+    {
+      "States": [
+        {
+          "Name": "Hit_Fly_Recover",
+          "NormalizedTime": 0.5
+        },
+        {
+          "Name": "Hit_Fly_Recover_Stun",
+          "NormalizedTime": 0.5
+        },
+        {
+          "Name": "Hit_Fly_Recover_Break",
+          "NormalizedTime": 0.5
+        }
+      ],
+      "OnEnter": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareDynamicValue",
+            "DynamicKey": {
+              "Value": "Weather"
+            },
+            "CompareType": "Equal",
+            "CompareValue": {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 0
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareDynamicValue",
+                "DynamicKey": {
+                  "Value": "Deathrattle"
+                },
+                "CompareType": "Equal",
+                "CompareValue": {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 0
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W5_Magical_00/Eff_Monster_W5_Magical_00_Rain_Loop.prefab",
+                  "MinMutexTime": -1,
+                  "MinMutexType": "Entity"
+                }
+              ]
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareDynamicValue",
+                "DynamicKey": {
+                  "Value": "Deathrattle"
+                },
+                "CompareType": "Equal",
+                "CompareValue": {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 0
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerEffect",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W5_Magical_00/Eff_Monster_W5_Magical_00_Sun_Loop.prefab",
+                  "MinMutexTime": -1,
+                  "MinMutexType": "Entity"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

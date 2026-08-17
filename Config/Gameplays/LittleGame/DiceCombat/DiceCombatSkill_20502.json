@@ -1,0 +1,231 @@
+{
+  "RootAbility": {
+    "OnAdd": [
+      {
+        "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+        "ModifierID": 2050201,
+        "LifeTime": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -1
+          }
+        }
+      }
+    ]
+  },
+  "InsertAbilitys": [
+    {
+      "Name": "SkillHint_20502",
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillCutin",
+          "CutinID": 27
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 1
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+          "ModifierID": 2050202,
+          "LifeTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": -1
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 1
+        }
+      ]
+    },
+    {
+      "Name": "RemoveLuck_20502",
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillCutin",
+          "CutinID": 22
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 1
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerEffect",
+          "SubType": "CustomID",
+          "EffectID": 2
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_RemoveModifier",
+          "ModifierID": 2050202
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 1
+        }
+      ]
+    }
+  ],
+  "Modifiers": [
+    {
+      "ModifierID": 2050201,
+      "Flags": [],
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+          "Target": "Enemy",
+          "ModifierID": 2050203,
+          "LifeTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": -1
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_InsertAbility",
+          "AbilityName": "SkillHint_20502"
+        }
+      ]
+    },
+    {
+      "ModifierID": 2050202,
+      "Flags": [
+        "AlwaysRollMax"
+      ],
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue",
+          "Name": "NeedRemoveLuck",
+          "Value": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        }
+      ],
+      "OnAttackerConfirm": [
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+          "OnFail": [
+            {
+              "$type": "RPG.GameCore.DiceCombatPredicateConfig_CustomValueCompare",
+              "Left": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    -507326991
+                  ]
+                }
+              },
+              "Op": "Equal",
+              "Right": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1
+                }
+              },
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.DiceCombatTaskConfig_InsertAbility",
+                  "AbilityName": "RemoveLuck_20502"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "OnDefenderConfirm": [],
+      "OnAfterCombat": []
+    },
+    {
+      "ModifierID": 2050203,
+      "Flags": [],
+      "OnAttackerConfirm": [
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_EntityData",
+              "Name": "Attack_20502",
+              "DataType": "AttackPoint"
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatPredicateConfig_CustomValueCompare",
+              "Left": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    1092172050
+                  ]
+                }
+              },
+              "Op": "Greater",
+              "Right": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    -1467239079
+                  ]
+                }
+              },
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue",
+                  "WriteTarget": "Enemy",
+                  "Name": "NeedRemoveLuck",
+                  "Value": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "OnDefenderConfirm": []
+    }
+  ],
+  "PreviewOnRollFinish": {
+    "OnStart": []
+  },
+  "PreviewOnSelectDice": {
+    "OnStart": []
+  },
+  "AIEffect": {
+    "Effects": []
+  },
+  "TryShowBossPersistentTips": {
+    "OnStart": [
+      {
+        "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsDefender",
+        "OnSuccess": [
+          {
+            "$type": "RPG.GameCore.DiceCombatPredicateConfig_HasModifier",
+            "ModifierID": 2050202,
+            "OnSuccess": [
+              {
+                "$type": "RPG.GameCore.DiceCombatTaskConfig_ShowBossPersistentTipsView",
+                "TipsTextID": {
+                  "Hash": 1813949413088239553
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

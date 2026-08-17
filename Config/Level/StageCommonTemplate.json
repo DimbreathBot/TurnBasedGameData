@@ -56,6 +56,16 @@
           "DynamicKey": {
             "Value": "SkipBattleEnterInsertUltraWait"
           }
+        },
+        {
+          "$type": "RPG.GameCore.DefineDynamicValue",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "DynamicKey": {
+            "Value": "HasInsertAbilityOnBattleEnter"
+          }
         }
       ]
     }
@@ -138,11 +148,21 @@
           "CanReplace": false
         },
         {
-          "$type": "RPG.GameCore.AddStageAbilityByName",
-          "StageAbilityName": {
-            "Value": "StageAbility_Elation"
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareStageType",
+            "CurrentStageType": "FateRin",
+            "Inverse": true
           },
-          "CanReplace": false
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.AddStageAbilityByName",
+              "StageAbilityName": {
+                "Value": "StageAbility_Elation"
+              },
+              "CanReplace": false
+            }
+          ]
         },
         {
           "$type": "RPG.GameCore.LevelLockFeature",
@@ -526,6 +546,30 @@
                   "Value": 0.2
                 }
               }
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByHasInsertAbilityExecutingDuringGameModePause"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "LevelEntity"
+                  },
+                  "Value": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  },
+                  "DynamicKey": {
+                    "Value": "HasInsertAbilityOnBattleEnter"
+                  }
+                }
+              ]
             }
           ]
         },
@@ -590,12 +634,15 @@
           },
           "SuccessTaskList": [
             {
-              "$type": "RPG.GameCore.WaitSecond",
-              "WaitTime": {
-                "IsDynamic": false,
-                "FixedValue": {
-                  "Value": 1.8
-                }
+              "$type": "RPG.GameCore.TriggerCustomString",
+              "CustomString": {
+                "Value": "Stage_BattleEnter_Wave1Pause_PerformStart"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitCustomStringBattleClientOnly",
+              "CustomString": {
+                "Value": "Stage_BattleEnter_Wave1Pause_PerformEnd"
               }
             }
           ]
@@ -1065,7 +1112,17 @@
             "$type": "RPG.GameCore.ByAny",
             "PredicateList": [
               {
-                "$type": "RPG.GameCore.ByLevelLoseCheck"
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByLevelLoseCheck"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCompareStageType",
+                    "CurrentStageType": "GridFightActivity",
+                    "Inverse": true
+                  }
+                ]
               },
               {
                 "$type": "RPG.GameCore.ByCheckTrialCharacterDie"
@@ -1124,7 +1181,17 @@
             "$type": "RPG.GameCore.ByAny",
             "PredicateList": [
               {
-                "$type": "RPG.GameCore.ByLevelLoseCheck"
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByLevelLoseCheck"
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCompareStageType",
+                    "CurrentStageType": "GridFightActivity",
+                    "Inverse": true
+                  }
+                ]
               },
               {
                 "$type": "RPG.GameCore.ByCheckTrialCharacterDie"
@@ -1177,7 +1244,17 @@
                 "$type": "RPG.GameCore.ByAny",
                 "PredicateList": [
                   {
-                    "$type": "RPG.GameCore.ByLevelLoseCheck"
+                    "$type": "RPG.GameCore.ByAnd",
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByLevelLoseCheck"
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareStageType",
+                        "CurrentStageType": "GridFightActivity",
+                        "Inverse": true
+                      }
+                    ]
                   },
                   {
                     "$type": "RPG.GameCore.ByCheckTrialCharacterDie"

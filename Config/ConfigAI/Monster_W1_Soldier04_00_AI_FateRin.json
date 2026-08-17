@@ -1,0 +1,136 @@
+{
+  "AIName": "Monster_W1_Soldier04_00",
+  "VariableList": [
+    {
+      "$type": "RPG.GameCore.AIVariableString",
+      "Value": "W1_Soldier04_00_Phase01",
+      "Name": "CurrentPhase"
+    },
+    {
+      "$type": "RPG.GameCore.AIVariableBool",
+      "Value": true,
+      "Name": "ForbidClearSkillUseRecord"
+    }
+  ],
+  "DecisionList": [
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "UseSkill01",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.UseSkill",
+            "SkillName": "Skill01"
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckSkillUsabilityAxis",
+          "SkillName": "Skill01",
+          "InitialCD": 1,
+          "CD": 1,
+          "CheckScore": {
+            "Value": 0.1
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.AIDecisionConfig",
+      "DecisionName": "UseSkill02",
+      "RootTask": {
+        "$type": "RPG.GameCore.SequenceConfig",
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.Retarget",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "AllDarkTeam"
+            },
+            "Predicate": {
+              "$type": "RPG.GameCore.ByCompareMonsterID",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ParamEntity"
+              },
+              "TargetMonsterID": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1003014
+                }
+              }
+            },
+            "MaxNumber": {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 1
+              }
+            },
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.PredicateTaskList",
+                "Predicate": {
+                  "$type": "RPG.GameCore.ByIsContainModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ParamEntity"
+                  },
+                  "ModifierName": {
+                    "Value": "MMonster_W1_Soldier04_00_SkillP01_Supported"
+                  },
+                  "CasterFilter": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  }
+                },
+                "SuccessTaskList": [
+                  {
+                    "$type": "RPG.GameCore.UseSkill",
+                    "SkillName": "Skill01"
+                  }
+                ],
+                "FailedTaskList": [
+                  {
+                    "$type": "RPG.GameCore.SelectAISkillTarget",
+                    "SkillName": "Skill02",
+                    "Selector": {
+                      "$type": "RPG.GameCore.AIMonsterIDSelector",
+                      "MonsterIDList": [
+                        1003014
+                      ]
+                    }
+                  },
+                  {
+                    "$type": "RPG.GameCore.UseSkill",
+                    "SkillName": "Skill02"
+                  }
+                ]
+              }
+            ],
+            "FailedTaskList": [
+              {
+                "$type": "RPG.GameCore.UseSkill",
+                "SkillName": "Skill01"
+              }
+            ]
+          }
+        ]
+      },
+      "ScoreEvaluatorType": "DefaultDSE",
+      "ConsiderAxisList": [
+        {
+          "$type": "RPG.GameCore.CheckSkillUsabilityAxis",
+          "SkillName": "Skill02",
+          "InitialCD": 1,
+          "CD": 1,
+          "CheckScore": {
+            "Value": 0.2
+          }
+        }
+      ]
+    }
+  ]
+}

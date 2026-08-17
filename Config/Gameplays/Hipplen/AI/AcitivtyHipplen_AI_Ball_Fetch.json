@@ -1,0 +1,693 @@
+{
+  "VariableList": [
+    {
+      "$type": "RPG.GameCore.AIVariableBool",
+      "Name": "IsFetching",
+      "IsPrivate": false
+    },
+    {
+      "$type": "RPG.GameCore.AIVariableBool",
+      "Value": true,
+      "Name": "AtOriginalPoint"
+    },
+    {
+      "$type": "RPG.GameCore.AIVariableBool",
+      "Name": "Interacting",
+      "IsPrivate": false
+    },
+    {
+      "$type": "RPG.GameCore.AIVariableBool",
+      "Name": "InteractFinished"
+    },
+    {
+      "$type": "RPG.GameCore.AIVariableString",
+      "Name": "ColliderName"
+    }
+  ],
+  "GlobalVariableList": [
+    {
+      "$type": "RPG.GameCore.AIVariableFloat",
+      "Name": "StateTimer",
+      "IsPrivate": false
+    }
+  ],
+  "RootState": {
+    "Name": "Root",
+    "TaskList": [
+      {
+        "$type": "RPG.GameCore.ST_Side_Hipplen_LookAt",
+        "LookAtType": "InteractProp"
+      }
+    ],
+    "TransitionList": [
+      {
+        "Trigger": "OnEvent",
+        "UserDefineEvent": "OnCollision",
+        "TransitionToState": "BallCollision",
+        "BoolVariableList": [],
+        "FloatVariableList": [
+          {
+            "VariableName": "StateTimer"
+          }
+        ]
+      },
+      {
+        "Trigger": "OnTick",
+        "TransitionToState": "InteractComplete",
+        "Condition": {
+          "$type": "RPG.GameCore.ByAnd",
+          "PredicateList": [
+            {
+              "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+              "VarName": "InteractFinished",
+              "CompareValue": true
+            },
+            {
+              "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+              "VarName": "Interacting"
+            }
+          ]
+        },
+        "BoolVariableList": [],
+        "FloatVariableList": []
+      }
+    ],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+          "VarName": "IsFetching"
+        },
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "Root",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+              "VarName": "IsFetching",
+              "CompareValue": true
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": [
+              {
+                "VariableName": "StateTimer"
+              }
+            ]
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+              "VarName": "AtOriginalPoint"
+            },
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": -1
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_BubbleTalk",
+                "ContentTextID": {
+                  "Hash": 10607066009886187515
+                },
+                "Duration": 2,
+                "CloseBubbleOnExit": true
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnTick",
+                "TransitionToState": "WaitBall",
+                "Condition": {
+                  "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                  "VarName": "AtOriginalPoint",
+                  "CompareValue": true
+                },
+                "BoolVariableList": [],
+                "FloatVariableList": [
+                  {
+                    "VariableName": "StateTimer"
+                  }
+                ]
+              }
+            ],
+            "Name": "Return"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+              "VarName": "Interacting",
+              "CompareValue": true
+            },
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": -1
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_SetEmotion",
+                "EmotionIndex": 8
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_PlayFreeStyle",
+                "StoryAvatarID": "NPC_Special_HipplenMini_00",
+                "StoryMotionID": 900400901,
+                "NormalizedTransitionDuration": 0.5,
+                "LayerName": "Tail",
+                "StopTransitionTime": 0.5
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_BubbleTalk",
+                "ContentTextID": {
+                  "Hash": 16964512888398225740
+                },
+                "Duration": 2,
+                "CloseBubbleOnExit": true
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_TriggerEffect",
+                "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Hipplen/Eff_ActivityProp_Hipplen_Awake.prefab"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_RemoveEffect",
+                "TriggerOnEnter": false,
+                "TriggerOnExit": true,
+                "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Hipplen/Eff_ActivityProp_Hipplen_Awake.prefab"
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnTick",
+                "TransitionToState": "ReadyTired",
+                "Condition": {
+                  "$type": "RPG.GameCore.ST_ByCompareVariableFloat",
+                  "VarName": "StateTimer",
+                  "CompareType": "GreaterEqual",
+                  "CompareValue": 2
+                },
+                "ConditionMinDuration": 1,
+                "BoolVariableList": [],
+                "FloatVariableList": [
+                  {
+                    "VariableName": "StateTimer"
+                  }
+                ]
+              }
+            ],
+            "Name": "Ready"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+              "VarName": "Interacting",
+              "CompareValue": true,
+              "Inverse": true
+            },
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": -1
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_SetEmotion",
+                "EmotionIndex": 12
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_BubbleTalk",
+                "ContentTextID": {
+                  "Hash": 10607066009886187515
+                },
+                "Duration": 2,
+                "CloseBubbleOnExit": true
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnTick",
+                "TransitionToState": "Ready",
+                "Condition": {
+                  "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                  "VarName": "Interacting",
+                  "CompareValue": true
+                },
+                "BoolVariableList": [],
+                "FloatVariableList": [
+                  {
+                    "VariableName": "StateTimer"
+                  }
+                ]
+              },
+              {
+                "Trigger": "OnTick",
+                "TransitionToState": "IdleTired",
+                "Condition": {
+                  "$type": "RPG.GameCore.ST_ByCompareVariableFloat",
+                  "VarName": "StateTimer",
+                  "CompareType": "GreaterEqual",
+                  "CompareValue": 2
+                },
+                "ConditionMinDuration": 1,
+                "BoolVariableList": [],
+                "FloatVariableList": [
+                  {
+                    "VariableName": "StateTimer"
+                  }
+                ]
+              }
+            ],
+            "Name": "Idle"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": -1
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_SetEmotion",
+                "EmotionIndex": 10
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_BubbleTalk",
+                "ContentTextID": {
+                  "Hash": 16964512888398225740
+                },
+                "Duration": 2,
+                "CloseBubbleOnExit": true
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnTick",
+                "TransitionToState": "Ready",
+                "Condition": {
+                  "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+                  "VarName": "Interacting",
+                  "CompareValue": true
+                },
+                "BoolVariableList": [],
+                "FloatVariableList": [
+                  {
+                    "VariableName": "StateTimer"
+                  }
+                ]
+              }
+            ],
+            "Name": "IdleTired"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": -1
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_SetEmotion",
+                "EmotionIndex": 10
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_BubbleTalk",
+                "ContentTextID": {
+                  "Hash": 10607066009886187515
+                },
+                "Duration": 2,
+                "CloseBubbleOnExit": true
+              }
+            ],
+            "TransitionList": [],
+            "Name": "ReadyTired"
+          }
+        ],
+        "Name": "WaitBall"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+          "VarName": "IsFetching",
+          "CompareValue": true
+        },
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "Root",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+              "VarName": "IsFetching"
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": [
+              {
+                "VariableName": "StateTimer"
+              }
+            ]
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": -1
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_SetEmotion",
+                "EmotionIndex": 12
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_BubbleTalk",
+                "ContentTextID": {
+                  "Hash": 13383374378100371439
+                },
+                "Duration": 2,
+                "CloseBubbleOnExit": true
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_TriggerEffect",
+                "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Hipplen/Eff_ActivityProp_Hipplen_Happy.prefab"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_RemoveEffect",
+                "TriggerOnEnter": false,
+                "TriggerOnExit": true,
+                "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Hipplen/Eff_ActivityProp_Hipplen_Happy.prefab"
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "BallFetchSuccess",
+                "TransitionToState": "Success",
+                "BoolVariableList": [],
+                "FloatVariableList": [
+                  {
+                    "VariableName": "StateTimer"
+                  }
+                ]
+              },
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "BallFetchFail",
+                "TransitionToState": "Fail",
+                "BoolVariableList": [],
+                "FloatVariableList": [
+                  {
+                    "VariableName": "StateTimer"
+                  }
+                ]
+              }
+            ],
+            "Name": "RunToBall"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": 2
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_SetEmotion",
+                "EmotionIndex": 10
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_TriggerEffect",
+                "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Hipplen/Eff_ActivityProp_Hipplen_HappyStar.prefab"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_RemoveEffect",
+                "TriggerOnEnter": false,
+                "TriggerOnExit": true,
+                "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Hipplen/Eff_ActivityProp_Hipplen_HappyStar.prefab"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_PlayFreeStyle",
+                "StoryAvatarID": "NPC_Special_HipplenMini_00",
+                "StoryMotionID": 900400901,
+                "NormalizedTransitionDuration": 0.5,
+                "LayerName": "Tail",
+                "StopTransitionTime": 0.5
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_BubbleTalk",
+                "ContentTextID": {
+                  "Hash": 12128984331235155423
+                },
+                "Duration": 2
+              }
+            ],
+            "Name": "Success"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": 2
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_TriggerEffect",
+                "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Hipplen/Eff_ActivityProp_Hipplen_Daubt.prefab"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_RemoveEffect",
+                "TriggerOnEnter": false,
+                "TriggerOnExit": true,
+                "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Hipplen/Eff_ActivityProp_Hipplen_Daubt.prefab"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_SetEmotion",
+                "EmotionIndex": 14
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_BubbleTalk",
+                "ContentTextID": {
+                  "Hash": 14809553316180365069
+                },
+                "Duration": 2
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_Unlock_Trait",
+                "TraitIDs": [
+                  9987
+                ]
+              }
+            ],
+            "TransitionList": [],
+            "Name": "Fail"
+          }
+        ],
+        "Name": "FetchBall"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ByAnd",
+          "PredicateList": [
+            {
+              "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+              "VarName": "InteractFinished",
+              "CompareValue": true
+            },
+            {
+              "$type": "RPG.GameCore.ST_ByCompareVariableBool",
+              "VarName": "Interacting"
+            }
+          ]
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_Wait",
+            "Time": -1
+          },
+          {
+            "$type": "RPG.GameCore.ST_Side_PlayFreeStyle",
+            "StoryAvatarID": "NPC_Special_HipplenMini_00",
+            "StoryMotionID": 900400420,
+            "NormalizedTransitionDuration": 0.1
+          },
+          {
+            "$type": "RPG.GameCore.ST_Side_Hipplen_SetEmotion",
+            "EmotionIndex": 10
+          },
+          {
+            "$type": "RPG.GameCore.ST_Side_Hipplen_LookAt",
+            "LookAtType": "Camera"
+          },
+          {
+            "$type": "RPG.GameCore.ST_Side_TriggerEffect",
+            "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Hipplen/Eff_ActivityProp_Hipplen_BlingBling.prefab"
+          },
+          {
+            "$type": "RPG.GameCore.ST_Side_RemoveEffect",
+            "TriggerOnEnter": false,
+            "TriggerOnExit": true,
+            "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Hipplen/Eff_ActivityProp_Hipplen_BlingBling.prefab"
+          },
+          {
+            "$type": "RPG.GameCore.ST_Side_Hipplen_BubbleTalk",
+            "ContentTextID": {
+              "Hash": 798827546455977121
+            },
+            "Duration": 2
+          }
+        ],
+        "TransitionList": [],
+        "Name": "InteractComplete"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TaskList": [],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ST_ByCompareVariableString",
+              "VarName": "ColliderName",
+              "CompareValue": "BallFetchColl_Head"
+            },
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": 1
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_HipplenBallFetchStopRun",
+                "Duration": 1.5
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_TriggerEffect",
+                "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Hipplen/Eff_ActivityProp_Hipplen_Confuse.prefab"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_RemoveEffect",
+                "TriggerOnEnter": false,
+                "TriggerOnExit": true,
+                "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Hipplen/Eff_ActivityProp_Hipplen_Confuse.prefab"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_PlayFreeStyle",
+                "StoryAvatarID": "NPC_Special_HipplenMini_00",
+                "StoryMotionID": 900400903,
+                "NormalizedTransitionDuration": 0.1,
+                "LayerName": "Tail",
+                "StopTransitionTime": 0.5
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_SetEmotion",
+                "EmotionIndex": 13
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_LookAt"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_BubbleTalk",
+                "ContentTextID": {
+                  "Hash": 8609596915988199758
+                },
+                "Duration": 2
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_Unlock_Trait",
+                "TraitIDs": [
+                  9988
+                ]
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_Unlock_Achievement",
+                "AchievementID": 4054612
+              }
+            ],
+            "Name": "BallCollisionHead"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ST_ByCompareVariableString",
+              "VarName": "ColliderName",
+              "CompareValue": "BallFetchColl_Body"
+            },
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": 1
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_SetEmotion"
+              }
+            ],
+            "Name": "BallCollisionBody"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ByAny",
+              "PredicateList": [
+                {
+                  "$type": "RPG.GameCore.ST_ByCompareVariableString",
+                  "VarName": "ColliderName",
+                  "CompareValue": "BallFetchColl_Tail01"
+                },
+                {
+                  "$type": "RPG.GameCore.ST_ByCompareVariableString",
+                  "VarName": "ColliderName",
+                  "CompareValue": "BallFetchColl_Tail02"
+                }
+              ]
+            },
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": 1
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_SetEmotion"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_HipplenBallFetchStopRun",
+                "Duration": 1
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_TriggerEffect",
+                "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Hipplen/Eff_ActivityProp_Hipplen_Daubt.prefab"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_RemoveEffect",
+                "TriggerOnEnter": false,
+                "TriggerOnExit": true,
+                "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Hipplen/Eff_ActivityProp_Hipplen_Daubt.prefab"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_BubbleTalk",
+                "ContentTextID": {
+                  "Hash": 17087575326649159210
+                },
+                "Duration": 2
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_Hipplen_Unlock_Achievement",
+                "AchievementID": 4054612
+              }
+            ],
+            "Name": "BallCollisionTail"
+          }
+        ],
+        "Name": "BallCollision"
+      }
+    ]
+  },
+  "OnDisable": {
+    "$type": "RPG.GameCore.TaskConfig"
+  },
+  "OnInit": {
+    "$type": "RPG.GameCore.TaskConfig"
+  }
+}

@@ -195,7 +195,26 @@
               }
             },
             {
-              "$type": "RPG.GameCore.RemoveSelfModifier"
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareRedStanceCount",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ModifierOwnerEntity"
+                },
+                "CompareType": "LessEqual",
+                "CompareValue": {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 0
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.RemoveSelfModifier"
+                }
+              ]
             }
           ]
         }
@@ -9360,6 +9379,67 @@
                     }
                   },
                   {
+                    "$type": "RPG.GameCore.ByAny",
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByCurrentSkillType"
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCurrentSkillType",
+                        "SkillType": "Skill"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "Value": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  },
+                  "DynamicKey": {
+                    "Value": "_IsAimEnemySkill"
+                  }
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "Value": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "DynamicKey": {
+                    "Value": "_IsAimEnemySkill"
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                    "DynamicKey": {
+                      "Value": "_IsAimEnemySkill"
+                    },
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 1
+                      }
+                    }
+                  },
+                  {
                     "$type": "RPG.GameCore.ByCompareDynamicValue",
                     "DynamicKey": {
                       "Value": "_ReplayNormal"
@@ -9408,14 +9488,16 @@
                 "$type": "RPG.GameCore.ByAnd",
                 "PredicateList": [
                   {
-                    "$type": "RPG.GameCore.ByTargetListIntersects",
-                    "FirstTargetType": {
-                      "$type": "RPG.GameCore.TargetAlias",
-                      "Alias": "ModifierOwnerSkillTargetEntityList"
+                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                    "DynamicKey": {
+                      "Value": "_IsAimEnemySkill"
                     },
-                    "SecondTargetType": {
-                      "$type": "RPG.GameCore.TargetAlias",
-                      "Alias": "ModifierOwnerAllEnemy"
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 1
+                      }
                     }
                   },
                   {
@@ -9467,56 +9549,174 @@
                 "$type": "RPG.GameCore.ByAnd",
                 "PredicateList": [
                   {
-                    "$type": "RPG.GameCore.ByTargetListIntersects",
-                    "FirstTargetType": {
+                    "$type": "RPG.GameCore.ByCompareCharacterID",
+                    "TargetType": {
                       "$type": "RPG.GameCore.TargetAlias",
-                      "Alias": "ModifierOwnerSkillTargetEntityList"
+                      "Alias": "ModifierOwnerEntity"
                     },
-                    "SecondTargetType": {
-                      "$type": "RPG.GameCore.TargetAlias",
-                      "Alias": "ModifierOwnerAllEnemy"
+                    "TargetCharacterID": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 1510
+                      }
                     }
                   },
                   {
-                    "$type": "RPG.GameCore.ByAny",
-                    "PredicateList": [
-                      {
-                        "$type": "RPG.GameCore.ByCurrentSkillType"
-                      },
-                      {
-                        "$type": "RPG.GameCore.ByCurrentSkillType",
-                        "SkillType": "Skill"
+                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                    "DynamicKey": {
+                      "Value": "_IsAimEnemySkill"
+                    },
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 1
                       }
-                    ]
+                    }
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                    "DynamicKey": {
+                      "Value": "_ReplaySkill"
+                    },
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 1
+                      }
+                    }
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                    "DynamicKey": {
+                      "Value": "_IsWindfurySkill"
+                    },
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 0
+                      }
+                    }
                   }
                 ]
               },
               "SuccessTaskList": [
                 {
-                  "$type": "RPG.GameCore.SetDynamicValue",
-                  "Value": {
-                    "IsDynamic": false,
-                    "FixedValue": {
-                      "Value": 1
-                    }
+                  "$type": "RPG.GameCore.SetSkillTextDialogType",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
                   },
-                  "DynamicKey": {
-                    "Value": "_IsAimEnemySkill"
-                  }
-                }
-              ],
-              "FailedTaskList": [
+                  "SkillTypes": [
+                    "Assist"
+                  ],
+                  "Type": "Cerydra",
+                  "IsReplace": true
+                },
                 {
-                  "$type": "RPG.GameCore.SetDynamicValue",
-                  "Value": {
-                    "IsDynamic": false,
-                    "FixedValue": {
-                      "Value": 0
-                    }
+                  "$type": "RPG.GameCore.SetDynamicValueByCopying",
+                  "FromTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
                   },
-                  "DynamicKey": {
-                    "Value": "_IsAimEnemySkill"
-                  }
+                  "FromDynamicKey": {
+                    "Value": "HimekoNova_PassiveMode_Flag01"
+                  },
+                  "ToTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "ToDynamicKey": {
+                    "Value": "_HimekoNova_PassiveMode_Flag01_WindfurySnapshot"
+                  },
+                  "TargetContextScope": "ContextModifier"
+                },
+                {
+                  "$type": "RPG.GameCore.SetDynamicValueByCopying",
+                  "FromTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "FromDynamicKey": {
+                    "Value": "HimekoNova_PassiveMode_Flag02"
+                  },
+                  "ToTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "ToDynamicKey": {
+                    "Value": "_HimekoNova_PassiveMode_Flag02_WindfurySnapshot"
+                  },
+                  "TargetContextScope": "ContextModifier"
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCurrentSkillName",
+                    "SkillName": "Skill51"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "Value": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 1
+                        }
+                      },
+                      "DynamicKey": {
+                        "Value": "_HimekoNova_SkillTag"
+                      }
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCurrentSkillName",
+                        "SkillName": "Skill52"
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.SetDynamicValue",
+                          "Value": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 2
+                            }
+                          },
+                          "DynamicKey": {
+                            "Value": "_HimekoNova_SkillTag"
+                          }
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCurrentSkillName",
+                            "SkillName": "Skill53"
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.SetDynamicValue",
+                              "Value": {
+                                "IsDynamic": false,
+                                "FixedValue": {
+                                  "Value": 3
+                                }
+                              },
+                              "DynamicKey": {
+                                "Value": "_HimekoNova_SkillTag"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             },
@@ -9532,8 +9732,13 @@
                         "$type": "RPG.GameCore.ByAnd",
                         "PredicateList": [
                           {
-                            "$type": "RPG.GameCore.ByCurrentSkillType",
-                            "SkillType": "Skill"
+                            "$type": "RPG.GameCore.ByAny",
+                            "PredicateList": [
+                              {
+                                "$type": "RPG.GameCore.ByCurrentSkillType",
+                                "SkillType": "Skill"
+                              }
+                            ]
                           },
                           {
                             "$type": "RPG.GameCore.ByCompareDynamicValue",
@@ -9938,6 +10143,19 @@
                             "Value": 1507
                           }
                         }
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareCharacterID",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "TargetCharacterID": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 1510
+                          }
+                        }
                       }
                     ]
                   },
@@ -9953,15 +10171,444 @@
                         "TargetCharacterID": {
                           "IsDynamic": false,
                           "FixedValue": {
-                            "Value": 1213
+                            "Value": 1510
                           }
                         }
                       },
                       "SuccessTaskList": [
                         {
-                          "$type": "RPG.GameCore.SetDynamicValueByVariateType",
-                          "DynamicKey": "_CurrnetSkillIndex",
-                          "VariateType": "CurrentActionSkillIndex"
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByAnd",
+                            "PredicateList": [
+                              {
+                                "$type": "RPG.GameCore.ByCompareDynamicValue",
+                                "DynamicKey": {
+                                  "Value": "_HimekoNova_SkillTag"
+                                },
+                                "CompareType": "Equal",
+                                "CompareValue": {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 3
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.TurnInsertAction",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ModifierOwnerEntity"
+                              },
+                              "InsertActionPriority": "Windfury",
+                              "SkillTag": {
+                                "EnumIndex": 8,
+                                "Value": 4
+                              },
+                              "AutoCast": true,
+                              "AutoCastTargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "AllEnemy"
+                              },
+                              "CanRunAfterFightFinish": true,
+                              "OnInsertAbort": [
+                                {
+                                  "$type": "RPG.GameCore.PredicateTaskList",
+                                  "Predicate": {
+                                    "$type": "RPG.GameCore.ByCasterAliveOrLimbo",
+                                    "AliveStateMask": "Mask_AliveOrLimbo"
+                                  },
+                                  "SuccessTaskList": [
+                                    {
+                                      "$type": "RPG.GameCore.PredicateTaskList",
+                                      "Predicate": {
+                                        "$type": "RPG.GameCore.ByHaveEnemyAlive",
+                                        "TargetType": {
+                                          "$type": "RPG.GameCore.TargetAlias",
+                                          "Alias": "ModifierOwnerEntity"
+                                        },
+                                        "Inverse": true
+                                      },
+                                      "SuccessTaskList": [
+                                        {
+                                          "$type": "RPG.GameCore.SetDynamicValue",
+                                          "Value": {
+                                            "IsDynamic": false,
+                                            "FixedValue": {
+                                              "Value": 1
+                                            }
+                                          },
+                                          "DynamicKey": {
+                                            "Value": "_OnWaveMonster_SkillType"
+                                          }
+                                        }
+                                      ],
+                                      "FailedTaskList": [
+                                        {
+                                          "$type": "RPG.GameCore.SetDynamicValue",
+                                          "Value": {
+                                            "IsDynamic": false,
+                                            "FixedValue": {
+                                              "Value": 0
+                                            }
+                                          },
+                                          "DynamicKey": {
+                                            "Value": "Windfury_Flag"
+                                          }
+                                        },
+                                        {
+                                          "$type": "RPG.GameCore.SetDynamicValue",
+                                          "ContextScope": "ContextModifier",
+                                          "Value": {
+                                            "IsDynamic": false,
+                                            "FixedValue": {
+                                              "Value": 0
+                                            }
+                                          },
+                                          "DynamicKey": {
+                                            "Value": "_HimekoNova_PassiveMode_Flag01_WindfurySnapshot"
+                                          }
+                                        },
+                                        {
+                                          "$type": "RPG.GameCore.SetDynamicValue",
+                                          "ContextScope": "ContextModifier",
+                                          "Value": {
+                                            "IsDynamic": false,
+                                            "FixedValue": {
+                                              "Value": 0
+                                            }
+                                          },
+                                          "DynamicKey": {
+                                            "Value": "_HimekoNova_PassiveMode_Flag02_WindfurySnapshot"
+                                          }
+                                        },
+                                        {
+                                          "$type": "RPG.GameCore.PredicateTaskList",
+                                          "Predicate": {
+                                            "$type": "RPG.GameCore.ByCompareDynamicValue",
+                                            "DynamicKey": {
+                                              "Value": "MDF_WindfuryCount"
+                                            },
+                                            "CompareType": "Less",
+                                            "CompareValue": {
+                                              "IsDynamic": false,
+                                              "FixedValue": {
+                                                "Value": 1
+                                              }
+                                            }
+                                          },
+                                          "SuccessTaskList": [
+                                            {
+                                              "$type": "RPG.GameCore.RemoveSelfModifier"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ],
+                              "CustomTags": [
+                                {
+                                  "Value": "ActionTag_Windfury"
+                                },
+                                {
+                                  "Value": "AssistSkill3"
+                                }
+                              ],
+                              "UIConfig": {
+                                "ActionBarUIConfig": {
+                                  "HeadIconPath": "SpriteOutput/AvatarIconTeam/1510_BE.png"
+                                }
+                              }
+                            }
+                          ],
+                          "FailedTaskList": [
+                            {
+                              "$type": "RPG.GameCore.PredicateTaskList",
+                              "Predicate": {
+                                "$type": "RPG.GameCore.ByAnd",
+                                "PredicateList": [
+                                  {
+                                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                                    "DynamicKey": {
+                                      "Value": "_HimekoNova_SkillTag"
+                                    },
+                                    "CompareType": "Equal",
+                                    "CompareValue": {
+                                      "IsDynamic": false,
+                                      "FixedValue": {
+                                        "Value": 2
+                                      }
+                                    }
+                                  }
+                                ]
+                              },
+                              "SuccessTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.TurnInsertAction",
+                                  "TargetType": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "ModifierOwnerEntity"
+                                  },
+                                  "InsertActionPriority": "Windfury",
+                                  "SkillTag": {
+                                    "EnumIndex": 8,
+                                    "Value": 3
+                                  },
+                                  "AutoCast": true,
+                                  "AutoCastTargetType": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "AllEnemy"
+                                  },
+                                  "CanRunAfterFightFinish": true,
+                                  "OnInsertAbort": [
+                                    {
+                                      "$type": "RPG.GameCore.PredicateTaskList",
+                                      "Predicate": {
+                                        "$type": "RPG.GameCore.ByCasterAliveOrLimbo",
+                                        "AliveStateMask": "Mask_AliveOrLimbo"
+                                      },
+                                      "SuccessTaskList": [
+                                        {
+                                          "$type": "RPG.GameCore.PredicateTaskList",
+                                          "Predicate": {
+                                            "$type": "RPG.GameCore.ByHaveEnemyAlive",
+                                            "TargetType": {
+                                              "$type": "RPG.GameCore.TargetAlias",
+                                              "Alias": "ModifierOwnerEntity"
+                                            },
+                                            "Inverse": true
+                                          },
+                                          "SuccessTaskList": [
+                                            {
+                                              "$type": "RPG.GameCore.SetDynamicValue",
+                                              "Value": {
+                                                "IsDynamic": false,
+                                                "FixedValue": {
+                                                  "Value": 1
+                                                }
+                                              },
+                                              "DynamicKey": {
+                                                "Value": "_OnWaveMonster_SkillType"
+                                              }
+                                            }
+                                          ],
+                                          "FailedTaskList": [
+                                            {
+                                              "$type": "RPG.GameCore.SetDynamicValue",
+                                              "Value": {
+                                                "IsDynamic": false,
+                                                "FixedValue": {
+                                                  "Value": 0
+                                                }
+                                              },
+                                              "DynamicKey": {
+                                                "Value": "Windfury_Flag"
+                                              }
+                                            },
+                                            {
+                                              "$type": "RPG.GameCore.SetDynamicValue",
+                                              "ContextScope": "ContextModifier",
+                                              "Value": {
+                                                "IsDynamic": false,
+                                                "FixedValue": {
+                                                  "Value": 0
+                                                }
+                                              },
+                                              "DynamicKey": {
+                                                "Value": "_HimekoNova_PassiveMode_Flag01_WindfurySnapshot"
+                                              }
+                                            },
+                                            {
+                                              "$type": "RPG.GameCore.SetDynamicValue",
+                                              "ContextScope": "ContextModifier",
+                                              "Value": {
+                                                "IsDynamic": false,
+                                                "FixedValue": {
+                                                  "Value": 0
+                                                }
+                                              },
+                                              "DynamicKey": {
+                                                "Value": "_HimekoNova_PassiveMode_Flag02_WindfurySnapshot"
+                                              }
+                                            },
+                                            {
+                                              "$type": "RPG.GameCore.PredicateTaskList",
+                                              "Predicate": {
+                                                "$type": "RPG.GameCore.ByCompareDynamicValue",
+                                                "DynamicKey": {
+                                                  "Value": "MDF_WindfuryCount"
+                                                },
+                                                "CompareType": "Less",
+                                                "CompareValue": {
+                                                  "IsDynamic": false,
+                                                  "FixedValue": {
+                                                    "Value": 1
+                                                  }
+                                                }
+                                              },
+                                              "SuccessTaskList": [
+                                                {
+                                                  "$type": "RPG.GameCore.RemoveSelfModifier"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "CustomTags": [
+                                    {
+                                      "Value": "ActionTag_Windfury"
+                                    },
+                                    {
+                                      "Value": "AssistSkill2"
+                                    }
+                                  ],
+                                  "UIConfig": {
+                                    "ActionBarUIConfig": {
+                                      "HeadIconPath": "SpriteOutput/AvatarIconTeam/1510_BE.png"
+                                    }
+                                  }
+                                }
+                              ],
+                              "FailedTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.TurnInsertAction",
+                                  "TargetType": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "ModifierOwnerEntity"
+                                  },
+                                  "InsertActionPriority": "Windfury",
+                                  "SkillTag": {
+                                    "EnumIndex": 8,
+                                    "Value": 2
+                                  },
+                                  "AutoCast": true,
+                                  "AutoCastTargetType": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "AllEnemy"
+                                  },
+                                  "CanRunAfterFightFinish": true,
+                                  "OnInsertAbort": [
+                                    {
+                                      "$type": "RPG.GameCore.PredicateTaskList",
+                                      "Predicate": {
+                                        "$type": "RPG.GameCore.ByCasterAliveOrLimbo",
+                                        "AliveStateMask": "Mask_AliveOrLimbo"
+                                      },
+                                      "SuccessTaskList": [
+                                        {
+                                          "$type": "RPG.GameCore.PredicateTaskList",
+                                          "Predicate": {
+                                            "$type": "RPG.GameCore.ByHaveEnemyAlive",
+                                            "TargetType": {
+                                              "$type": "RPG.GameCore.TargetAlias",
+                                              "Alias": "ModifierOwnerEntity"
+                                            },
+                                            "Inverse": true
+                                          },
+                                          "SuccessTaskList": [
+                                            {
+                                              "$type": "RPG.GameCore.SetDynamicValue",
+                                              "Value": {
+                                                "IsDynamic": false,
+                                                "FixedValue": {
+                                                  "Value": 1
+                                                }
+                                              },
+                                              "DynamicKey": {
+                                                "Value": "_OnWaveMonster_SkillType"
+                                              }
+                                            }
+                                          ],
+                                          "FailedTaskList": [
+                                            {
+                                              "$type": "RPG.GameCore.SetDynamicValue",
+                                              "Value": {
+                                                "IsDynamic": false,
+                                                "FixedValue": {
+                                                  "Value": 0
+                                                }
+                                              },
+                                              "DynamicKey": {
+                                                "Value": "Windfury_Flag"
+                                              }
+                                            },
+                                            {
+                                              "$type": "RPG.GameCore.SetDynamicValue",
+                                              "ContextScope": "ContextModifier",
+                                              "Value": {
+                                                "IsDynamic": false,
+                                                "FixedValue": {
+                                                  "Value": 0
+                                                }
+                                              },
+                                              "DynamicKey": {
+                                                "Value": "_HimekoNova_PassiveMode_Flag01_WindfurySnapshot"
+                                              }
+                                            },
+                                            {
+                                              "$type": "RPG.GameCore.SetDynamicValue",
+                                              "ContextScope": "ContextModifier",
+                                              "Value": {
+                                                "IsDynamic": false,
+                                                "FixedValue": {
+                                                  "Value": 0
+                                                }
+                                              },
+                                              "DynamicKey": {
+                                                "Value": "_HimekoNova_PassiveMode_Flag02_WindfurySnapshot"
+                                              }
+                                            },
+                                            {
+                                              "$type": "RPG.GameCore.PredicateTaskList",
+                                              "Predicate": {
+                                                "$type": "RPG.GameCore.ByCompareDynamicValue",
+                                                "DynamicKey": {
+                                                  "Value": "MDF_WindfuryCount"
+                                                },
+                                                "CompareType": "Less",
+                                                "CompareValue": {
+                                                  "IsDynamic": false,
+                                                  "FixedValue": {
+                                                    "Value": 1
+                                                  }
+                                                }
+                                              },
+                                              "SuccessTaskList": [
+                                                {
+                                                  "$type": "RPG.GameCore.RemoveSelfModifier"
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "CustomTags": [
+                                    {
+                                      "Value": "ActionTag_Windfury"
+                                    },
+                                    {
+                                      "Value": "FakeAssistSkill1"
+                                    }
+                                  ],
+                                  "UIConfig": {
+                                    "ActionBarUIConfig": {
+                                      "HeadIconPath": "SpriteOutput/AvatarIconTeam/1510_BE.png"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ],
                       "FailedTaskList": [
@@ -9976,205 +10623,311 @@
                             "TargetCharacterID": {
                               "IsDynamic": false,
                               "FixedValue": {
-                                "Value": 1501
+                                "Value": 1213
                               }
                             }
                           },
                           "SuccessTaskList": [
                             {
-                              "$type": "RPG.GameCore.PredicateTaskList",
-                              "Predicate": {
-                                "$type": "RPG.GameCore.ByCurrentSkillName",
-                                "SkillName": "Skill11"
-                              },
-                              "SuccessTaskList": [
-                                {
-                                  "$type": "RPG.GameCore.SetDynamicValue",
-                                  "Value": {
-                                    "IsDynamic": false,
-                                    "FixedValue": {
-                                      "Value": 9
-                                    }
-                                  },
-                                  "DynamicKey": {
-                                    "Value": "_CurrnetSkillIndex"
-                                  }
-                                }
-                              ],
-                              "FailedTaskList": [
-                                {
-                                  "$type": "RPG.GameCore.SetDynamicValueByVariateType",
-                                  "DynamicKey": "_CurrnetSkillIndex",
-                                  "VariateType": "CurrentActionSkillIndex"
-                                }
-                              ]
+                              "$type": "RPG.GameCore.SetDynamicValueByVariateType",
+                              "DynamicKey": "_CurrnetSkillIndex",
+                              "VariateType": "CurrentActionSkillIndex"
                             }
                           ],
                           "FailedTaskList": [
                             {
                               "$type": "RPG.GameCore.PredicateTaskList",
                               "Predicate": {
-                                "$type": "RPG.GameCore.ByCurrentSkillName",
-                                "SkillName": "Skill21"
-                              },
-                              "SuccessTaskList": [
-                                {
-                                  "$type": "RPG.GameCore.SetDynamicValue",
-                                  "Value": {
-                                    "IsDynamic": false,
-                                    "FixedValue": {
-                                      "Value": 3
-                                    }
-                                  },
-                                  "DynamicKey": {
-                                    "Value": "_CurrnetSkillIndex"
-                                  }
-                                }
-                              ],
-                              "FailedTaskList": [
-                                {
-                                  "$type": "RPG.GameCore.SetDynamicValueByVariateType",
-                                  "DynamicKey": "_CurrnetSkillIndex",
-                                  "VariateType": "CurrentActionSkillIndex"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "$type": "RPG.GameCore.AddModifier",
-                      "TargetType": {
-                        "$type": "RPG.GameCore.TargetAlias",
-                        "Alias": "ModifierOwnerEntity"
-                      },
-                      "ModifierName": {
-                        "Value": "MCommon_Windfury_ModifySkillPropertyByType_Normal"
-                      },
-                      "DynamicValues": {
-                        "_ChangeValue": {
-                          "IsDynamic": true,
-                          "PostfixExpr": {
-                            "OpCodes": "AQAR",
-                            "FixedValues": [],
-                            "DynamicHashes": [
-                              -684097688
-                            ]
-                          }
-                        }
-                      }
-                    },
-                    {
-                      "$type": "RPG.GameCore.TurnInsertAction",
-                      "TargetType": {
-                        "$type": "RPG.GameCore.TargetAlias",
-                        "Alias": "ModifierOwnerEntity"
-                      },
-                      "InsertActionPriority": "Windfury",
-                      "SkillIndex": {
-                        "IsDynamic": true,
-                        "PostfixExpr": {
-                          "OpCodes": "AQAR",
-                          "FixedValues": [],
-                          "DynamicHashes": [
-                            -890606031
-                          ]
-                        }
-                      },
-                      "AutoCast": true,
-                      "AutoCastTargetType": {
-                        "$type": "RPG.GameCore.TargetAlias",
-                        "Alias": "ModifierOwnerSkillTargetEntityList"
-                      },
-                      "OnInsertAbort": [
-                        {
-                          "$type": "RPG.GameCore.PredicateTaskList",
-                          "Predicate": {
-                            "$type": "RPG.GameCore.ByCasterAliveOrLimbo",
-                            "AliveStateMask": "Mask_AliveOrLimbo"
-                          },
-                          "SuccessTaskList": [
-                            {
-                              "$type": "RPG.GameCore.PredicateTaskList",
-                              "Predicate": {
-                                "$type": "RPG.GameCore.ByHaveEnemyAlive",
+                                "$type": "RPG.GameCore.ByCompareCharacterID",
                                 "TargetType": {
                                   "$type": "RPG.GameCore.TargetAlias",
                                   "Alias": "ModifierOwnerEntity"
                                 },
-                                "Inverse": true
+                                "TargetCharacterID": {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 1501
+                                  }
+                                }
                               },
                               "SuccessTaskList": [
                                 {
-                                  "$type": "RPG.GameCore.SetDynamicValue",
-                                  "Value": {
-                                    "IsDynamic": true,
-                                    "PostfixExpr": {
-                                      "OpCodes": "AQAR",
-                                      "FixedValues": [],
-                                      "DynamicHashes": [
-                                        -890606031
-                                      ]
-                                    }
+                                  "$type": "RPG.GameCore.PredicateTaskList",
+                                  "Predicate": {
+                                    "$type": "RPG.GameCore.ByCurrentSkillName",
+                                    "SkillName": "Skill11"
                                   },
-                                  "DynamicKey": {
-                                    "Value": "_OnWaveMonster_SkillType"
-                                  }
+                                  "SuccessTaskList": [
+                                    {
+                                      "$type": "RPG.GameCore.SetDynamicValue",
+                                      "Value": {
+                                        "IsDynamic": false,
+                                        "FixedValue": {
+                                          "Value": 9
+                                        }
+                                      },
+                                      "DynamicKey": {
+                                        "Value": "_CurrnetSkillIndex"
+                                      }
+                                    }
+                                  ],
+                                  "FailedTaskList": [
+                                    {
+                                      "$type": "RPG.GameCore.SetDynamicValueByVariateType",
+                                      "DynamicKey": "_CurrnetSkillIndex",
+                                      "VariateType": "CurrentActionSkillIndex"
+                                    }
+                                  ]
                                 }
                               ],
                               "FailedTaskList": [
                                 {
-                                  "$type": "RPG.GameCore.RemoveModifier",
-                                  "TargetType": {
-                                    "$type": "RPG.GameCore.TargetAlias",
-                                    "Alias": "ModifierOwnerEntity"
-                                  },
-                                  "ModifierName": {
-                                    "Value": "MCommon_Windfury_ModifySkillPropertyByType_Normal"
-                                  }
-                                },
-                                {
-                                  "$type": "RPG.GameCore.SetDynamicValue",
-                                  "Value": {
-                                    "IsDynamic": false,
-                                    "FixedValue": {
-                                      "Value": 0
-                                    }
-                                  },
-                                  "DynamicKey": {
-                                    "Value": "Windfury_Flag"
-                                  }
-                                },
-                                {
                                   "$type": "RPG.GameCore.PredicateTaskList",
                                   "Predicate": {
-                                    "$type": "RPG.GameCore.ByCompareDynamicValue",
-                                    "DynamicKey": {
-                                      "Value": "MDF_WindfuryCount"
+                                    "$type": "RPG.GameCore.ByCompareCharacterID",
+                                    "TargetType": {
+                                      "$type": "RPG.GameCore.TargetAlias",
+                                      "Alias": "ModifierOwnerEntity"
                                     },
-                                    "CompareType": "Less",
-                                    "CompareValue": {
+                                    "TargetCharacterID": {
                                       "IsDynamic": false,
                                       "FixedValue": {
-                                        "Value": 1
+                                        "Value": 1507
                                       }
                                     }
                                   },
                                   "SuccessTaskList": [
                                     {
-                                      "$type": "RPG.GameCore.RemoveSelfModifier"
+                                      "$type": "RPG.GameCore.PredicateTaskList",
+                                      "Predicate": {
+                                        "$type": "RPG.GameCore.ByCurrentSkillName",
+                                        "SkillName": "Skill21"
+                                      },
+                                      "SuccessTaskList": [
+                                        {
+                                          "$type": "RPG.GameCore.SetDynamicValue",
+                                          "Value": {
+                                            "IsDynamic": false,
+                                            "FixedValue": {
+                                              "Value": 3
+                                            }
+                                          },
+                                          "DynamicKey": {
+                                            "Value": "_CurrnetSkillIndex"
+                                          }
+                                        }
+                                      ],
+                                      "FailedTaskList": [
+                                        {
+                                          "$type": "RPG.GameCore.SetDynamicValueByVariateType",
+                                          "DynamicKey": "_CurrnetSkillIndex",
+                                          "VariateType": "CurrentActionSkillIndex"
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "FailedTaskList": [
+                                    {
+                                      "$type": "RPG.GameCore.SetDynamicValueByVariateType",
+                                      "DynamicKey": "_CurrnetSkillIndex",
+                                      "VariateType": "CurrentActionSkillIndex"
                                     }
                                   ]
                                 }
                               ]
                             }
                           ]
+                        },
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCurrentSkillType"
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.AddModifier",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ModifierOwnerEntity"
+                              },
+                              "ModifierName": {
+                                "Value": "MCommon_Windfury_ModifySkillPropertyByType_Normal"
+                              },
+                              "DynamicValues": {
+                                "_ChangeValue": {
+                                  "IsDynamic": true,
+                                  "PostfixExpr": {
+                                    "OpCodes": "AQAR",
+                                    "FixedValues": [],
+                                    "DynamicHashes": [
+                                      -684097688
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByAny",
+                            "PredicateList": [
+                              {
+                                "$type": "RPG.GameCore.ByCurrentSkillType",
+                                "SkillType": "Skill"
+                              }
+                            ]
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.AddModifier",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ModifierOwnerEntity"
+                              },
+                              "ModifierName": {
+                                "Value": "MCommon_Windfury_ModifySkillPropertyByType_Skill"
+                              },
+                              "DynamicValues": {
+                                "_ChangeValue": {
+                                  "IsDynamic": true,
+                                  "PostfixExpr": {
+                                    "OpCodes": "AQAR",
+                                    "FixedValues": [],
+                                    "DynamicHashes": [
+                                      -684097688
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "RPG.GameCore.TurnInsertAction",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          "InsertActionPriority": "Windfury",
+                          "SkillIndex": {
+                            "IsDynamic": true,
+                            "PostfixExpr": {
+                              "OpCodes": "AQAR",
+                              "FixedValues": [],
+                              "DynamicHashes": [
+                                -890606031
+                              ]
+                            }
+                          },
+                          "AutoCast": true,
+                          "AutoCastTargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerSkillTargetEntityList"
+                          },
+                          "OnInsertAbort": [
+                            {
+                              "$type": "RPG.GameCore.PredicateTaskList",
+                              "Predicate": {
+                                "$type": "RPG.GameCore.ByCasterAliveOrLimbo",
+                                "AliveStateMask": "Mask_AliveOrLimbo"
+                              },
+                              "SuccessTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.PredicateTaskList",
+                                  "Predicate": {
+                                    "$type": "RPG.GameCore.ByHaveEnemyAlive",
+                                    "TargetType": {
+                                      "$type": "RPG.GameCore.TargetAlias",
+                                      "Alias": "ModifierOwnerEntity"
+                                    },
+                                    "Inverse": true
+                                  },
+                                  "SuccessTaskList": [
+                                    {
+                                      "$type": "RPG.GameCore.SetDynamicValue",
+                                      "Value": {
+                                        "IsDynamic": true,
+                                        "PostfixExpr": {
+                                          "OpCodes": "AQAR",
+                                          "FixedValues": [],
+                                          "DynamicHashes": [
+                                            -890606031
+                                          ]
+                                        }
+                                      },
+                                      "DynamicKey": {
+                                        "Value": "_OnWaveMonster_SkillType"
+                                      }
+                                    }
+                                  ],
+                                  "FailedTaskList": [
+                                    {
+                                      "$type": "RPG.GameCore.RemoveModifier",
+                                      "TargetType": {
+                                        "$type": "RPG.GameCore.TargetAlias",
+                                        "Alias": "ModifierOwnerEntity"
+                                      },
+                                      "ModifierName": {
+                                        "Value": "MCommon_Windfury_ModifySkillPropertyByType_Normal"
+                                      }
+                                    },
+                                    {
+                                      "$type": "RPG.GameCore.RemoveModifier",
+                                      "TargetType": {
+                                        "$type": "RPG.GameCore.TargetAlias",
+                                        "Alias": "ModifierOwnerEntity"
+                                      },
+                                      "ModifierName": {
+                                        "Value": "MCommon_Windfury_ModifySkillPropertyByType_Skill"
+                                      }
+                                    },
+                                    {
+                                      "$type": "RPG.GameCore.SetDynamicValue",
+                                      "Value": {
+                                        "IsDynamic": false,
+                                        "FixedValue": {
+                                          "Value": 0
+                                        }
+                                      },
+                                      "DynamicKey": {
+                                        "Value": "Windfury_Flag"
+                                      }
+                                    },
+                                    {
+                                      "$type": "RPG.GameCore.PredicateTaskList",
+                                      "Predicate": {
+                                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                                        "DynamicKey": {
+                                          "Value": "MDF_WindfuryCount"
+                                        },
+                                        "CompareType": "Less",
+                                        "CompareValue": {
+                                          "IsDynamic": false,
+                                          "FixedValue": {
+                                            "Value": 1
+                                          }
+                                        }
+                                      },
+                                      "SuccessTaskList": [
+                                        {
+                                          "$type": "RPG.GameCore.RemoveSelfModifier"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ],
+                          "CustomTags": [
+                            {
+                              "Value": "ActionTag_Windfury"
+                            }
+                          ]
                         }
-                      ],
-                      "CustomTag": {
-                        "Value": "ActionTag_Windfury"
-                      }
+                      ]
                     }
                   ],
                   "FailedTaskList": [
@@ -10299,17 +11052,24 @@
                               ]
                             }
                           ],
-                          "CustomTag": {
-                            "Value": "ActionTag_Windfury"
-                          }
+                          "CustomTags": [
+                            {
+                              "Value": "ActionTag_Windfury"
+                            }
+                          ]
                         }
                       ]
                     },
                     {
                       "$type": "RPG.GameCore.PredicateTaskList",
                       "Predicate": {
-                        "$type": "RPG.GameCore.ByCurrentSkillType",
-                        "SkillType": "Skill"
+                        "$type": "RPG.GameCore.ByAny",
+                        "PredicateList": [
+                          {
+                            "$type": "RPG.GameCore.ByCurrentSkillType",
+                            "SkillType": "Skill"
+                          }
+                        ]
                       },
                       "SuccessTaskList": [
                         {
@@ -10428,9 +11188,11 @@
                               ]
                             }
                           ],
-                          "CustomTag": {
-                            "Value": "ActionTag_Windfury"
-                          }
+                          "CustomTags": [
+                            {
+                              "Value": "ActionTag_Windfury"
+                            }
+                          ]
                         }
                       ]
                     }
@@ -10467,6 +11229,17 @@
               },
               "SkillTypes": [
                 "Skill"
+              ],
+              "Type": "Cerydra"
+            },
+            {
+              "$type": "RPG.GameCore.SetSkillTextDialogType",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "SkillTypes": [
+                "Assist"
               ],
               "Type": "Cerydra"
             },
@@ -10512,6 +11285,7 @@
               "SuccessTaskList": [
                 {
                   "$type": "RPG.GameCore.SetDynamicValue",
+                  "ContextScope": "ContextModifier",
                   "Value": {
                     "IsDynamic": false,
                     "FixedValue": {
@@ -10521,6 +11295,159 @@
                   "DynamicKey": {
                     "Value": "_IsWindfurySkill"
                   }
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareCharacterID",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "TargetCharacterID": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 1510
+                      }
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicEntityParam",
+                      "DynamicKey": "HimekoNova_00_Assist",
+                      "ReadTargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "ParamTargetType": {
+                        "$type": "RPG.GameCore.TargetSequence",
+                        "Sequence": [
+                          {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          {
+                            "$type": "RPG.GameCore.TargetMapDynamicEntityParam",
+                            "DynamicKey": "HimekoNova_00_AssistTarget_Copy"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "DynamicKey": {
+                          "Value": "_AssistEnergyNeedOnce"
+                        },
+                        "CompareType": "Equal",
+                        "CompareValue": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 1
+                          }
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "MBIADGFPAGK",
+                          "HILNFHCPEAD": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          "BHKHHEJDHGF": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 1
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByAny",
+                        "PredicateList": [
+                          {
+                            "$type": "RPG.GameCore.ByCompareDynamicValue",
+                            "DynamicKey": {
+                              "Value": "_HimekoNova_PassiveMode_Flag02_WindfurySnapshot"
+                            },
+                            "ContextScope": "ContextModifier",
+                            "CompareType": "GreaterEqual",
+                            "CompareValue": {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 1
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.SetDynamicValue",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ModifierOwnerEntity"
+                          },
+                          "ContextScope": "ContextOwner",
+                          "Value": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 1
+                            }
+                          },
+                          "DynamicKey": {
+                            "Value": "HimekoNova_PassiveMode_Flag02"
+                          }
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareDynamicValue",
+                            "DynamicKey": {
+                              "Value": "_HimekoNova_PassiveMode_Flag01_WindfurySnapshot"
+                            },
+                            "ContextScope": "ContextModifier",
+                            "CompareType": "GreaterEqual",
+                            "CompareValue": {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 1
+                              }
+                            }
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.SetDynamicValue",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ModifierOwnerEntity"
+                              },
+                              "ContextScope": "ContextOwner",
+                              "Value": {
+                                "IsDynamic": false,
+                                "FixedValue": {
+                                  "Value": 1
+                                }
+                              },
+                              "DynamicKey": {
+                                "Value": "HimekoNova_PassiveMode_Flag01"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             }
@@ -10569,6 +11496,63 @@
                   "DynamicKey": {
                     "Value": "Windfury_Flag"
                   }
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareCharacterID",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "TargetCharacterID": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 1510
+                      }
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "ContextScope": "ContextModifier",
+                      "Value": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      },
+                      "DynamicKey": {
+                        "Value": "_HimekoNova_PassiveMode_Flag01_WindfurySnapshot"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "ContextScope": "ContextModifier",
+                      "Value": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      },
+                      "DynamicKey": {
+                        "Value": "_HimekoNova_PassiveMode_Flag02_WindfurySnapshot"
+                      }
+                    },
+                    {
+                      "$type": "MBIADGFPAGK",
+                      "HILNFHCPEAD": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "BHKHHEJDHGF": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 1
+                        }
+                      }
+                    }
+                  ]
                 },
                 {
                   "$type": "RPG.GameCore.PredicateTaskList",
@@ -10845,9 +11829,11 @@
                           ]
                         }
                       ],
-                      "CustomTag": {
-                        "Value": "ActionTag_Windfury"
-                      }
+                      "CustomTags": [
+                        {
+                          "Value": "ActionTag_Windfury"
+                        }
+                      ]
                     }
                   ],
                   "FailedTaskList": [
@@ -11004,55 +11990,51 @@
                               ]
                             }
                           ],
-                          "CustomTag": {
-                            "Value": "ActionTag_Windfury"
-                          }
+                          "CustomTags": [
+                            {
+                              "Value": "ActionTag_Windfury"
+                            }
+                          ]
                         }
                       ],
                       "FailedTaskList": [
                         {
-                          "$type": "RPG.GameCore.SwitchCaseByDynamicValue",
-                          "Switch": {
-                            "IsDynamic": true,
-                            "PostfixExpr": {
-                              "OpCodes": "AQAR",
-                              "FixedValues": [],
-                              "DynamicHashes": [
-                                -465148535
-                              ]
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareCharacterID",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetAlias",
+                              "Alias": "ModifierOwnerEntity"
+                            },
+                            "TargetCharacterID": {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 1510
+                              }
                             }
                           },
-                          "CaseTaskList": [
+                          "SuccessTaskList": [
                             {
-                              "Case": {
-                                "IsDynamic": false,
-                                "FixedValue": {
-                                  "Value": 1
-                                }
-                              },
-                              "TaskList": [
-                                {
-                                  "$type": "RPG.GameCore.AddModifier",
-                                  "TargetType": {
-                                    "$type": "RPG.GameCore.TargetAlias",
-                                    "Alias": "ModifierOwnerEntity"
-                                  },
-                                  "ModifierName": {
-                                    "Value": "MCommon_Windfury_ModifySkillPropertyByType_Normal"
-                                  },
-                                  "DynamicValues": {
-                                    "_ChangeValue": {
-                                      "IsDynamic": true,
-                                      "PostfixExpr": {
-                                        "OpCodes": "AQAR",
-                                        "FixedValues": [],
-                                        "DynamicHashes": [
-                                          -684097688
-                                        ]
+                              "$type": "RPG.GameCore.PredicateTaskList",
+                              "Predicate": {
+                                "$type": "RPG.GameCore.ByAnd",
+                                "PredicateList": [
+                                  {
+                                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                                    "DynamicKey": {
+                                      "Value": "_HimekoNova_SkillTag"
+                                    },
+                                    "CompareType": "Equal",
+                                    "CompareValue": {
+                                      "IsDynamic": false,
+                                      "FixedValue": {
+                                        "Value": 3
                                       }
                                     }
                                   }
-                                },
+                                ]
+                              },
+                              "SuccessTaskList": [
                                 {
                                   "$type": "RPG.GameCore.TurnInsertAction",
                                   "TargetType": {
@@ -11060,7 +12042,16 @@
                                     "Alias": "ModifierOwnerEntity"
                                   },
                                   "InsertActionPriority": "Windfury",
+                                  "SkillTag": {
+                                    "EnumIndex": 8,
+                                    "Value": 4
+                                  },
                                   "AutoCast": true,
+                                  "AutoCastTargetType": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "AllEnemy"
+                                  },
+                                  "CanRunAfterFightFinish": true,
                                   "OnInsertAbort": [
                                     {
                                       "$type": "RPG.GameCore.PredicateTaskList",
@@ -11083,9 +12074,13 @@
                                             {
                                               "$type": "RPG.GameCore.SetDynamicValue",
                                               "Value": {
-                                                "IsDynamic": false,
-                                                "FixedValue": {
-                                                  "Value": 1
+                                                "IsDynamic": true,
+                                                "PostfixExpr": {
+                                                  "OpCodes": "AQAR",
+                                                  "FixedValues": [],
+                                                  "DynamicHashes": [
+                                                    -465148535
+                                                  ]
                                                 }
                                               },
                                               "DynamicKey": {
@@ -11094,16 +12089,6 @@
                                             }
                                           ],
                                           "FailedTaskList": [
-                                            {
-                                              "$type": "RPG.GameCore.RemoveModifier",
-                                              "TargetType": {
-                                                "$type": "RPG.GameCore.TargetAlias",
-                                                "Alias": "ModifierOwnerEntity"
-                                              },
-                                              "ModifierName": {
-                                                "Value": "MCommon_Windfury_ModifySkillPropertyByType_Normal"
-                                              }
-                                            },
                                             {
                                               "$type": "RPG.GameCore.SetDynamicValue",
                                               "Value": {
@@ -11114,6 +12099,32 @@
                                               },
                                               "DynamicKey": {
                                                 "Value": "Windfury_Flag"
+                                              }
+                                            },
+                                            {
+                                              "$type": "RPG.GameCore.SetDynamicValue",
+                                              "ContextScope": "ContextModifier",
+                                              "Value": {
+                                                "IsDynamic": false,
+                                                "FixedValue": {
+                                                  "Value": 0
+                                                }
+                                              },
+                                              "DynamicKey": {
+                                                "Value": "_HimekoNova_PassiveMode_Flag01_WindfurySnapshot"
+                                              }
+                                            },
+                                            {
+                                              "$type": "RPG.GameCore.SetDynamicValue",
+                                              "ContextScope": "ContextModifier",
+                                              "Value": {
+                                                "IsDynamic": false,
+                                                "FixedValue": {
+                                                  "Value": 0
+                                                }
+                                              },
+                                              "DynamicKey": {
+                                                "Value": "_HimekoNova_PassiveMode_Flag02_WindfurySnapshot"
                                               }
                                             },
                                             {
@@ -11154,147 +12165,630 @@
                                       ]
                                     }
                                   ],
-                                  "CustomTag": {
-                                    "Value": "ActionTag_Windfury"
+                                  "CustomTags": [
+                                    {
+                                      "Value": "ActionTag_Windfury"
+                                    },
+                                    {
+                                      "Value": "AssistSkill3"
+                                    }
+                                  ],
+                                  "UIConfig": {
+                                    "ActionBarUIConfig": {
+                                      "HeadIconPath": "SpriteOutput/AvatarIconTeam/1510_BE.png"
+                                    }
                                   }
+                                }
+                              ],
+                              "FailedTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.PredicateTaskList",
+                                  "Predicate": {
+                                    "$type": "RPG.GameCore.ByAnd",
+                                    "PredicateList": [
+                                      {
+                                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                                        "DynamicKey": {
+                                          "Value": "_HimekoNova_SkillTag"
+                                        },
+                                        "CompareType": "Equal",
+                                        "CompareValue": {
+                                          "IsDynamic": false,
+                                          "FixedValue": {
+                                            "Value": 2
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "SuccessTaskList": [
+                                    {
+                                      "$type": "RPG.GameCore.TurnInsertAction",
+                                      "TargetType": {
+                                        "$type": "RPG.GameCore.TargetAlias",
+                                        "Alias": "ModifierOwnerEntity"
+                                      },
+                                      "InsertActionPriority": "Windfury",
+                                      "SkillTag": {
+                                        "EnumIndex": 8,
+                                        "Value": 3
+                                      },
+                                      "AutoCast": true,
+                                      "AutoCastTargetType": {
+                                        "$type": "RPG.GameCore.TargetAlias",
+                                        "Alias": "AllEnemy"
+                                      },
+                                      "CanRunAfterFightFinish": true,
+                                      "OnInsertAbort": [
+                                        {
+                                          "$type": "RPG.GameCore.PredicateTaskList",
+                                          "Predicate": {
+                                            "$type": "RPG.GameCore.ByCasterAliveOrLimbo",
+                                            "AliveStateMask": "Mask_AliveOrLimbo"
+                                          },
+                                          "SuccessTaskList": [
+                                            {
+                                              "$type": "RPG.GameCore.PredicateTaskList",
+                                              "Predicate": {
+                                                "$type": "RPG.GameCore.ByHaveEnemyAlive",
+                                                "TargetType": {
+                                                  "$type": "RPG.GameCore.TargetAlias",
+                                                  "Alias": "ModifierOwnerEntity"
+                                                },
+                                                "Inverse": true
+                                              },
+                                              "SuccessTaskList": [
+                                                {
+                                                  "$type": "RPG.GameCore.SetDynamicValue",
+                                                  "Value": {
+                                                    "IsDynamic": true,
+                                                    "PostfixExpr": {
+                                                      "OpCodes": "AQAR",
+                                                      "FixedValues": [],
+                                                      "DynamicHashes": [
+                                                        -465148535
+                                                      ]
+                                                    }
+                                                  },
+                                                  "DynamicKey": {
+                                                    "Value": "_OnWaveMonster_SkillType"
+                                                  }
+                                                }
+                                              ],
+                                              "FailedTaskList": [
+                                                {
+                                                  "$type": "RPG.GameCore.SetDynamicValue",
+                                                  "Value": {
+                                                    "IsDynamic": false,
+                                                    "FixedValue": {
+                                                      "Value": 0
+                                                    }
+                                                  },
+                                                  "DynamicKey": {
+                                                    "Value": "Windfury_Flag"
+                                                  }
+                                                },
+                                                {
+                                                  "$type": "RPG.GameCore.SetDynamicValue",
+                                                  "ContextScope": "ContextModifier",
+                                                  "Value": {
+                                                    "IsDynamic": false,
+                                                    "FixedValue": {
+                                                      "Value": 0
+                                                    }
+                                                  },
+                                                  "DynamicKey": {
+                                                    "Value": "_HimekoNova_PassiveMode_Flag01_WindfurySnapshot"
+                                                  }
+                                                },
+                                                {
+                                                  "$type": "RPG.GameCore.SetDynamicValue",
+                                                  "ContextScope": "ContextModifier",
+                                                  "Value": {
+                                                    "IsDynamic": false,
+                                                    "FixedValue": {
+                                                      "Value": 0
+                                                    }
+                                                  },
+                                                  "DynamicKey": {
+                                                    "Value": "_HimekoNova_PassiveMode_Flag02_WindfurySnapshot"
+                                                  }
+                                                },
+                                                {
+                                                  "$type": "RPG.GameCore.PredicateTaskList",
+                                                  "Predicate": {
+                                                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                                                    "DynamicKey": {
+                                                      "Value": "MDF_WindfuryCount"
+                                                    },
+                                                    "CompareType": "Less",
+                                                    "CompareValue": {
+                                                      "IsDynamic": false,
+                                                      "FixedValue": {
+                                                        "Value": 1
+                                                      }
+                                                    }
+                                                  },
+                                                  "SuccessTaskList": [
+                                                    {
+                                                      "$type": "RPG.GameCore.RemoveSelfModifier"
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "$type": "RPG.GameCore.SetDynamicValue",
+                                                  "Value": {
+                                                    "IsDynamic": false,
+                                                    "FixedValue": {
+                                                      "Value": -1
+                                                    }
+                                                  },
+                                                  "DynamicKey": {
+                                                    "Value": "_OnWaveMonster_SkillType"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ],
+                                      "CustomTags": [
+                                        {
+                                          "Value": "ActionTag_Windfury"
+                                        },
+                                        {
+                                          "Value": "AssistSkill2"
+                                        }
+                                      ],
+                                      "UIConfig": {
+                                        "ActionBarUIConfig": {
+                                          "HeadIconPath": "SpriteOutput/AvatarIconTeam/1510_BE.png"
+                                        }
+                                      }
+                                    }
+                                  ],
+                                  "FailedTaskList": [
+                                    {
+                                      "$type": "RPG.GameCore.TurnInsertAction",
+                                      "TargetType": {
+                                        "$type": "RPG.GameCore.TargetAlias",
+                                        "Alias": "ModifierOwnerEntity"
+                                      },
+                                      "InsertActionPriority": "Windfury",
+                                      "SkillTag": {
+                                        "EnumIndex": 8,
+                                        "Value": 2
+                                      },
+                                      "AutoCast": true,
+                                      "AutoCastTargetType": {
+                                        "$type": "RPG.GameCore.TargetAlias",
+                                        "Alias": "AllEnemy"
+                                      },
+                                      "CanRunAfterFightFinish": true,
+                                      "OnInsertAbort": [
+                                        {
+                                          "$type": "RPG.GameCore.PredicateTaskList",
+                                          "Predicate": {
+                                            "$type": "RPG.GameCore.ByCasterAliveOrLimbo",
+                                            "AliveStateMask": "Mask_AliveOrLimbo"
+                                          },
+                                          "SuccessTaskList": [
+                                            {
+                                              "$type": "RPG.GameCore.PredicateTaskList",
+                                              "Predicate": {
+                                                "$type": "RPG.GameCore.ByHaveEnemyAlive",
+                                                "TargetType": {
+                                                  "$type": "RPG.GameCore.TargetAlias",
+                                                  "Alias": "ModifierOwnerEntity"
+                                                },
+                                                "Inverse": true
+                                              },
+                                              "SuccessTaskList": [
+                                                {
+                                                  "$type": "RPG.GameCore.SetDynamicValue",
+                                                  "Value": {
+                                                    "IsDynamic": true,
+                                                    "PostfixExpr": {
+                                                      "OpCodes": "AQAR",
+                                                      "FixedValues": [],
+                                                      "DynamicHashes": [
+                                                        -465148535
+                                                      ]
+                                                    }
+                                                  },
+                                                  "DynamicKey": {
+                                                    "Value": "_OnWaveMonster_SkillType"
+                                                  }
+                                                }
+                                              ],
+                                              "FailedTaskList": [
+                                                {
+                                                  "$type": "RPG.GameCore.SetDynamicValue",
+                                                  "Value": {
+                                                    "IsDynamic": false,
+                                                    "FixedValue": {
+                                                      "Value": 0
+                                                    }
+                                                  },
+                                                  "DynamicKey": {
+                                                    "Value": "Windfury_Flag"
+                                                  }
+                                                },
+                                                {
+                                                  "$type": "RPG.GameCore.SetDynamicValue",
+                                                  "ContextScope": "ContextModifier",
+                                                  "Value": {
+                                                    "IsDynamic": false,
+                                                    "FixedValue": {
+                                                      "Value": 0
+                                                    }
+                                                  },
+                                                  "DynamicKey": {
+                                                    "Value": "_HimekoNova_PassiveMode_Flag01_WindfurySnapshot"
+                                                  }
+                                                },
+                                                {
+                                                  "$type": "RPG.GameCore.SetDynamicValue",
+                                                  "ContextScope": "ContextModifier",
+                                                  "Value": {
+                                                    "IsDynamic": false,
+                                                    "FixedValue": {
+                                                      "Value": 0
+                                                    }
+                                                  },
+                                                  "DynamicKey": {
+                                                    "Value": "_HimekoNova_PassiveMode_Flag02_WindfurySnapshot"
+                                                  }
+                                                },
+                                                {
+                                                  "$type": "RPG.GameCore.PredicateTaskList",
+                                                  "Predicate": {
+                                                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                                                    "DynamicKey": {
+                                                      "Value": "MDF_WindfuryCount"
+                                                    },
+                                                    "CompareType": "Less",
+                                                    "CompareValue": {
+                                                      "IsDynamic": false,
+                                                      "FixedValue": {
+                                                        "Value": 1
+                                                      }
+                                                    }
+                                                  },
+                                                  "SuccessTaskList": [
+                                                    {
+                                                      "$type": "RPG.GameCore.RemoveSelfModifier"
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "$type": "RPG.GameCore.SetDynamicValue",
+                                                  "Value": {
+                                                    "IsDynamic": false,
+                                                    "FixedValue": {
+                                                      "Value": -1
+                                                    }
+                                                  },
+                                                  "DynamicKey": {
+                                                    "Value": "_OnWaveMonster_SkillType"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ],
+                                      "CustomTags": [
+                                        {
+                                          "Value": "ActionTag_Windfury"
+                                        },
+                                        {
+                                          "Value": "FakeAssistSkill1"
+                                        }
+                                      ],
+                                      "UIConfig": {
+                                        "ActionBarUIConfig": {
+                                          "HeadIconPath": "SpriteOutput/AvatarIconTeam/1510_BE.png"
+                                        }
+                                      }
+                                    }
+                                  ]
                                 }
                               ]
-                            },
+                            }
+                          ],
+                          "FailedTaskList": [
                             {
-                              "Case": {
-                                "IsDynamic": false,
-                                "FixedValue": {
-                                  "Value": 2
+                              "$type": "RPG.GameCore.SwitchCaseByDynamicValue",
+                              "Switch": {
+                                "IsDynamic": true,
+                                "PostfixExpr": {
+                                  "OpCodes": "AQAR",
+                                  "FixedValues": [],
+                                  "DynamicHashes": [
+                                    -465148535
+                                  ]
                                 }
                               },
-                              "TaskList": [
+                              "CaseTaskList": [
                                 {
-                                  "$type": "RPG.GameCore.AddModifier",
-                                  "TargetType": {
-                                    "$type": "RPG.GameCore.TargetAlias",
-                                    "Alias": "ModifierOwnerEntity"
-                                  },
-                                  "ModifierName": {
-                                    "Value": "MCommon_Windfury_ModifySkillPropertyByType_Skill"
-                                  },
-                                  "DynamicValues": {
-                                    "_ChangeValue": {
-                                      "IsDynamic": true,
-                                      "PostfixExpr": {
-                                        "OpCodes": "AQAR",
-                                        "FixedValues": [],
-                                        "DynamicHashes": [
-                                          -684097688
-                                        ]
-                                      }
+                                  "Case": {
+                                    "IsDynamic": false,
+                                    "FixedValue": {
+                                      "Value": 1
                                     }
-                                  }
-                                },
-                                {
-                                  "$type": "RPG.GameCore.TurnInsertAction",
-                                  "TargetType": {
-                                    "$type": "RPG.GameCore.TargetAlias",
-                                    "Alias": "ModifierOwnerEntity"
                                   },
-                                  "InsertActionPriority": "Windfury",
-                                  "SkillType": "ControlSkill02",
-                                  "AutoCast": true,
-                                  "OnInsertAbort": [
+                                  "TaskList": [
                                     {
-                                      "$type": "RPG.GameCore.PredicateTaskList",
-                                      "Predicate": {
-                                        "$type": "RPG.GameCore.ByCasterAliveOrLimbo",
-                                        "AliveStateMask": "Mask_AliveOrLimbo"
+                                      "$type": "RPG.GameCore.AddModifier",
+                                      "TargetType": {
+                                        "$type": "RPG.GameCore.TargetAlias",
+                                        "Alias": "ModifierOwnerEntity"
                                       },
-                                      "SuccessTaskList": [
+                                      "ModifierName": {
+                                        "Value": "MCommon_Windfury_ModifySkillPropertyByType_Normal"
+                                      },
+                                      "DynamicValues": {
+                                        "_ChangeValue": {
+                                          "IsDynamic": true,
+                                          "PostfixExpr": {
+                                            "OpCodes": "AQAR",
+                                            "FixedValues": [],
+                                            "DynamicHashes": [
+                                              -684097688
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "$type": "RPG.GameCore.TurnInsertAction",
+                                      "TargetType": {
+                                        "$type": "RPG.GameCore.TargetAlias",
+                                        "Alias": "ModifierOwnerEntity"
+                                      },
+                                      "InsertActionPriority": "Windfury",
+                                      "AutoCast": true,
+                                      "OnInsertAbort": [
                                         {
                                           "$type": "RPG.GameCore.PredicateTaskList",
                                           "Predicate": {
-                                            "$type": "RPG.GameCore.ByHaveEnemyAlive",
-                                            "TargetType": {
-                                              "$type": "RPG.GameCore.TargetAlias",
-                                              "Alias": "ModifierOwnerEntity"
-                                            },
-                                            "Inverse": true
+                                            "$type": "RPG.GameCore.ByCasterAliveOrLimbo",
+                                            "AliveStateMask": "Mask_AliveOrLimbo"
                                           },
                                           "SuccessTaskList": [
                                             {
-                                              "$type": "RPG.GameCore.SetDynamicValue",
-                                              "Value": {
-                                                "IsDynamic": false,
-                                                "FixedValue": {
-                                                  "Value": 2
-                                                }
-                                              },
-                                              "DynamicKey": {
-                                                "Value": "_OnWaveMonster_SkillType"
-                                              }
-                                            }
-                                          ],
-                                          "FailedTaskList": [
-                                            {
-                                              "$type": "RPG.GameCore.RemoveModifier",
-                                              "TargetType": {
-                                                "$type": "RPG.GameCore.TargetAlias",
-                                                "Alias": "ModifierOwnerEntity"
-                                              },
-                                              "ModifierName": {
-                                                "Value": "MCommon_Windfury_ModifySkillPropertyByType_Skill"
-                                              }
-                                            },
-                                            {
-                                              "$type": "RPG.GameCore.SetDynamicValue",
-                                              "Value": {
-                                                "IsDynamic": false,
-                                                "FixedValue": {
-                                                  "Value": 0
-                                                }
-                                              },
-                                              "DynamicKey": {
-                                                "Value": "Windfury_Flag"
-                                              }
-                                            },
-                                            {
                                               "$type": "RPG.GameCore.PredicateTaskList",
                                               "Predicate": {
-                                                "$type": "RPG.GameCore.ByCompareDynamicValue",
-                                                "DynamicKey": {
-                                                  "Value": "MDF_WindfuryCount"
+                                                "$type": "RPG.GameCore.ByHaveEnemyAlive",
+                                                "TargetType": {
+                                                  "$type": "RPG.GameCore.TargetAlias",
+                                                  "Alias": "ModifierOwnerEntity"
                                                 },
-                                                "CompareType": "Less",
-                                                "CompareValue": {
-                                                  "IsDynamic": false,
-                                                  "FixedValue": {
-                                                    "Value": 1
-                                                  }
-                                                }
+                                                "Inverse": true
                                               },
                                               "SuccessTaskList": [
                                                 {
-                                                  "$type": "RPG.GameCore.RemoveSelfModifier"
+                                                  "$type": "RPG.GameCore.SetDynamicValue",
+                                                  "Value": {
+                                                    "IsDynamic": false,
+                                                    "FixedValue": {
+                                                      "Value": 1
+                                                    }
+                                                  },
+                                                  "DynamicKey": {
+                                                    "Value": "_OnWaveMonster_SkillType"
+                                                  }
+                                                }
+                                              ],
+                                              "FailedTaskList": [
+                                                {
+                                                  "$type": "RPG.GameCore.RemoveModifier",
+                                                  "TargetType": {
+                                                    "$type": "RPG.GameCore.TargetAlias",
+                                                    "Alias": "ModifierOwnerEntity"
+                                                  },
+                                                  "ModifierName": {
+                                                    "Value": "MCommon_Windfury_ModifySkillPropertyByType_Normal"
+                                                  }
+                                                },
+                                                {
+                                                  "$type": "RPG.GameCore.SetDynamicValue",
+                                                  "Value": {
+                                                    "IsDynamic": false,
+                                                    "FixedValue": {
+                                                      "Value": 0
+                                                    }
+                                                  },
+                                                  "DynamicKey": {
+                                                    "Value": "Windfury_Flag"
+                                                  }
+                                                },
+                                                {
+                                                  "$type": "RPG.GameCore.PredicateTaskList",
+                                                  "Predicate": {
+                                                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                                                    "DynamicKey": {
+                                                      "Value": "MDF_WindfuryCount"
+                                                    },
+                                                    "CompareType": "Less",
+                                                    "CompareValue": {
+                                                      "IsDynamic": false,
+                                                      "FixedValue": {
+                                                        "Value": 1
+                                                      }
+                                                    }
+                                                  },
+                                                  "SuccessTaskList": [
+                                                    {
+                                                      "$type": "RPG.GameCore.RemoveSelfModifier"
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "$type": "RPG.GameCore.SetDynamicValue",
+                                                  "Value": {
+                                                    "IsDynamic": false,
+                                                    "FixedValue": {
+                                                      "Value": -1
+                                                    }
+                                                  },
+                                                  "DynamicKey": {
+                                                    "Value": "_OnWaveMonster_SkillType"
+                                                  }
                                                 }
                                               ]
-                                            },
-                                            {
-                                              "$type": "RPG.GameCore.SetDynamicValue",
-                                              "Value": {
-                                                "IsDynamic": false,
-                                                "FixedValue": {
-                                                  "Value": -1
-                                                }
-                                              },
-                                              "DynamicKey": {
-                                                "Value": "_OnWaveMonster_SkillType"
-                                              }
                                             }
                                           ]
                                         }
+                                      ],
+                                      "CustomTags": [
+                                        {
+                                          "Value": "ActionTag_Windfury"
+                                        }
                                       ]
                                     }
-                                  ],
-                                  "CustomTag": {
-                                    "Value": "ActionTag_Windfury"
-                                  }
+                                  ]
+                                },
+                                {
+                                  "Case": {
+                                    "IsDynamic": false,
+                                    "FixedValue": {
+                                      "Value": 2
+                                    }
+                                  },
+                                  "TaskList": [
+                                    {
+                                      "$type": "RPG.GameCore.AddModifier",
+                                      "TargetType": {
+                                        "$type": "RPG.GameCore.TargetAlias",
+                                        "Alias": "ModifierOwnerEntity"
+                                      },
+                                      "ModifierName": {
+                                        "Value": "MCommon_Windfury_ModifySkillPropertyByType_Skill"
+                                      },
+                                      "DynamicValues": {
+                                        "_ChangeValue": {
+                                          "IsDynamic": true,
+                                          "PostfixExpr": {
+                                            "OpCodes": "AQAR",
+                                            "FixedValues": [],
+                                            "DynamicHashes": [
+                                              -684097688
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "$type": "RPG.GameCore.TurnInsertAction",
+                                      "TargetType": {
+                                        "$type": "RPG.GameCore.TargetAlias",
+                                        "Alias": "ModifierOwnerEntity"
+                                      },
+                                      "InsertActionPriority": "Windfury",
+                                      "SkillType": "ControlSkill02",
+                                      "AutoCast": true,
+                                      "OnInsertAbort": [
+                                        {
+                                          "$type": "RPG.GameCore.PredicateTaskList",
+                                          "Predicate": {
+                                            "$type": "RPG.GameCore.ByCasterAliveOrLimbo",
+                                            "AliveStateMask": "Mask_AliveOrLimbo"
+                                          },
+                                          "SuccessTaskList": [
+                                            {
+                                              "$type": "RPG.GameCore.PredicateTaskList",
+                                              "Predicate": {
+                                                "$type": "RPG.GameCore.ByHaveEnemyAlive",
+                                                "TargetType": {
+                                                  "$type": "RPG.GameCore.TargetAlias",
+                                                  "Alias": "ModifierOwnerEntity"
+                                                },
+                                                "Inverse": true
+                                              },
+                                              "SuccessTaskList": [
+                                                {
+                                                  "$type": "RPG.GameCore.SetDynamicValue",
+                                                  "Value": {
+                                                    "IsDynamic": false,
+                                                    "FixedValue": {
+                                                      "Value": 2
+                                                    }
+                                                  },
+                                                  "DynamicKey": {
+                                                    "Value": "_OnWaveMonster_SkillType"
+                                                  }
+                                                }
+                                              ],
+                                              "FailedTaskList": [
+                                                {
+                                                  "$type": "RPG.GameCore.RemoveModifier",
+                                                  "TargetType": {
+                                                    "$type": "RPG.GameCore.TargetAlias",
+                                                    "Alias": "ModifierOwnerEntity"
+                                                  },
+                                                  "ModifierName": {
+                                                    "Value": "MCommon_Windfury_ModifySkillPropertyByType_Skill"
+                                                  }
+                                                },
+                                                {
+                                                  "$type": "RPG.GameCore.SetDynamicValue",
+                                                  "Value": {
+                                                    "IsDynamic": false,
+                                                    "FixedValue": {
+                                                      "Value": 0
+                                                    }
+                                                  },
+                                                  "DynamicKey": {
+                                                    "Value": "Windfury_Flag"
+                                                  }
+                                                },
+                                                {
+                                                  "$type": "RPG.GameCore.PredicateTaskList",
+                                                  "Predicate": {
+                                                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                                                    "DynamicKey": {
+                                                      "Value": "MDF_WindfuryCount"
+                                                    },
+                                                    "CompareType": "Less",
+                                                    "CompareValue": {
+                                                      "IsDynamic": false,
+                                                      "FixedValue": {
+                                                        "Value": 1
+                                                      }
+                                                    }
+                                                  },
+                                                  "SuccessTaskList": [
+                                                    {
+                                                      "$type": "RPG.GameCore.RemoveSelfModifier"
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "$type": "RPG.GameCore.SetDynamicValue",
+                                                  "Value": {
+                                                    "IsDynamic": false,
+                                                    "FixedValue": {
+                                                      "Value": -1
+                                                    }
+                                                  },
+                                                  "DynamicKey": {
+                                                    "Value": "_OnWaveMonster_SkillType"
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ],
+                                      "CustomTags": [
+                                        {
+                                          "Value": "ActionTag_Windfury"
+                                        }
+                                      ]
+                                    }
+                                  ]
                                 }
                               ]
                             }
@@ -11334,8 +12828,13 @@
                         "$type": "RPG.GameCore.ByAnd",
                         "PredicateList": [
                           {
-                            "$type": "RPG.GameCore.ByCurrentSkillType",
-                            "SkillType": "Skill"
+                            "$type": "RPG.GameCore.ByAny",
+                            "PredicateList": [
+                              {
+                                "$type": "RPG.GameCore.ByCurrentSkillType",
+                                "SkillType": "Skill"
+                              }
+                            ]
                           },
                           {
                             "$type": "RPG.GameCore.ByCompareDynamicValue",
@@ -11493,6 +12992,30 @@
               "Type": "None",
               "Index": 0
             }
+          },
+          "35033468": {
+            "ReadInfo": {
+              "Type": "None",
+              "Index": 0
+            }
+          },
+          "1175865613": {
+            "ReadInfo": {
+              "Type": "None",
+              "Index": 0
+            }
+          },
+          "-2112359816": {
+            "ReadInfo": {
+              "Type": "None",
+              "Index": 0
+            }
+          },
+          "762095951": {
+            "ReadInfo": {
+              "Type": "None",
+              "Index": 0
+            }
           }
         }
       }
@@ -11589,6 +13112,46 @@
     },
     "MCommon_Windfury_SkillNoNeed": {
       "_CallbackList": [
+        {
+          "Event": "OnDestroy",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareDynamicValue",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ModifierOwnerEntity"
+                },
+                "DynamicKey": {
+                  "Value": "_AssistEnergyNeedOnce"
+                },
+                "CompareType": "Equal",
+                "CompareValue": {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "MBIADGFPAGK",
+                  "HILNFHCPEAD": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "BHKHHEJDHGF": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
         {
           "Event": "OnBeforeSkillCost",
           "CallbackConfig": [
@@ -11744,6 +13307,142 @@
                   ]
                 }
               ]
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByCompareCharacterID",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "TargetCharacterID": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 1510
+                      }
+                    }
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByTargetListIntersects",
+                    "FirstTargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerSkillTargetEntityList"
+                    },
+                    "SecondTargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerAllEnemy"
+                    }
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                    "DynamicKey": {
+                      "Value": "_ReplaySkill"
+                    },
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 1
+                      }
+                    }
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCurrentSkillType",
+                    "SkillType": "Skill"
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareTarget",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "HimekoNova_00_AssistTarget"
+                    },
+                    "CompareType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicEntityParam",
+                      "DynamicKey": "HimekoNova_00_AssistTarget_Copy",
+                      "ReadTargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "ParamTargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "HimekoNova_00_AssistTarget"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetModifierDynamicValue",
+                      "ModifierName": {
+                        "Value": "MCommon_Windfury"
+                      },
+                      "DynamicKey": {
+                        "Value": "_AssistEnergyNeedOnce"
+                      },
+                      "NewValue": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      }
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicEntityParam",
+                      "DynamicKey": "HimekoNova_00_AssistTarget_Copy",
+                      "ReadTargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "ParamTargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "HimekoNova_00_AssistTarget"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetModifierDynamicValue",
+                      "ModifierName": {
+                        "Value": "MCommon_Windfury"
+                      },
+                      "DynamicKey": {
+                        "Value": "_AssistEnergyNeedOnce"
+                      },
+                      "NewValue": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 1
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "$type": "MBIADGFPAGK",
+                  "HILNFHCPEAD": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "BHKHHEJDHGF": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  }
+                }
+              ]
             }
           ]
         }
@@ -11764,6 +13463,12 @@
             }
           },
           "-684097688": {
+            "ReadInfo": {
+              "Type": "None",
+              "Index": 0
+            }
+          },
+          "762095951": {
             "ReadInfo": {
               "Type": "None",
               "Index": 0

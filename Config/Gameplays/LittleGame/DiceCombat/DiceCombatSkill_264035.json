@@ -1,0 +1,267 @@
+{
+  "RootAbility": {
+    "OnAdd": [
+      {
+        "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+        "ModifierID": 26403501,
+        "LifeTime": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -1
+          }
+        }
+      }
+    ]
+  },
+  "InsertAbilitys": [],
+  "Modifiers": [
+    {
+      "ModifierID": 26403501,
+      "Flags": [],
+      "OnAdd": [],
+      "OnAttackerConfirm": [
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_EntityData",
+              "Name": "AtkLevel_264035",
+              "DataType": "AtkDiceCount"
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatPredicateConfig_HasDiceSequence",
+              "MinLength": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    410146269
+                  ]
+                }
+              },
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+                  "ModifierID": 26403502
+                }
+              ],
+              "OnFail": [
+                {
+                  "$type": "RPG.GameCore.DiceCombatPredicateConfig_DiceAllSame",
+                  "AnyValue": true,
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+                      "ModifierID": 26403502
+                    },
+                    {
+                      "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillHint"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "OnDefenderConfirm": [],
+      "OnAfterCombat": [],
+      "OnAfterRoll": []
+    },
+    {
+      "ModifierID": 26403502,
+      "Flags": [],
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_StackAdditiveProperty",
+          "Value": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                -1467239079
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "PreviewOnRollFinish": {
+    "OnStart": [
+      {
+        "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+        "OnSuccess": [
+          {
+            "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_EntityData",
+            "Name": "AtkLevel_264035",
+            "DataType": "AtkDiceCount"
+          },
+          {
+            "$type": "RPG.GameCore.DiceCombatTaskConfig_MarkRecommendDice",
+            "Selector": {
+              "$type": "RPG.GameCore.DiceCombatDiceSelectorConfig_Union",
+              "selector1": {
+                "$type": "RPG.GameCore.DiceCombatDiceSelectorConfig_SamePointCount",
+                "Count": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      410146269
+                    ]
+                  }
+                },
+                "Compare": "GreaterEqual"
+              },
+              "selector2": {
+                "$type": "RPG.GameCore.DiceCombatDiceSelectorConfig_Seq",
+                "MinLength": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      410146269
+                    ]
+                  }
+                }
+              }
+            },
+            "IconPath": "SpriteOutput/Quest/DiceCombat/BuffIcon/36x36/IconDiceCombat_BuffIcon05.png"
+          }
+        ]
+      }
+    ]
+  },
+  "PreviewOnSelectDice": {
+    "OnStart": [
+      {
+        "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+        "OnSuccess": [
+          {
+            "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_EntityData",
+            "Name": "AtkLevel_264035",
+            "DataType": "AtkDiceCount"
+          },
+          {
+            "$type": "RPG.GameCore.DiceCombatTaskConfig_MarkSkillDice",
+            "Selector": {
+              "$type": "RPG.GameCore.DiceCombatDiceSelectorConfig_Seq",
+              "MinLength": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    410146269
+                  ]
+                }
+              }
+            },
+            "OnSuccess": [
+              {
+                "$type": "RPG.GameCore.DiceCombatTaskConfig_ModifyPreviewValue",
+                "Value": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "OpCodes": "AQAR",
+                    "FixedValues": [],
+                    "DynamicHashes": [
+                      -1467239079
+                    ]
+                  }
+                },
+                "Operation": "Add"
+              }
+            ],
+            "OnFail": [
+              {
+                "$type": "RPG.GameCore.DiceCombatTaskConfig_MarkSkillDice",
+                "Selector": {
+                  "$type": "RPG.GameCore.DiceCombatDiceSelectorConfig_SamePointCount",
+                  "Count": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        410146269
+                      ]
+                    }
+                  },
+                  "Compare": "GreaterEqual"
+                },
+                "OnSuccess": [
+                  {
+                    "$type": "RPG.GameCore.DiceCombatTaskConfig_ModifyPreviewValue",
+                    "Value": {
+                      "IsDynamic": true,
+                      "PostfixExpr": {
+                        "OpCodes": "AQAR",
+                        "FixedValues": [],
+                        "DynamicHashes": [
+                          -1467239079
+                        ]
+                      }
+                    },
+                    "Operation": "Add"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "AIEffect": {
+    "Effects": [
+      {
+        "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+        "OnSuccess": [
+          {
+            "$type": "RPG.GameCore.DiceCombatTaskConfig_AIEffectScore",
+            "EffectEvaluator": {
+              "$type": "RPG.GameCore.DiceCombatAIEffectEvaluatorConfig_DiceAllSame"
+            },
+            "EffectScoreWeight": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  -1467239082
+                ]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+        "OnSuccess": [
+          {
+            "$type": "RPG.GameCore.DiceCombatTaskConfig_AIEffectScore",
+            "EffectEvaluator": {
+              "$type": "RPG.GameCore.DiceCombatAIEffectEvaluatorConfig_DiceAllSequence"
+            },
+            "EffectScoreWeight": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  -1467239082
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

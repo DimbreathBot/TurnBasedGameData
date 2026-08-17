@@ -1,0 +1,926 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.GenericSwitchCase",
+          "SwitchRef": {
+            "$type": "RPG.GameCore.SwitchRefPropState"
+          },
+          "Cases": [
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.PropSwitchMaterial",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "MatID": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "Case": "Open",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.PropSwitchMaterial",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "MatID": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerOpen"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareEntityAuthoritySide"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvClientChangePropState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "ToState": "Open"
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PropReqInteract",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "InteractID": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 1010
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Clt_TriggerClose"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareEntityAuthoritySide"
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.AdvClientChangePropState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "FromState": "Open"
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PropReqInteract",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "InteractID": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 1100
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitEntityServerEvent"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.LoopWaitEntityServerEvent"
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Self_OnUseFinish"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                "Name": "UseTransfer",
+                "Value": {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.GenericSwitchCase",
+                  "SwitchRef": {
+                    "$type": "RPG.GameCore.SwitchRefGraphDynamicFloat",
+                    "Name": "LoadingViewStyle"
+                  },
+                  "Cases": [
+                    {
+                      "$type": "RPG.GameCore.NumberCaseContainer",
+                      "Case": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      },
+                      "OnSuccess": [
+                        {
+                          "$type": "RPG.GameCore.TeleportToFiveDimGame",
+                          "Target": {
+                            "Custom": true,
+                            "Key": "TargetFDLevel"
+                          },
+                          "DisableCameraBlend": true,
+                          "NeedWaitFinish": true,
+                          "EnterType": "PipeEntry",
+                          "WaitFullStreaming": true
+                        },
+                        {
+                          "$type": "RPG.GameCore.TriggerSound",
+                          "SoundName": {
+                            "Value": "Ev_sfx_planarcadia_FDPipeEntry_3D_In"
+                          },
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.TriggerEffectList",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+                          },
+                          "EffectList": [
+                            {
+                              "EffectPath": "Effects/Eff_Prefab/Eff_Common/Eff_PlayerChannge.prefab"
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "RPG.Client.AdventureGameplayLock",
+                          "LockSource": "FullScreenLock"
+                        },
+                        {
+                          "$type": "RPG.GameCore.EndPropInteract"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.NumberCaseContainer",
+                      "Case": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 1
+                        }
+                      },
+                      "OnSuccess": [
+                        {
+                          "$type": "RPG.GameCore.TeleportToFiveDimGame",
+                          "Target": {
+                            "Custom": true,
+                            "Key": "TargetFDLevel"
+                          },
+                          "DisableCameraBlend": true,
+                          "NeedWaitFinish": true,
+                          "EnterType": "PipeEntry",
+                          "WaitFullStreaming": true
+                        },
+                        {
+                          "$type": "RPG.GameCore.TriggerSound",
+                          "SoundName": {
+                            "Value": "Ev_sfx_planarcadia_FDPipeEntry_3D_In"
+                          },
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.TriggerEffectList",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+                          },
+                          "EffectList": [
+                            {
+                              "EffectPath": "Effects/Eff_Prefab/Eff_Common/Eff_PlayerChannge.prefab"
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "RPG.Client.AdventureGameplayLock",
+                          "LockSource": "FullScreenLock"
+                        },
+                        {
+                          "$type": "RPG.GameCore.EndPropInteract"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.NumberCaseContainer",
+                      "Case": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 2
+                        }
+                      },
+                      "OnSuccess": [
+                        {
+                          "$type": "RPG.GameCore.TeleportToFiveDimGame",
+                          "Target": {
+                            "Custom": true,
+                            "Key": "TargetFDLevel"
+                          },
+                          "DisableCameraBlend": true,
+                          "NeedWaitFinish": true,
+                          "EnterType": "PipeEntry",
+                          "WaitFullStreaming": true
+                        },
+                        {
+                          "$type": "RPG.GameCore.TriggerSound",
+                          "SoundName": {
+                            "Value": "Ev_sfx_planarcadia_FDPipeEntry_3D_In"
+                          },
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.TriggerEffectList",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+                          },
+                          "EffectList": [
+                            {
+                              "EffectPath": "Effects/Eff_Prefab/Eff_Common/Eff_PlayerChannge.prefab"
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "RPG.Client.AdventureGameplayLock",
+                          "LockSource": "FullScreenLock"
+                        },
+                        {
+                          "$type": "RPG.GameCore.EndPropInteract"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.GenericSwitchCase",
+                  "SwitchRef": {
+                    "$type": "RPG.GameCore.SwitchRefGraphDynamicFloat",
+                    "Name": "LoadingViewStyle"
+                  },
+                  "Cases": [
+                    {
+                      "$type": "RPG.GameCore.NumberCaseContainer",
+                      "Case": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      },
+                      "OnSuccess": [
+                        {
+                          "$type": "RPG.GameCore.TeleportToFiveDimGame",
+                          "Target": {
+                            "Custom": true,
+                            "Key": "TargetFDLevel"
+                          },
+                          "NeedWaitFinish": true,
+                          "EnterType": "PipeEntry"
+                        },
+                        {
+                          "$type": "RPG.GameCore.TriggerSound",
+                          "SoundName": {
+                            "Value": "Ev_sfx_planarcadia_FDPipeEntry_3D_In"
+                          },
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.TriggerEffectList",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+                          },
+                          "EffectList": [
+                            {
+                              "EffectPath": "Effects/Eff_Prefab/Eff_Common/Eff_PlayerChannge.prefab"
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "RPG.Client.AdventureGameplayLock",
+                          "LockSource": "FullScreenLock"
+                        },
+                        {
+                          "$type": "RPG.GameCore.EndPropInteract"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.NumberCaseContainer",
+                      "Case": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 1
+                        }
+                      },
+                      "OnSuccess": [
+                        {
+                          "$type": "RPG.GameCore.TeleportToFiveDimGame",
+                          "Target": {
+                            "Custom": true,
+                            "Key": "TargetFDLevel"
+                          },
+                          "NeedWaitFinish": true,
+                          "EnterType": "PipeEntry"
+                        },
+                        {
+                          "$type": "RPG.GameCore.TriggerSound",
+                          "SoundName": {
+                            "Value": "Ev_sfx_planarcadia_FDPipeEntry_3D_In"
+                          },
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.TriggerEffectList",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+                          },
+                          "EffectList": [
+                            {
+                              "EffectPath": "Effects/Eff_Prefab/Eff_Common/Eff_PlayerChannge.prefab"
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "RPG.Client.AdventureGameplayLock",
+                          "LockSource": "FullScreenLock"
+                        },
+                        {
+                          "$type": "RPG.GameCore.EndPropInteract"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.NumberCaseContainer",
+                      "Case": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 2
+                        }
+                      },
+                      "OnSuccess": [
+                        {
+                          "$type": "RPG.GameCore.TeleportToFiveDimGame",
+                          "Target": {
+                            "Custom": true,
+                            "Key": "TargetFDLevel"
+                          },
+                          "NeedWaitFinish": true,
+                          "EnterType": "PipeEntry"
+                        },
+                        {
+                          "$type": "RPG.GameCore.TriggerSound",
+                          "SoundName": {
+                            "Value": "Ev_sfx_planarcadia_FDPipeEntry_3D_In"
+                          },
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.TriggerEffectList",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+                          },
+                          "EffectList": [
+                            {
+                              "EffectPath": "Effects/Eff_Prefab/Eff_Common/Eff_PlayerChannge.prefab"
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "RPG.Client.AdventureGameplayLock",
+                          "LockSource": "FullScreenLock"
+                        },
+                        {
+                          "$type": "RPG.GameCore.EndPropInteract"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Self_TriggerUse"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_OnUseStart"
+              },
+              "InstanceID": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.StartPropInteractMode",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "Mode": "UsePose02"
+            },
+            {
+              "$type": "RPG.Client.AdventureGameplayLock",
+              "IsLock": true,
+              "LockSource": "FullScreenLock"
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.2
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Self_OnUseFinish"
+              },
+              "InstanceID": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_OnUseFinish"
+              },
+              "InstanceID": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            }
+          ],
+          "InstanceID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvOnButtonPressed",
+          "ButtonName": "Interact",
+          "OnPressedCallback": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Self_TriggerUse"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "Self_UpdatePipeState"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefPropState"
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "Open",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.GenericSwitchCase",
+                      "SwitchRef": {
+                        "$type": "RPG.GameCore.SwitchRefGraphDynamicFloat",
+                        "Name": "Loc_IsOpen"
+                      },
+                      "Cases": [
+                        {
+                          "$type": "RPG.GameCore.NumberCaseContainer",
+                          "Case": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 0
+                            }
+                          },
+                          "OnSuccess": [
+                            {
+                              "$type": "RPG.GameCore.PropSwitchMaterial",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                              },
+                              "MatID": {
+                                "IsDynamic": false,
+                                "FixedValue": {
+                                  "Value": 1
+                                }
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.TriggerSound",
+                              "SoundName": {
+                                "Value": "Ev_sfx_planarcadia_screenpipe"
+                              },
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "RPG.GameCore.NumberCaseContainer",
+                          "Case": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 1
+                            }
+                          },
+                          "OnSuccess": [
+                            {
+                              "$type": "RPG.GameCore.PropSwitchMaterial",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                              },
+                              "MatID": {
+                                "IsDynamic": false,
+                                "FixedValue": {
+                                  "Value": 2
+                                }
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.TriggerSound",
+                              "SoundName": {
+                                "Value": "Ev_sfx_planarcadia_screenpipe"
+                              },
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.PropSwitchMaterial",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                      },
+                      "MatID": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitPropStateChangeV2",
+          "FromAnyState": true,
+          "ToAnyState": true,
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.GenericSwitchCase",
+              "SwitchRef": {
+                "$type": "RPG.GameCore.SwitchRefPropState"
+              },
+              "Cases": [
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.AdvEnableButtons",
+                      "TriggerName": "InteractTrigger",
+                      "ButtonsByName": [
+                        "Interact"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.PropStateCaseContainer",
+                  "Case": "Open",
+                  "OnSuccess": []
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Self_UpdatePipeState"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGraphDynamicValueChange",
+          "Name": "Loc_IsOpen",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Self_UpdatePipeState"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupButtonListTrigger",
+          "TriggerName": "InteractTrigger",
+          "ButtonsByName": [
+            "Interact"
+          ],
+          "ButtonConfigs": [],
+          "ConsiderAngleLimit": true
+        },
+        {
+          "$type": "RPG.GameCore.AdvSetupCustomTaskTrigger",
+          "TriggerName": "CloseToTrigger",
+          "OnEnter": [
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+              "Name": "Loc_IsOpen",
+              "TargetIDs": [],
+              "Value": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.AdvSetupCustomTaskTrigger",
+          "TriggerName": "LeaveTrigger",
+          "OnExit": [
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+              "Name": "Loc_IsOpen",
+              "TargetIDs": [],
+              "Value": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.AdvSetupCustomTaskTrigger",
+          "TriggerName": "PreloadTrigger",
+          "OnEnter": [
+            {
+              "$type": "RPG.GameCore.ForceFiveDimLoadModel",
+              "Target": {
+                "Custom": true,
+                "Key": "TargetFDLevel"
+              },
+              "Enable": true
+            }
+          ],
+          "OnExit": [
+            {
+              "$type": "RPG.GameCore.ForceFiveDimLoadModel",
+              "Target": {
+                "Custom": true,
+                "Key": "TargetFDLevel"
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.GenericSwitchCase",
+          "SwitchRef": {
+            "$type": "RPG.GameCore.SwitchRefPropState"
+          },
+          "Cases": [
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.AdvEnableButtons",
+                  "TriggerName": "InteractTrigger",
+                  "ButtonsByName": [
+                    "Interact"
+                  ]
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.PropStateCaseContainer",
+              "Case": "Open",
+              "OnSuccess": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFiveDimPlayerEnterOrExit",
+          "SpecifyContainer": true,
+          "ContainerID": {
+            "Custom": true,
+            "Key": "ExitListenLevelRef"
+          },
+          "OnExit": [
+            {
+              "$type": "RPG.GameCore.TriggerSound",
+              "SoundName": {
+                "Value": "Ev_sfx_planarcadia_FDPipeEntry_3D_Out"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Key": "Loc_IsOpen"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "TargetFDLevel"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "ExitListenLevelRef"
+      },
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Key": "UseTransfer"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "LoadingViewStyle"
+      }
+    ]
+  },
+  "Type": "Entity",
+  "EntityEventList": [
+    {
+      "Name": "Clt_TriggerOpen"
+    },
+    {
+      "Name": "Clt_TriggerClose"
+    },
+    {
+      "Name": "Srv_TriggerOpen",
+      "IsClient": false
+    },
+    {
+      "Name": "Srv_TriggerClose",
+      "IsClient": false
+    },
+    {
+      "Name": "Self_UpdatePipeState",
+      "IsPrivate": true
+    },
+    {
+      "Name": "Self_TriggerUse",
+      "IsPrivate": true
+    },
+    {
+      "Name": "Clt_OnUseStart"
+    },
+    {
+      "Name": "Self_OnUseFinish",
+      "IsPrivate": true
+    },
+    {
+      "Name": "Clt_OnUseFinish"
+    }
+  ]
+}

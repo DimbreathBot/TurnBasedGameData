@@ -1,0 +1,204 @@
+{
+  "OnInitSequece": [
+    {
+      "TaskList": []
+    }
+  ],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupButtonListTrigger",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "TriggerName": "InteractTrigger",
+          "ButtonsByName": [
+            "Interact"
+          ],
+          "ButtonConfigs": [],
+          "ConsiderAngleLimit": true,
+          "ConsiderOwnerForwardAngleLimit": true
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.PropPuzzleEventListener",
+          "FinishCallback": [],
+          "FailCallback": [
+            {
+              "$type": "RPG.GameCore.StopCurrentLittleGame"
+            },
+            {
+              "$type": "RPG.GameCore.UnloadLittleGameArea",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitStreamingJobFinished"
+            },
+            {
+              "$type": "RPG.Client.AdventureGameplayLock",
+              "LockSource": "MascotCapture"
+            },
+            {
+              "$type": "RPG.GameCore.SetHudTemplate",
+              "TemplateID": 1007
+            },
+            {
+              "$type": "RPG.GameCore.HideSummonUnit",
+              "SummonUnit": {
+                "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                "UniqueName": "SUMMON_UNIT_LocalplayerPet"
+              },
+              "Hide": false
+            },
+            {
+              "$type": "RPG.GameCore.EnablePlayerPlayIdleShow"
+            },
+            {
+              "$type": "RPG.GameCore.UnLockPlayerControl"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "Clt_TriggerOpen"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvOnButtonPressed",
+          "ButtonName": "Interact",
+          "OnPressedCallback": [
+            {
+              "$type": "RPG.GameCore.StartPropInteractMode",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              },
+              "Mode": "UsePose02"
+            },
+            {
+              "$type": "RPG.GameCore.HideSummonUnit",
+              "SummonUnit": {
+                "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                "UniqueName": "SUMMON_UNIT_LocalplayerPet"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.EnablePlayerPlayIdleShow",
+              "Enable": false
+            },
+            {
+              "$type": "RPG.Client.AdventureGameplayLock",
+              "IsLock": true,
+              "LockSource": "MascotCapture"
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.2
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                "Name": "PuzzleLevelPath",
+                "Value": {
+                  "Value": "Null"
+                },
+                "Inverse": true
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "BJEKBEMLPCH",
+                  "NNGEIAMONGD": {
+                    "$type": "RPG.GameCore.TargetFetchOwnerEntity"
+                  },
+                  "JPEOGNFHEGO": {
+                    "Custom": true,
+                    "Key": "4DLittleGameID"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.SetHudTemplate",
+                  "TemplateID": 1007,
+                  "EnableTemplate": true
+                },
+                {
+                  "$type": "RPG.GameCore.LoadLittleGameArea",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "Area": {
+                    "Value": "TimeRelayFlamePuzzleBG"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.WaitStreamingJobFinished"
+                },
+                {
+                  "$type": "RPG.GameCore.EndPropInteract"
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.WaitSecond",
+                  "WaitTime": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0.5
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.EndPropInteract"
+                },
+                {
+                  "$type": "RPG.GameCore.HideSummonUnit",
+                  "SummonUnit": {
+                    "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                    "UniqueName": "SUMMON_UNIT_LocalplayerPet"
+                  },
+                  "Hide": false
+                },
+                {
+                  "$type": "RPG.GameCore.EnablePlayerPlayIdleShow"
+                },
+                {
+                  "$type": "RPG.Client.AdventureGameplayLock",
+                  "LockSource": "MascotCapture"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "PuzzleLevelPath"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "4DLittleGameID"
+      }
+    ]
+  },
+  "Type": "EntityInstance",
+  "EntityEventList": []
+}

@@ -1,0 +1,524 @@
+{
+  "RootAbility": {
+    "OnAdd": [
+      {
+        "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+        "ModifierID": 26403401,
+        "LifeTime": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -1
+          }
+        }
+      }
+    ]
+  },
+  "InsertAbilitys": [
+    {
+      "Name": "EvolUp_264034",
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillHint"
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillCutin",
+          "CutinID": 33
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 1
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerEffect",
+          "SubType": "CustomID",
+          "EffectID": 3
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+          "ModifierID": 26403402,
+          "LifeTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": -1
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 1
+        }
+      ]
+    },
+    {
+      "Name": "EvolDown_264034",
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillCutin",
+          "CutinID": 34
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 1
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerEffect",
+          "SubType": "CustomID",
+          "EffectID": 2
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+          "ModifierID": 26403402,
+          "LifeTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": -1
+            }
+          },
+          "Stack": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": -1
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 1
+        }
+      ]
+    }
+  ],
+  "Modifiers": [
+    {
+      "ModifierID": 26403401,
+      "Flags": [],
+      "OnAdd": [],
+      "OnStack": [],
+      "OnAttackerConfirm": [
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_EntityData",
+              "Name": "AtkLevel_264034",
+              "DataType": "AtkDiceCount"
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatPredicateConfig_HasDiceSequence",
+              "MinLength": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    410146268
+                  ]
+                }
+              },
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_ModifierStackCount",
+                  "ModifierID": 26403402,
+                  "Name": "EvolStack_264034"
+                },
+                {
+                  "$type": "RPG.GameCore.DiceCombatPredicateConfig_CustomValueCompare",
+                  "Left": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -1968697188
+                      ]
+                    }
+                  },
+                  "Right": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 3
+                    }
+                  },
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.DiceCombatTaskConfig_InsertAbility",
+                      "AbilityName": "EvolUp_264034"
+                    }
+                  ]
+                }
+              ],
+              "OnFail": [
+                {
+                  "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_ModifierStackCount",
+                  "ModifierID": 26403402,
+                  "Name": "EvolStack_264034"
+                },
+                {
+                  "$type": "RPG.GameCore.DiceCombatPredicateConfig_CustomValueCompare",
+                  "Left": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -1968697188
+                      ]
+                    }
+                  },
+                  "Op": "Greater",
+                  "Right": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.DiceCombatTaskConfig_InsertAbility",
+                      "AbilityName": "EvolDown_264034"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "OnDefenderConfirm": [
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsDefender",
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_EntityData",
+              "Name": "DefLevel_264034",
+              "DataType": "DefDiceCount"
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatPredicateConfig_HasDiceSequence",
+              "MinLength": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    173132505
+                  ]
+                }
+              },
+              "OnSuccess": [
+                {
+                  "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_ModifierStackCount",
+                  "ModifierID": 26403402,
+                  "Name": "EvolStack_264034"
+                },
+                {
+                  "$type": "RPG.GameCore.DiceCombatPredicateConfig_CustomValueCompare",
+                  "Left": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -1968697188
+                      ]
+                    }
+                  },
+                  "Right": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 3
+                    }
+                  },
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.DiceCombatTaskConfig_InsertAbility",
+                      "AbilityName": "EvolUp_264034"
+                    }
+                  ]
+                }
+              ],
+              "OnFail": [
+                {
+                  "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_ModifierStackCount",
+                  "ModifierID": 26403402,
+                  "Name": "EvolStack_264034"
+                },
+                {
+                  "$type": "RPG.GameCore.DiceCombatPredicateConfig_CustomValueCompare",
+                  "Left": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        -1968697188
+                      ]
+                    }
+                  },
+                  "Op": "Greater",
+                  "Right": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "OnSuccess": [
+                    {
+                      "$type": "RPG.GameCore.DiceCombatTaskConfig_InsertAbility",
+                      "AbilityName": "EvolDown_264034"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "OnAfterCombat": [],
+      "OnAfterRoll": []
+    },
+    {
+      "ModifierID": 26403402,
+      "Flags": [],
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_ModifierStackCount",
+          "ModifierID": 26403402,
+          "Name": "EvolStack_264034"
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_StackAdditiveProperty",
+          "AdditiveProperty": "DefDiceCount",
+          "Value": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                -1968697188
+              ]
+            }
+          },
+          "OP": "Set"
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_StackAdditiveProperty",
+          "AdditiveProperty": "AtkDiceCount",
+          "Value": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                -1968697188
+              ]
+            }
+          },
+          "OP": "Set"
+        }
+      ],
+      "OnStack": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_ModifierStackCount",
+          "ModifierID": 26403402,
+          "Name": "EvolStack_264034"
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_StackAdditiveProperty",
+          "AdditiveProperty": "DefDiceCount",
+          "Value": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                -1968697188
+              ]
+            }
+          },
+          "OP": "Set"
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_StackAdditiveProperty",
+          "AdditiveProperty": "AtkDiceCount",
+          "Value": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                -1968697188
+              ]
+            }
+          },
+          "OP": "Set"
+        }
+      ],
+      "OnRemove": []
+    }
+  ],
+  "PreviewOnRollFinish": {
+    "OnStart": [
+      {
+        "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+        "OnSuccess": [
+          {
+            "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_EntityData",
+            "Name": "AtkLevel_264034",
+            "DataType": "AtkDiceCount"
+          },
+          {
+            "$type": "RPG.GameCore.DiceCombatTaskConfig_MarkRecommendDice",
+            "Selector": {
+              "$type": "RPG.GameCore.DiceCombatDiceSelectorConfig_Seq",
+              "MinLength": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    410146268
+                  ]
+                }
+              }
+            },
+            "IconPath": "SpriteOutput/Quest/DiceCombat/V2/BuffIcon/36x36/IconDiceCombatV2_BuffIcon01.png"
+          }
+        ],
+        "OnFail": [
+          {
+            "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsDefender",
+            "OnSuccess": [
+              {
+                "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_EntityData",
+                "Name": "DefLevel_264034",
+                "DataType": "DefDiceCount"
+              },
+              {
+                "$type": "RPG.GameCore.DiceCombatTaskConfig_MarkRecommendDice",
+                "Selector": {
+                  "$type": "RPG.GameCore.DiceCombatDiceSelectorConfig_Seq",
+                  "MinLength": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        173132505
+                      ]
+                    }
+                  }
+                },
+                "IconPath": "SpriteOutput/Quest/DiceCombat/V2/BuffIcon/36x36/IconDiceCombatV2_BuffIcon01.png"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "PreviewOnSelectDice": {
+    "OnStart": [
+      {
+        "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+        "OnSuccess": [
+          {
+            "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_EntityData",
+            "Name": "AtkLevel_264034",
+            "DataType": "AtkDiceCount"
+          },
+          {
+            "$type": "RPG.GameCore.DiceCombatTaskConfig_MarkSkillDice",
+            "Selector": {
+              "$type": "RPG.GameCore.DiceCombatDiceSelectorConfig_Seq",
+              "MinLength": {
+                "IsDynamic": true,
+                "PostfixExpr": {
+                  "OpCodes": "AQAR",
+                  "FixedValues": [],
+                  "DynamicHashes": [
+                    410146268
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "OnFail": [
+          {
+            "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsDefender",
+            "OnSuccess": [
+              {
+                "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_EntityData",
+                "Name": "DefLevel_264034",
+                "DataType": "DefDiceCount"
+              },
+              {
+                "$type": "RPG.GameCore.DiceCombatTaskConfig_MarkSkillDice",
+                "Selector": {
+                  "$type": "RPG.GameCore.DiceCombatDiceSelectorConfig_Seq",
+                  "MinLength": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        173132505
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "AIEffect": {
+    "Effects": [
+      {
+        "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+        "OnSuccess": [
+          {
+            "$type": "RPG.GameCore.DiceCombatTaskConfig_AIEffectScore",
+            "EffectEvaluator": {
+              "$type": "RPG.GameCore.DiceCombatAIEffectEvaluatorConfig_DiceAllSequence"
+            },
+            "EffectScoreWeight": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  -1467239082
+                ]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsDefender",
+        "OnSuccess": [
+          {
+            "$type": "RPG.GameCore.DiceCombatTaskConfig_AIEffectScore",
+            "EffectEvaluator": {
+              "$type": "RPG.GameCore.DiceCombatAIEffectEvaluatorConfig_DiceAllSequence"
+            },
+            "EffectScoreWeight": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  -1467239082
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "RootAbility": {
+    "OnAdd": [
+      {
+        "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+        "ModifierID": 26400001,
+        "LifeTime": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -1
+          }
+        }
+      }
+    ]
+  },
+  "InsertAbilitys": [
+    {
+      "Name": "ice",
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillCutin",
+          "CutinID": 5
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 0.5
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerIceEffect",
+          "Target": "Enemy",
+          "Selector": {
+            "$type": "RPG.GameCore.DiceCombatDiceSelectorConfig_Filter",
+            "selectorList": [
+              {
+                "$type": "RPG.GameCore.DiceCombatDiceSelectorConfig_Color",
+                "RareList": [
+                  "Blue",
+                  "Purple",
+                  "Oriange"
+                ]
+              },
+              {
+                "$type": "RPG.GameCore.DiceCombatDiceSelectorConfig_Max"
+              }
+            ]
+          },
+          "ContentID": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                -1467239079
+              ]
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 1.5
+        }
+      ]
+    }
+  ],
+  "Modifiers": [
+    {
+      "ModifierID": 26400001,
+      "Flags": [],
+      "OnAttackerConfirm": [
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.DiceCombatPredicateConfig_HPFull",
+              "OnFail": [
+                {
+                  "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+                  "ModifierID": 26400002
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "OnDefenderConfirm": []
+    },
+    {
+      "ModifierID": 26400002,
+      "Flags": [],
+      "OnBeforeCombat": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_InsertAbility",
+          "AbilityName": "ice"
+        }
+      ]
+    }
+  ]
+}

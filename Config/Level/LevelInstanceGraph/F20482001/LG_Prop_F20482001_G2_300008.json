@@ -1,0 +1,156 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupButtonListTrigger",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "TriggerName": "InteractTrigger",
+          "ButtonsByName": [
+            "SwitchHand_Acceleractor"
+          ],
+          "ButtonConfigs": [],
+          "IsOverrideValidGuestConfig": true,
+          "OverridedValidGuestConfig": {
+            "Teammember": false,
+            "FakePlayer": true
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AdvEnableButtons",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "TriggerName": "InteractTrigger",
+          "ButtonsByName": [
+            "SwitchHand_Acceleractor"
+          ],
+          "IsEnable": true
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvOnButtonPressed",
+          "ButtonName": "SwitchHand_Acceleractor",
+          "OnPressedCallback": [
+            {
+              "$type": "RPG.GameCore.PlayScreenTransfer",
+              "Mode": "SwitchOut",
+              "CustomTime": 0.2
+            },
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                "Name": "LockCamera",
+                "Value": {
+                  "Value": "1"
+                }
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.ActiveVirtualCamera",
+                  "LevelAreaCameraKey": {
+                    "Custom": true,
+                    "Key": "CameraAnchor"
+                  },
+                  "WaitBlendFinish": true,
+                  "BlendConfig": {
+                    "ExportToJson": true,
+                    "BlendType": "Custom",
+                    "CustomCurveName": "BlendCut01"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.TravelShipFollowTo",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                    "FetchType": "SinglePropByPropKey",
+                    "SinglePropKey": {
+                      "Custom": true,
+                      "Key": "AircraftProp"
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.PlayScreenTransfer",
+                  "CustomTime": 0.5
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerGroupEvent",
+                  "EventName": {
+                    "Custom": true,
+                    "Key": "TriggerLanding_GroupEvent"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.DebugLog",
+                  "Level": "Warn",
+                  "Message": "###确认降落###"
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.TravelShipFollowTo",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                    "FetchType": "SinglePropByPropKey",
+                    "SinglePropKey": {
+                      "Custom": true,
+                      "Key": "AircraftProp"
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.PlayScreenTransfer",
+                  "CustomTime": 0.5
+                },
+                {
+                  "$type": "RPG.GameCore.TriggerGroupEvent",
+                  "EventName": {
+                    "Custom": true,
+                    "Key": "TriggerLanding_GroupEvent"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.DebugLog",
+                  "Level": "Warn",
+                  "Message": "###确认降落###"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "AircraftProp"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "CameraAnchor"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "TriggerLanding_1",
+        "Key": "TriggerLanding_GroupEvent"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "1",
+        "Key": "LockCamera"
+      }
+    ]
+  },
+  "Type": "EntityInstance",
+  "EntityEventList": []
+}

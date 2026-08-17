@@ -1,0 +1,189 @@
+{
+  "RootAbility": {
+    "OnAdd": [
+      {
+        "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+        "ModifierID": 2030201,
+        "LifeTime": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -1
+          }
+        }
+      }
+    ]
+  },
+  "InsertAbilitys": [
+    {
+      "Name": "SkillHint_20302",
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillCutin",
+          "CutinID": 9
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 1
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerBossSpecialEffect"
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 2
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+          "ModifierID": 2030202,
+          "Stack": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                -1021764079
+              ]
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 1
+        }
+      ]
+    },
+    {
+      "Name": "StrikeBackDamage_20301",
+      "AbilityTarget": "CombatTarget",
+      "Priority": "DCIAP_StrikeBack",
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_EntityData",
+          "ReadTarget": "AbilityTarget",
+          "Name": "CounterATK_20301",
+          "DataType": "AttackPoint"
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_EntityData",
+          "Name": "CounterDEF_20301",
+          "DataType": "DefendPoint"
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_CustomValueCompare",
+          "Left": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                -35650994
+              ]
+            }
+          },
+          "Op": "Greater",
+          "Right": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                1637937477
+              ]
+            }
+          },
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillCutin",
+              "CutinID": 15
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+              "duration": 0.5
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerEffect",
+              "EffectID": 1
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+              "duration": 0.75
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_StrikeBackDamage",
+              "Target": "CombatTarget",
+              "AttackConfig": {}
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+              "duration": 0.5
+            }
+          ]
+        }
+      ],
+      "ExecuteWhenOwnerAlive": true
+    }
+  ],
+  "Modifiers": [
+    {
+      "ModifierID": 2030201,
+      "Flags": [],
+      "OnAdd": [],
+      "OnPreAttackerConfirm": [
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsDefender",
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_GlobalData",
+              "Name": "SwapDiceSum_20302"
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_InsertAbility",
+              "AbilityName": "SkillHint_20302"
+            }
+          ],
+          "OnFail": []
+        }
+      ],
+      "OnAttackerConfirm": []
+    },
+    {
+      "ModifierID": 2030202,
+      "Flags": [],
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_StackAdditiveProperty",
+          "AdditiveProperty": "DefPoint",
+          "Value": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                1669718312
+              ]
+            }
+          },
+          "OP": "Set"
+        }
+      ],
+      "OnAttackerConfirm": [],
+      "OnDefenderConfirm": [],
+      "OnAfterCombat": []
+    }
+  ],
+  "TryShowBossPersistentTips": {
+    "OnStart": [
+      {
+        "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsDefender",
+        "OnSuccess": [
+          {
+            "$type": "RPG.GameCore.DiceCombatTaskConfig_ShowBossPersistentTipsView",
+            "TipsTextID": {
+              "Hash": 5207291967170492243
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

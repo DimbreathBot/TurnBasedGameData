@@ -1,0 +1,858 @@
+{
+  "$type": "RPG.GameCore.RtBattleCharacterConfig",
+  "CameraConfigList": [
+    {
+      "Tags": [
+        "Idle",
+        "SkillUse"
+      ],
+      "Condition": {
+        "$type": "RPG.GameCore.ByTargetAliveState",
+        "TargetType": {
+          "$type": "RPG.GameCore.TargetSequence",
+          "Sequence": [
+            {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "AllDarkTeam"
+            },
+            {
+              "$type": "RPG.GameCore.TargetFilter",
+              "Predicate": {
+                "$type": "PDHJJNFJCJF",
+                "HILNFHCPEAD": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ParamEntity"
+                },
+                "IFNAGLOMHBK": {
+                  "Value": "RTMCommon_BossFlag"
+                }
+              }
+            }
+          ]
+        },
+        "AliveStateMask": "Anyone"
+      },
+      "CameraConfig": {
+        "NormalConfig": {
+          "CameraState": "CasterToTargetPerform",
+          "TemplateName": "RtCommon_Camera_Melee_Idle",
+          "AnchorTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster.CameraRootRecord"
+          },
+          "AimTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "LockTarget"
+          }
+        },
+        "BlendConfig": {
+          "BlendType": "EaseInOut",
+          "BlendTime": 0.8
+        }
+      }
+    },
+    {
+      "Tags": [
+        "Move"
+      ],
+      "CameraConfig": {
+        "NormalConfig": {
+          "CameraState": "CasterToTargetPerform",
+          "IsLocalOffset": true,
+          "AnchorOffset": {
+            "X": 1,
+            "Y": 1,
+            "Z": -2
+          },
+          "AimTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "DarkTeamBornPoint"
+          },
+          "AimOffset": {
+            "X": -1,
+            "Y": 1,
+            "Z": 0
+          },
+          "AimRatio": 1,
+          "Dutch": 3,
+          "ResetToDefault": false
+        },
+        "AdditiveNormalConfig": {
+          "CameraState": "CasterToTargetPerform",
+          "AnchorTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "LightTeamBornPoint"
+          },
+          "IsLocalOffset": true,
+          "AnchorOffset": {
+            "X": 0,
+            "Y": 1.5,
+            "Z": -3
+          },
+          "AimTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "DarkTeamBornPoint"
+          },
+          "AimOffset": {
+            "X": 0,
+            "Y": 1,
+            "Z": 0
+          },
+          "AimRatio": 1,
+          "Dutch": -3
+        },
+        "BlendConfig": {
+          "BlendType": "Linear",
+          "BlendTime": 3
+        }
+      }
+    }
+  ],
+  "BornGridEvaluator": {
+    "$type": "RPG.GameCore.VE_Group",
+    "Values": [
+      {
+        "$type": "RPG.GameCore.VE_Predicate",
+        "Predicate": {
+          "$type": "RPG.GameCore.QueryHoyoTag",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "ParamEntity"
+          },
+          "QueryType": "MatchAll",
+          "QuertInput": [
+            "RtBattle.Grid.Light.Tank"
+          ]
+        },
+        "Weight": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": 1000
+          }
+        }
+      },
+      {
+        "$type": "RPG.GameCore.VE_Predicate",
+        "Predicate": {
+          "$type": "RPG.GameCore.QueryHoyoTag",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "ParamEntity"
+          },
+          "QueryType": "MatchAll",
+          "QuertInput": [
+            "RtBattle.Grid.Light.Melee"
+          ]
+        },
+        "Weight": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": 500
+          }
+        }
+      },
+      {
+        "$type": "RPG.GameCore.VE_RtBattleGridOrder",
+        "TargetType": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "ParamEntity"
+        },
+        "Weight": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -100
+          }
+        },
+        "PostProcess": [
+          {
+            "$type": "RPG.GameCore.VP_Sigmoid"
+          }
+        ]
+      },
+      {
+        "$type": "RPG.GameCore.VE_RtDistance",
+        "From": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "ParamEntity"
+        },
+        "To": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "LightTeamBornPoint"
+        },
+        "Weight": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -10
+          }
+        },
+        "PostProcess": [
+          {
+            "$type": "RPG.GameCore.VP_Sigmoid"
+          }
+        ]
+      }
+    ]
+  },
+  "CharacterHUDOffset": {
+    "X": 0,
+    "Y": 2.3,
+    "Z": 0
+  },
+  "HideWeaponList": [
+    "Weapon"
+  ],
+  "HitBoxWidth": 0.3,
+  "HitBoxHeight": 1.5,
+  "AnimEventConfigList": [
+    "Config/ConfigAnimEvents/GridFight/3.5/Avatar/Avatar_GridFight_Sam_00_Effect_AnimEvent.json",
+    "Config/ConfigAnimEvents/Avatar/Designer/Avatar_Sam_00_Designer_AnimEvent.json",
+    "Config/Activity/RtBattle/AnimEvents/RtBattleAvatar_Sam_00_Effect_AnimEvent.json",
+    "Config/Activity/RtBattle/AnimEvents/Audio/RtBattleAvatar_Sam_00_Audio_AnimEvent.json",
+    "Config/ConfigAnimEvents/Avatar/Designer/Avatar_Common_Designer_AnimEvent.json",
+    "Config/ConfigAnimEvents/Avatar/Audio/Avatar_Common_ControllerVibration_AnimEvent.json"
+  ],
+  "DisableAnimEventLayers": [
+    "Riboon Layer"
+  ],
+  "SkillList": [
+    {
+      "Name": "Skill01",
+      "UseType": "SelectEntity",
+      "Tags": [
+        {
+          "EnumIndex": 10,
+          "Value": 1
+        }
+      ],
+      "EntryAbility": "RtBattleAvatar_Sam_00_Skill01_Phase01",
+      "DefaultDuration": {
+        "Value": 3
+      },
+      "ExtraConfig": {
+        "$type": "RPG.GameCore.RtBattleSkillConfig",
+        "MoveStartTime": {
+          "Value": 1
+        },
+        "MoveFinishTime": {
+          "Value": 4
+        }
+      },
+      "SkillTargetAI": {
+        "Groups": [
+          {
+            "GroupName": "RtBattle_Common_MonsterRank",
+            "Weight": {
+              "Value": 10
+            }
+          },
+          {
+            "GroupName": "RtBattle_Common_Distance",
+            "Weight": {
+              "Value": -1
+            }
+          },
+          {
+            "GroupName": "RtBattle_Common_One",
+            "Weight": {
+              "Value": -1000
+            }
+          }
+        ]
+      },
+      "StanceParams": [
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        }
+      ]
+    },
+    {
+      "Name": "Skill02",
+      "SkillType": "Skill",
+      "UseType": "SelectEntity",
+      "TargetInfo": {
+        "TargetType": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "Caster"
+        }
+      },
+      "Tags": [
+        {
+          "EnumIndex": 10,
+          "Value": 2
+        },
+        {
+          "EnumIndex": 10,
+          "Value": 6
+        },
+        {
+          "EnumIndex": 10,
+          "Value": 7
+        }
+      ],
+      "EntryAbility": "RtBattleAvatar_Sam_00_Skill02_Phase01",
+      "DefaultDuration": {
+        "Value": 5
+      },
+      "SkillTargetAI": {
+        "Groups": [
+          {
+            "GroupName": "RtBattle_Common_MonsterRank",
+            "Weight": {
+              "Value": 10
+            }
+          },
+          {
+            "GroupName": "RtBattle_Common_Distance",
+            "Weight": {
+              "Value": -1
+            }
+          }
+        ]
+      },
+      "StanceParams": [
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        }
+      ]
+    },
+    {
+      "Name": "Skill12",
+      "SkillType": "Passive",
+      "UseType": "SelectEntity",
+      "TargetInfo": {
+        "TargetType": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "Caster"
+        }
+      },
+      "Tags": [
+        {
+          "EnumIndex": 10,
+          "Value": 2
+        },
+        {
+          "EnumIndex": 10,
+          "Value": 4
+        }
+      ],
+      "EntryAbility": "RtBattleAvatar_Sam_00_Skill12_Phase01",
+      "DefaultDuration": {
+        "Value": 5
+      },
+      "StanceParams": [
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        }
+      ]
+    },
+    {
+      "Name": "Skill03",
+      "SkillType": "Ultra",
+      "UseType": "SelectEntity",
+      "Tags": [
+        {
+          "EnumIndex": 10,
+          "Value": 2
+        },
+        {
+          "EnumIndex": 10,
+          "Value": 3
+        }
+      ],
+      "EntryAbility": "RtBattleAvatar_Sam_00_Skill03_Phase01",
+      "DefaultDuration": {
+        "Value": 4
+      },
+      "CD": {
+        "Value": 399
+      },
+      "CastDistance": {
+        "Value": 99
+      },
+      "StanceParams": [
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        }
+      ]
+    },
+    {
+      "Name": "SkillP01",
+      "SkillType": "Passive",
+      "UseType": "Passive",
+      "EntryAbility": "RtBattleAvatar_Sam_00_PassiveSkill01",
+      "CastDistance": {
+        "Value": 99
+      },
+      "StanceParams": [
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        }
+      ]
+    },
+    {
+      "Name": "SkillP02",
+      "SkillType": "Passive",
+      "UseType": "Passive",
+      "EntryAbility": "RtBattleAvatar_Sam_00_TeamBuff",
+      "CastDistance": {
+        "Value": 99
+      },
+      "StanceParams": [
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        }
+      ]
+    },
+    {
+      "Name": "SkillCaptain01",
+      "SkillType": "Passive",
+      "UseType": "Passive",
+      "EntryAbility": "RtBattleAvatar_Sam_00_PassiveSkill02",
+      "CastDistance": {
+        "Value": 99
+      },
+      "StanceParams": [
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        },
+        {
+          "Value": 30
+        }
+      ]
+    }
+  ],
+  "AbilityList": [
+    "RtCommon_InitPassiveSkill"
+  ],
+  "SkillAbilityList": [
+    {
+      "Skill": "Skill01",
+      "AbilityList": [
+        "RtBattleAvatar_Sam_00_Skill01_Camera",
+        "RtBattleAvatar_Sam_00_Skill11_Camera",
+        "RtBattleAvatar_Sam_00_Skill01_Phase01",
+        "RtBattleAvatar_Sam_00_Skill01_Phase02",
+        "RtBattleAvatar_Sam_00_Skill11_Phase02"
+      ]
+    },
+    {
+      "Skill": "Skill02",
+      "AbilityList": [
+        "RtBattleAvatar_Sam_00_Skill02_Phase01",
+        "RtBattleAvatar_Sam_00_Skill02_Phase02",
+        "RtBattleAvatar_Sam_00_Skill02_Camera"
+      ]
+    },
+    {
+      "Skill": "Skill12",
+      "AbilityList": [
+        "RtBattleAvatar_Sam_00_Skill12_Phase01"
+      ]
+    },
+    {
+      "Skill": "Skill03",
+      "AbilityList": [
+        "RtBattleAvatar_Sam_00_Skill03_Camera",
+        "RtBattleAvatar_Sam_00_Skill03_Phase01",
+        "RtBattleAvatar_Sam_00_Skill03_Phase02"
+      ]
+    },
+    {
+      "Skill": "SkillP01",
+      "AbilityList": [
+        "RtBattleAvatar_Sam_00_PassiveSkill01"
+      ]
+    },
+    {
+      "Skill": "SkillP02",
+      "AbilityList": [
+        "RtBattleAvatar_Sam_00_TeamBuff"
+      ]
+    },
+    {
+      "Skill": "SkillCaptain01",
+      "AbilityList": [
+        "RtBattleAvatar_Sam_00_PassiveSkill02"
+      ]
+    }
+  ],
+  "DynamicValues": {
+    "Floats": {
+      "-1126825319": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill01",
+          "Index": 0
+        }
+      },
+      "-335668838": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill01",
+          "Index": 1
+        }
+      },
+      "-1012444110": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill02",
+          "Index": 0
+        }
+      },
+      "-104318803": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill02",
+          "Index": 1
+        }
+      },
+      "242174909": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill02",
+          "Index": 2
+        }
+      },
+      "-1022829777": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill02",
+          "Index": 3
+        }
+      },
+      "-858005628": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill02",
+          "Index": 4
+        }
+      },
+      "-56289053": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill03",
+          "Index": 0
+        }
+      },
+      "-932266743": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill03",
+          "Index": 1
+        }
+      },
+      "1590890801": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "Skill03",
+          "Index": 2
+        }
+      },
+      "952525540": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "SkillP01",
+          "Index": 0
+        }
+      },
+      "2037311480": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "SkillP01",
+          "Index": 1
+        }
+      },
+      "-626533244": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "SkillP01",
+          "Index": 2
+        }
+      },
+      "1594133987": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "SkillP02",
+          "Index": 0
+        }
+      },
+      "-496759709": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "SkillP02",
+          "Index": 1
+        }
+      },
+      "1865226979": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "SkillP02",
+          "Index": 2
+        }
+      },
+      "-1868756415": {
+        "ReadInfo": {
+          "Type": "SkillParam",
+          "TriggerKey": "SkillCaptain01",
+          "Index": 0
+        }
+      },
+      "1286574428": {
+        "ReadInfo": {
+          "Type": "SkillRank",
+          "TriggerKey": "Rank03",
+          "Index": 0
+        }
+      },
+      "-1146371148": {
+        "ReadInfo": {
+          "Type": "SkillRank",
+          "TriggerKey": "Rank06",
+          "Index": 0
+        }
+      },
+      "619830683": {
+        "ReadInfo": {
+          "Type": "None",
+          "Index": 0
+        }
+      },
+      "-1850011756": {
+        "ReadInfo": {
+          "Type": "None",
+          "Index": 0
+        }
+      },
+      "1873419146": {
+        "ReadInfo": {
+          "Type": "None",
+          "Index": 0
+        }
+      }
+    }
+  },
+  "WeaponType": "WP_Magic",
+  "CommonAnimZoneConfigPath": "Config/ConfigAnimZone/LocalPlayer/Common/LocalPlayer_Common_Male_AnimZone.json",
+  "AnimZoneConfigPath": "Config/ConfigAnimZone/LocalPlayer/LocalPlayer_Firefly_00_AnimZone.json",
+  "DamageType": "Fire",
+  "Weakness": [],
+  "MotionParam": {},
+  "AnimDurationMap": {
+    "Die": {
+      "Value": 2
+    },
+    "Die_Hit": {
+      "Value": 2
+    },
+    "Die_Hit_Transfer": {
+      "Value": 2
+    },
+    "Die_Limbo": {
+      "Value": 2
+    },
+    "Die_Limbo_Transfer": {
+      "Value": 2
+    },
+    "Die_Loop": {
+      "Value": 2.166667
+    },
+    "Die_Loop_Transfer": {
+      "Value": 2.166667
+    },
+    "Die_Transfer": {
+      "Value": 2
+    },
+    "GridFight_Skill03_02": {
+      "Value": 7.166667
+    },
+    "Hit_H": {
+      "Value": 2.133333
+    },
+    "Hit_H_Break": {
+      "Value": 1.333333
+    },
+    "Hit_H_Break_Transfer": {
+      "Value": 1.333333
+    },
+    "Hit_H_Stun": {
+      "Value": 1.333333
+    },
+    "Hit_H_Stun_Transfer": {
+      "Value": 1.333333
+    },
+    "Hit_H_Transfer": {
+      "Value": 2.133333
+    },
+    "MazeSkill": {
+      "Value": 0.5
+    },
+    "MazeSkill_End": {
+      "Value": 3.833333
+    },
+    "MazeSkill_Loop": {
+      "Value": 1
+    },
+    "Paralyze": {
+      "Value": 2
+    },
+    "Paralyze_Transfer": {
+      "Value": 2
+    },
+    "Revive": {
+      "Value": 1.5
+    },
+    "Revive_Transfer": {
+      "Value": 1.5
+    },
+    "Skill01": {
+      "Value": 2.5
+    },
+    "Skill01_01": {
+      "Value": 3
+    },
+    "Skill01_Ready": {
+      "Value": 1.666667
+    },
+    "Skill01_Ready_01": {
+      "Value": 1.666667
+    },
+    "Skill01_Ready_Loop": {
+      "Value": 2
+    },
+    "Skill01_Ready_Loop_01": {
+      "Value": 2
+    },
+    "Skill01toSkill02": {
+      "Value": 1.666667
+    },
+    "Skill01toSkill02_01": {
+      "Value": 1.666667
+    },
+    "Skill02": {
+      "Value": 3.416667
+    },
+    "Skill02_01": {
+      "Value": 5.633334
+    },
+    "Skill02_Ready_Loop": {
+      "Value": 2
+    },
+    "Skill02_Ready_Loop_01": {
+      "Value": 2
+    },
+    "Skill02_Ready_Loop_01 0": {
+      "Value": 2
+    },
+    "Skill02_Ready_Loop_01 1": {
+      "Value": 2
+    },
+    "Skill02toSkill01": {
+      "Value": 1.666667
+    },
+    "Skill02toSkill01_01": {
+      "Value": 1.666667
+    },
+    "Skill03": {
+      "Value": 6
+    },
+    "Skill03_Ready": {
+      "Value": 2
+    },
+    "Skill03_Ready_Loop": {
+      "Value": 2
+    },
+    "Stagger": {
+      "Value": 1.816667
+    },
+    "Stagger_Loop": {
+      "Value": 2.5
+    },
+    "Stagger_Loop_Transfer": {
+      "Value": 2.5
+    },
+    "Stagger_Loop_Transfer_01": {
+      "Value": 2.5
+    },
+    "Stagger_Recover": {
+      "Value": 1.65
+    },
+    "Stagger_Recover_Transfer": {
+      "Value": 1.65
+    },
+    "Stagger_Transfer": {
+      "Value": 1.816667
+    },
+    "Stagger_Transfer_01": {
+      "Value": 1.816667
+    },
+    "StandBy": {
+      "Value": 2
+    },
+    "StandBy_Transfer": {
+      "Value": 2
+    },
+    "StandBy01toStandBy": {
+      "Value": 2.666667
+    },
+    "Stun_Loop": {
+      "Value": 2.5
+    },
+    "Stun_Loop_01toLoop": {
+      "Value": 1.65
+    },
+    "Stun_Loop_Transfer": {
+      "Value": 2.5
+    },
+    "Stun_Occur": {
+      "Value": 1.816667
+    },
+    "Stun_Occur_Transfer": {
+      "Value": 1.816667
+    },
+    "Stun_Recover": {
+      "Value": 1.65
+    },
+    "Stun_Recover_Transfer": {
+      "Value": 1.65
+    }
+  }
+}

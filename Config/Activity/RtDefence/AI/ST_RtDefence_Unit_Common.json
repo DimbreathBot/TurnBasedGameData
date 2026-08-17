@@ -1,0 +1,187 @@
+{
+  "AIName": "ST_RtBattle_Unit_Common",
+  "VariableList": [],
+  "GlobalVariableList": [],
+  "DecisionList": [],
+  "TransitionTable": [],
+  "RootState": {
+    "Name": "Root",
+    "TaskList": [],
+    "TransitionList": [],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "MDBNOPEIDAH",
+          "IEABENMOPFF": "AIHang"
+        },
+        "TaskList": [],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToType": "NextState",
+            "Condition": {
+              "$type": "MDBNOPEIDAH",
+              "IEABENMOPFF": "AIHang",
+              "Inverse": true
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "Name": "Hang"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "Hang",
+            "Condition": {
+              "$type": "MDBNOPEIDAH",
+              "IEABENMOPFF": "AIHang"
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.RtBySkillCanUse",
+              "Inverse": true
+            },
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_RtSelectSkill"
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnStateSucceeded",
+                "TransitionToType": "NextValidState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "SelectSkill"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "EnterCondition": {
+              "$type": "RPG.GameCore.RtBySkillCanUse"
+            },
+            "TransitionList": [
+              {
+                "Trigger": "OnStateFailed",
+                "TransitionToType": "NextValidState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "SubStateList": [
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "EnterCondition": {
+                  "$type": "RPG.GameCore.ByAnd",
+                  "PredicateList": [
+                    {
+                      "$type": "RPG.GameCore.RtByCanMove",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.RtByInSkillRange",
+                      "CheckTargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "SkillTarget"
+                      },
+                      "Inverse": true
+                    }
+                  ]
+                },
+                "TaskList": [
+                  {
+                    "$type": "RPG.GameCore.ST_RtMain_MoveToTarget",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "SkillTarget"
+                    },
+                    "StopType": "SkillCastDistance"
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "Trigger": "OnStateSucceeded",
+                    "TransitionToType": "NextValidState",
+                    "BoolVariableList": [],
+                    "FloatVariableList": []
+                  },
+                  {
+                    "Trigger": "OnStateFailed",
+                    "TransitionToType": "TreeFail",
+                    "BoolVariableList": [],
+                    "FloatVariableList": []
+                  }
+                ],
+                "SubStateList": [],
+                "Name": "MoveToSkillTarget"
+              },
+              {
+                "$type": "RPG.GameCore.StateTreeStateConfig",
+                "EnterCondition": {
+                  "$type": "RPG.GameCore.RtByInSkillRange",
+                  "CheckTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "SkillTarget"
+                  }
+                },
+                "TaskList": [
+                  {
+                    "$type": "RPG.GameCore.ST_RtMain_UseSkill"
+                  }
+                ],
+                "TransitionList": [
+                  {
+                    "TransitionToType": "TreeSucceed",
+                    "BoolVariableList": [],
+                    "FloatVariableList": []
+                  }
+                ],
+                "Name": "UseSkill"
+              }
+            ],
+            "Name": "Skill"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": 2
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "TreeSucceed",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "Wait"
+          }
+        ],
+        "Name": "NormalLayer"
+      }
+    ]
+  },
+  "OnDisable": {
+    "$type": "RPG.GameCore.TaskConfig"
+  },
+  "OnInit": {
+    "$type": "RPG.GameCore.TaskConfig"
+  }
+}

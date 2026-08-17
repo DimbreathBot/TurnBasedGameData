@@ -1,0 +1,2544 @@
+{
+  "AbilityList": [
+    {
+      "Modifiers": {
+        "Modifier_Activity_FateRin_Ability_StoryMode": {
+          "_CallbackList": [
+            {
+              "Event": "OnStack",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.AddModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                    "UniqueName": "Activity_FateRin_BigTurn_LightTeamAgent"
+                  },
+                  "ModifierName": {
+                    "Value": "Modifier_Activity_FateRin_Ability_StoryMode_Revive"
+                  }
+                }
+              ]
+            },
+            {
+              "Event": "OnListenCharacterCreate",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByTargetTeam",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "Team": "TeamLight"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ParamEntity"
+                      },
+                      "ModifierName": {
+                        "Value": "Modifier_Activity_FateRin_Ability_StoryMode_Revive"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "Modifier_Activity_FateRin_Ability_StoryMode_Revive": {
+          "_CallbackList": [
+            {
+              "Event": "OnStack",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.OwnerEntityAddAbility",
+                  "AbilityName": {
+                    "Value": "StageAbility_FateRinRevive"
+                  }
+                }
+              ]
+            },
+            {
+              "Event": "OnLimboWaitHeal",
+              "Priority": -60,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareHP",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "CompareType": "LessEqual",
+                    "CompareValue": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 0
+                      }
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.TriggerAnimState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "AnimLogicState": "Limbo",
+                      "AnimStateName": "Die_Limbo",
+                      "ForceStart": true
+                    },
+                    {
+                      "$type": "RPG.GameCore.TurnInsertAbility",
+                      "AbilityName": {
+                        "Value": "StageAbility_FateRinRevive"
+                      },
+                      "InsertAbilityPriority": "AvatarReviveSelf",
+                      "OwnerAliveState": "Mask_AliveOrLimbo",
+                      "CanRunOnUnselectableTarget": true
+                    }
+                  ],
+                  "FailedTaskList": []
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "Name": "Activity_FateRin_Ability_StoryMode",
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "Modifier_Activity_FateRin_Ability_StoryMode"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "StageAbility_FateRinRevive",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareHPRatio",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+              "UniqueName": "Activity_FateRin_BigTurn_LightTeamAgent"
+            },
+            "CompareType": "LessEqual",
+            "CompareValue": {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 0
+              }
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.TriggerAnimState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AllLightTeam"
+              },
+              "AnimLogicState": "Revive",
+              "AnimStateName": "Revive"
+            },
+            {
+              "$type": "RPG.GameCore.VCameraConfigChange",
+              "CameraConfig": {
+                "NormalConfig": {
+                  "CameraState": "UseSkillPerform",
+                  "AnchorTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllLightTeam"
+                  },
+                  "IsLocalOffset": true,
+                  "AnchorOffset": {
+                    "X": 0.001,
+                    "Y": 0.2,
+                    "Z": 0.001
+                  },
+                  "AimTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllLightTeam"
+                  },
+                  "AimOffset": {
+                    "X": 0.001,
+                    "Y": 0,
+                    "Z": 0.001
+                  },
+                  "FollowPoleAngle": 90,
+                  "FollowRadius": 4,
+                  "FollowDamp": 0.5,
+                  "AimDamp": 0.5
+                },
+                "ShowEntityConfig": {
+                  "ShowTargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllLightTeam"
+                  },
+                  "IsTargetIgnoreCameraDither": true,
+                  "IsAliveOnly": false
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.ShowUIPage",
+              "AssetPath": "UI/Common/Widget/BattleSelfStatusHint.prefab",
+              "UITextNodes": [
+                {
+                  "TextPath": "AreaInfoPanel/Title/Text",
+                  "TextContent": {
+                    "Hash": 13432466146442445247
+                  }
+                }
+              ],
+              "LifeTime": 2
+            },
+            {
+              "$type": "RPG.GameCore.TriggerEffect",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AllLightTeam"
+              },
+              "EffectPath": "Effects/Eff_Prefab/Eff_Common/Eff_Buff_Common_OtherRise.prefab",
+              "ForceSimulateImmediately": false,
+              "MinMutexTime": 0.85,
+              "MinMutexType": "Entity"
+            },
+            {
+              "$type": "RPG.GameCore.HealHP",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AllLightTeam"
+              },
+              "AliveOnly": false,
+              "FormulaType": "HealByTargetMaxHP",
+              "HealPercentage": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1.4
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Modifiers": {
+        "Modifier_Activity_FateRin_Ability_EasyMode": {
+          "_CallbackList": [
+            {
+              "Event": "OnListenCharacterCreate",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByTargetTeam",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "Team": "TeamDark"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ParamEntity"
+                      },
+                      "ModifierName": {
+                        "Value": "Modifier_Activity_FateRin_Ability_EasyMode_Status"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "Modifier_Activity_FateRin_Ability_EasyMode_Status": {}
+      },
+      "Name": "Activity_FateRin_Ability_EasyMode",
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "Modifier_Activity_FateRin_Ability_EasyMode"
+          }
+        }
+      ]
+    },
+    {
+      "Modifiers": {
+        "Modifier_Activity_FateRin_Ability_HardMode": {
+          "_CallbackList": [
+            {
+              "Event": "OnListenCharacterCreate",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByTargetTeam",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "Team": "TeamDark"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ParamEntity"
+                      },
+                      "ModifierName": {
+                        "Value": "Modifier_Activity_FateRin_Ability_HardMode_Status"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "Modifier_Activity_FateRin_Ability_HardMode_Status": {}
+      },
+      "Name": "Activity_FateRin_Ability_HardMode",
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "Modifier_Activity_FateRin_Ability_HardMode"
+          }
+        }
+      ]
+    },
+    {
+      "Modifiers": {
+        "Modifier_Activity_FateRin_Ability_ExtraProperty": {
+          "_CallbackList": [
+            {
+              "Event": "OnListenCharacterCreate",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByTargetTeam",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "Team": "TeamDark"
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ParamEntity"
+                      },
+                      "ModifierName": {
+                        "Value": "Modifier_Activity_FateRin_Ability_ExtraProperty_Sub"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "Modifier_Activity_FateRin_Ability_ExtraProperty_Sub": {
+          "_CallbackList": [
+            {
+              "Event": "OnStack",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.StackProperty",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "Property": "AttackAddedRatio",
+                  "PropertyValue": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        462955996
+                      ]
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.StackProperty",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "Property": "HPAddedRatio",
+                  "PropertyValue": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        59671469
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "Name": "Activity_FateRin_Ability_ExtraProperty",
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "Modifier_Activity_FateRin_Ability_ExtraProperty"
+          }
+        }
+      ]
+    },
+    {
+      "Name": "Activity_FateRin_BigTurn_Skill01",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": [
+        {
+          "$type": "MMFMAIKPPDO"
+        }
+      ]
+    },
+    {
+      "Name": "Activity_FateRin_BigTurn_LightTeamAgent_Prepare",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.SetEntityPosition",
+          "PosTargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "LightTeamEntity"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetTeamFormation",
+          "Team": "TeamLight",
+          "FormationType": "LightTeamNormal"
+        },
+        {
+          "$type": "RPG.GameCore.IncludeTaskListTemplate",
+          "Name": "FateRin_ResetFormation",
+          "DynamicValues": {
+            "OnlyCamera": {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "Modifiers": {
+        "Modifier_FateRin_BigTurn_SpecialWinControl": {
+          "_CallbackList": [
+            {
+              "Event": "OnListenCharacterDie",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareTarget",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "CompareType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "MainMonster"
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.TriggerCustomString",
+                      "CustomString": {
+                        "Value": "Level_SpecialWin"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "Modifier_FateRin_BigTurn_DitherControl": {
+          "_CallbackList": [
+            {
+              "Event": "OnBeforeSkillUse",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.SetEntityForbidCameraDither",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllLightTeam"
+                  },
+                  "ForbidCameraDither": true
+                }
+              ]
+            },
+            {
+              "Event": "OnAfterSkillUse",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.SetEntityForbidCameraDither",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllLightTeam"
+                  }
+                }
+              ]
+            },
+            {
+              "Event": "OnListenEnterViewMode_CL",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.ChangeActionEntityToObserveState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllLightTeam"
+                  }
+                }
+              ]
+            },
+            {
+              "Event": "OnListenExitViewMode_CL",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.RevertActionEntityToObserveState",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllLightTeam"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "Modifier_FateRin_BigTurn_VoiceControl": {
+          "_CallbackList": [
+            {
+              "Event": "OnPhase1",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByCompareStageID",
+                        "CompareType": "NotEqual",
+                        "StageID": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 429001
+                          }
+                        }
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareStageID",
+                        "CompareType": "NotEqual",
+                        "StageID": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 429101
+                          }
+                        }
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareStageID",
+                        "CompareType": "NotEqual",
+                        "StageID": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 429201
+                          }
+                        }
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareStageID",
+                        "CompareType": "NotEqual",
+                        "StageID": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 429301
+                          }
+                        }
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareStageID",
+                        "CompareType": "NotEqual",
+                        "StageID": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 429303
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "DynamicKey": {
+                          "Value": "PhaseCount"
+                        },
+                        "CompareType": "Greater",
+                        "CompareValue": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 0
+                          }
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByAny",
+                            "PredicateList": [
+                              {
+                                "$type": "RPG.GameCore.ByCompareCharacterID",
+                                "TargetType": {
+                                  "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                                  "UniqueName": "Activity_FateRin_ServantAvatar"
+                                },
+                                "TargetCharacterID": {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 6039
+                                  }
+                                }
+                              },
+                              {
+                                "$type": "RPG.GameCore.ByCompareCharacterID",
+                                "TargetType": {
+                                  "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                                  "UniqueName": "Activity_FateRin_ServantAvatar"
+                                },
+                                "TargetCharacterID": {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 6040
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.RandomConfig",
+                              "OddsList": [
+                                {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 0.25
+                                  }
+                                },
+                                {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 0.25
+                                  }
+                                },
+                                {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 0.25
+                                  }
+                                },
+                                {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 0.25
+                                  }
+                                }
+                              ],
+                              "TaskList": [
+                                {
+                                  "$type": "RPG.GameCore.PlayMissionTalk",
+                                  "ChangeStyle": true,
+                                  "StyleList": [
+                                    {
+                                      "StyleType": "FateRinBattle"
+                                    }
+                                  ],
+                                  "SimpleTalkList": [
+                                    {
+                                      "TalkSentenceID": 154069910,
+                                      "ProtectTime": 2
+                                    }
+                                  ]
+                                },
+                                {
+                                  "$type": "RPG.GameCore.PlayMissionTalk",
+                                  "ChangeStyle": true,
+                                  "StyleList": [
+                                    {
+                                      "StyleType": "FateRinBattle"
+                                    }
+                                  ],
+                                  "SimpleTalkList": [
+                                    {
+                                      "TalkSentenceID": 154069911,
+                                      "ProtectTime": 2
+                                    }
+                                  ]
+                                },
+                                {
+                                  "$type": "RPG.GameCore.PlayMissionTalk",
+                                  "ChangeStyle": true,
+                                  "StyleList": [
+                                    {
+                                      "StyleType": "FateRinBattle"
+                                    }
+                                  ],
+                                  "SimpleTalkList": [
+                                    {
+                                      "TalkSentenceID": 154069918,
+                                      "ProtectTime": 2
+                                    }
+                                  ]
+                                },
+                                {
+                                  "$type": "RPG.GameCore.PlayMissionTalk",
+                                  "ChangeStyle": true,
+                                  "StyleList": [
+                                    {
+                                      "StyleType": "FateRinBattle"
+                                    }
+                                  ],
+                                  "SimpleTalkList": [
+                                    {
+                                      "TalkSentenceID": 154069919,
+                                      "ProtectTime": 2
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareCharacterID",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                              "UniqueName": "Activity_FateRin_ServantAvatar"
+                            },
+                            "TargetCharacterID": {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 6041
+                              }
+                            }
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.RandomConfig",
+                              "OddsList": [
+                                {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 0.25
+                                  }
+                                },
+                                {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 0.25
+                                  }
+                                },
+                                {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 0.25
+                                  }
+                                },
+                                {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 0.25
+                                  }
+                                }
+                              ],
+                              "TaskList": [
+                                {
+                                  "$type": "RPG.GameCore.PlayMissionTalk",
+                                  "ChangeStyle": true,
+                                  "StyleList": [
+                                    {
+                                      "StyleType": "FateRinBattle"
+                                    }
+                                  ],
+                                  "SimpleTalkList": [
+                                    {
+                                      "TalkSentenceID": 154069912,
+                                      "ProtectTime": 2
+                                    }
+                                  ]
+                                },
+                                {
+                                  "$type": "RPG.GameCore.PlayMissionTalk",
+                                  "ChangeStyle": true,
+                                  "StyleList": [
+                                    {
+                                      "StyleType": "FateRinBattle"
+                                    }
+                                  ],
+                                  "SimpleTalkList": [
+                                    {
+                                      "TalkSentenceID": 154069913,
+                                      "ProtectTime": 2
+                                    }
+                                  ]
+                                },
+                                {
+                                  "$type": "RPG.GameCore.PlayMissionTalk",
+                                  "ChangeStyle": true,
+                                  "StyleList": [
+                                    {
+                                      "StyleType": "FateRinBattle"
+                                    }
+                                  ],
+                                  "SimpleTalkList": [
+                                    {
+                                      "TalkSentenceID": 154069918,
+                                      "ProtectTime": 2
+                                    }
+                                  ]
+                                },
+                                {
+                                  "$type": "RPG.GameCore.PlayMissionTalk",
+                                  "ChangeStyle": true,
+                                  "StyleList": [
+                                    {
+                                      "StyleType": "FateRinBattle"
+                                    }
+                                  ],
+                                  "SimpleTalkList": [
+                                    {
+                                      "TalkSentenceID": 154069919,
+                                      "ProtectTime": 2
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareCharacterID",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                              "UniqueName": "Activity_FateRin_ServantAvatar"
+                            },
+                            "TargetCharacterID": {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 6037
+                              }
+                            }
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.RandomConfig",
+                              "OddsList": [
+                                {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 0.25
+                                  }
+                                },
+                                {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 0.25
+                                  }
+                                },
+                                {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 0.25
+                                  }
+                                },
+                                {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 0.25
+                                  }
+                                }
+                              ],
+                              "TaskList": [
+                                {
+                                  "$type": "RPG.GameCore.PlayMissionTalk",
+                                  "ChangeStyle": true,
+                                  "StyleList": [
+                                    {
+                                      "StyleType": "FateRinBattle"
+                                    }
+                                  ],
+                                  "SimpleTalkList": [
+                                    {
+                                      "TalkSentenceID": 154069914,
+                                      "ProtectTime": 2
+                                    }
+                                  ]
+                                },
+                                {
+                                  "$type": "RPG.GameCore.PlayMissionTalk",
+                                  "ChangeStyle": true,
+                                  "StyleList": [
+                                    {
+                                      "StyleType": "FateRinBattle"
+                                    }
+                                  ],
+                                  "SimpleTalkList": [
+                                    {
+                                      "TalkSentenceID": 154069915,
+                                      "ProtectTime": 2
+                                    }
+                                  ]
+                                },
+                                {
+                                  "$type": "RPG.GameCore.PlayMissionTalk",
+                                  "ChangeStyle": true,
+                                  "StyleList": [
+                                    {
+                                      "StyleType": "FateRinBattle"
+                                    }
+                                  ],
+                                  "SimpleTalkList": [
+                                    {
+                                      "TalkSentenceID": 154069918,
+                                      "ProtectTime": 2
+                                    }
+                                  ]
+                                },
+                                {
+                                  "$type": "RPG.GameCore.PlayMissionTalk",
+                                  "ChangeStyle": true,
+                                  "StyleList": [
+                                    {
+                                      "StyleType": "FateRinBattle"
+                                    }
+                                  ],
+                                  "SimpleTalkList": [
+                                    {
+                                      "TalkSentenceID": 154069919,
+                                      "ProtectTime": 2
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareCharacterID",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                              "UniqueName": "Activity_FateRin_ServantAvatar"
+                            },
+                            "TargetCharacterID": {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 6036
+                              }
+                            }
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.RandomConfig",
+                              "OddsList": [
+                                {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 0.25
+                                  }
+                                },
+                                {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 0.25
+                                  }
+                                },
+                                {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 0.25
+                                  }
+                                },
+                                {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 0.25
+                                  }
+                                }
+                              ],
+                              "TaskList": [
+                                {
+                                  "$type": "RPG.GameCore.PlayMissionTalk",
+                                  "ChangeStyle": true,
+                                  "StyleList": [
+                                    {
+                                      "StyleType": "FateRinBattle"
+                                    }
+                                  ],
+                                  "SimpleTalkList": [
+                                    {
+                                      "TalkSentenceID": 154069916,
+                                      "ProtectTime": 2
+                                    }
+                                  ]
+                                },
+                                {
+                                  "$type": "RPG.GameCore.PlayMissionTalk",
+                                  "ChangeStyle": true,
+                                  "StyleList": [
+                                    {
+                                      "StyleType": "FateRinBattle"
+                                    }
+                                  ],
+                                  "SimpleTalkList": [
+                                    {
+                                      "TalkSentenceID": 154069917,
+                                      "ProtectTime": 2
+                                    }
+                                  ]
+                                },
+                                {
+                                  "$type": "RPG.GameCore.PlayMissionTalk",
+                                  "ChangeStyle": true,
+                                  "StyleList": [
+                                    {
+                                      "StyleType": "FateRinBattle"
+                                    }
+                                  ],
+                                  "SimpleTalkList": [
+                                    {
+                                      "TalkSentenceID": 154069918,
+                                      "ProtectTime": 2
+                                    }
+                                  ]
+                                },
+                                {
+                                  "$type": "RPG.GameCore.PlayMissionTalk",
+                                  "ChangeStyle": true,
+                                  "StyleList": [
+                                    {
+                                      "StyleType": "FateRinBattle"
+                                    }
+                                  ],
+                                  "SimpleTalkList": [
+                                    {
+                                      "TalkSentenceID": 154069919,
+                                      "ProtectTime": 2
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "Value": {
+                        "IsDynamic": true,
+                        "PostfixExpr": {
+                          "OpCodes": "AQAAAAIR",
+                          "FixedValues": [
+                            {
+                              "Value": 1
+                            }
+                          ],
+                          "DynamicHashes": [
+                            -1467443172
+                          ]
+                        }
+                      },
+                      "DynamicKey": {
+                        "Value": "PhaseCount"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Event": "OnWaveMonster",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByIsStageFirstWave",
+                        "Inverse": true
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareStageID",
+                        "CompareType": "NotEqual",
+                        "StageID": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 429001
+                          }
+                        }
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareStageID",
+                        "CompareType": "NotEqual",
+                        "StageID": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 429101
+                          }
+                        }
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareStageID",
+                        "CompareType": "NotEqual",
+                        "StageID": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 429201
+                          }
+                        }
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareStageID",
+                        "CompareType": "NotEqual",
+                        "StageID": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 429301
+                          }
+                        }
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareStageID",
+                        "CompareType": "NotEqual",
+                        "StageID": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 429301
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetDynamicValue",
+                      "Value": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      },
+                      "DynamicKey": {
+                        "Value": "PhaseCount"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByAny",
+                        "PredicateList": [
+                          {
+                            "$type": "RPG.GameCore.ByCompareCharacterID",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                              "UniqueName": "Activity_FateRin_ServantAvatar"
+                            },
+                            "TargetCharacterID": {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 6039
+                              }
+                            }
+                          },
+                          {
+                            "$type": "RPG.GameCore.ByCompareCharacterID",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                              "UniqueName": "Activity_FateRin_ServantAvatar"
+                            },
+                            "TargetCharacterID": {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 6040
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.RandomConfig",
+                          "OddsList": [
+                            {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 0.25
+                              }
+                            },
+                            {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 0.25
+                              }
+                            },
+                            {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 0.25
+                              }
+                            },
+                            {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 0.25
+                              }
+                            }
+                          ],
+                          "TaskList": [
+                            {
+                              "$type": "RPG.GameCore.PlayMissionTalk",
+                              "ChangeStyle": true,
+                              "StyleList": [
+                                {
+                                  "StyleType": "FateRinBattle"
+                                }
+                              ],
+                              "SimpleTalkList": [
+                                {
+                                  "TalkSentenceID": 154069900,
+                                  "ProtectTime": 2
+                                }
+                              ]
+                            },
+                            {
+                              "$type": "RPG.GameCore.PlayMissionTalk",
+                              "ChangeStyle": true,
+                              "StyleList": [
+                                {
+                                  "StyleType": "FateRinBattle"
+                                }
+                              ],
+                              "SimpleTalkList": [
+                                {
+                                  "TalkSentenceID": 154069901,
+                                  "ProtectTime": 2
+                                }
+                              ]
+                            },
+                            {
+                              "$type": "RPG.GameCore.PlayMissionTalk",
+                              "ChangeStyle": true,
+                              "StyleList": [
+                                {
+                                  "StyleType": "FateRinBattle"
+                                }
+                              ],
+                              "SimpleTalkList": [
+                                {
+                                  "TalkSentenceID": 154069908,
+                                  "ProtectTime": 2
+                                }
+                              ]
+                            },
+                            {
+                              "$type": "RPG.GameCore.PlayMissionTalk",
+                              "ChangeStyle": true,
+                              "StyleList": [
+                                {
+                                  "StyleType": "FateRinBattle"
+                                }
+                              ],
+                              "SimpleTalkList": [
+                                {
+                                  "TalkSentenceID": 154069909,
+                                  "ProtectTime": 2
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareCharacterID",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                          "UniqueName": "Activity_FateRin_ServantAvatar"
+                        },
+                        "TargetCharacterID": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 6041
+                          }
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.RandomConfig",
+                          "OddsList": [
+                            {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 0.25
+                              }
+                            },
+                            {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 0.25
+                              }
+                            },
+                            {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 0.25
+                              }
+                            },
+                            {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 0.25
+                              }
+                            }
+                          ],
+                          "TaskList": [
+                            {
+                              "$type": "RPG.GameCore.PlayMissionTalk",
+                              "ChangeStyle": true,
+                              "StyleList": [
+                                {
+                                  "StyleType": "FateRinBattle"
+                                }
+                              ],
+                              "SimpleTalkList": [
+                                {
+                                  "TalkSentenceID": 154069902,
+                                  "ProtectTime": 2
+                                }
+                              ]
+                            },
+                            {
+                              "$type": "RPG.GameCore.PlayMissionTalk",
+                              "ChangeStyle": true,
+                              "StyleList": [
+                                {
+                                  "StyleType": "FateRinBattle"
+                                }
+                              ],
+                              "SimpleTalkList": [
+                                {
+                                  "TalkSentenceID": 154069903,
+                                  "ProtectTime": 2
+                                }
+                              ]
+                            },
+                            {
+                              "$type": "RPG.GameCore.PlayMissionTalk",
+                              "ChangeStyle": true,
+                              "StyleList": [
+                                {
+                                  "StyleType": "FateRinBattle"
+                                }
+                              ],
+                              "SimpleTalkList": [
+                                {
+                                  "TalkSentenceID": 154069908,
+                                  "ProtectTime": 2
+                                }
+                              ]
+                            },
+                            {
+                              "$type": "RPG.GameCore.PlayMissionTalk",
+                              "ChangeStyle": true,
+                              "StyleList": [
+                                {
+                                  "StyleType": "FateRinBattle"
+                                }
+                              ],
+                              "SimpleTalkList": [
+                                {
+                                  "TalkSentenceID": 154069909,
+                                  "ProtectTime": 2
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareCharacterID",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                          "UniqueName": "Activity_FateRin_ServantAvatar"
+                        },
+                        "TargetCharacterID": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 6037
+                          }
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.RandomConfig",
+                          "OddsList": [
+                            {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 0.25
+                              }
+                            },
+                            {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 0.25
+                              }
+                            },
+                            {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 0.25
+                              }
+                            },
+                            {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 0.25
+                              }
+                            }
+                          ],
+                          "TaskList": [
+                            {
+                              "$type": "RPG.GameCore.PlayMissionTalk",
+                              "ChangeStyle": true,
+                              "StyleList": [
+                                {
+                                  "StyleType": "FateRinBattle"
+                                }
+                              ],
+                              "SimpleTalkList": [
+                                {
+                                  "TalkSentenceID": 154069904,
+                                  "ProtectTime": 2
+                                }
+                              ]
+                            },
+                            {
+                              "$type": "RPG.GameCore.PlayMissionTalk",
+                              "ChangeStyle": true,
+                              "StyleList": [
+                                {
+                                  "StyleType": "FateRinBattle"
+                                }
+                              ],
+                              "SimpleTalkList": [
+                                {
+                                  "TalkSentenceID": 154069905,
+                                  "ProtectTime": 2
+                                }
+                              ]
+                            },
+                            {
+                              "$type": "RPG.GameCore.PlayMissionTalk",
+                              "ChangeStyle": true,
+                              "StyleList": [
+                                {
+                                  "StyleType": "FateRinBattle"
+                                }
+                              ],
+                              "SimpleTalkList": [
+                                {
+                                  "TalkSentenceID": 154069908,
+                                  "ProtectTime": 2
+                                }
+                              ]
+                            },
+                            {
+                              "$type": "RPG.GameCore.PlayMissionTalk",
+                              "ChangeStyle": true,
+                              "StyleList": [
+                                {
+                                  "StyleType": "FateRinBattle"
+                                }
+                              ],
+                              "SimpleTalkList": [
+                                {
+                                  "TalkSentenceID": 154069909,
+                                  "ProtectTime": 2
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareCharacterID",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                          "UniqueName": "Activity_FateRin_ServantAvatar"
+                        },
+                        "TargetCharacterID": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 6036
+                          }
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.RandomConfig",
+                          "OddsList": [
+                            {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 0.25
+                              }
+                            },
+                            {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 0.25
+                              }
+                            },
+                            {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 0.25
+                              }
+                            },
+                            {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 0.25
+                              }
+                            }
+                          ],
+                          "TaskList": [
+                            {
+                              "$type": "RPG.GameCore.PlayMissionTalk",
+                              "ChangeStyle": true,
+                              "StyleList": [
+                                {
+                                  "StyleType": "FateRinBattle"
+                                }
+                              ],
+                              "SimpleTalkList": [
+                                {
+                                  "TalkSentenceID": 154069906,
+                                  "ProtectTime": 2
+                                }
+                              ]
+                            },
+                            {
+                              "$type": "RPG.GameCore.PlayMissionTalk",
+                              "ChangeStyle": true,
+                              "StyleList": [
+                                {
+                                  "StyleType": "FateRinBattle"
+                                }
+                              ],
+                              "SimpleTalkList": [
+                                {
+                                  "TalkSentenceID": 154069907,
+                                  "ProtectTime": 2
+                                }
+                              ]
+                            },
+                            {
+                              "$type": "RPG.GameCore.PlayMissionTalk",
+                              "ChangeStyle": true,
+                              "StyleList": [
+                                {
+                                  "StyleType": "FateRinBattle"
+                                }
+                              ],
+                              "SimpleTalkList": [
+                                {
+                                  "TalkSentenceID": 154069908,
+                                  "ProtectTime": 2
+                                }
+                              ]
+                            },
+                            {
+                              "$type": "RPG.GameCore.PlayMissionTalk",
+                              "ChangeStyle": true,
+                              "StyleList": [
+                                {
+                                  "StyleType": "FateRinBattle"
+                                }
+                              ],
+                              "SimpleTalkList": [
+                                {
+                                  "TalkSentenceID": 154069909,
+                                  "ProtectTime": 2
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "DynamicValues": {
+            "Floats": {
+              "-1467443172": {
+                "ReadInfo": {
+                  "Type": "None",
+                  "Index": 0
+                }
+              }
+            }
+          }
+        },
+        "Modifier_FateRin_BigTurn_ActionSequenceControl": {
+          "_CallbackList": [
+            {
+              "Event": "OnPhase1",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                  "Name": "_ResetupLink"
+                },
+                {
+                  "$type": "RPG.GameCore.RemoveModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "LightTeamEntity"
+                  },
+                  "ModifierName": {
+                    "Value": "Modifier_Shield"
+                  }
+                }
+              ]
+            },
+            {
+              "Event": "OnStack",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                  "Name": "_ResetupLink"
+                }
+              ]
+            },
+            {
+              "Event": "OnListenCharacterCreate",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByCurrentTurnState",
+                        "TurnStates": [
+                          "TurnEnd"
+                        ],
+                        "Inverse": true
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareTarget",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "CurrentTurnOwnerEntity"
+                        },
+                        "CompareType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        }
+                      }
+                    ]
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                      "Name": "_ResetupLink"
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByTargetTeam",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "Team": "TeamDark"
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.ModifyActionDelay",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ParamEntity"
+                          },
+                          "AddNormalizedValue": {
+                            "IsDynamic": true,
+                            "PostfixExpr": {
+                              "OpCodes": "AAAR",
+                              "FixedValues": [
+                                {
+                                  "Value": 999
+                                }
+                              ],
+                              "DynamicHashes": []
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Event": "OnEnterBattle",
+              "Priority": -91,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareWaveCount",
+                    "CompareType": "Equal",
+                    "CompareValue": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 1
+                      }
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetTargetUniqueName",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "AllLightTeam.RemoveBattleEvent.Select1"
+                      },
+                      "UniqueName": {
+                        "RawString": "Activity_FateRin_MasterAvatar"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetTargetUniqueName",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "AllLightTeam.RemoveBattleEvent.Select2"
+                      },
+                      "UniqueName": {
+                        "RawString": "Activity_FateRin_ServantAvatar"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.DefineHPSharedGroup",
+                      "MainTarget": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ModifierOwnerEntity"
+                      },
+                      "SubTargets": {
+                        "$type": "RPG.GameCore.TargetSequence",
+                        "Sequence": [
+                          {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "AllLightTeam"
+                          },
+                          {
+                            "$type": "RPG.GameCore.TargetFilter",
+                            "Predicate": {
+                              "$type": "RPG.GameCore.ByIsContainModifier",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "ParamEntity"
+                              },
+                              "ModifierName": {
+                                "Value": "Modifier_FateRin_LightTeamMember"
+                              }
+                            }
+                          }
+                        ]
+                      },
+                      "ResolveShield": true
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "AdditionConfig": {
+            "SubModifierList": [
+              {
+                "Name": "Modifier_FateRin_LightTeamMember",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "AllLightTeam-ModifierOwnerEntity"
+                },
+                "IsHaloStatus": true
+              },
+              {
+                "Name": "Modifier_FateRin_DarkTeamMember",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "AllDarkTeamWithAllDarkTeamUnselectable"
+                },
+                "IsHaloStatus": true
+              }
+            ]
+          },
+          "DynamicValues": {
+            "Floats": {
+              "304418490": {
+                "ReadInfo": {
+                  "Type": "None",
+                  "Index": 0
+                }
+              },
+              "-1193419521": {
+                "ReadInfo": {
+                  "Type": "None",
+                  "Index": 0
+                }
+              },
+              "45941321": {
+                "ReadInfo": {
+                  "Type": "None",
+                  "Index": 0
+                }
+              }
+            }
+          },
+          "TaskListTemplate": []
+        },
+        "Modifier_FateRin_LightTeamMember": {
+          "_CallbackList": [
+            {
+              "Event": "OnDestroy",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.SetEntityActionState",
+                  "UniqueName": "Activity_FateRin_LightTeamMember_DisableAction",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  }
+                }
+              ]
+            },
+            {
+              "Event": "OnPhase1",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.ModifySPNew",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "AddValue": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        437929757
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "Event": "OnStack",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.SetEntityActionState",
+                  "UniqueName": "Activity_FateRin_LightTeamMember_DisableAction",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "ActionState": false
+                }
+              ]
+            },
+            {
+              "Event": "OnAfterBeingAttacked",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.ModifySPNew",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "AddValue": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAR",
+                      "FixedValues": [],
+                      "DynamicHashes": [
+                        1137914589
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "Event": "OnFateRinAfterCardPlay",
+              "CallbackConfig": [
+                {
+                  "$type": "NBLICBHDAFM",
+                  "FHLJGDGMMHK": "_CardID"
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareDynamicValue",
+                    "DynamicKey": {
+                      "Value": "_CardID"
+                    },
+                    "CompareType": "Less",
+                    "CompareValue": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 7000
+                      }
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareTarget",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "FateRinCardCaster"
+                        },
+                        "CompareType": {
+                          "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                          "UniqueName": "Activity_FateRin_BigTurn_LightTeamAgent"
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.ModifySPNew",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "AllLightTeam"
+                          },
+                          "FixedAddValue": {
+                            "IsDynamic": true,
+                            "PostfixExpr": {
+                              "OpCodes": "AQAAAAUR",
+                              "FixedValues": [
+                                {
+                                  "Value": 2
+                                }
+                              ],
+                              "DynamicHashes": [
+                                -838921994
+                              ]
+                            }
+                          }
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.ModifySPNew",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "FateRinCardCaster"
+                          },
+                          "FixedAddValue": {
+                            "IsDynamic": true,
+                            "PostfixExpr": {
+                              "OpCodes": "AQAR",
+                              "FixedValues": [],
+                              "DynamicHashes": [
+                                -838921994
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "DynamicValues": {
+            "Floats": {
+              "1137914589": {
+                "ReadInfo": {
+                  "Type": "None",
+                  "Index": 0
+                }
+              },
+              "437929757": {
+                "ReadInfo": {
+                  "Type": "None",
+                  "Index": 0
+                }
+              },
+              "-838921994": {
+                "ReadInfo": {
+                  "Type": "None",
+                  "Index": 0
+                }
+              },
+              "-797513620": {
+                "ReadInfo": {
+                  "Type": "None",
+                  "Index": 0
+                }
+              }
+            }
+          }
+        },
+        "Modifier_FateRin_DarkTeamMember": {
+          "_CallbackList": [
+            {
+              "Event": "OnDestroy",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.ReleaseCharacterHUDVisibleControl",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  }
+                }
+              ]
+            },
+            {
+              "Event": "OnStack",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.MakeCharacterHUDVisible",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "IndependentControl": true
+                },
+                {
+                  "$type": "RPG.GameCore.StackProperty",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "Property": "AllDamageReduce",
+                  "PropertyValue": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AAAOAAEFEQ==",
+                      "FixedValues": [
+                        {
+                          "Value": 1
+                        },
+                        {
+                          "Value": 9
+                        }
+                      ],
+                      "DynamicHashes": []
+                    }
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.LockStance",
+                  "StanceValueRatio": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "Event": "OnEnterBattle",
+              "Priority": -90,
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.MakeCharacterHUDVisible",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "IndependentControl": true
+                }
+              ]
+            }
+          ]
+        },
+        "Modifier_FateRin_BigTurn_LightTeamModifierPhase": {
+          "_CallbackList": [
+            {
+              "Event": "OnPhase1",
+              "CallbackConfig": [
+                {
+                  "$type": "PHGMBKIHFBC",
+                  "HILNFHCPEAD": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllLightTeam-ModifierOwnerEntity"
+                  }
+                }
+              ]
+            },
+            {
+              "Event": "OnActionEnd",
+              "CallbackConfig": [
+                {
+                  "$type": "CKCOFEAAJII",
+                  "GNLDHNBHMOC": "ActionPhaseEnd",
+                  "HILNFHCPEAD": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllLightTeam-ModifierOwnerEntity"
+                  }
+                }
+              ]
+            },
+            {
+              "Event": "OnListenTurnEnd",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByIsTurnOwnerEntity",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "CKCOFEAAJII",
+                      "GNLDHNBHMOC": "TurnEnd",
+                      "HILNFHCPEAD": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "AllLightTeam-ModifierOwnerEntity"
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "Event": "OnPhase2",
+              "CallbackConfig": [
+                {
+                  "$type": "PHGMBKIHFBC",
+                  "HILNFHCPEAD": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "AllLightTeam-ModifierOwnerEntity"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "Name": "Activity_FateRin_BigTurn_PassiveSkill01",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.SetTargetUniqueName",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "UniqueName": {
+            "RawString": "Activity_FateRin_BigTurn_LightTeamAgent"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "Modifier_FateRin_BigTurn_SpecialWinControl"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "Modifier_FateRin_BigTurn_ActionSequenceControl"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "Modifier_FateRin_BigTurn_VoiceControl"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "Modifier_FateRin_BigTurn_DitherControl"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "Modifier_FateRin_BigTurn_LightTeamModifierPhase"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllLightTeam"
+          },
+          "ModifierName": {
+            "Value": "Modifier_FateRin_BigTurn_StandbyControl"
+          }
+        }
+      ]
+    },
+    {
+      "Modifiers": {
+        "Modifier_FateRin_ChangeMagic": {
+          "_CallbackList": [
+            {
+              "Event": "OnListenCharacterCreate",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAny",
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByCompareCharacterID",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "TargetCharacterID": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 6039
+                          }
+                        }
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareCharacterID",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ParamEntity"
+                        },
+                        "TargetCharacterID": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 6040
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "FMFNKGLNPMI",
+                      "GPMFMAAKCFE": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 5004
+                        }
+                      },
+                      "NNKMEMKEPPA": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 5007
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareCharacterID",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "TargetCharacterID": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 6041
+                      }
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "FMFNKGLNPMI",
+                      "GPMFMAAKCFE": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 5004
+                        }
+                      },
+                      "NNKMEMKEPPA": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 5005
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareCharacterID",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "TargetCharacterID": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 6037
+                      }
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "FMFNKGLNPMI",
+                      "GPMFMAAKCFE": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 5004
+                        }
+                      },
+                      "NNKMEMKEPPA": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 5008
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareCharacterID",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ParamEntity"
+                    },
+                    "TargetCharacterID": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 6036
+                      }
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "FMFNKGLNPMI",
+                      "GPMFMAAKCFE": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 5004
+                        }
+                      },
+                      "NNKMEMKEPPA": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 5006
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "Name": "Activity_FateRin_Stage_Ability_Setup",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.CreateBattleEvent",
+          "EventID": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 200000
+            }
+          },
+          "Team": "TeamLight"
+        },
+        {
+          "$type": "RPG.GameCore.SetBattleUIPanelState",
+          "PanelTypes": [
+            "ActionBarPanel"
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "Modifier_FateRin_ChangeMagic"
+          }
+        }
+      ]
+    }
+  ],
+  "GlobalModifiers": {},
+  "GlobalTemplates": [
+    {
+      "Name": "_ResetupLink",
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.CancelActionDelayLink",
+          "LinkOwner": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetupActionDelayLink",
+          "LinkOwner": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "Follower": {
+            "$type": "RPG.GameCore.TargetSequence",
+            "Sequence": [
+              {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AllDarkTeamWithAllDarkTeamUnselectable"
+              },
+              {
+                "$type": "RPG.GameCore.TargetSortSequence",
+                "SortSequence": [
+                  {
+                    "$type": "RPG.GameCore.TargetSortByProperty",
+                    "PropertyType": "Speed",
+                    "HighestFirst": true
+                  },
+                  {
+                    "$type": "RPG.GameCore.TargetSortByFormation"
+                  }
+                ]
+              }
+            ]
+          },
+          "OrderInLink": 1,
+          "IsInit": true,
+          "CorrectActionOrder": true
+        }
+      ]
+    }
+  ]
+}

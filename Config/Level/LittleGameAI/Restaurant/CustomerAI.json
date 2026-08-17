@@ -1,0 +1,506 @@
+{
+  "AIName": "CustomerAI",
+  "VariableList": [],
+  "DecisionList": [],
+  "RootState": {
+    "Name": "Root",
+    "TaskList": [],
+    "TransitionList": [],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ElfByIsCustomerState",
+          "State": "Order"
+        },
+        "TaskList": [],
+        "TransitionList": [],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfMoveToPosition",
+                "StartMoveDuration": 0.2
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "MoveToTable"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_LittleGame_DoNothing",
+                "Duration": 0.3
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_ElfInteractCurrentSlot",
+                "Duration": 0.3,
+                "ChangeAnim": false
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_ElfChangeAnimState",
+                "State": 3,
+                "AudioEventName": "Ev_sfx_NPC_Fairy_00_Adv_Ani_ElfStandByToElfSit01"
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "SitDown"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfCustomerProcessEvent"
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnStateFailed",
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnStateSucceeded",
+                "TransitionToState": "OnSelectEvent",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "TryTriggerSelect"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfCustomerTakeOrder"
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnStateSucceeded",
+                "TransitionToState": "WaitFood",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnStateFailed",
+                "TransitionToState": "Leave",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "OrderRecipe"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfCustomerWaitEvent"
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnStateSucceeded",
+                "TransitionToState": "OrderRecipe",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnStateFailed",
+                "TransitionToState": "Leave",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "SubStateList": [],
+            "Name": "OnSelectEvent"
+          }
+        ],
+        "Name": "Order"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ElfByIsCustomerState",
+          "State": "WaitEating"
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_ElfCustomerWaitEating"
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnStateSucceeded",
+            "TransitionToState": "Eating",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "Trigger": "OnStateFailed",
+            "TransitionToState": "Leave",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "Name": "WaitFood"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ElfByIsCustomerState",
+          "State": "Eating"
+        },
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfCustomerEating"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_ElfChangeAnimState",
+                "State": 4
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "Leave",
+                "TransitionToState": "Leave",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "WaitFood",
+                "TransitionToState": "WaitFood",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "ContinueOrderRecipe",
+                "TransitionToState": "OrderRecipe",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "GoExtraPay",
+                "TransitionToState": "GoExtraPay",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "GoDrink",
+                "TransitionToState": "GoDrink",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "PutdownFood"
+          }
+        ],
+        "Name": "Eating"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ElfByIsCustomerState",
+          "State": "Waiting"
+        },
+        "TaskList": [],
+        "TransitionList": [
+          {
+            "Trigger": "OnStateSucceeded",
+            "TransitionToType": "TreeSucceed",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfMoveToPosition",
+                "StartMoveDuration": 0.2,
+                "RandomDelay": 0.5
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "MoveToQueue"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfCustomerWaitInline"
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_ElfInteractCurrentSlot",
+                "Duration": 0.2,
+                "ChangeAnim": false
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "Leave",
+                "TransitionToState": "Leave",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "Order",
+                "TransitionToState": "Order",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "MoveToQueue",
+                "TransitionToState": "MoveToQueue",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "InteractQueue"
+          }
+        ],
+        "Name": "Wait"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ElfByIsCustomerState",
+          "State": "Leave"
+        },
+        "TaskList": [],
+        "TransitionList": [],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfMoveToPosition",
+                "PositionType": "TargetPosition",
+                "StartMoveDuration": 0.7
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "ProcessBill",
+                "TransitionToState": "ProcessBill",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "MoveToEntry"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfEntityDestory"
+              }
+            ],
+            "TransitionList": [],
+            "Name": "DestroySelf"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfCustomerProcessBill",
+                "LookAtDuration": 0.5
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToState": "MoveToEntry",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "ProcessBill"
+          }
+        ],
+        "Name": "Leave"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TransitionList": [],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfMoveToPosition",
+                "StartMoveDuration": 0.7
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "GoExtraPayMove"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_LittleGame_DoNothing",
+                "Duration": 0.5
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_ElfInteractCurrentSlot",
+                "Duration": 0.5
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_ElfChangeAnimState",
+                "State": 8
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "GoExtraPayInteract"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfCustomerExtraPay"
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToState": "Leave",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "GoExtraPayAction"
+          }
+        ],
+        "Name": "GoExtraPay"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "TransitionList": [],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfMoveToPosition",
+                "StartMoveDuration": 0.7
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "GoDrinkMove"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_LittleGame_DoNothing",
+                "Duration": 0.5
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_ElfInteractCurrentSlot",
+                "Duration": 0.5
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_ElfChangeAnimState",
+                "State": 8
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToType": "NextState",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "GoDrinkInteract"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_ElfCustomerDrink"
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToState": "Leave",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnEvent",
+                "UserDefineEvent": "GoExtraPay",
+                "TransitionToState": "GoExtraPay",
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "GoDrinkAction"
+          }
+        ],
+        "Name": "GoDrink"
+      }
+    ]
+  },
+  "OnDisable": {
+    "$type": "RPG.GameCore.TaskConfig"
+  },
+  "OnInit": {
+    "$type": "RPG.GameCore.TaskConfig"
+  }
+}

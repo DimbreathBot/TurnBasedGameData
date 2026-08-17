@@ -1,0 +1,792 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "Order": 100,
+      "TaskList": []
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.TriggerEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          },
+          "IsAttachToTargetEntity": true,
+          "Flags": [],
+          "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap04_Prop_EraFlipper_01_Hint01_Lod0.prefab",
+          "AttachPoint": "Root",
+          "ForceSimulateImmediately": false,
+          "SubObjectModifyDataList": [],
+          "IsAttachToCaster": true,
+          "SyncPropState": true
+        },
+        {
+          "$type": "RPG.GameCore.PropStateExecute",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+            "FetchType": "SinglePropByPropKey",
+            "SinglePropKey": {
+              "Custom": true,
+              "Key": "AttachedToLight"
+            }
+          },
+          "State": "Open",
+          "Execute": [
+            {
+              "$type": "RPG.GameCore.PropStateExecute",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                "FetchType": "SinglePropByPropKey",
+                "SinglePropKey": {
+                  "Custom": true,
+                  "Key": "AttachedToLightMark"
+                }
+              },
+              "State": "Open",
+              "Execute": [
+                {
+                  "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                  "Name": "IsLightMarkOpen",
+                  "TargetIDs": [],
+                  "Value": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 1
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupCustomTaskTrigger",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+          },
+          "TriggerName": "InteractTrigger",
+          "OnEnter": [
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+              "Name": "IsAvatarNear",
+              "TargetIDs": [],
+              "Value": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            }
+          ],
+          "OnExit": [
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+              "Name": "IsAvatarNear",
+              "TargetIDs": [],
+              "Value": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.2
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.TriggerEntityEvent",
+          "EventName": {
+            "Value": "UpdateFXState"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGraphDynamicValueChange",
+          "Name": "IsLightMarkOpen",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "UpdateFXState"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGraphDynamicValueChange",
+          "Name": "IsAvatarNear",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "UpdateFXState"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Order": 9999,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEvent",
+          "EventName": {
+            "Value": "UpdateFXState"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAny",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByRegionEraState",
+                        "EaraState": "State02"
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                        "Name": "IsNightOrDay",
+                        "Value": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 0
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByRegionEraState"
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                        "Name": "IsNightOrDay",
+                        "Value": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 1
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                    "Name": "IsOtherUsingLight",
+                    "Value": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 1
+                      }
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                        "Name": "IsLightMarkOpen",
+                        "Value": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 1
+                          }
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.AnimSetParameter",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                          },
+                          "ParameterName": "HintFXState",
+                          "ParameterType": "Int",
+                          "Value": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 3
+                            }
+                          }
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.AnimSetParameter",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                          },
+                          "ParameterName": "HintFXState",
+                          "ParameterType": "Int"
+                        }
+                      ]
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                        "Name": "IsUsingLight",
+                        "Value": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 1
+                          }
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                            "Name": "IsLightMarkOpen",
+                            "Value": {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 1
+                              }
+                            }
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.AnimSetParameter",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                              },
+                              "ParameterName": "HintFXState",
+                              "ParameterType": "Int",
+                              "Value": {
+                                "IsDynamic": false,
+                                "FixedValue": {
+                                  "Value": 3
+                                }
+                              }
+                            }
+                          ],
+                          "FailedTaskList": [
+                            {
+                              "$type": "RPG.GameCore.AnimSetParameter",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                              },
+                              "ParameterName": "HintFXState",
+                              "ParameterType": "Int",
+                              "Value": {
+                                "IsDynamic": false,
+                                "FixedValue": {
+                                  "Value": 2
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ],
+                      "FailedTaskList": [
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                            "Name": "IsLightMarkOpen",
+                            "Value": {
+                              "IsDynamic": false,
+                              "FixedValue": {
+                                "Value": 1
+                              }
+                            }
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.AnimSetParameter",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                              },
+                              "ParameterName": "HintFXState",
+                              "ParameterType": "Int",
+                              "Value": {
+                                "IsDynamic": false,
+                                "FixedValue": {
+                                  "Value": 3
+                                }
+                              }
+                            }
+                          ],
+                          "FailedTaskList": [
+                            {
+                              "$type": "RPG.GameCore.PredicateTaskList",
+                              "Predicate": {
+                                "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                                "Name": "IsAvatarNear",
+                                "Value": {
+                                  "IsDynamic": false,
+                                  "FixedValue": {
+                                    "Value": 1
+                                  }
+                                }
+                              },
+                              "SuccessTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.AnimSetParameter",
+                                  "TargetType": {
+                                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                                  },
+                                  "ParameterName": "HintFXState",
+                                  "ParameterType": "Int",
+                                  "Value": {
+                                    "IsDynamic": false,
+                                    "FixedValue": {
+                                      "Value": 1
+                                    }
+                                  }
+                                }
+                              ],
+                              "FailedTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.AnimSetParameter",
+                                  "TargetType": {
+                                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                                  },
+                                  "ParameterName": "HintFXState",
+                                  "ParameterType": "Int"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.AnimSetParameter",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+                  },
+                  "ParameterName": "HintFXState",
+                  "ParameterType": "Int",
+                  "Value": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 3
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.ParallelConfig",
+          "TaskList": [
+            {
+              "$type": "RPG.GameCore.SequenceConfig",
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+                  "FromAnyState": true,
+                  "OnChange": [
+                    {
+                      "$type": "RPG.GameCore.WaitSecond",
+                      "WaitTime": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0.5
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.PropStateExecute",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                        "FetchType": "SinglePropByPropKey",
+                        "SinglePropKey": {
+                          "Custom": true,
+                          "Key": "AttachedToLightMark"
+                        }
+                      },
+                      "Execute": [
+                        {
+                          "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                          "Name": "IsLightMarkOpen",
+                          "TargetIDs": [],
+                          "Value": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 0
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                    "FetchType": "SinglePropByPropKey",
+                    "SinglePropKey": {
+                      "Custom": true,
+                      "Key": "AttachedToLightMark"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SequenceConfig",
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+                  "ToState": "Open",
+                  "FromAnyState": true,
+                  "OnChange": [
+                    {
+                      "$type": "RPG.GameCore.WaitSecond",
+                      "WaitTime": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0.5
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.PropStateExecute",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                        "FetchType": "SinglePropByPropKey",
+                        "SinglePropKey": {
+                          "Custom": true,
+                          "Key": "AttachedToLightMark"
+                        }
+                      },
+                      "State": "Open",
+                      "Execute": [
+                        {
+                          "$type": "RPG.GameCore.PropStateExecute",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                            "FetchType": "SinglePropByPropKey",
+                            "SinglePropKey": {
+                              "Custom": true,
+                              "Key": "AttachedToLight"
+                            }
+                          },
+                          "State": "Open",
+                          "Execute": [
+                            {
+                              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                              "Name": "IsLightMarkOpen",
+                              "TargetIDs": [],
+                              "Value": {
+                                "IsDynamic": false,
+                                "FixedValue": {
+                                  "Value": 1
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                    "FetchType": "SinglePropByPropKey",
+                    "SinglePropKey": {
+                      "Custom": true,
+                      "Key": "AttachedToLightMark"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SequenceConfig",
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+                  "ToState": "Open",
+                  "FromAnyState": true,
+                  "OnChange": [
+                    {
+                      "$type": "RPG.GameCore.PropStateExecute",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                        "FetchType": "SinglePropByPropKey",
+                        "SinglePropKey": {
+                          "Custom": true,
+                          "Key": "AttachedToLightMark"
+                        }
+                      },
+                      "State": "Open",
+                      "Execute": [
+                        {
+                          "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                          "Name": "IsLightMarkOpen",
+                          "TargetIDs": [],
+                          "Value": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 1
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                    "FetchType": "SinglePropByPropKey",
+                    "SinglePropKey": {
+                      "Custom": true,
+                      "Key": "AttachedToLight"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SequenceConfig",
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.PropStateChangeListenerConfig",
+                  "FromState": "Open",
+                  "FromAnyState": true,
+                  "OnChange": [
+                    {
+                      "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                      "Name": "IsLightMarkOpen",
+                      "TargetIDs": [],
+                      "Value": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      }
+                    }
+                  ],
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetFetchAdvPropEx",
+                    "FetchType": "SinglePropByPropKey",
+                    "SinglePropKey": {
+                      "Custom": true,
+                      "Key": "AttachedToLight"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "$type": "RPG.GameCore.SequenceConfig",
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.OnControlEraFlipperLightDeviceListener",
+                  "OnSelfGroupEnter": [
+                    {
+                      "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                      "Name": "IsUsingLight",
+                      "TargetIDs": [],
+                      "Value": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 1
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                      "Name": "IsOtherUsingLight",
+                      "TargetIDs": [],
+                      "Value": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      }
+                    }
+                  ],
+                  "OnOtherGroupEnter": [
+                    {
+                      "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                      "Name": "IsUsingLight",
+                      "TargetIDs": [],
+                      "Value": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                      "Name": "IsOtherUsingLight",
+                      "TargetIDs": [],
+                      "Value": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 1
+                        }
+                      }
+                    }
+                  ],
+                  "OnExit": [
+                    {
+                      "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                      "Name": "IsUsingLight",
+                      "TargetIDs": [],
+                      "Value": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.SetGraphDynamicFloat",
+                      "Name": "IsOtherUsingLight",
+                      "TargetIDs": [],
+                      "Value": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGraphDynamicValueChange",
+          "Name": "IsUsingLight",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "UpdateFXState"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGraphDynamicValueChange",
+          "Name": "IsOtherUsingLight",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "UpdateFXState"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.RegionEraStateChangeListener",
+          "OnSwitchToState1": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "UpdateFXState"
+              }
+            }
+          ],
+          "OnSwitchToState2": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEvent",
+              "EventName": {
+                "Value": "UpdateFXState"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "AttachedToLight"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "AttachedToLightMark"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "IsAvatarNear"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "IsLightMarkOpen"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "IsUsingLight"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "IsOtherUsingLight"
+      },
+      {
+        "$type": "RPG.GameCore.SharedFloat",
+        "Key": "IsNightOrDay"
+      }
+    ]
+  },
+  "Type": "Entity",
+  "EntityEventList": [
+    {
+      "Name": "UpdateFXState"
+    }
+  ]
+}

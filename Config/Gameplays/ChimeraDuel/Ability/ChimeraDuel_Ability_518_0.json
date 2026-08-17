@@ -1,0 +1,179 @@
+{
+  "Nodes": [
+    {
+      "$type": "RPG.GameCore.ChimeraDuelProbabilityNode",
+      "Condition": {
+        "ValueGetter": {
+          "$type": "RPG.GameCore.ChimeraDuelValueCalculator",
+          "CalculateType": "Pow",
+          "ValueGetters": [
+            {
+              "$type": "RPG.GameCore.ChimeraDuelExcelValueGetter"
+            },
+            {
+              "$type": "RPG.GameCore.SimpleChimeraDuelValueGetter",
+              "Value": {
+                "Value": 0.5
+              }
+            },
+            {
+              "$type": "RPG.GameCore.ChimeraDuelChimeraDynamicValueGetter",
+              "BaseKey": "DeathTimes",
+              "AppendKeyType": "TeamType"
+            }
+          ]
+        }
+      },
+      "CommonNode": [
+        {
+          "$type": "RPG.GameCore.ChimeraDuelWaitSecondsNode",
+          "WaitTime": 0.5
+        },
+        {
+          "$type": "RPG.GameCore.ChimeraDuelFireEffectNode",
+          "TargetSelector": [
+            {
+              "$type": "RPG.GameCore.ChimeraDuelCasterSelectorConfig"
+            }
+          ],
+          "AnchorName": "BuffAdd",
+          "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_Chimera/Eff_ActivityProp_Chimera_Buff_Intensify.prefab"
+        },
+        {
+          "$type": "RPG.GameCore.ChimeraDuelWaitSecondsNode",
+          "WaitTime": 0.5
+        },
+        {
+          "$type": "RPG.GameCore.ChimeraDuelModifierContainerNode",
+          "Modifiers": [
+            {
+              "TargetSelector": [
+                {
+                  "$type": "RPG.GameCore.ChimeraDuelCasterSelectorConfig"
+                }
+              ],
+              "Effects": [
+                {
+                  "$type": "RPG.GameCore.ChimeraDuelEffectConfig",
+                  "EffectType": "SetHealth",
+                  "EffectParam": {
+                    "$type": "RPG.GameCore.ChimeraDuelNormalEffectParam",
+                    "ValueGetters": [
+                      {
+                        "$type": "RPG.GameCore.ChimeraDuelCasterAttributeValueGetter",
+                        "Attribute": "InitialHP"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.ChimeraDuelEffectConfig",
+                  "EffectType": "ChangeAttack",
+                  "EffectParam": {
+                    "$type": "RPG.GameCore.ChimeraDuelNormalEffectParam",
+                    "ValueGetters": [
+                      {
+                        "$type": "RPG.GameCore.ChimeraDuelExcelValueGetter",
+                        "ParamIndex": 3
+                      }
+                    ]
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.ChimeraDuelEffectConfig",
+                  "EffectType": "AddAbility",
+                  "EffectParam": {
+                    "$type": "RPG.GameCore.ChimeraDuelNormalEffectParam",
+                    "ValueGetters": [
+                      {
+                        "$type": "RPG.GameCore.ChimeraDuelExcelValueGetter",
+                        "ParamIndex": 2
+                      }
+                    ]
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.ChimeraDuelEffectConfig",
+                  "EffectType": "IncreaseChimeraDynamicValue",
+                  "EffectParam": {
+                    "$type": "RPG.GameCore.ChimeraDuelStorageEffectParam",
+                    "StorageBaseKey": "DeathTimes",
+                    "AppendKeyType": "TeamType"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.ChimeraDuelEffectConfig",
+                  "EffectType": "AddBuff",
+                  "EffectParam": {
+                    "$type": "RPG.GameCore.ChimeraDuelBuffEffectParam",
+                    "Buffs": [
+                      {
+                        "BuffType": "AddEffect",
+                        "EffectConfig": {
+                          "$type": "RPG.GameCore.ChimeraDuelEffectConfig",
+                          "EffectType": "StoreChimeraAttackDamageMultiplier",
+                          "EffectParam": {
+                            "$type": "RPG.GameCore.ChimeraDuelNormalEffectParam",
+                            "ValueGetters": [
+                              {
+                                "$type": "RPG.GameCore.ChimeraDuelExcelValueGetter",
+                                "ParamIndex": 1
+                              }
+                            ]
+                          }
+                        },
+                        "DurationValueGetter": {
+                          "$type": "RPG.GameCore.SimpleChimeraDuelValueGetter",
+                          "Value": {
+                            "Value": -1
+                          }
+                        },
+                        "UniqueName": "MydeiDamageIncrease"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.ChimeraDuelFireEffectNode",
+          "TargetSelector": [
+            {
+              "$type": "RPG.GameCore.ChimeraDuelCasterSelectorConfig"
+            }
+          ],
+          "AnchorName": "Surrounding",
+          "EffectPath": "Effects/Eff_Prefab/Eff_ActivityProp/Eff_ActivityProp_ChimeraDuel/Eff_ActivityProp_ChimeraDuel_Red.prefab",
+          "UniqueName": "MydeiBuff",
+          "Scale": {
+            "X": 0.5,
+            "Y": 0.5,
+            "Z": 0.5
+          }
+        }
+      ]
+    },
+    {
+      "$type": "RPG.GameCore.ChimeraDuelWaitSecondsNode",
+      "WaitTime": 0.25
+    }
+  ],
+  "CastCondition": {
+    "$type": "RPG.GameCore.ChimeraDuelAttributeComparePredicate",
+    "Target": {
+      "$type": "RPG.GameCore.ChimeraDuelCasterSelectorConfig"
+    },
+    "ComparePredicate": {
+      "$type": "RPG.GameCore.ChimeraDuelEntityAttributeComparePredicate",
+      "Left": "HP",
+      "Right": {
+        "$type": "RPG.GameCore.SimpleChimeraDuelValueGetter"
+      },
+      "CompareType": "LessOrEqual"
+    }
+  },
+  "SavedSelection": [],
+  "PreLoadResPaths": []
+}

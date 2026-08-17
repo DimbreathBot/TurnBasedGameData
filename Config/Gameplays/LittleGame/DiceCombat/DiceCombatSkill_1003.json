@@ -1,0 +1,217 @@
+{
+  "RootAbility": {
+    "OnAdd": [
+      {
+        "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+        "ModifierID": 10301,
+        "LifeTime": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -1
+          }
+        }
+      },
+      {
+        "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+        "ModifierID": 10302,
+        "LifeTime": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -1
+          }
+        }
+      },
+      {
+        "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+        "ModifierID": 10303,
+        "LifeTime": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -1
+          }
+        }
+      },
+      {
+        "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+        "ModifierID": 10304,
+        "LifeTime": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -1
+          }
+        }
+      },
+      {
+        "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+        "ModifierID": 10305,
+        "LifeTime": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -1
+          }
+        }
+      }
+    ]
+  },
+  "InsertAbilitys": [
+    {
+      "Name": "again",
+      "AbilityTarget": "Enemy",
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillCutin",
+          "CutinID": 1
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 0.5
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerEffect"
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 0.5
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_AttackDamage",
+          "AttackConfig": {
+            "IgnorePartialDefendPointValue": {
+              "IsDynamic": true,
+              "PostfixExpr": {
+                "OpCodes": "AQAR",
+                "FixedValues": [],
+                "DynamicHashes": [
+                  1664928803
+                ]
+              }
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 0.5
+        }
+      ]
+    },
+    {
+      "Name": "StrikeBackDamage",
+      "AbilityTarget": "CombatTarget",
+      "Priority": "DCIAP_StrikeBack",
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_EntityData",
+          "ReadTarget": "AbilityTarget",
+          "Name": "CounterATK_1003",
+          "DataType": "AttackPoint"
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_EntityData",
+          "Name": "CounterDEF_1003",
+          "DataType": "DefendPoint"
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_CustomValueCompare",
+          "Left": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                331931798
+              ]
+            }
+          },
+          "Op": "Greater",
+          "Right": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                659174735
+              ]
+            }
+          },
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillCutin",
+              "CutinID": 15
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerEffect",
+              "EffectID": 1
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+              "duration": 0.75
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_StrikeBackDamage",
+              "Target": "Enemy",
+              "AttackConfig": {}
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+              "duration": 0.5
+            }
+          ]
+        }
+      ],
+      "ExecuteWhenOwnerAlive": true
+    }
+  ],
+  "Modifiers": [
+    {
+      "ModifierID": 10301,
+      "Flags": [
+        "AttackIgnoreDefPoint"
+      ],
+      "OnAdd": [],
+      "OnAttackerConfirm": [],
+      "OnDefendFail": []
+    },
+    {
+      "ModifierID": 10302,
+      "Flags": [
+        "AttackIgnoreAtkPoint"
+      ]
+    },
+    {
+      "ModifierID": 10303,
+      "Flags": [
+        "KeepAlive"
+      ]
+    },
+    {
+      "ModifierID": 10304,
+      "Flags": [],
+      "OnAfterCombat": [
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsAttacker",
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_InsertAbility",
+              "AbilityName": "again"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ModifierID": 10305,
+      "Flags": [],
+      "OnDefendSucc": [
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsDefender",
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_InsertAbility",
+              "AbilityName": "StrikeBackDamage"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

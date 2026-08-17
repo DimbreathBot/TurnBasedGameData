@@ -1,0 +1,230 @@
+{
+  "RootAbility": {
+    "OnAdd": [
+      {
+        "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+        "ModifierID": 2030401,
+        "LifeTime": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": -1
+          }
+        }
+      }
+    ]
+  },
+  "InsertAbilitys": [
+    {
+      "Name": "SkillHint_2030401",
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillCutin",
+          "CutinID": 24
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 1
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+          "ModifierID": 2030402,
+          "LifeTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": -1
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 1
+        }
+      ]
+    },
+    {
+      "Name": "PayBack_20304",
+      "AbilityTarget": "CombatTarget",
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillCutin",
+          "CutinID": 10
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 0.5
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerEffect",
+          "SubType": "CustomID",
+          "EffectID": 1
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 0.5
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_DirectDamage",
+          "Target": "CombatTarget",
+          "Value": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQABAQQAAAUR",
+              "FixedValues": [
+                {
+                  "Value": 100
+                }
+              ],
+              "DynamicHashes": [
+                -1893432518,
+                -1467239079
+              ]
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 0.5
+        }
+      ],
+      "ExecuteWhenOwnerAlive": true
+    },
+    {
+      "Name": "SkillHint_2030402",
+      "OnStart": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerSkillCutin",
+          "CutinID": 9
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 1
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_TriggerBossSpecialEffect"
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 2
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_AddModifier",
+          "ModifierID": 2030403,
+          "Stack": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                -1021764081
+              ]
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_WaitSecond",
+          "duration": 1
+        }
+      ]
+    }
+  ],
+  "Modifiers": [
+    {
+      "ModifierID": 2030401,
+      "Flags": [],
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_InsertAbility",
+          "AbilityName": "SkillHint_2030401"
+        }
+      ],
+      "OnPreAttackerConfirm": [
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsDefender",
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_GlobalData",
+              "Name": "SwapDiceSum_20304"
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_InsertAbility",
+              "AbilityName": "SkillHint_2030402"
+            }
+          ]
+        }
+      ],
+      "OnAttackerConfirm": []
+    },
+    {
+      "ModifierID": 2030402,
+      "Flags": [],
+      "OnDefendSucc": [
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsDefender",
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_EntityData",
+              "Name": "Defend_20304",
+              "DataType": "DefendPoint"
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_InsertAbility",
+              "AbilityName": "PayBack_20304"
+            }
+          ]
+        }
+      ],
+      "OnDefendFail": [
+        {
+          "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsDefender",
+          "OnSuccess": [
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_WriteCustomValue_EntityData",
+              "Name": "Defend_20304",
+              "DataType": "DefendPoint"
+            },
+            {
+              "$type": "RPG.GameCore.DiceCombatTaskConfig_InsertAbility",
+              "AbilityName": "PayBack_20304"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ModifierID": 2030403,
+      "Flags": [],
+      "OnAdd": [
+        {
+          "$type": "RPG.GameCore.DiceCombatTaskConfig_StackAdditiveProperty",
+          "AdditiveProperty": "DefPoint",
+          "Value": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "OpCodes": "AQAR",
+              "FixedValues": [],
+              "DynamicHashes": [
+                1669718312
+              ]
+            }
+          },
+          "OP": "Set"
+        }
+      ]
+    }
+  ],
+  "TryShowBossPersistentTips": {
+    "OnStart": [
+      {
+        "$type": "RPG.GameCore.DiceCombatPredicateConfig_IsDefender",
+        "OnSuccess": [
+          {
+            "$type": "RPG.GameCore.DiceCombatTaskConfig_ShowBossPersistentTipsView",
+            "TipsTextID": {
+              "Hash": 12623508498681269068
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

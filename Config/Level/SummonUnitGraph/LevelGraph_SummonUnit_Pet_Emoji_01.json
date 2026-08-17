@@ -1,0 +1,1498 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitBatch",
+          "WaitList": [
+            {
+              "WaitType": "Task",
+              "WaitTask": [
+                {
+                  "$type": "RPG.GameCore.WaitTargetAnimStateChange",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "FromStateNames": [],
+                  "ToStateNames": [
+                    "StandBy"
+                  ],
+                  "IsLoop": false
+                }
+              ],
+              "EventType": "EntityAnimStateChange",
+              "NotifyType": "OnCharacterAnimStateChange",
+              "OnTrigger": [
+                {
+                  "$type": "RPG.GameCore.TriggerCustomString",
+                  "CustomString": {
+                    "Value": "Runstop"
+                  }
+                }
+              ]
+            },
+            {
+              "WaitType": "Task",
+              "WaitTask": [
+                {
+                  "$type": "RPG.GameCore.WaitTargetAnimStateChange",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "FromStateNames": [],
+                  "ToStateNames": [
+                    "Run"
+                  ],
+                  "IsLoop": false
+                }
+              ],
+              "OnTrigger": [
+                {
+                  "$type": "RPG.GameCore.TriggerCustomString",
+                  "CustomString": {
+                    "Value": "RunBegin"
+                  }
+                }
+              ]
+            },
+            {
+              "WaitType": "Task",
+              "WaitTask": [
+                {
+                  "$type": "RPG.GameCore.WaitForWithDuration",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnimatorParam",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "CasterSummoner"
+                    },
+                    "ParamType": "Bool",
+                    "ParamName": "IsMove",
+                    "ParamCompareType": "Equal"
+                  },
+                  "Duration": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 15
+                    }
+                  }
+                }
+              ],
+              "OnTrigger": [
+                {
+                  "$type": "RPG.GameCore.TriggerCustomString",
+                  "CustomString": {
+                    "Value": "Idleshow"
+                  }
+                }
+              ]
+            },
+            {
+              "WaitType": "Notify",
+              "NotifyType": "AdventureOpenChest",
+              "OnTrigger": [
+                {
+                  "$type": "RPG.GameCore.TriggerCustomString",
+                  "CustomString": {
+                    "Value": "OpenChest"
+                  }
+                }
+              ]
+            },
+            {
+              "WaitType": "Notify",
+              "NotifyType": "BattleToMazeTransitFadeOutEnd",
+              "OnTrigger": [
+                {
+                  "$type": "RPG.GameCore.TriggerCustomString",
+                  "CustomString": {
+                    "Value": "Battle"
+                  }
+                }
+              ]
+            },
+            {
+              "WaitType": "Task",
+              "WaitTask": [
+                {
+                  "$type": "RPG.GameCore.WaitTargetAnimStateChange",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "CasterSummoner"
+                  },
+                  "FromStateNames": [],
+                  "ToStateNames": [
+                    "Attack_1",
+                    "Attack_2"
+                  ],
+                  "IsLoop": false
+                }
+              ],
+              "OnTrigger": [
+                {
+                  "$type": "RPG.GameCore.TriggerCustomString",
+                  "CustomString": {
+                    "Value": "DestructProp"
+                  }
+                }
+              ]
+            }
+          ],
+          "OnFinish": []
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Idleshow"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicString",
+          "Value": {
+            "Value": "Idleshow"
+          },
+          "DynamicKey": "CurrentState"
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByIsInStoryMode",
+            "Inverse": true
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.RandomConfig",
+              "OddsList": [
+                {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                },
+                {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                },
+                {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                },
+                {
+                  "IsDynamic": false,
+                  "FixedValue": {
+                    "Value": 1
+                  }
+                }
+              ],
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.SequenceConfig",
+                  "TaskList": [
+                    {
+                      "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                      "TargetAlias": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "AnimStateName": "Idle_Show_01"
+                    },
+                    {
+                      "$type": "RPG.GameCore.WaitSecond",
+                      "WaitTime": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0.5
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                        "Name": "CurrentState",
+                        "Value": {
+                          "Value": "Idleshow"
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.TriggerSound",
+                          "SoundName": {
+                            "Value": "Ev_sfx_NPC_SummonUnit_44001_Emoji_idle"
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "Caster"
+                          },
+                          "MeshName": "NPC_Special_Emoji_00_Face",
+                          "EmotionIndex": 24
+                        },
+                        {
+                          "$type": "RPG.GameCore.WaitSecond",
+                          "WaitTime": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 1.5
+                            }
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                          "TargetAlias": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "Caster"
+                          },
+                          "AnimStateName": "Idle_Show_01"
+                        },
+                        {
+                          "$type": "RPG.GameCore.WaitSecond",
+                          "WaitTime": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 0.5
+                            }
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                            "Name": "CurrentState",
+                            "Value": {
+                              "Value": "Idleshow"
+                            }
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "Caster"
+                              },
+                              "MeshName": "NPC_Special_Emoji_00_Face",
+                              "EmotionIndex": 5
+                            },
+                            {
+                              "$type": "RPG.GameCore.WaitSecond",
+                              "WaitTime": {
+                                "IsDynamic": false,
+                                "FixedValue": {
+                                  "Value": 1.5
+                                }
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                              "TargetAlias": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "Caster"
+                              },
+                              "AnimStateName": "Idle_Show_01"
+                            },
+                            {
+                              "$type": "RPG.GameCore.WaitSecond",
+                              "WaitTime": {
+                                "IsDynamic": false,
+                                "FixedValue": {
+                                  "Value": 0.5
+                                }
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.PredicateTaskList",
+                              "Predicate": {
+                                "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                                "Name": "CurrentState",
+                                "Value": {
+                                  "Value": "Idleshow"
+                                }
+                              },
+                              "SuccessTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                                  "TargetType": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "Caster"
+                                  },
+                                  "MeshName": "NPC_Special_Emoji_00_Face",
+                                  "EmotionIndex": 19
+                                },
+                                {
+                                  "$type": "RPG.GameCore.WaitSecond",
+                                  "WaitTime": {
+                                    "IsDynamic": false,
+                                    "FixedValue": {
+                                      "Value": 1.5
+                                    }
+                                  }
+                                },
+                                {
+                                  "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                                  "TargetAlias": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "Caster"
+                                  },
+                                  "AnimStateName": "Idle_Show_01"
+                                },
+                                {
+                                  "$type": "RPG.GameCore.WaitSecond",
+                                  "WaitTime": {
+                                    "IsDynamic": false,
+                                    "FixedValue": {
+                                      "Value": 0.5
+                                    }
+                                  }
+                                },
+                                {
+                                  "$type": "RPG.GameCore.PredicateTaskList",
+                                  "Predicate": {
+                                    "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                                    "Name": "CurrentState",
+                                    "Value": {
+                                      "Value": "Idleshow"
+                                    }
+                                  },
+                                  "SuccessTaskList": [
+                                    {
+                                      "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                                      "TargetType": {
+                                        "$type": "RPG.GameCore.TargetAlias",
+                                        "Alias": "Caster"
+                                      },
+                                      "MeshName": "NPC_Special_Emoji_00_Face",
+                                      "EmotionIndex": 5
+                                    },
+                                    {
+                                      "$type": "RPG.GameCore.WaitSecond",
+                                      "WaitTime": {
+                                        "IsDynamic": false,
+                                        "FixedValue": {
+                                          "Value": 1.5
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.SequenceConfig",
+                  "TaskList": [
+                    {
+                      "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                      "TargetAlias": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "AnimStateName": "Idle_Show_01"
+                    },
+                    {
+                      "$type": "RPG.GameCore.WaitSecond",
+                      "WaitTime": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0.5
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                        "Name": "CurrentState",
+                        "Value": {
+                          "Value": "Idleshow"
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.TriggerSound",
+                          "SoundName": {
+                            "Value": "Ev_sfx_NPC_SummonUnit_44001_Emoji_idle"
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "Caster"
+                          },
+                          "MeshName": "NPC_Special_Emoji_00_Face",
+                          "EmotionIndex": 30
+                        },
+                        {
+                          "$type": "RPG.GameCore.WaitSecond",
+                          "WaitTime": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 1.5
+                            }
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                          "TargetAlias": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "Caster"
+                          },
+                          "AnimStateName": "Idle_Show_01"
+                        },
+                        {
+                          "$type": "RPG.GameCore.WaitSecond",
+                          "WaitTime": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 0.5
+                            }
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                            "Name": "CurrentState",
+                            "Value": {
+                              "Value": "Idleshow"
+                            }
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "Caster"
+                              },
+                              "MeshName": "NPC_Special_Emoji_00_Face",
+                              "EmotionIndex": 19
+                            },
+                            {
+                              "$type": "RPG.GameCore.WaitSecond",
+                              "WaitTime": {
+                                "IsDynamic": false,
+                                "FixedValue": {
+                                  "Value": 1.5
+                                }
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                              "TargetAlias": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "Caster"
+                              },
+                              "AnimStateName": "Idle_Show_01"
+                            },
+                            {
+                              "$type": "RPG.GameCore.WaitSecond",
+                              "WaitTime": {
+                                "IsDynamic": false,
+                                "FixedValue": {
+                                  "Value": 0.5
+                                }
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.PredicateTaskList",
+                              "Predicate": {
+                                "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                                "Name": "CurrentState",
+                                "Value": {
+                                  "Value": "Idleshow"
+                                }
+                              },
+                              "SuccessTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                                  "TargetType": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "Caster"
+                                  },
+                                  "MeshName": "NPC_Special_Emoji_00_Face",
+                                  "EmotionIndex": 24
+                                },
+                                {
+                                  "$type": "RPG.GameCore.WaitSecond",
+                                  "WaitTime": {
+                                    "IsDynamic": false,
+                                    "FixedValue": {
+                                      "Value": 1.5
+                                    }
+                                  }
+                                },
+                                {
+                                  "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                                  "TargetAlias": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "Caster"
+                                  },
+                                  "AnimStateName": "Idle_Show_01"
+                                },
+                                {
+                                  "$type": "RPG.GameCore.WaitSecond",
+                                  "WaitTime": {
+                                    "IsDynamic": false,
+                                    "FixedValue": {
+                                      "Value": 0.5
+                                    }
+                                  }
+                                },
+                                {
+                                  "$type": "RPG.GameCore.PredicateTaskList",
+                                  "Predicate": {
+                                    "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                                    "Name": "CurrentState",
+                                    "Value": {
+                                      "Value": "Idleshow"
+                                    }
+                                  },
+                                  "SuccessTaskList": [
+                                    {
+                                      "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                                      "TargetType": {
+                                        "$type": "RPG.GameCore.TargetAlias",
+                                        "Alias": "Caster"
+                                      },
+                                      "MeshName": "NPC_Special_Emoji_00_Face",
+                                      "EmotionIndex": 5
+                                    },
+                                    {
+                                      "$type": "RPG.GameCore.WaitSecond",
+                                      "WaitTime": {
+                                        "IsDynamic": false,
+                                        "FixedValue": {
+                                          "Value": 1.5
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.SequenceConfig",
+                  "TaskList": [
+                    {
+                      "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                      "TargetAlias": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "AnimStateName": "Idle_Show_01"
+                    },
+                    {
+                      "$type": "RPG.GameCore.WaitSecond",
+                      "WaitTime": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0.5
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                        "Name": "CurrentState",
+                        "Value": {
+                          "Value": "Idleshow"
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.TriggerSound",
+                          "SoundName": {
+                            "Value": "Ev_sfx_NPC_SummonUnit_44001_Emoji_idle"
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "Caster"
+                          },
+                          "MeshName": "NPC_Special_Emoji_00_Face",
+                          "EmotionIndex": 32
+                        },
+                        {
+                          "$type": "RPG.GameCore.WaitSecond",
+                          "WaitTime": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 1.5
+                            }
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                          "TargetAlias": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "Caster"
+                          },
+                          "AnimStateName": "Idle_Show_01"
+                        },
+                        {
+                          "$type": "RPG.GameCore.WaitSecond",
+                          "WaitTime": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 0.5
+                            }
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                            "Name": "CurrentState",
+                            "Value": {
+                              "Value": "Idleshow"
+                            }
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "Caster"
+                              },
+                              "MeshName": "NPC_Special_Emoji_00_Face",
+                              "EmotionIndex": 24
+                            },
+                            {
+                              "$type": "RPG.GameCore.WaitSecond",
+                              "WaitTime": {
+                                "IsDynamic": false,
+                                "FixedValue": {
+                                  "Value": 1.5
+                                }
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                              "TargetAlias": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "Caster"
+                              },
+                              "AnimStateName": "Idle_Show_01"
+                            },
+                            {
+                              "$type": "RPG.GameCore.WaitSecond",
+                              "WaitTime": {
+                                "IsDynamic": false,
+                                "FixedValue": {
+                                  "Value": 0.5
+                                }
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.PredicateTaskList",
+                              "Predicate": {
+                                "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                                "Name": "CurrentState",
+                                "Value": {
+                                  "Value": "Idleshow"
+                                }
+                              },
+                              "SuccessTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                                  "TargetType": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "Caster"
+                                  },
+                                  "MeshName": "NPC_Special_Emoji_00_Face",
+                                  "EmotionIndex": 30
+                                },
+                                {
+                                  "$type": "RPG.GameCore.WaitSecond",
+                                  "WaitTime": {
+                                    "IsDynamic": false,
+                                    "FixedValue": {
+                                      "Value": 1.5
+                                    }
+                                  }
+                                },
+                                {
+                                  "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                                  "TargetAlias": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "Caster"
+                                  },
+                                  "AnimStateName": "Idle_Show_01"
+                                },
+                                {
+                                  "$type": "RPG.GameCore.WaitSecond",
+                                  "WaitTime": {
+                                    "IsDynamic": false,
+                                    "FixedValue": {
+                                      "Value": 0.5
+                                    }
+                                  }
+                                },
+                                {
+                                  "$type": "RPG.GameCore.PredicateTaskList",
+                                  "Predicate": {
+                                    "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                                    "Name": "CurrentState",
+                                    "Value": {
+                                      "Value": "Idleshow"
+                                    }
+                                  },
+                                  "SuccessTaskList": [
+                                    {
+                                      "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                                      "TargetType": {
+                                        "$type": "RPG.GameCore.TargetAlias",
+                                        "Alias": "Caster"
+                                      },
+                                      "MeshName": "NPC_Special_Emoji_00_Face",
+                                      "EmotionIndex": 5
+                                    },
+                                    {
+                                      "$type": "RPG.GameCore.WaitSecond",
+                                      "WaitTime": {
+                                        "IsDynamic": false,
+                                        "FixedValue": {
+                                          "Value": 1.5
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.SequenceConfig",
+                  "TaskList": [
+                    {
+                      "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                      "TargetAlias": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "AnimStateName": "Idle_Show_01"
+                    },
+                    {
+                      "$type": "RPG.GameCore.WaitSecond",
+                      "WaitTime": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0.5
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                        "Name": "CurrentState",
+                        "Value": {
+                          "Value": "Idleshow"
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.TriggerSound",
+                          "SoundName": {
+                            "Value": "Ev_sfx_NPC_SummonUnit_44001_Emoji_idle"
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "Caster"
+                          },
+                          "MeshName": "NPC_Special_Emoji_00_Face",
+                          "EmotionIndex": 19
+                        },
+                        {
+                          "$type": "RPG.GameCore.WaitSecond",
+                          "WaitTime": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 1.5
+                            }
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                          "TargetAlias": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "Caster"
+                          },
+                          "AnimStateName": "Idle_Show_01"
+                        },
+                        {
+                          "$type": "RPG.GameCore.WaitSecond",
+                          "WaitTime": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 0.5
+                            }
+                          }
+                        },
+                        {
+                          "$type": "RPG.GameCore.PredicateTaskList",
+                          "Predicate": {
+                            "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                            "Name": "CurrentState",
+                            "Value": {
+                              "Value": "Idleshow"
+                            }
+                          },
+                          "SuccessTaskList": [
+                            {
+                              "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                              "TargetType": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "Caster"
+                              },
+                              "MeshName": "NPC_Special_Emoji_00_Face",
+                              "EmotionIndex": 32
+                            },
+                            {
+                              "$type": "RPG.GameCore.WaitSecond",
+                              "WaitTime": {
+                                "IsDynamic": false,
+                                "FixedValue": {
+                                  "Value": 1.5
+                                }
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                              "TargetAlias": {
+                                "$type": "RPG.GameCore.TargetAlias",
+                                "Alias": "Caster"
+                              },
+                              "AnimStateName": "Idle_Show_01"
+                            },
+                            {
+                              "$type": "RPG.GameCore.WaitSecond",
+                              "WaitTime": {
+                                "IsDynamic": false,
+                                "FixedValue": {
+                                  "Value": 0.5
+                                }
+                              }
+                            },
+                            {
+                              "$type": "RPG.GameCore.PredicateTaskList",
+                              "Predicate": {
+                                "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                                "Name": "CurrentState",
+                                "Value": {
+                                  "Value": "Idleshow"
+                                }
+                              },
+                              "SuccessTaskList": [
+                                {
+                                  "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                                  "TargetType": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "Caster"
+                                  },
+                                  "MeshName": "NPC_Special_Emoji_00_Face",
+                                  "EmotionIndex": 24
+                                },
+                                {
+                                  "$type": "RPG.GameCore.WaitSecond",
+                                  "WaitTime": {
+                                    "IsDynamic": false,
+                                    "FixedValue": {
+                                      "Value": 1.5
+                                    }
+                                  }
+                                },
+                                {
+                                  "$type": "RPG.GameCore.CharacterTriggerAnimState",
+                                  "TargetAlias": {
+                                    "$type": "RPG.GameCore.TargetAlias",
+                                    "Alias": "Caster"
+                                  },
+                                  "AnimStateName": "Idle_Show_01"
+                                },
+                                {
+                                  "$type": "RPG.GameCore.WaitSecond",
+                                  "WaitTime": {
+                                    "IsDynamic": false,
+                                    "FixedValue": {
+                                      "Value": 0.5
+                                    }
+                                  }
+                                },
+                                {
+                                  "$type": "RPG.GameCore.PredicateTaskList",
+                                  "Predicate": {
+                                    "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                                    "Name": "CurrentState",
+                                    "Value": {
+                                      "Value": "Idleshow"
+                                    }
+                                  },
+                                  "SuccessTaskList": [
+                                    {
+                                      "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                                      "TargetType": {
+                                        "$type": "RPG.GameCore.TargetAlias",
+                                        "Alias": "Caster"
+                                      },
+                                      "MeshName": "NPC_Special_Emoji_00_Face",
+                                      "EmotionIndex": 5
+                                    },
+                                    {
+                                      "$type": "RPG.GameCore.WaitSecond",
+                                      "WaitTime": {
+                                        "IsDynamic": false,
+                                        "FixedValue": {
+                                          "Value": 1.5
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "ContinuousNotRepeat": true,
+              "RandomMaskTarget": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Runstop"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+            "Name": "CurrentState",
+            "Value": {
+              "Value": "RunFace"
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.SetDynamicString",
+              "Value": {
+                "Value": "None"
+              },
+              "DynamicKey": "CurrentState"
+            },
+            {
+              "$type": "RPG.GameCore.SequenceConfig",
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "MeshName": "NPC_Special_Emoji_00_Face",
+                  "EmotionIndex": 5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "RunBegin"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SequenceConfig"
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+            "Name": "RunFaceInCD",
+            "Value": {
+              "Value": "false"
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.SetDynamicString",
+              "Value": {
+                "Value": "true"
+              },
+              "DynamicKey": "RunFaceInCD"
+            },
+            {
+              "$type": "RPG.GameCore.TriggerSound",
+              "SoundName": {
+                "Value": "Ev_sfx_NPC_SummonUnit_44001_Emoji_run"
+              }
+            },
+            {
+              "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "MeshName": "NPC_Special_Emoji_00_Face",
+              "EmotionIndex": 24
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicString",
+              "Value": {
+                "Value": "RunFace"
+              },
+              "DynamicKey": "CurrentState"
+            },
+            {
+              "$type": "RPG.GameCore.WaitSecond",
+              "WaitTime": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 16
+                }
+              }
+            },
+            {
+              "$type": "RPG.GameCore.SetDynamicString",
+              "Value": {
+                "Value": "false"
+              },
+              "DynamicKey": "RunFaceInCD"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "OpenChest"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicString",
+          "Value": {
+            "Value": "OpenChest"
+          },
+          "DynamicKey": "CurrentState"
+        },
+        {
+          "$type": "RPG.GameCore.RandomConfig",
+          "OddsList": [
+            {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 1
+              }
+            }
+          ],
+          "TaskList": [
+            {
+              "$type": "RPG.GameCore.SequenceConfig",
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerSound",
+                  "SoundName": {
+                    "Value": "Ev_sfx_NPC_SummonUnit_44001_Emoji_treasurebox"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                    "Name": "CurrentState",
+                    "Value": {
+                      "Value": "OpenChest"
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "MeshName": "NPC_Special_Emoji_00_Face",
+                      "EmotionIndex": 30
+                    },
+                    {
+                      "$type": "RPG.GameCore.WaitSecond",
+                      "WaitTime": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 4
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                        "Name": "CurrentState",
+                        "Value": {
+                          "Value": "OpenChest"
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "Caster"
+                          },
+                          "MeshName": "NPC_Special_Emoji_00_Face",
+                          "EmotionIndex": 5
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "RandomMaskTarget": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "Battle"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicString",
+          "Value": {
+            "Value": "Battle"
+          },
+          "DynamicKey": "CurrentState"
+        },
+        {
+          "$type": "RPG.GameCore.RandomConfig",
+          "OddsList": [
+            {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 1
+              }
+            }
+          ],
+          "TaskList": [
+            {
+              "$type": "RPG.GameCore.SequenceConfig",
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                    "Name": "CurrentState",
+                    "Value": {
+                      "Value": "Battle"
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "MeshName": "NPC_Special_Emoji_00_Face",
+                      "EmotionIndex": 19
+                    },
+                    {
+                      "$type": "RPG.GameCore.WaitSecond",
+                      "WaitTime": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 4
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                        "Name": "CurrentState",
+                        "Value": {
+                          "Value": "Battle"
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "Caster"
+                          },
+                          "MeshName": "NPC_Special_Emoji_00_Face",
+                          "EmotionIndex": 5
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "RandomMaskTarget": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "DestructProp"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicString",
+          "Value": {
+            "Value": "DestructProp"
+          },
+          "DynamicKey": "CurrentState"
+        },
+        {
+          "$type": "RPG.GameCore.RandomConfig",
+          "OddsList": [
+            {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 1
+              }
+            }
+          ],
+          "TaskList": [
+            {
+              "$type": "RPG.GameCore.SequenceConfig",
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                    "Name": "CurrentState",
+                    "Value": {
+                      "Value": "DestructProp"
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+                        "Name": "AttackInCD",
+                        "Value": {
+                          "Value": "false"
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.TriggerCustomString",
+                          "CustomString": {
+                            "Value": "PlayerAttack"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "RandomMaskTarget": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "PlayerAttack"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicString",
+          "Value": {
+            "Value": "true"
+          },
+          "DynamicKey": "AttackInCD"
+        },
+        {
+          "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "MeshName": "NPC_Special_Emoji_00_Face",
+          "EmotionIndex": 32
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 4
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareGraphDynamicString",
+            "Name": "CurrentState",
+            "Value": {
+              "Value": "DestructProp"
+            }
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.SetCharacterAtlasFaceEmotion",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "Caster"
+              },
+              "MeshName": "NPC_Special_Emoji_00_Face",
+              "EmotionIndex": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "IsLoop": true,
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitCustomString",
+          "CustomString": {
+            "Value": "PlayerAttack"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.WaitSecond",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 16
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.SetDynamicString",
+          "Value": {
+            "Value": "false"
+          },
+          "DynamicKey": "AttackInCD"
+        }
+      ]
+    }
+  ],
+  "ValueSource": {
+    "Values": [
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "None",
+        "Key": "CurrentState"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "false",
+        "Key": "RunFaceInCD"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "false",
+        "Key": "RunFaceActive"
+      },
+      {
+        "$type": "RPG.GameCore.SharedString",
+        "Value": "false",
+        "Key": "AttackInCD"
+      }
+    ]
+  },
+  "Type": "Entity",
+  "EntityEventList": [
+    {
+      "Name": "Clt_TriggerOpen"
+    },
+    {
+      "Name": "Clt_TriggerClose"
+    }
+  ]
+}

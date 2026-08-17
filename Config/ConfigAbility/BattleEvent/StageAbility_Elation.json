@@ -48,7 +48,7 @@
           "$type": "RPG.GameCore.Retarget",
           "TargetType": {
             "$type": "RPG.GameCore.TargetAlias",
-            "Alias": "Elation_GridFight_AllBackEndActived + Elation_AllBattleEvent + ElationTime_GridFight_Equip2012"
+            "Alias": "Elation_ExtraElationSkillEntities"
           },
           "Predicate": {
             "$type": "RPG.GameCore.ByAnd",
@@ -344,10 +344,12 @@
                   "Value": 2
                 }
               },
-              "CustomTag": {
-                "Custom": true,
-                "Key": "ElationTime_CustomTagTemp"
-              },
+              "CustomTags": [
+                {
+                  "Custom": true,
+                  "Key": "ElationTime_CustomTagTemp"
+                }
+              ],
               "OverrideElationPoint": {
                 "IsDynamic": true,
                 "PostfixExpr": {
@@ -1483,7 +1485,7 @@
           "DynamicKey": "Elation_Character_Num",
           "ReadTargetType": {
             "$type": "RPG.GameCore.TargetAlias",
-            "Alias": "Elation_Character_AllLightTeamWithAllLightTeamUnselectable + Elation_GridFight_AllBackEndActived + ElationTime_GridFight_Equip2012"
+            "Alias": "Elation_AllEntities"
           },
           "AliveOnly": true
         },
@@ -1738,7 +1740,7 @@
                   "DynamicKey": "MDF_Elation_Character_Num",
                   "ReadTargetType": {
                     "$type": "RPG.GameCore.TargetAlias",
-                    "Alias": "Elation_Character_AllLightTeamWithAllLightTeamUnselectable + Elation_GridFight_AllBackEndActived + ElationTime_GridFight_Equip2012"
+                    "Alias": "Elation_AllEntities"
                   },
                   "AliveOnly": true
                 },
@@ -2295,6 +2297,7 @@
                 "MonsterReviveOthers": "DuringElationTime_MonsterReviveOthers",
                 "MonsterHealOthers": "DuringElationTime_MonsterHealOthers",
                 "MonsterDeathRattleByLevel": "DuringElationTime_MonsterDeathRattleByLevel",
+                "MonsterDeathRattleTogether": "DuringElationTime_MonsterDeathRattleTogether",
                 "MonsterDeathRattle": "DuringElationTime_MonsterDeathRattle",
                 "MonsterSummon": "DuringElationTime_MonsterSummon",
                 "MonsterBuffSelf_Elation": "DuringElationTime_MonsterBuffSelf_Elation",
@@ -2531,7 +2534,7 @@
               "DynamicKey": "MDF_Elation_Character_Num",
               "ReadTargetType": {
                 "$type": "RPG.GameCore.TargetAlias",
-                "Alias": "Elation_Character_AllLightTeamWithAllLightTeamUnselectable + Elation_GridFight_AllBackEndActived + ElationTime_GridFight_Equip2012"
+                "Alias": "Elation_AllEntities"
               },
               "AliveOnly": true
             },
@@ -4486,6 +4489,58 @@
   },
   "GlobalTemplates": [],
   "GlobalTargetAlias": {
+    "Elation_AllEntities": {
+      "$type": "RPG.GameCore.TargetSequence",
+      "Sequence": [
+        {
+          "$type": "RPG.GameCore.TargetConcat",
+          "Targets": [
+            {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "Elation_Character_AllLightTeamWithAllLightTeamUnselectable"
+            },
+            {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "Elation_GridFight_AllBackEndActived"
+            },
+            {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "ElationTime_GridFight_Equip2012"
+            },
+            {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "ElationTime_GridFight_Origin_3007_Himeko"
+            }
+          ]
+        }
+      ]
+    },
+    "Elation_ExtraElationSkillEntities": {
+      "$type": "RPG.GameCore.TargetSequence",
+      "Sequence": [
+        {
+          "$type": "RPG.GameCore.TargetConcat",
+          "Targets": [
+            {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "Elation_GridFight_AllBackEndActived"
+            },
+            {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "Elation_AllBattleEvent"
+            },
+            {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "ElationTime_GridFight_Equip2012"
+            },
+            {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "ElationTime_GridFight_Origin_3007_Himeko"
+            }
+          ]
+        }
+      ]
+    },
     "Elation_Character": {
       "$type": "RPG.GameCore.TargetSequence",
       "Sequence": [
@@ -4498,7 +4553,7 @@
             },
             {
               "$type": "RPG.GameCore.TargetAlias",
-              "Alias": "Elation_GridFight_AllBackEndActived + Elation_AllBattleEvent + ElationTime_GridFight_Equip2012"
+              "Alias": "Elation_ExtraElationSkillEntities"
             }
           ]
         },
@@ -4772,6 +4827,44 @@
                 },
                 "ModifierName": {
                   "Value": "MGridFight_Equipment_Emblem_2012_ExtraElationSkill"
+                }
+              },
+              {
+                "$type": "RPG.GameCore.ByIsContainModifier",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ParamEntity"
+                },
+                "ModifierName": {
+                  "Value": "MBattleEvent_GridFight_Common_FrontInBackEnd"
+                },
+                "Inverse": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "ElationTime_GridFight_Origin_3007_Himeko": {
+      "$type": "RPG.GameCore.TargetSequence",
+      "Sequence": [
+        {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "AllLightTeamWithAllLightTeamUnselectable + GridFight_AllBackEndActivedRoleOnly"
+        },
+        {
+          "$type": "RPG.GameCore.TargetFilter",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByAnd",
+            "PredicateList": [
+              {
+                "$type": "RPG.GameCore.ByIsContainModifier",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ParamEntity"
+                },
+                "ModifierName": {
+                  "Value": "MGridFight_Origin_3007_Type03_Himeko_ExtraElationSkill"
                 }
               },
               {
