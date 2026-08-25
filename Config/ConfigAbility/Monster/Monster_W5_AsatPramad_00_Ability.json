@@ -4164,17 +4164,6 @@
               "UnifiedId": {
                 "IsDynamic": false,
                 "FixedValue": {
-                  "Value": 2054102
-                }
-              },
-              "SwitchStatus": "Inactive",
-              "WaitFinish": true
-            },
-            {
-              "$type": "RPG.GameCore.SwitchBattleArea",
-              "UnifiedId": {
-                "IsDynamic": false,
-                "FixedValue": {
                   "Value": 2054103
                 }
               },
@@ -9909,6 +9898,14 @@
           "$type": "RPG.GameCore.ShowBattleUI"
         },
         {
+          "$type": "RPG.GameCore.TriggerEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "W5_AsatPramad_00"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W5_AsatPramad_02/Eff_Monster_W5_AsatPramad_02_Skill08_Ball_01_1.prefab"
+        },
+        {
           "$type": "RPG.GameCore.PredicateTaskList",
           "Predicate": {
             "$type": "RPG.GameCore.ByIsContainModifier",
@@ -10002,16 +9999,49 @@
           "SaveTargetToCaster": true
         },
         {
-          "$type": "RPG.GameCore.SetTeamFormation",
-          "FormationTarget": {
-            "$type": "RPG.GameCore.TargetAlias",
-            "Alias": "AllLightTeam"
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareTargetCount",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "AllLightTeam.RemoveServant"
+            },
+            "Number": {
+              "IsDynamic": false,
+              "FixedValue": {
+                "Value": 1
+              }
+            },
+            "CompareType": "Equal"
           },
-          "CustomFormationName": "Monster_8015030_Skill08_01",
-          "CustomCenterTargetType": {
-            "$type": "RPG.GameCore.TargetAlias",
-            "Alias": "LightTeamCenter"
-          }
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.SetTeamFormation",
+              "FormationTarget": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AllLightTeam"
+              },
+              "CustomFormationName": "Monster_8015030_Skill08_02",
+              "CustomCenterTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "LightTeamCenter"
+              }
+            }
+          ],
+          "FailedTaskList": [
+            {
+              "$type": "RPG.GameCore.SetTeamFormation",
+              "FormationTarget": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AllLightTeam"
+              },
+              "CustomFormationName": "Monster_8015030_Skill08_01",
+              "CustomCenterTargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "LightTeamCenter"
+              }
+            }
+          ]
         },
         {
           "$type": "RPG.GameCore.PredicateTaskList",
@@ -10412,6 +10442,23 @@
               ]
             }
           ]
+        },
+        {
+          "$type": "RPG.GameCore.WaitParallelTimeStamp",
+          "WaitTime": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 3.65
+            }
+          }
+        },
+        {
+          "$type": "RPG.GameCore.RemoveEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "W5_AsatPramad_00"
+          },
+          "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W5_AsatPramad_02/Eff_Monster_W5_AsatPramad_02_Skill08_Ball_01_1.prefab"
         },
         {
           "$type": "RPG.GameCore.WaitParallelTimeStamp",
@@ -12715,7 +12762,7 @@
           "$type": "RPG.GameCore.RetargetList",
           "TargetType": {
             "$type": "RPG.GameCore.TargetAlias",
-            "Alias": "AllLightTeam"
+            "Alias": "AllLightTeam.RemoveBackupServant"
           },
           "Predicate": {
             "$type": "RPG.GameCore.ByAnd",
@@ -12788,7 +12835,7 @@
           "$type": "RPG.GameCore.DamageByAttackProperty",
           "TargetType": {
             "$type": "RPG.GameCore.TargetAlias",
-            "Alias": "AllLightTeam"
+            "Alias": "AllLightTeam.RemoveBackupServant"
           },
           "AttackProperty": {
             "$type": "RPG.GameCore.AttackData",
@@ -13407,7 +13454,7 @@
           "$type": "RPG.GameCore.AddModifier",
           "TargetType": {
             "$type": "RPG.GameCore.TargetAlias",
-            "Alias": "Caster"
+            "Alias": "AllDarkTeam"
           },
           "ModifierName": {
             "Value": "MMonster_W5_AsatPramad_00_Debuff_05_Modifier"

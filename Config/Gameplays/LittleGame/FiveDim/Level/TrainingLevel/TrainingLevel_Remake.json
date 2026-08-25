@@ -2433,6 +2433,304 @@
         {
           "$type": "RPG.GameCore.LittleGameTransformComponentConfig",
           "Position": {
+            "X": 2,
+            "Y": 5.05,
+            "Z": 0.125
+          }
+        },
+        {
+          "$type": "RPG.GameCore.LittleGameParentConfig",
+          "ParentID": 88
+        },
+        {
+          "$type": "RPG.GameCore.LittleGameViewComponentConfig",
+          "PrefabPath": "Gameplays/FiveDim/EntityView/Common/FD_Prop_Portal.prefab"
+        },
+        {
+          "$type": "RPG.GameCore.LittleGameTagConfig",
+          "Tags": {
+            "List": [
+              {
+                "Tag": "LittleGame.EntityConfig.FiveDim.NoArrowAttach",
+                "TagHash": -277647960
+              },
+              {
+                "Tag": "LittleGame.EntityConfig.FiveDim.Slippery",
+                "TagHash": 1970513973
+              },
+              {
+                "Tag": "LittleGame.EntityConfig.FiveDim.Unstable",
+                "TagHash": 1964810839
+              }
+            ]
+          }
+        },
+        {
+          "$type": "RPG.GameCore.LittleGameAttachPointComponentConfig",
+          "HasAttachPoint": true,
+          "Config": {
+            "AttachPoints": [
+              {
+                "Name": "Effect",
+                "IsDynamic": true,
+                "BindPath": "Chap05_GameplayProp_FDPortal_01_Lod0"
+              }
+            ]
+          }
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimCustomVisibilityConfig",
+          "IsCustomVisibility": true,
+          "DoActionOnInitVisible": true,
+          "VisibleActions": [
+            {
+              "$type": "RPG.GameCore.FiveDimFireEffectAction",
+              "FireParams": {
+                "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDPortal_01_Portal_Lod0.prefab",
+                "AttachPointName": "Effect"
+              }
+            }
+          ],
+          "InvisibleActions": [
+            {
+              "$type": "RPG.GameCore.FiveDimKillAllEffectAction"
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimEntityVarConfig",
+          "IsEnableEntityVar": true,
+          "PublicEntityVars": [
+            {
+              "ID": "14ddc300-cda1-4b73-bb1b-3ef3db6d7e4e",
+              "EntityVarName": "PortalState",
+              "EntityVarType": "LevelVarNameString",
+              "BindLevelVarType": "FiveDimLevelVariableShort",
+              "BindLevelVarName": "DashUnlocked",
+              "DefaultLevelVar": {
+                "$type": "RPG.GameCore.FiveDimLevelVariableShort",
+                "DefaultValue": 1,
+                "Side": "ServerClient",
+                "MaxValue": 1
+              }
+            }
+          ],
+          "PrivateEntityVars": []
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimEventReceiverConfig",
+          "IsEventReceiver": true,
+          "ReceiverItems": [
+            {
+              "Events": [
+                {
+                  "EventName": "PortalUnlock"
+                },
+                {
+                  "EventName": "PortalLock"
+                }
+              ],
+              "Actions": [
+                {
+                  "$type": "RPG.GameCore.FiveDimDebugLogEventAction",
+                  "Message": "注释：先设置一个解锁的默认值，如果绑定了变量，再用变量值覆盖"
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimSetAnimParamEventAction",
+                  "SyncToEffects": true,
+                  "ParameterName": "PortalState",
+                  "ParameterType": "Int",
+                  "IntValue": 1
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimSetAnimParamByRawLevelVarAction",
+                  "SyncToEffects": true,
+                  "ParameterName": "PortalState",
+                  "ParameterType": "Int",
+                  "LevelVarName": {
+                    "IsEntityVar": true,
+                    "VarName": "PortalState"
+                  }
+                }
+              ]
+            },
+            {
+              "Events": [
+                {
+                  "EventName": "PortalInteract"
+                }
+              ],
+              "Actions": [
+                {
+                  "$type": "RPG.GameCore.FiveDimAudioPostEventAction",
+                  "EventName": "Ev_sfx_planarcadia_FDPortal_in"
+                }
+              ]
+            },
+            {
+              "Events": [
+                {
+                  "EventName": "TeleportFinish"
+                }
+              ],
+              "Actions": [
+                {
+                  "$type": "RPG.GameCore.FiveDimAudioPostEventAction",
+                  "EventName": "Ev_sfx_planarcadia_FDPortal_out"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimPortalConfig",
+          "IsPortal": true,
+          "BindLevelVarName": {
+            "IsEntityVar": true,
+            "VarName": "PortalState"
+          },
+          "LockValues": [
+            0
+          ],
+          "UnlockValues": [
+            1
+          ],
+          "TriggerShape": {
+            "UseTriggerFromView": true,
+            "TriggerName": "InteractTrigger",
+            "TriggerInfo": {
+              "Radius": 1,
+              "PointList": []
+            }
+          },
+          "InteractButtonConfig": {
+            "ButtonText": {
+              "Value": "MazePuzzle_FDTraining_Interact_Dash"
+            }
+          },
+          "Target": {
+            "IsCrossLevel": true,
+            "TargetEntityID": 82,
+            "TargetLGameEntityRef": "EntryPoint_DashTraining"
+          },
+          "TriggerFiveDimLoadingView": true,
+          "LockEvent": {
+            "EventName": "PortalLock"
+          },
+          "UnlockEvent": {
+            "EventName": "PortalUnlock"
+          },
+          "PortalInteractEvent": {
+            "EventName": "PortalInteract"
+          },
+          "TeleportFinishEvent": {
+            "EventName": "TeleportFinish"
+          }
+        }
+      ],
+      "Name": "FD_Prop_Portal_010",
+      "Type": "FiveDimProp",
+      "EntityID": 259
+    },
+    {
+      "Components": [
+        {
+          "$type": "RPG.GameCore.LittleGameTransformComponentConfig",
+          "Position": {
+            "X": 0.25,
+            "Y": 0.2,
+            "Z": 0
+          }
+        },
+        {
+          "$type": "RPG.GameCore.LittleGameParentConfig",
+          "ParentID": 259
+        },
+        {
+          "$type": "RPG.GameCore.LittleGameViewComponentConfig"
+        },
+        {
+          "$type": "RPG.GameCore.LittleGameTagConfig"
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimCustomLoadConfig",
+          "IsCustomLoad": true,
+          "BindLevelVarName": {
+            "VarName": "DashUnlocked"
+          },
+          "UseLoadCondition": true,
+          "LoadValues": [],
+          "Conditions": [
+            {}
+          ],
+          "LoadActions": [],
+          "UnloadActions": []
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimEventReceiverConfig",
+          "IsEventReceiver": true,
+          "ReceiverItems": [
+            {
+              "Events": [
+                {
+                  "EventName": "OnInteract"
+                }
+              ],
+              "Actions": [
+                {
+                  "$type": "RPG.GameCore.FiveDimUIPileToastMessageTextIDAction",
+                  "TextID": {
+                    "Hash": 12633129334852701406
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimInteractEmitterConfig",
+          "IsInteractEmitter": true,
+          "TriggerShape": {
+            "TriggerInfo": {
+              "Shape": "Box",
+              "Radius": 1,
+              "DimX": 2,
+              "DimY": 2,
+              "DimZ": 1,
+              "Offset": {
+                "X": 0,
+                "Y": 0.5,
+                "Z": 0
+              },
+              "PointList": []
+            }
+          },
+          "InteractButtonConfigList": [
+            {
+              "ID": "Interact",
+              "IconType": {
+                "EnumIndex": 20,
+                "Value": 7
+              },
+              "ButtonText": {
+                "Value": "PropName_111"
+              },
+              "InteractEvent": {
+                "EventName": "OnInteract"
+              }
+            }
+          ]
+        }
+      ],
+      "Name": "FD_Prop_Trigger_005",
+      "Type": "FiveDimProp",
+      "EntityID": 260
+    },
+    {
+      "Components": [
+        {
+          "$type": "RPG.GameCore.LittleGameTransformComponentConfig",
+          "Position": {
             "X": 4.5,
             "Y": -2.6,
             "Z": 0.275
@@ -3577,6 +3875,564 @@
       "Name": "FD_Prop_TreasureBox_01_001",
       "Type": "FiveDimProp",
       "EntityID": 257
+    },
+    {
+      "Components": [
+        {
+          "$type": "RPG.GameCore.LittleGameTransformComponentConfig",
+          "Position": {
+            "X": 8,
+            "Y": 4.400001,
+            "Z": 0.275
+          },
+          "Rotation": {
+            "X": 0,
+            "Y": 0,
+            "Z": 90
+          }
+        },
+        {
+          "$type": "RPG.GameCore.LittleGameParentConfig",
+          "ParentID": 88
+        },
+        {
+          "$type": "RPG.GameCore.LittleGameViewComponentConfig",
+          "PrefabPath": "Gameplays/FiveDim/EntityView/Common/FD_Prop_Door1Key.prefab"
+        },
+        {
+          "$type": "RPG.GameCore.LittleGameTagConfig",
+          "Tags": {
+            "List": [
+              {
+                "Tag": "LittleGame.EntityConfig.FiveDim.Slippery",
+                "TagHash": 1970513973
+              },
+              {
+                "Tag": "LittleGame.EntityConfig.FiveDim.Unstable",
+                "TagHash": 1964810839
+              },
+              {
+                "Tag": "LittleGame.EntityConfig.FiveDim.NoArrowAttach",
+                "TagHash": -277647960
+              }
+            ]
+          }
+        },
+        {
+          "$type": "RPG.GameCore.LittleGameAttachPointComponentConfig",
+          "HasAttachPoint": true,
+          "Config": {
+            "AttachPoints": [
+              {
+                "Name": "LightEffect",
+                "Position": {
+                  "X": 0,
+                  "Y": 1.5,
+                  "Z": 0.4
+                }
+              }
+            ]
+          }
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimEntityVarConfig",
+          "IsEnableEntityVar": true,
+          "PublicEntityVars": [
+            {
+              "ID": "445adaef-ad9e-4a3b-9fbc-0df737de10ef",
+              "EntityVarName": "Key1",
+              "EntityVarType": "LevelVarNameString",
+              "BindLevelVarType": "FiveDimLevelVariableShort",
+              "BindLevelVarName": "LevelState_Dash"
+            }
+          ],
+          "PrivateEntityVars": []
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimEventReceiverConfig",
+          "IsEventReceiver": true,
+          "ReceiverItems": [
+            {
+              "Events": [
+                {
+                  "EventName": "KeyChange"
+                },
+                {
+                  "EventName": "DoorUnlock"
+                }
+              ],
+              "Actions": [
+                {
+                  "$type": "RPG.GameCore.FiveDimSetAnimParamByDoorKeyCountAction",
+                  "ParameterName": "KeyCount"
+                }
+              ]
+            },
+            {
+              "Events": [
+                {
+                  "EventName": "KeyCollect"
+                },
+                {
+                  "EventName": "DoorUnlock"
+                }
+              ],
+              "Actions": [
+                {
+                  "$type": "RPG.GameCore.FiveDimFireEffectAction",
+                  "FireParams": {
+                    "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDDoor_01_Fire01_Lod0.prefab",
+                    "AttachPointName": "LightEffect"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimAudioPostEventAction",
+                  "EventName": "Ev_sfx_planarcadia_FDDoor_unlock"
+                }
+              ]
+            },
+            {
+              "Events": [
+                {
+                  "EventName": "DoorOpen"
+                }
+              ],
+              "Actions": [
+                {
+                  "$type": "RPG.GameCore.FiveDimSetAnimParamEventAction",
+                  "ParameterName": "DoorState",
+                  "ParameterType": "Int",
+                  "IntValue": 1
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimAudioPostEventAction",
+                  "EventName": "Ev_sfx_planarcadia_FDDoor_open"
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
+                  "Delay": 2,
+                  "Name": "CloseColliderDelay",
+                  "Actions": [
+                    {
+                      "$type": "RPG.GameCore.FiveDimSetColliderVisibleAction",
+                      "RelativePaths": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimDoorConfig",
+          "IsFiveDimDoor": true,
+          "BindLevelVarNames": [
+            {
+              "IsEntityVar": true,
+              "VarName": "Key1"
+            }
+          ],
+          "OpenDelayDuration": 0.2,
+          "KeyChangeEvent": {
+            "EventName": "KeyChange"
+          },
+          "KeyCollectEvent": {
+            "EventName": "KeyCollect"
+          },
+          "DoorUnlockEvent": {
+            "EventName": "DoorUnlock"
+          },
+          "DoorOpenEvent": {
+            "EventName": "DoorOpen"
+          }
+        }
+      ],
+      "Name": "FD_Prop_Door1Key_004",
+      "Type": "FiveDimProp",
+      "EntityID": 262
+    },
+    {
+      "Components": [
+        {
+          "$type": "RPG.GameCore.LittleGameTransformComponentConfig",
+          "Position": {
+            "X": 7.25,
+            "Y": 4.4,
+            "Z": 0.275
+          }
+        },
+        {
+          "$type": "RPG.GameCore.LittleGameParentConfig",
+          "ParentID": 88
+        },
+        {
+          "$type": "RPG.GameCore.LittleGameTagConfig",
+          "Tags": {}
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimLevelCameraConfig",
+          "TriggerInfo": {
+            "Radius": 1
+          },
+          "Type": "Fix",
+          "LocalPosition": {
+            "X": 0,
+            "Y": 0,
+            "Z": 4.35
+          },
+          "LocalRotation": {
+            "X": 0,
+            "Y": 180,
+            "Z": 0
+          },
+          "UseDefaultLens": false,
+          "Lens": {
+            "Fov": 60
+          },
+          "SimpleOverrideFollow": {
+            "ViewHeight": 16
+          },
+          "UseDefaultBlend": false,
+          "Blend": {
+            "BlendType": "EaseInOut",
+            "BlendTime": 2,
+            "CustomCurve": {
+              "Keys": []
+            }
+          }
+        }
+      ],
+      "Name": "FiveDimLevelCamera_004",
+      "Type": "FiveDimLevelCamera",
+      "EntityID": 263
+    },
+    {
+      "Components": [
+        {
+          "$type": "RPG.GameCore.LittleGameTransformComponentConfig",
+          "Position": {
+            "X": 8,
+            "Y": 2.5,
+            "Z": 0.275
+          }
+        },
+        {
+          "$type": "RPG.GameCore.LittleGameParentConfig",
+          "ParentID": 88
+        },
+        {
+          "$type": "RPG.GameCore.LittleGameViewComponentConfig",
+          "PrefabPath": "Gameplays/FiveDim/EntityView/Common/FD_Prop_TreasureBox_01.prefab"
+        },
+        {
+          "$type": "RPG.GameCore.LittleGameTagConfig",
+          "Tags": {
+            "List": [
+              {
+                "Tag": "LittleGame.EntityConfig.FiveDim.Slippery",
+                "TagHash": 1970513973
+              },
+              {
+                "Tag": "LittleGame.EntityConfig.FiveDim.Unstable",
+                "TagHash": 1964810839
+              },
+              {
+                "Tag": "LittleGame.EntityConfig.FiveDim.NoArrowAttach",
+                "TagHash": -277647960
+              },
+              {
+                "Tag": "LittleGame.EntityConfig.FiveDim.SnapshotVisibility.Hide",
+                "TagHash": -1422695391
+              }
+            ]
+          }
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimCustomLoadConfig",
+          "IsCustomLoad": true,
+          "BindLevelVarName": {
+            "IsEntityVar": true,
+            "VarName": "ChestStateS"
+          },
+          "LoadValues": [
+            0,
+            1
+          ],
+          "LoadActions": [
+            {
+              "$type": "RPG.GameCore.FiveDimFireEffectAction",
+              "FireParams": {
+                "EffectPath": "Effects/Eff_Prefab/Eff_Scene/Interactive Object/Eff_Common_FDTreasureBox02_Appear_Lod0.prefab"
+              }
+            }
+          ],
+          "UnloadActions": [
+            {
+              "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
+              "Delay": 0.5,
+              "Name": "TreasureBoxDelay01",
+              "Actions": [
+                {
+                  "$type": "RPG.GameCore.FiveDimSetAnimParamEventAction",
+                  "ParameterName": "IsDissolved",
+                  "ParameterType": "Bool",
+                  "BoolValue": true
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimFireEffectAction",
+                  "FireParams": {
+                    "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FiveDim_01_Disappear_Lod0.prefab",
+                    "EffectName": "Disappear"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimSetColliderVisibleAction",
+                  "RelativePaths": []
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
+                  "Delay": 3,
+                  "Name": "TreasureBoxDelay02",
+                  "Actions": [
+                    {
+                      "$type": "RPG.GameCore.FiveDimDebugLogEventAction",
+                      "Message": "======="
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimEntityVarConfig",
+          "IsEnableEntityVar": true,
+          "PublicEntityVars": [
+            {
+              "ID": "08b43b02-cd55-4eb0-a06c-fc7be471fa00",
+              "EntityVarName": "ChestStateS",
+              "EntityVarType": "LevelVarNameString",
+              "BindLevelVarType": "FiveDimLevelVariableShort",
+              "BindLevelVarName": "_261_ChestStateS_Auto",
+              "DefaultLevelVar": {
+                "$type": "RPG.GameCore.FiveDimLevelVariableShort",
+                "Side": "ServerClient",
+                "MaxValue": 3
+              },
+              "AutoCreateAndBindLevelVar": true
+            }
+          ],
+          "PrivateEntityVars": []
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimEventReceiverConfig",
+          "IsEventReceiver": true,
+          "ReceiverItems": [
+            {
+              "Events": [
+                {
+                  "EventName": "FDEV_InitLock"
+                }
+              ],
+              "Actions": [
+                {
+                  "$type": "RPG.GameCore.FiveDimFireEffectAction",
+                  "FireParams": {
+                    "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Common_Prop_Blockade_01_Block01_Lod0.prefab",
+                    "EffectName": "Lock"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimSetAnimParamEventAction",
+                  "ParameterName": "PropState",
+                  "ParameterType": "Int",
+                  "IntValue": 12
+                }
+              ]
+            },
+            {
+              "Events": [
+                {
+                  "EventName": "FDEV_InitClose"
+                }
+              ],
+              "Actions": [
+                {
+                  "$type": "RPG.GameCore.FiveDimFireEffectAction",
+                  "FireParams": {
+                    "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDTreasureBox_01_Idle01_Lod0.prefab",
+                    "EffectName": "Close"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimSetAnimParamEventAction",
+                  "ParameterName": "PropState",
+                  "ParameterType": "Int",
+                  "IntValue": 12
+                }
+              ]
+            },
+            {
+              "Events": [
+                {
+                  "EventName": "FDEV_OnClose"
+                }
+              ],
+              "Actions": [
+                {
+                  "$type": "RPG.GameCore.FiveDimKillAllEffectAction",
+                  "NeedFadeOut": true
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimFireEffectAction",
+                  "FireParams": {
+                    "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDTreasureBox_01_Idle01_Lod0.prefab",
+                    "EffectName": "Close"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimFireEffectAction",
+                  "FireParams": {
+                    "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Common_Prop_Blockade_01_Unlock01_Lod0.prefab",
+                    "EffectName": "Unlock"
+                  }
+                }
+              ]
+            },
+            {
+              "Events": [
+                {
+                  "EventName": "FDEV_OnOpen"
+                }
+              ],
+              "Actions": [
+                {
+                  "$type": "RPG.GameCore.FiveDimKillAllEffectAction",
+                  "NeedFadeOut": true
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimFireEffectAction",
+                  "FireParams": {
+                    "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDTreasureBox_01_Opening01_Lod0.prefab",
+                    "EffectName": "Open"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimSetAnimParamEventAction",
+                  "ParameterName": "PropState",
+                  "ParameterType": "Int",
+                  "IntValue": 13
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimAudioPostEventAction",
+                  "EventName": "Ev_sfx_planarcadia_treasurebox_lv1"
+                }
+              ]
+            },
+            {
+              "Events": [
+                {
+                  "EventName": "FDEV_LockInteract"
+                }
+              ],
+              "Actions": [
+                {
+                  "$type": "RPG.GameCore.FiveDimKillAllEffectAction"
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimFireEffectAction",
+                  "FireParams": {
+                    "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Common_Prop_Blockade_01_Trigger01_Lod0.prefab",
+                    "EffectName": "Forbidden"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
+                  "Delay": 0.2,
+                  "Name": "FobiddenDelay",
+                  "Actions": [
+                    {
+                      "$type": "RPG.GameCore.FiveDimFireEffectAction",
+                      "FireParams": {
+                        "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Common_Prop_Blockade_01_Block01_Lod0.prefab",
+                        "EffectName": "Lock"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimUIPileToastMessageTextIDAction",
+                  "TextID": {
+                    "Hash": 14257420492457405644
+                  }
+                }
+              ]
+            },
+            {
+              "Events": [
+                {
+                  "EventName": "FDEV_CloseInteract"
+                }
+              ],
+              "Actions": []
+            }
+          ]
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimChestConfig",
+          "IsChest": true,
+          "BindLevelVarName": {
+            "IsEntityVar": true,
+            "VarName": "ChestStateS"
+          },
+          "CloseValue": 1,
+          "OpenValue": 2,
+          "TriggerShape": {
+            "UseTriggerFromView": true,
+            "TriggerName": "InteractTrigger",
+            "TriggerInfo": {
+              "Radius": 1
+            }
+          },
+          "InteractButtonConfig": {
+            "ID": "Interact",
+            "IconType": {
+              "EnumIndex": 20,
+              "Value": 6
+            },
+            "ButtonText": {
+              "Value": "PropName_60301"
+            }
+          },
+          "InitAsLockEvent": {
+            "EventName": "FDEV_InitLock"
+          },
+          "InitAsCloseEvent": {
+            "EventName": "FDEV_InitClose"
+          },
+          "InitAsOpenEvent": {
+            "EventName": "FDEV_InitOpen"
+          },
+          "LockEvent": {
+            "EventName": "FDEV_OnLock"
+          },
+          "CloseEvent": {
+            "EventName": "FDEV_OnClose"
+          },
+          "OpenEvent": {
+            "EventName": "FDEV_OnOpen"
+          },
+          "InteractLockEvent": {
+            "EventName": "FDEV_LockInteract"
+          },
+          "InteractCloseEvent": {
+            "EventName": "FDEV_CloseInteract"
+          }
+        }
+      ],
+      "Name": "FD_Prop_TreasureBox_01_002",
+      "Type": "FiveDimProp",
+      "EntityID": 261
     },
     {
       "Components": [
@@ -4908,6 +5764,9 @@
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
                 },
                 {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
+                },
+                {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
                   "FireParams": {
                     "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDJumpEnergy_01_Collected_Lod0.prefab"
@@ -5098,6 +5957,9 @@
               "Actions": [
                 {
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
                 },
                 {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
@@ -6123,6 +6985,9 @@
                 },
                 {
                   "EventName": "INTERNAL_HIT_BY_LIGHTNING"
+                },
+                {
+                  "EventName": "INTERNAL_HIT_BY_DASH"
                 }
               ],
               "Actions": [
@@ -6288,6 +7153,9 @@
                 },
                 {
                   "EventName": "INTERNAL_HIT_BY_LIGHTNING"
+                },
+                {
+                  "EventName": "INTERNAL_HIT_BY_DASH"
                 }
               ],
               "Actions": [
@@ -6453,6 +7321,9 @@
                 },
                 {
                   "EventName": "INTERNAL_HIT_BY_LIGHTNING"
+                },
+                {
+                  "EventName": "INTERNAL_HIT_BY_DASH"
                 }
               ],
               "Actions": [
@@ -6734,6 +7605,9 @@
                 },
                 {
                   "EventName": "INTERNAL_HIT_BY_LIGHTNING"
+                },
+                {
+                  "EventName": "INTERNAL_HIT_BY_DASH"
                 }
               ],
               "Actions": [
@@ -7457,6 +8331,9 @@
                 },
                 {
                   "EventName": "INTERNAL_HIT_BY_LIGHTNING"
+                },
+                {
+                  "EventName": "INTERNAL_HIT_BY_DASH"
                 }
               ],
               "Actions": [
@@ -7622,6 +8499,9 @@
                 },
                 {
                   "EventName": "INTERNAL_HIT_BY_LIGHTNING"
+                },
+                {
+                  "EventName": "INTERNAL_HIT_BY_DASH"
                 }
               ],
               "Actions": [
@@ -8259,6 +9139,9 @@
                 },
                 {
                   "EventName": "INTERNAL_HIT_BY_LIGHTNING"
+                },
+                {
+                  "EventName": "INTERNAL_HIT_BY_DASH"
                 }
               ],
               "Actions": [
@@ -8424,6 +9307,9 @@
                 },
                 {
                   "EventName": "INTERNAL_HIT_BY_LIGHTNING"
+                },
+                {
+                  "EventName": "INTERNAL_HIT_BY_DASH"
                 }
               ],
               "Actions": [
@@ -8589,6 +9475,9 @@
                 },
                 {
                   "EventName": "INTERNAL_HIT_BY_LIGHTNING"
+                },
+                {
+                  "EventName": "INTERNAL_HIT_BY_DASH"
                 }
               ],
               "Actions": [
@@ -8754,6 +9643,9 @@
                 },
                 {
                   "EventName": "INTERNAL_HIT_BY_LIGHTNING"
+                },
+                {
+                  "EventName": "INTERNAL_HIT_BY_DASH"
                 }
               ],
               "Actions": [
@@ -9394,6 +10286,9 @@
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
                 },
                 {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
+                },
+                {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
                   "FireParams": {
                     "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDJumpEnergy_01_Collected_Lod0.prefab"
@@ -9851,6 +10746,9 @@
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
                 },
                 {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
+                },
+                {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
                   "FireParams": {
                     "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDJumpEnergy_01_Collected_Lod0.prefab"
@@ -10031,6 +10929,9 @@
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
                 },
                 {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
+                },
+                {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
                   "FireParams": {
                     "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDJumpEnergy_01_Collected_Lod0.prefab"
@@ -10209,6 +11110,9 @@
               "Actions": [
                 {
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
                 },
                 {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
@@ -14033,6 +14937,9 @@
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
                 },
                 {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
+                },
+                {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
                   "FireParams": {
                     "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDJumpEnergy_01_Collected_Lod0.prefab"
@@ -14211,6 +15118,9 @@
               "Actions": [
                 {
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
                 },
                 {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
@@ -16052,6 +16962,9 @@
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
                 },
                 {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
+                },
+                {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
                   "FireParams": {
                     "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDJumpEnergy_01_Collected_Lod0.prefab"
@@ -16230,6 +17143,9 @@
               "Actions": [
                 {
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
                 },
                 {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
@@ -16412,6 +17328,9 @@
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
                 },
                 {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
+                },
+                {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
                   "FireParams": {
                     "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDJumpEnergy_01_Collected_Lod0.prefab"
@@ -16590,6 +17509,9 @@
               "Actions": [
                 {
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
                 },
                 {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
@@ -16772,6 +17694,9 @@
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
                 },
                 {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
+                },
+                {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
                   "FireParams": {
                     "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDJumpEnergy_01_Collected_Lod0.prefab"
@@ -16950,6 +17875,9 @@
               "Actions": [
                 {
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
                 },
                 {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
@@ -17535,6 +18463,9 @@
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
                 },
                 {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
+                },
+                {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
                   "FireParams": {
                     "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDJumpEnergy_01_Collected_Lod0.prefab"
@@ -17877,6 +18808,9 @@
               "Actions": [
                 {
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
                 },
                 {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
@@ -18437,6 +19371,9 @@
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
                 },
                 {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
+                },
+                {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
                   "FireParams": {
                     "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDJumpEnergy_01_Collected_Lod0.prefab"
@@ -18615,6 +19552,9 @@
               "Actions": [
                 {
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
                 },
                 {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
@@ -18797,6 +19737,9 @@
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
                 },
                 {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
+                },
+                {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
                   "FireParams": {
                     "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDJumpEnergy_01_Collected_Lod0.prefab"
@@ -18975,6 +19918,9 @@
               "Actions": [
                 {
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
                 },
                 {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
@@ -19282,6 +20228,9 @@
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
                 },
                 {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
+                },
+                {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
                   "FireParams": {
                     "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDJumpEnergy_01_Collected_Lod0.prefab"
@@ -19460,6 +20409,9 @@
               "Actions": [
                 {
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
                 },
                 {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
@@ -22684,6 +23636,9 @@
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
                 },
                 {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
+                },
+                {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
                   "FireParams": {
                     "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDJumpEnergy_01_Collected_Lod0.prefab"
@@ -22862,6 +23817,9 @@
               "Actions": [
                 {
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
                 },
                 {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
@@ -24800,6 +25758,9 @@
               "Actions": [
                 {
                   "$type": "RPG.GameCore.FiveDimRefillPlayerJumpEnergyAction"
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimRefillPlayerDashEnergyAction"
                 },
                 {
                   "$type": "RPG.GameCore.FiveDimFireEffectAction",
@@ -27257,12 +28218,21 @@
         "Name": "EntryPoint_BotTraining"
       },
       {
+        "$type": "RPG.GameCore.LittleGameLevelVariableEntityRef",
+        "DefaultValue": {},
+        "Name": "EntryPoint_DashTraining"
+      },
+      {
         "$type": "RPG.GameCore.FiveDimLevelVariableShort",
         "Name": "LevelState_Arrow"
       },
       {
         "$type": "RPG.GameCore.FiveDimLevelVariableShort",
         "Name": "LevelState_Bot"
+      },
+      {
+        "$type": "RPG.GameCore.FiveDimLevelVariableShort",
+        "Name": "LevelState_Dash"
       },
       {
         "$type": "RPG.GameCore.FiveDimLevelVariableShort",
@@ -27280,6 +28250,12 @@
         "$type": "RPG.GameCore.FiveDimLevelVariableShort",
         "Side": "ServerClient",
         "MaxValue": 1,
+        "Name": "DashUnlocked"
+      },
+      {
+        "$type": "RPG.GameCore.FiveDimLevelVariableShort",
+        "Side": "ServerClient",
+        "MaxValue": 1,
         "Name": "AwardDoorUnlocked"
       },
       {
@@ -27287,6 +28263,12 @@
         "Side": "ServerClient",
         "MaxValue": 1,
         "Name": "AwardDoorUnlocked_Bot"
+      },
+      {
+        "$type": "RPG.GameCore.FiveDimLevelVariableShort",
+        "Side": "ServerClient",
+        "MaxValue": 1,
+        "Name": "AwardDoorUnlocked_Dash"
       },
       {
         "$type": "RPG.GameCore.FiveDimLevelVariableShort",
@@ -27330,6 +28312,13 @@
         "Side": "ServerClient",
         "MaxValue": 3,
         "Name": "_257_ChestStateS_Auto"
+      },
+      {
+        "$type": "RPG.GameCore.FiveDimLevelVariableShort",
+        "DefaultValue": 1,
+        "Side": "ServerClient",
+        "MaxValue": 3,
+        "Name": "_261_ChestStateS_Auto"
       }
     ]
   },
@@ -27341,6 +28330,7 @@
     "ExtraLevelGraphConfigList": [],
     "AvatarID": 8001,
     "LevelAudioConfig": {},
+    "MusicJumpConfig": {},
     "GameplayMode": "SimpleUI",
     "WaterLevelConfig": {},
     "CollectCoinConfig": {

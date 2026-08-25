@@ -25029,28 +25029,19 @@
         },
         {
           "$type": "RPG.GameCore.LittleGameViewComponentConfig",
-          "PrefabPath": "Gameplays/FiveDim/EntityView/SP_MiniGame/FDSP_Prop_Coin_Gold.prefab"
+          "PrefabPath": "Gameplays/FiveDim/EntityView/Common/FD_Prop_Money.prefab"
         },
         {
           "$type": "RPG.GameCore.LittleGameTagConfig",
           "Tags": {
             "List": [
               {
-                "Tag": "LittleGame.EntityConfig.FiveDim.Visibility.HideOutsideFiveDim",
-                "TagHash": 294601596
-              }
-            ]
-          }
-        },
-        {
-          "$type": "RPG.GameCore.LittleGameAttachPointComponentConfig",
-          "HasAttachPoint": true,
-          "Config": {
-            "AttachPoints": [
+                "Tag": "LittleGame.EntityConfig.FiveDim.SnapshotVisibility.Hide",
+                "TagHash": -1422695391
+              },
               {
-                "Name": "EffectRoot",
-                "IsDynamic": true,
-                "BindPath": "Chap05_GameplayProp_FDMiniCoin_01_Lod0/EffectRoot"
+                "Tag": "LittleGame.EntityConfig.FiveDim.FreezeResponse.TimeStop",
+                "TagHash": 1765084066
               }
             ]
           }
@@ -25064,19 +25055,61 @@
           "VisibleValues": [
             1
           ],
-          "Conditions": [],
           "DoActionOnInitVisible": true,
           "VisibleActions": [
             {
-              "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction",
-              "Enable": true
+              "$type": "RPG.GameCore.FiveDimDebugLogEventAction",
+              "Message": "注释：为了做延迟，先用底层接口关闭，延时后再恢复"
+            },
+            {
+              "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction"
+            },
+            {
+              "$type": "RPG.GameCore.FiveDimSetRenderVisibleAction",
+              "DitherDuration": 0.2,
+              "RelativePaths": []
+            },
+            {
+              "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
+              "Delay": 0.5,
+              "Name": "ShowDelay",
+              "IgnoreFreezeTimeScale": true,
+              "Actions": [
+                {
+                  "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction",
+                  "Enable": true
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimEntityRotateAction",
+                  "RotateConfig": {}
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimFireEffectAction",
+                  "IgnoreInitEvent": true,
+                  "FireParams": {
+                    "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDMoney_01_Appeared_Lod0.prefab"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimSetRenderVisibleAction",
+                  "Visible": true,
+                  "WithDither": true,
+                  "DitherDuration": 0.2,
+                  "RelativePaths": []
+                }
+              ]
+            }
+          ],
+          "InvisibleActions": [
+            {
+              "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction"
             },
             {
               "$type": "RPG.GameCore.FiveDimEntityRotateAction",
+              "IsStop": true,
               "RotateConfig": {}
             }
-          ],
-          "InvisibleActions": []
+          ]
         },
         {
           "$type": "RPG.GameCore.FiveDimEventReceiverConfig",
@@ -25090,7 +25123,7 @@
               ],
               "Actions": [
                 {
-                  "$type": "RPG.GameCore.FiveDimSetEntityVisibleAction"
+                  "$type": "RPG.GameCore.FiveDimAddMoneyAction"
                 },
                 {
                   "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction"
@@ -25102,79 +25135,41 @@
                   }
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimMiniGameCoinCollectedAction",
-                  "CoinType": "Gold",
-                  "LevelVarName": "GameCurrentScore",
-                  "Score": 30
-                },
-                {
                   "$type": "RPG.GameCore.FiveDimAudioPostEventAction",
-                  "EventName": "Ev_sfx_planarcadia_FDMiniCoin_gold"
+                  "EventName": "Ev_sfx_planarcadia_FDCoin"
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimKillEffectAction",
-                  "KillParams": {
-                    "EffectName": "BlinkWarning"
-                  }
+                  "$type": "RPG.GameCore.FiveDimSetRenderVisibleAction",
+                  "DitherDuration": 0.2,
+                  "RelativePaths": []
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
-                  "Delay": 2,
-                  "Actions": [
-                    {
-                      "$type": "RPG.GameCore.FiveDimMinionDestroySelfAction"
-                    }
-                  ]
+                  "$type": "RPG.GameCore.FiveDimEntityRotateAction",
+                  "IsStop": true,
+                  "RotateConfig": {}
                 }
               ]
             },
             {
               "Events": [
                 {
-                  "EventName": "COIN_TIMEOUT"
+                  "EventName": "Respawn"
                 }
               ],
               "Actions": [
                 {
-                  "$type": "RPG.GameCore.FiveDimFireEffectAction",
-                  "FireParams": {
-                    "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDMoney_01_Collected01_Lod0.prefab",
-                    "EffectName": "BlinkWarning",
-                    "AttachPointName": "EffectRoot"
-                  }
+                  "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction",
+                  "Enable": true
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
-                  "Delay": 0.1,
-                  "Actions": [
-                    {
-                      "$type": "RPG.GameCore.FiveDimSetEntityVisibleAction"
-                    }
-                  ]
+                  "$type": "RPG.GameCore.FiveDimSetRenderVisibleAction",
+                  "Visible": true,
+                  "DitherDuration": 0.2,
+                  "RelativePaths": []
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
-                  "Delay": 3,
-                  "Actions": [
-                    {
-                      "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction"
-                    },
-                    {
-                      "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
-                      "Delay": 0.5,
-                      "Actions": [
-                        {
-                          "$type": "RPG.GameCore.FiveDimKillEffectAction",
-                          "KillParams": {
-                            "EffectName": "BlinkWarning"
-                          }
-                        },
-                        {
-                          "$type": "RPG.GameCore.FiveDimMinionDestroySelfAction"
-                        }
-                      ]
-                    }
-                  ]
+                  "$type": "RPG.GameCore.FiveDimEntityRotateAction",
+                  "RotateConfig": {}
                 }
               ]
             }
@@ -25192,15 +25187,22 @@
             }
           },
           "IsPlayerOnly": false,
-          "TargetType": 3,
+          "TargetType": 226,
           "EnterEvents": [
             {
               "EventName": "OnTriggerEnter"
             }
           ],
           "ExitEvents": [],
-          "EnterEventsToGuests": [],
+          "EnterEventsToGuests": [
+            "OnCoinTriggerEnter"
+          ],
           "ExitEventsToGuests": []
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimMoneyConfig",
+          "IsMoney": true,
+          "PlaceholderRIStateName": "Placeholder"
         }
       ],
       "Name": "FDSP_Prop_CoinGold_001",
@@ -25223,28 +25225,19 @@
         },
         {
           "$type": "RPG.GameCore.LittleGameViewComponentConfig",
-          "PrefabPath": "Gameplays/FiveDim/EntityView/SP_MiniGame/FDSP_Prop_Coin_Gold.prefab"
+          "PrefabPath": "Gameplays/FiveDim/EntityView/Common/FD_Prop_Money.prefab"
         },
         {
           "$type": "RPG.GameCore.LittleGameTagConfig",
           "Tags": {
             "List": [
               {
-                "Tag": "LittleGame.EntityConfig.FiveDim.Visibility.HideOutsideFiveDim",
-                "TagHash": 294601596
-              }
-            ]
-          }
-        },
-        {
-          "$type": "RPG.GameCore.LittleGameAttachPointComponentConfig",
-          "HasAttachPoint": true,
-          "Config": {
-            "AttachPoints": [
+                "Tag": "LittleGame.EntityConfig.FiveDim.SnapshotVisibility.Hide",
+                "TagHash": -1422695391
+              },
               {
-                "Name": "EffectRoot",
-                "IsDynamic": true,
-                "BindPath": "Chap05_GameplayProp_FDMiniCoin_01_Lod0/EffectRoot"
+                "Tag": "LittleGame.EntityConfig.FiveDim.FreezeResponse.TimeStop",
+                "TagHash": 1765084066
               }
             ]
           }
@@ -25258,19 +25251,61 @@
           "VisibleValues": [
             1
           ],
-          "Conditions": [],
           "DoActionOnInitVisible": true,
           "VisibleActions": [
             {
-              "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction",
-              "Enable": true
+              "$type": "RPG.GameCore.FiveDimDebugLogEventAction",
+              "Message": "注释：为了做延迟，先用底层接口关闭，延时后再恢复"
+            },
+            {
+              "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction"
+            },
+            {
+              "$type": "RPG.GameCore.FiveDimSetRenderVisibleAction",
+              "DitherDuration": 0.2,
+              "RelativePaths": []
+            },
+            {
+              "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
+              "Delay": 0.5,
+              "Name": "ShowDelay",
+              "IgnoreFreezeTimeScale": true,
+              "Actions": [
+                {
+                  "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction",
+                  "Enable": true
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimEntityRotateAction",
+                  "RotateConfig": {}
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimFireEffectAction",
+                  "IgnoreInitEvent": true,
+                  "FireParams": {
+                    "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDMoney_01_Appeared_Lod0.prefab"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimSetRenderVisibleAction",
+                  "Visible": true,
+                  "WithDither": true,
+                  "DitherDuration": 0.2,
+                  "RelativePaths": []
+                }
+              ]
+            }
+          ],
+          "InvisibleActions": [
+            {
+              "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction"
             },
             {
               "$type": "RPG.GameCore.FiveDimEntityRotateAction",
+              "IsStop": true,
               "RotateConfig": {}
             }
-          ],
-          "InvisibleActions": []
+          ]
         },
         {
           "$type": "RPG.GameCore.FiveDimEventReceiverConfig",
@@ -25284,7 +25319,7 @@
               ],
               "Actions": [
                 {
-                  "$type": "RPG.GameCore.FiveDimSetEntityVisibleAction"
+                  "$type": "RPG.GameCore.FiveDimAddMoneyAction"
                 },
                 {
                   "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction"
@@ -25296,79 +25331,41 @@
                   }
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimMiniGameCoinCollectedAction",
-                  "CoinType": "Gold",
-                  "LevelVarName": "GameCurrentScore",
-                  "Score": 30
-                },
-                {
                   "$type": "RPG.GameCore.FiveDimAudioPostEventAction",
-                  "EventName": "Ev_sfx_planarcadia_FDMiniCoin_gold"
+                  "EventName": "Ev_sfx_planarcadia_FDCoin"
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimKillEffectAction",
-                  "KillParams": {
-                    "EffectName": "BlinkWarning"
-                  }
+                  "$type": "RPG.GameCore.FiveDimSetRenderVisibleAction",
+                  "DitherDuration": 0.2,
+                  "RelativePaths": []
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
-                  "Delay": 2,
-                  "Actions": [
-                    {
-                      "$type": "RPG.GameCore.FiveDimMinionDestroySelfAction"
-                    }
-                  ]
+                  "$type": "RPG.GameCore.FiveDimEntityRotateAction",
+                  "IsStop": true,
+                  "RotateConfig": {}
                 }
               ]
             },
             {
               "Events": [
                 {
-                  "EventName": "COIN_TIMEOUT"
+                  "EventName": "Respawn"
                 }
               ],
               "Actions": [
                 {
-                  "$type": "RPG.GameCore.FiveDimFireEffectAction",
-                  "FireParams": {
-                    "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDMoney_01_Collected01_Lod0.prefab",
-                    "EffectName": "BlinkWarning",
-                    "AttachPointName": "EffectRoot"
-                  }
+                  "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction",
+                  "Enable": true
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
-                  "Delay": 0.1,
-                  "Actions": [
-                    {
-                      "$type": "RPG.GameCore.FiveDimSetEntityVisibleAction"
-                    }
-                  ]
+                  "$type": "RPG.GameCore.FiveDimSetRenderVisibleAction",
+                  "Visible": true,
+                  "DitherDuration": 0.2,
+                  "RelativePaths": []
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
-                  "Delay": 3,
-                  "Actions": [
-                    {
-                      "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction"
-                    },
-                    {
-                      "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
-                      "Delay": 0.5,
-                      "Actions": [
-                        {
-                          "$type": "RPG.GameCore.FiveDimKillEffectAction",
-                          "KillParams": {
-                            "EffectName": "BlinkWarning"
-                          }
-                        },
-                        {
-                          "$type": "RPG.GameCore.FiveDimMinionDestroySelfAction"
-                        }
-                      ]
-                    }
-                  ]
+                  "$type": "RPG.GameCore.FiveDimEntityRotateAction",
+                  "RotateConfig": {}
                 }
               ]
             }
@@ -25386,15 +25383,22 @@
             }
           },
           "IsPlayerOnly": false,
-          "TargetType": 3,
+          "TargetType": 226,
           "EnterEvents": [
             {
               "EventName": "OnTriggerEnter"
             }
           ],
           "ExitEvents": [],
-          "EnterEventsToGuests": [],
+          "EnterEventsToGuests": [
+            "OnCoinTriggerEnter"
+          ],
           "ExitEventsToGuests": []
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimMoneyConfig",
+          "IsMoney": true,
+          "PlaceholderRIStateName": "Placeholder"
         }
       ],
       "Name": "FDSP_Prop_CoinGold_002",
@@ -25417,28 +25421,19 @@
         },
         {
           "$type": "RPG.GameCore.LittleGameViewComponentConfig",
-          "PrefabPath": "Gameplays/FiveDim/EntityView/SP_MiniGame/FDSP_Prop_Coin_Gold.prefab"
+          "PrefabPath": "Gameplays/FiveDim/EntityView/Common/FD_Prop_Money.prefab"
         },
         {
           "$type": "RPG.GameCore.LittleGameTagConfig",
           "Tags": {
             "List": [
               {
-                "Tag": "LittleGame.EntityConfig.FiveDim.Visibility.HideOutsideFiveDim",
-                "TagHash": 294601596
-              }
-            ]
-          }
-        },
-        {
-          "$type": "RPG.GameCore.LittleGameAttachPointComponentConfig",
-          "HasAttachPoint": true,
-          "Config": {
-            "AttachPoints": [
+                "Tag": "LittleGame.EntityConfig.FiveDim.SnapshotVisibility.Hide",
+                "TagHash": -1422695391
+              },
               {
-                "Name": "EffectRoot",
-                "IsDynamic": true,
-                "BindPath": "Chap05_GameplayProp_FDMiniCoin_01_Lod0/EffectRoot"
+                "Tag": "LittleGame.EntityConfig.FiveDim.FreezeResponse.TimeStop",
+                "TagHash": 1765084066
               }
             ]
           }
@@ -25452,19 +25447,61 @@
           "VisibleValues": [
             1
           ],
-          "Conditions": [],
           "DoActionOnInitVisible": true,
           "VisibleActions": [
             {
-              "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction",
-              "Enable": true
+              "$type": "RPG.GameCore.FiveDimDebugLogEventAction",
+              "Message": "注释：为了做延迟，先用底层接口关闭，延时后再恢复"
+            },
+            {
+              "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction"
+            },
+            {
+              "$type": "RPG.GameCore.FiveDimSetRenderVisibleAction",
+              "DitherDuration": 0.2,
+              "RelativePaths": []
+            },
+            {
+              "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
+              "Delay": 0.5,
+              "Name": "ShowDelay",
+              "IgnoreFreezeTimeScale": true,
+              "Actions": [
+                {
+                  "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction",
+                  "Enable": true
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimEntityRotateAction",
+                  "RotateConfig": {}
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimFireEffectAction",
+                  "IgnoreInitEvent": true,
+                  "FireParams": {
+                    "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDMoney_01_Appeared_Lod0.prefab"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimSetRenderVisibleAction",
+                  "Visible": true,
+                  "WithDither": true,
+                  "DitherDuration": 0.2,
+                  "RelativePaths": []
+                }
+              ]
+            }
+          ],
+          "InvisibleActions": [
+            {
+              "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction"
             },
             {
               "$type": "RPG.GameCore.FiveDimEntityRotateAction",
+              "IsStop": true,
               "RotateConfig": {}
             }
-          ],
-          "InvisibleActions": []
+          ]
         },
         {
           "$type": "RPG.GameCore.FiveDimEventReceiverConfig",
@@ -25478,7 +25515,7 @@
               ],
               "Actions": [
                 {
-                  "$type": "RPG.GameCore.FiveDimSetEntityVisibleAction"
+                  "$type": "RPG.GameCore.FiveDimAddMoneyAction"
                 },
                 {
                   "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction"
@@ -25490,79 +25527,41 @@
                   }
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimMiniGameCoinCollectedAction",
-                  "CoinType": "Gold",
-                  "LevelVarName": "GameCurrentScore",
-                  "Score": 30
-                },
-                {
                   "$type": "RPG.GameCore.FiveDimAudioPostEventAction",
-                  "EventName": "Ev_sfx_planarcadia_FDMiniCoin_gold"
+                  "EventName": "Ev_sfx_planarcadia_FDCoin"
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimKillEffectAction",
-                  "KillParams": {
-                    "EffectName": "BlinkWarning"
-                  }
+                  "$type": "RPG.GameCore.FiveDimSetRenderVisibleAction",
+                  "DitherDuration": 0.2,
+                  "RelativePaths": []
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
-                  "Delay": 2,
-                  "Actions": [
-                    {
-                      "$type": "RPG.GameCore.FiveDimMinionDestroySelfAction"
-                    }
-                  ]
+                  "$type": "RPG.GameCore.FiveDimEntityRotateAction",
+                  "IsStop": true,
+                  "RotateConfig": {}
                 }
               ]
             },
             {
               "Events": [
                 {
-                  "EventName": "COIN_TIMEOUT"
+                  "EventName": "Respawn"
                 }
               ],
               "Actions": [
                 {
-                  "$type": "RPG.GameCore.FiveDimFireEffectAction",
-                  "FireParams": {
-                    "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDMoney_01_Collected01_Lod0.prefab",
-                    "EffectName": "BlinkWarning",
-                    "AttachPointName": "EffectRoot"
-                  }
+                  "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction",
+                  "Enable": true
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
-                  "Delay": 0.1,
-                  "Actions": [
-                    {
-                      "$type": "RPG.GameCore.FiveDimSetEntityVisibleAction"
-                    }
-                  ]
+                  "$type": "RPG.GameCore.FiveDimSetRenderVisibleAction",
+                  "Visible": true,
+                  "DitherDuration": 0.2,
+                  "RelativePaths": []
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
-                  "Delay": 3,
-                  "Actions": [
-                    {
-                      "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction"
-                    },
-                    {
-                      "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
-                      "Delay": 0.5,
-                      "Actions": [
-                        {
-                          "$type": "RPG.GameCore.FiveDimKillEffectAction",
-                          "KillParams": {
-                            "EffectName": "BlinkWarning"
-                          }
-                        },
-                        {
-                          "$type": "RPG.GameCore.FiveDimMinionDestroySelfAction"
-                        }
-                      ]
-                    }
-                  ]
+                  "$type": "RPG.GameCore.FiveDimEntityRotateAction",
+                  "RotateConfig": {}
                 }
               ]
             }
@@ -25580,15 +25579,22 @@
             }
           },
           "IsPlayerOnly": false,
-          "TargetType": 3,
+          "TargetType": 226,
           "EnterEvents": [
             {
               "EventName": "OnTriggerEnter"
             }
           ],
           "ExitEvents": [],
-          "EnterEventsToGuests": [],
+          "EnterEventsToGuests": [
+            "OnCoinTriggerEnter"
+          ],
           "ExitEventsToGuests": []
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimMoneyConfig",
+          "IsMoney": true,
+          "PlaceholderRIStateName": "Placeholder"
         }
       ],
       "Name": "FDSP_Prop_CoinGold_003",
@@ -25611,28 +25617,19 @@
         },
         {
           "$type": "RPG.GameCore.LittleGameViewComponentConfig",
-          "PrefabPath": "Gameplays/FiveDim/EntityView/SP_MiniGame/FDSP_Prop_Coin_Gold.prefab"
+          "PrefabPath": "Gameplays/FiveDim/EntityView/Common/FD_Prop_Money.prefab"
         },
         {
           "$type": "RPG.GameCore.LittleGameTagConfig",
           "Tags": {
             "List": [
               {
-                "Tag": "LittleGame.EntityConfig.FiveDim.Visibility.HideOutsideFiveDim",
-                "TagHash": 294601596
-              }
-            ]
-          }
-        },
-        {
-          "$type": "RPG.GameCore.LittleGameAttachPointComponentConfig",
-          "HasAttachPoint": true,
-          "Config": {
-            "AttachPoints": [
+                "Tag": "LittleGame.EntityConfig.FiveDim.SnapshotVisibility.Hide",
+                "TagHash": -1422695391
+              },
               {
-                "Name": "EffectRoot",
-                "IsDynamic": true,
-                "BindPath": "Chap05_GameplayProp_FDMiniCoin_01_Lod0/EffectRoot"
+                "Tag": "LittleGame.EntityConfig.FiveDim.FreezeResponse.TimeStop",
+                "TagHash": 1765084066
               }
             ]
           }
@@ -25646,19 +25643,61 @@
           "VisibleValues": [
             1
           ],
-          "Conditions": [],
           "DoActionOnInitVisible": true,
           "VisibleActions": [
             {
-              "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction",
-              "Enable": true
+              "$type": "RPG.GameCore.FiveDimDebugLogEventAction",
+              "Message": "注释：为了做延迟，先用底层接口关闭，延时后再恢复"
+            },
+            {
+              "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction"
+            },
+            {
+              "$type": "RPG.GameCore.FiveDimSetRenderVisibleAction",
+              "DitherDuration": 0.2,
+              "RelativePaths": []
+            },
+            {
+              "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
+              "Delay": 0.5,
+              "Name": "ShowDelay",
+              "IgnoreFreezeTimeScale": true,
+              "Actions": [
+                {
+                  "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction",
+                  "Enable": true
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimEntityRotateAction",
+                  "RotateConfig": {}
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimFireEffectAction",
+                  "IgnoreInitEvent": true,
+                  "FireParams": {
+                    "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDMoney_01_Appeared_Lod0.prefab"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.FiveDimSetRenderVisibleAction",
+                  "Visible": true,
+                  "WithDither": true,
+                  "DitherDuration": 0.2,
+                  "RelativePaths": []
+                }
+              ]
+            }
+          ],
+          "InvisibleActions": [
+            {
+              "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction"
             },
             {
               "$type": "RPG.GameCore.FiveDimEntityRotateAction",
+              "IsStop": true,
               "RotateConfig": {}
             }
-          ],
-          "InvisibleActions": []
+          ]
         },
         {
           "$type": "RPG.GameCore.FiveDimEventReceiverConfig",
@@ -25672,7 +25711,7 @@
               ],
               "Actions": [
                 {
-                  "$type": "RPG.GameCore.FiveDimSetEntityVisibleAction"
+                  "$type": "RPG.GameCore.FiveDimAddMoneyAction"
                 },
                 {
                   "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction"
@@ -25684,79 +25723,41 @@
                   }
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimMiniGameCoinCollectedAction",
-                  "CoinType": "Gold",
-                  "LevelVarName": "GameCurrentScore",
-                  "Score": 30
-                },
-                {
                   "$type": "RPG.GameCore.FiveDimAudioPostEventAction",
-                  "EventName": "Ev_sfx_planarcadia_FDMiniCoin_gold"
+                  "EventName": "Ev_sfx_planarcadia_FDCoin"
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimKillEffectAction",
-                  "KillParams": {
-                    "EffectName": "BlinkWarning"
-                  }
+                  "$type": "RPG.GameCore.FiveDimSetRenderVisibleAction",
+                  "DitherDuration": 0.2,
+                  "RelativePaths": []
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
-                  "Delay": 2,
-                  "Actions": [
-                    {
-                      "$type": "RPG.GameCore.FiveDimMinionDestroySelfAction"
-                    }
-                  ]
+                  "$type": "RPG.GameCore.FiveDimEntityRotateAction",
+                  "IsStop": true,
+                  "RotateConfig": {}
                 }
               ]
             },
             {
               "Events": [
                 {
-                  "EventName": "COIN_TIMEOUT"
+                  "EventName": "Respawn"
                 }
               ],
               "Actions": [
                 {
-                  "$type": "RPG.GameCore.FiveDimFireEffectAction",
-                  "FireParams": {
-                    "EffectPath": "Effects/Eff_Prefab/Eff_Scene/InteractiveProp/Eff_Chap05_Prop_FDMoney_01_Collected01_Lod0.prefab",
-                    "EffectName": "BlinkWarning",
-                    "AttachPointName": "EffectRoot"
-                  }
+                  "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction",
+                  "Enable": true
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
-                  "Delay": 0.1,
-                  "Actions": [
-                    {
-                      "$type": "RPG.GameCore.FiveDimSetEntityVisibleAction"
-                    }
-                  ]
+                  "$type": "RPG.GameCore.FiveDimSetRenderVisibleAction",
+                  "Visible": true,
+                  "DitherDuration": 0.2,
+                  "RelativePaths": []
                 },
                 {
-                  "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
-                  "Delay": 3,
-                  "Actions": [
-                    {
-                      "$type": "RPG.GameCore.FiveDimSetTriggerEnableAction"
-                    },
-                    {
-                      "$type": "RPG.GameCore.FiveDimAddDelayedSequenceAction",
-                      "Delay": 0.5,
-                      "Actions": [
-                        {
-                          "$type": "RPG.GameCore.FiveDimKillEffectAction",
-                          "KillParams": {
-                            "EffectName": "BlinkWarning"
-                          }
-                        },
-                        {
-                          "$type": "RPG.GameCore.FiveDimMinionDestroySelfAction"
-                        }
-                      ]
-                    }
-                  ]
+                  "$type": "RPG.GameCore.FiveDimEntityRotateAction",
+                  "RotateConfig": {}
                 }
               ]
             }
@@ -25774,15 +25775,22 @@
             }
           },
           "IsPlayerOnly": false,
-          "TargetType": 3,
+          "TargetType": 226,
           "EnterEvents": [
             {
               "EventName": "OnTriggerEnter"
             }
           ],
           "ExitEvents": [],
-          "EnterEventsToGuests": [],
+          "EnterEventsToGuests": [
+            "OnCoinTriggerEnter"
+          ],
           "ExitEventsToGuests": []
+        },
+        {
+          "$type": "RPG.GameCore.FiveDimMoneyConfig",
+          "IsMoney": true,
+          "PlaceholderRIStateName": "Placeholder"
         }
       ],
       "Name": "FDSP_Prop_CoinGold_004",

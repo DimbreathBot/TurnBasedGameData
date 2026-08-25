@@ -1214,6 +1214,16 @@
       },
       "OnStart": [
         {
+          "$type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "MBattleEvent_GridFight_MortenaxBlade_00_LowHPUltExecuting"
+          }
+        },
+        {
           "$type": "RPG.GameCore.SetEntityVisible",
           "TargetType": {
             "$type": "RPG.GameCore.TargetAlias",
@@ -1624,6 +1634,16 @@
             "Alias": "Caster"
           },
           "ModifierName": {
+            "Value": "MBattleEvent_GridFight_MortenaxBlade_00_LowHPUltExecuting"
+          }
+        },
+        {
+          "$type": "RPG.GameCore.RemoveModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
             "Value": "MBattleEvent_GridFight_MortenaxBlade_00_LowHPUltInserting"
           }
         },
@@ -1682,10 +1702,6 @@
     {
       "Modifiers": {
         "MBattleEvent_GridFight_MortenaxBlade_00_Passive": {
-          "BehaviorFlagList": [
-            "CustomEvent_MonsterChangePhaseTrigger",
-            "CustomEvent_InfiniteRefresh"
-          ],
           "_CallbackList": [
             {
               "Event": "OnListenHPChange",
@@ -1743,20 +1759,37 @@
               ]
             },
             {
-              "Event": "OnCustomEvent",
-              "CallbackConfig": [
-                {
-                  "$type": "RPG.GameCore.IncludeTaskListTemplate",
-                  "Name": "MBattleEvent_GridFight_MortenaxBlade_00_TryPlayLowHPUlt"
-                }
-              ]
-            },
-            {
               "Event": "OnWaveMonster",
               "CallbackConfig": [
                 {
-                  "$type": "RPG.GameCore.IncludeTaskListTemplate",
-                  "Name": "MBattleEvent_GridFight_MortenaxBlade_00_TryPlayLowHPUlt"
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByIsContainModifier",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "Caster"
+                    },
+                    "ModifierName": {
+                      "Value": "MBattleEvent_GridFight_MortenaxBlade_00_LowHPUltExecuting"
+                    },
+                    "Inverse": true
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.RemoveModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "ModifierName": {
+                        "Value": "MBattleEvent_GridFight_MortenaxBlade_00_LowHPUltInserting"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                      "Name": "MBattleEvent_GridFight_MortenaxBlade_00_TryPlayLowHPUlt"
+                    }
+                  ]
                 }
               ]
             }
@@ -2734,6 +2767,21 @@
               "$type": "RPG.GameCore.ByRankActivated",
               "TriggerKey": {
                 "Hash": 523552506
+              }
+            },
+            "IsHaloStatus": true
+          },
+          {
+            "Name": "G_BattleEvent_MortenaxBlade_00_Rank06_ExtraEP",
+            "TargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "ModifierOwnerEntity"
+            },
+            "IncludeBattleEvent": true,
+            "Predicate": {
+              "$type": "RPG.GameCore.ByRankActivated",
+              "TriggerKey": {
+                "Hash": -1445815962
               }
             },
             "IsHaloStatus": true
@@ -3715,6 +3763,15 @@
       ],
       "Stacking": "ReplaceByCaster"
     },
+    "MBattleEvent_GridFight_MortenaxBlade_00_LowHPUltExecuting": {
+      "_CallbackList": [
+        {
+          "Event": "OnStack",
+          "CallbackConfig": []
+        }
+      ],
+      "Stacking": "ReplaceByCaster"
+    },
     "G_MBattleEvent_MortenaxBlade_00_Rank02_ToMember": {
       "_CallbackList": [
         {
@@ -3870,7 +3927,109 @@
           ]
         }
       ]
-    }
+    },
+    "G_BattleEvent_MortenaxBlade_00_Rank06_ExtraEP": {
+      "_CallbackList": [
+        {
+          "Event": "OnDestroy",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.RemoveModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "ModifierName": {
+                "Value": "G_BattleEvent_MortenaxBlade_00_Rank06_CD"
+              }
+            }
+          ]
+        },
+        {
+          "Event": "OnListenTurnPhase2Begin",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.RemoveModifier",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "ModifierOwnerEntity"
+              },
+              "ModifierName": {
+                "Value": "G_BattleEvent_MortenaxBlade_00_Rank06_CD"
+              }
+            }
+          ]
+        },
+        {
+          "Event": "OnHPChange",
+          "CallbackConfig": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByIsContainModifier",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "ModifierOwnerEntity"
+                    },
+                    "ModifierName": {
+                      "Value": "G_BattleEvent_MortenaxBlade_00_Rank06_CD"
+                    },
+                    "Inverse": true
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCompareParamValue",
+                    "CompareType": "Less",
+                    "CompareValue": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 0
+                      }
+                    }
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.SetDynamicValue",
+                  "Value": {
+                    "IsDynamic": true,
+                    "PostfixExpr": {
+                      "OpCodes": "AQAAAAIR",
+                      "FixedValues": [
+                        {
+                          "Value": 1
+                        }
+                      ],
+                      "DynamicHashes": [
+                        683472509
+                      ]
+                    }
+                  },
+                  "DynamicKey": {
+                    "Value": "G_EnergyCount"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.AddModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "ModifierOwnerEntity"
+                  },
+                  "ModifierName": {
+                    "Value": "G_BattleEvent_MortenaxBlade_00_Rank06_CD"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "Stacking": "ReplaceByCaster"
+    },
+    "G_BattleEvent_MortenaxBlade_00_Rank06_CD": {}
   },
   "GlobalTemplates": [
     {
@@ -4146,6 +4305,17 @@
                   "Value": "MBattleEvent_GridFight_MortenaxBlade_00_LowHPUltInserting"
                 },
                 "Inverse": true
+              },
+              {
+                "$type": "RPG.GameCore.ByIsContainModifier",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                },
+                "ModifierName": {
+                  "Value": "MBattleEvent_GridFight_MortenaxBlade_00_LowHPUltExecuting"
+                },
+                "Inverse": true
               }
             ]
           },
@@ -4191,6 +4361,16 @@
                   },
                   "ModifierName": {
                     "Value": "MBattleEvent_GridFight_MortenaxBlade_00_LowHPUltInserting"
+                  }
+                },
+                {
+                  "$type": "RPG.GameCore.RemoveModifier",
+                  "TargetType": {
+                    "$type": "RPG.GameCore.TargetAlias",
+                    "Alias": "Caster"
+                  },
+                  "ModifierName": {
+                    "Value": "MBattleEvent_GridFight_MortenaxBlade_00_LowHPUltExecuting"
                   }
                 }
               ],

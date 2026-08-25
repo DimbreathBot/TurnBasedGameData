@@ -409,7 +409,8 @@
           "$type": "RPG.GameCore.CollectDataConditions",
           "TaskIDList": [
             105400306,
-            105420203
+            105420203,
+            105450204
           ],
           "MainMissionIDList": [],
           "PerformanceIDList": [],
@@ -603,7 +604,8 @@
           "$type": "RPG.GameCore.CollectDataConditions",
           "TaskIDList": [
             105400306,
-            105420203
+            105420203,
+            105450204
           ],
           "MainMissionIDList": [],
           "PerformanceIDList": [],
@@ -688,7 +690,220 @@
       ]
     },
     {
-      "TaskList": []
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitEntityEventV2",
+          "EventName": {
+            "Value": "UpdateDashState"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByCompareGroupProperty",
+                "DynamicName": {
+                  "Value": "LG_110001_HubUnlocked"
+                },
+                "CompareValue": 1
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareGraphDynamicFloat",
+                    "Name": "DashMissionFinish",
+                    "Value": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 1
+                      }
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareGroupProperty",
+                        "DynamicName": {
+                          "Value": "LG_110001_DashUnlocked"
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.RequestSetServerGroupPropertyV2",
+                          "DynamicName": {
+                            "Value": "LG_110001_DashUnlocked"
+                          },
+                          "Value": 1
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGraphDynamicValueChange",
+          "Name": "DashMissionFinish",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "UpdateDashState"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitSubMissionStateChange",
+          "SubMissions": [
+            105450204
+          ],
+          "State": "Finish",
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+              "Name": "DashMissionFinish",
+              "TargetIDs": [],
+              "Value": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            }
+          ],
+          "TriggerOnMissionInit": false
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupPropertyChange",
+          "Name": {
+            "Value": "LG_110001_HubUnlocked"
+          },
+          "OnChange": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "UpdateDashState"
+              },
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.CollectDataConditions",
+          "TaskIDList": [
+            105400306,
+            105420203,
+            105450204
+          ],
+          "MainMissionIDList": [],
+          "PerformanceIDList": [],
+          "PerformanceIDDsList": [],
+          "CustomValueMainMissionIDList": []
+        },
+        {
+          "$type": "RPG.GameCore.PredicateTaskList",
+          "Predicate": {
+            "$type": "RPG.GameCore.ByCompareSubMissionState",
+            "SubMissionID": 105450204,
+            "SubMissionState": "Finish",
+            "AllStoryLine": true
+          },
+          "SuccessTaskList": [
+            {
+              "$type": "RPG.GameCore.SetGraphDynamicFloat",
+              "Name": "DashMissionFinish",
+              "TargetIDs": [],
+              "Value": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.TriggerEntityEventV2",
+          "EventName": {
+            "Value": "UpdateDashState"
+          },
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchAdvPropEx"
+          }
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitFiveDimPlayerEnterOrExit",
+          "SpecifyContainer": true,
+          "ContainerID": {
+            "Custom": true,
+            "Key": "FDLevel_Dash"
+          },
+          "OnEnter": [
+            {
+              "$type": "RPG.GameCore.SetFloorCustomFloatV2",
+              "Name": {
+                "Value": "FCV_FD_InTrainingLevel"
+              },
+              "Value": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 2
+                }
+              }
+            }
+          ],
+          "OnExit": [
+            {
+              "$type": "RPG.GameCore.SetFloorCustomFloatV2",
+              "Name": {
+                "Value": "FCV_FD_InTrainingLevel"
+              },
+              "Value": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0
+                }
+              }
+            }
+          ]
+        }
+      ]
     }
   ],
   "ValueSource": {
@@ -722,12 +937,20 @@
         "Key": "FDLevel_Bot"
       },
       {
+        "$type": "RPG.GameCore.SharedString",
+        "Key": "FDLevel_Dash"
+      },
+      {
         "$type": "RPG.GameCore.SharedInt",
         "Key": "ArrowMissionFinish"
       },
       {
         "$type": "RPG.GameCore.SharedInt",
         "Key": "BotMissionFinish"
+      },
+      {
+        "$type": "RPG.GameCore.SharedInt",
+        "Key": "DashMissionFinish"
       }
     ]
   },
@@ -739,6 +962,10 @@
     },
     {
       "Name": "UpdateBotState",
+      "IsPrivate": true
+    },
+    {
+      "Name": "UpdateDashState",
       "IsPrivate": true
     }
   ]
