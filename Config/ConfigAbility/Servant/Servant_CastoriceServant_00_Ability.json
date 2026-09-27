@@ -5266,7 +5266,8 @@
         "MServant_CastoriceServant_Passive": {
           "BehaviorFlagList": [
             "ImmuneDebuff",
-            "SpecialBattleArea"
+            "SpecialBattleArea",
+            "Endurance"
           ],
           "OnAbilityPropertyChange": [
             {
@@ -8353,12 +8354,278 @@
           ],
           "FailedTaskList": [
             {
-              "$type": "RPG.GameCore.UseSkillOneMore",
-              "SkillType": "ControlSkill02"
-            },
-            {
-              "$type": "RPG.GameCore.SkillPerformFinish",
-              "SkipAttackSettlement": true
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByIsContainModifier",
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "Caster"
+                },
+                "ModifierName": {
+                  "Value": "MServant_CastoriceServant_LifeTime"
+                },
+                "Inverse": true
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.UseSkillOneMore",
+                  "SkillType": "ControlSkill02"
+                },
+                {
+                  "$type": "RPG.GameCore.SkillPerformFinish",
+                  "SkipAttackSettlement": true
+                }
+              ],
+              "FailedTaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByCompareCharacterNumber",
+                    "TargetType": {
+                      "$type": "RPG.GameCore.TargetAlias",
+                      "Alias": "AllEnemy"
+                    },
+                    "Predicate": {
+                      "$type": "RPG.GameCore.ByIsContainModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "ParamEntity"
+                      },
+                      "ModifierName": {
+                        "Value": "MCommon_LockHPThresholdReached_Mark"
+                      },
+                      "Inverse": true
+                    },
+                    "CompareType": "Greater",
+                    "CompareNumber": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 0
+                      }
+                    }
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.UseSkillOneMore",
+                      "SkillType": "ControlSkill02"
+                    },
+                    {
+                      "$type": "RPG.GameCore.SkillPerformFinish",
+                      "SkipAttackSettlement": true
+                    }
+                  ],
+                  "FailedTaskList": [
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.BySkillPointActivated",
+                        "PointTriggerKey": "PointB2"
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.AddModifier",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "Caster"
+                          },
+                          "ModifierName": {
+                            "Value": "MServant_Castorice_SpeedRatio"
+                          },
+                          "LifeTime": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 1
+                            }
+                          },
+                          "DynamicValues": {
+                            "MDF_PropertyValue": {
+                              "IsDynamic": true,
+                              "PostfixExpr": {
+                                "OpCodes": "AQAR",
+                                "FixedValues": [],
+                                "DynamicHashes": [
+                                  1080946788
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.ClearTargetTimeSlow",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "CasterWithAllEnemy"
+                      },
+                      "SlowKey": "TimeSlowSkill02"
+                    },
+                    {
+                      "$type": "RPG.GameCore.LevelAudioState",
+                      "GroupName": "State_Battle_Avatar_CastoriceSlow",
+                      "StateName": {
+                        "Value": "Outside"
+                      },
+                      "SaveToCustomString": true
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerSoundInAnim",
+                      "SoundName": "Ev_sfx_avatar_Castorice_Common_ExitSlow"
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "DynamicKey": {
+                          "Value": "CastoriceServant_BPSkill_Level"
+                        },
+                        "CompareType": "Equal",
+                        "CompareValue": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 1
+                          }
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.TriggerAnimState",
+                          "AnimStateName": "Skill21_Ready",
+                          "NormalizedTransitionDuration": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 0.27
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "DynamicKey": {
+                          "Value": "CastoriceServant_BPSkill_Level"
+                        },
+                        "CompareType": "Equal",
+                        "CompareValue": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 2
+                          }
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.TriggerAnimState",
+                          "AnimStateName": "Skill22_Ready",
+                          "NormalizedTransitionDuration": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 0.25
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "DynamicKey": {
+                          "Value": "CastoriceServant_BPSkill_Level"
+                        },
+                        "CompareType": "Equal",
+                        "CompareValue": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 3
+                          }
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.TriggerAnimState",
+                          "AnimStateName": "Skill22_Ready",
+                          "NormalizedTransitionDuration": {
+                            "IsDynamic": false,
+                            "FixedValue": {
+                              "Value": 0.5
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                      "Name": "Servant_CastoriceServant_AnimEvents"
+                    },
+                    {
+                      "$type": "RPG.GameCore.DamagePerformFinish"
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByRankActivated",
+                        "TriggerKey": {
+                          "Hash": -1445815962
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.RemoveModifier",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "Caster"
+                          },
+                          "ModifierName": {
+                            "Value": "MServant_CastoriceServant_00_Rank06_ForceStanceDamage"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.SkillPerformFinish"
+                    },
+                    {
+                      "$type": "RPG.GameCore.WaitSecond",
+                      "WaitTime": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0.05
+                        }
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.WaitFor",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByDieAnimFinished",
+                        "TeamTypeMask": "TeamDark",
+                        "EntityTypeMask": "Mask_TeamCharacters"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.RemoveModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "Caster"
+                      },
+                      "ModifierName": {
+                        "Value": "MServant_CastoriceServant_Flag01"
+                      }
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerAnimState",
+                      "AnimLogicState": "Idle",
+                      "AnimStateName": "StandBy"
+                    },
+                    {
+                      "$type": "RPG.GameCore.StopTimeline",
+                      "TimelineName": "Effects/Eff_Prefab/Eff_Avatar/Eff_Castorice_00/Servant/Eff_Servant_CastoriceServant_00_Skill02_TimeLine.playable"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
