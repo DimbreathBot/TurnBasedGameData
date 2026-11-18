@@ -375,6 +375,15 @@
         "MAvatar_GridFight_S2_Ren_00_WaveTimer_PLY_Revive": {
           "_CallbackList": [
             {
+              "Event": "OnListenTurnBegin",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                  "Name": "Ren_Revive_Retry"
+                }
+              ]
+            },
+            {
               "Event": "OnStack",
               "CallbackConfig": [
                 {
@@ -411,18 +420,6 @@
                     }
                   },
                   "SuccessTaskList": [
-                    {
-                      "$type": "RPG.GameCore.SetDynamicValue",
-                      "Value": {
-                        "IsDynamic": false,
-                        "FixedValue": {
-                          "Value": 1
-                        }
-                      },
-                      "DynamicKey": {
-                        "Value": "Revive_Triggered"
-                      }
-                    },
                     {
                       "$type": "RPG.GameCore.TurnInsertAbility",
                       "AbilityName": {
@@ -484,6 +481,24 @@
                   ]
                 }
               ]
+            },
+            {
+              "Event": "OnWaveMonster",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                  "Name": "Ren_Revive_Retry"
+                }
+              ]
+            },
+            {
+              "Event": "OnDepartedEnd",
+              "CallbackConfig": [
+                {
+                  "$type": "RPG.GameCore.IncludeTaskListTemplate",
+                  "Name": "Ren_Revive_Retry"
+                }
+              ]
             }
           ],
           "DynamicValues": {
@@ -531,7 +546,95 @@
                 }
               }
             }
-          }
+          },
+          "TaskListTemplate": [
+            {
+              "Name": "Ren_Revive_Retry",
+              "TaskList": [
+                {
+                  "$type": "RPG.GameCore.PredicateTaskList",
+                  "Predicate": {
+                    "$type": "RPG.GameCore.ByAnd",
+                    "PredicateList": [
+                      {
+                        "$type": "RPG.GameCore.ByCompareDynamicValue",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "DynamicKey": {
+                          "Value": "Revive_Triggered"
+                        },
+                        "CompareType": "Equal",
+                        "CompareValue": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 0
+                          }
+                        }
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByCompareHPRatio",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "CompareType": "LessEqual",
+                        "CompareValue": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 0.0101
+                          }
+                        }
+                      },
+                      {
+                        "$type": "RPG.GameCore.ByTargetAliveState",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetAlias",
+                          "Alias": "ModifierOwnerEntity"
+                        },
+                        "AliveStateMask": "Mask_AliveOnly"
+                      }
+                    ]
+                  },
+                  "SuccessTaskList": [
+                    {
+                      "$type": "RPG.GameCore.TurnInsertAbility",
+                      "AbilityName": {
+                        "Value": "Avatar_GridFight_S2_Ren_00_Revive"
+                      },
+                      "InsertAbilityPriority": "LevelPerformAvatarInsert",
+                      "DynamicValues": {
+                        "AADF_1": {
+                          "IsDynamic": true,
+                          "PostfixExpr": {
+                            "OpCodes": "AQAR",
+                            "FixedValues": [],
+                            "DynamicHashes": [
+                              -1610866982
+                            ]
+                          }
+                        }
+                      },
+                      "OwnerAliveState": "Mask_AliveOrLimbo",
+                      "CanRunOnUnselectableTarget": true,
+                      "ShowInActionBar": true,
+                      "PreCheck": {
+                        "$type": "RPG.GameCore.TurnInsertAbilityCondition",
+                        "Type": "AbilityOwnerInsertCount",
+                        "Count": {
+                          "IsDynamic": false,
+                          "FixedValue": {
+                            "Value": 1
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         },
         "MAvatar_GridFight_S2_Ren_00_AntiHealShield": {
           "_CallbackList": [
@@ -965,6 +1068,25 @@
       },
       "OnStart": [
         {
+          "$type": "RPG.GameCore.SetModifierDynamicValue",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "MAvatar_GridFight_S2_Ren_00_WaveTimer_PLY_Revive"
+          },
+          "DynamicKey": {
+            "Value": "Revive_Triggered"
+          },
+          "NewValue": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1
+            }
+          }
+        },
+        {
           "$type": "RPG.GameCore.AddModifier",
           "TargetType": {
             "$type": "RPG.GameCore.TargetAlias",
@@ -1176,25 +1298,6 @@
           }
         },
         {
-          "$type": "RPG.GameCore.SetModifierDynamicValue",
-          "TargetType": {
-            "$type": "RPG.GameCore.TargetAlias",
-            "Alias": "Caster"
-          },
-          "ModifierName": {
-            "Value": "MAvatar_GridFight_S2_Ren_00_WaveTimer_PLY_Revive"
-          },
-          "DynamicKey": {
-            "Value": "Revive_Triggered"
-          },
-          "NewValue": {
-            "IsDynamic": false,
-            "FixedValue": {
-              "Value": 0
-            }
-          }
-        },
-        {
           "$type": "RPG.GameCore.SetDynamicValueByCopying",
           "FromTargetType": {
             "$type": "RPG.GameCore.TargetAlias",
@@ -1291,6 +1394,25 @@
               }
             }
           ]
+        },
+        {
+          "$type": "RPG.GameCore.SetModifierDynamicValue",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "ModifierName": {
+            "Value": "MAvatar_GridFight_S2_Ren_00_WaveTimer_PLY_Revive"
+          },
+          "DynamicKey": {
+            "Value": "Revive_Triggered"
+          },
+          "NewValue": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0
+            }
+          }
         }
       ],
       "DynamicValues": {
