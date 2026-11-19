@@ -1,0 +1,352 @@
+{
+  "AIName": "ST_PetDiy_Patrol",
+  "VariableList": [
+    {
+      "$type": "RPG.GameCore.AIVariableFloat",
+      "Value": 5,
+      "Name": "FollowPlayerDistance"
+    },
+    {
+      "$type": "RPG.GameCore.AIVariableFloat",
+      "Value": 1.5,
+      "Name": "ApproachPlayerDistance"
+    },
+    {
+      "$type": "RPG.GameCore.AIVariableFloat",
+      "Value": 8,
+      "Name": "MaxLeaveDistance"
+    },
+    {
+      "$type": "RPG.GameCore.AIVariableFloat",
+      "Value": 5,
+      "Name": "RandomReturnDistance"
+    },
+    {
+      "$type": "RPG.GameCore.AIVariableBool",
+      "Name": "IsAlreadyEnterPatrol"
+    }
+  ],
+  "GlobalVariableList": [],
+  "DecisionList": [],
+  "TransitionTable": [],
+  "RootState": {
+    "Name": "Root",
+    "TaskList": [],
+    "TransitionList": [],
+    "SubStateList": [
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "SelectState": {},
+        "EnterCondition": {
+          "$type": "RPG.GameCore.ST_ByAIHangUp"
+        },
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_HangUpByLevel"
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "Patrol",
+            "Condition": {
+              "$type": "RPG.GameCore.ByAnd",
+              "PredicateList": [
+                {
+                  "$type": "RPG.GameCore.ST_ByAIHangUp",
+                  "Inverse": true
+                },
+                {
+                  "$type": "MLJGEGPAAFF",
+                  "LLOBIMGOPOP": "IsAlreadyEnterPatrol",
+                  "Inverse": true
+                }
+              ]
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "Approach",
+            "Condition": {
+              "$type": "RPG.GameCore.ByAnd",
+              "PredicateList": [
+                {
+                  "$type": "RPG.GameCore.ST_ByAIHangUp",
+                  "Inverse": true
+                },
+                {
+                  "$type": "RPG.GameCore.ST_ByDistanceToTarget",
+                  "CompareType": "LessEqual",
+                  "UseVariable": true,
+                  "VariableName": "FollowPlayerDistance"
+                }
+              ]
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "Return",
+            "Condition": {
+              "$type": "RPG.GameCore.ByAnd",
+              "PredicateList": [
+                {
+                  "$type": "RPG.GameCore.ST_ByAIHangUp",
+                  "Inverse": true
+                },
+                {
+                  "$type": "RPG.GameCore.ST_ByDistanceToTarget",
+                  "CompareType": "Greater",
+                  "UseVariable": true,
+                  "VariableName": "FollowPlayerDistance"
+                }
+              ]
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "Name": "HangUp"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "SelectState": {},
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Side_RecordGuardPosition"
+          },
+          {
+            "$type": "RPG.GameCore.ST_Main_Patrol",
+            "MoveStance": "Walk",
+            "SkipStartTurn": true,
+            "WaitTimeRandomRange": 0.5
+          },
+          {
+            "$type": "NMDBHCPCNHK",
+            "CLJEBKODGHK": true,
+            "PFDLMJILKBK": "IsAlreadyEnterPatrol",
+            "HIDPIGLKPFB": true
+          }
+        ],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "Approach",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByDistanceToTarget",
+              "CompareType": "LessEqual",
+              "UseVariable": true,
+              "VariableName": "FollowPlayerDistance",
+              "CompareValue": 5
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "HangUp",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByAIHangUp"
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "Name": "Patrol"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "SelectState": {},
+        "TaskList": [],
+        "TransitionList": [
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "Return",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByDistanceToTarget",
+              "TargetType": "GuardPosition",
+              "CompareType": "Greater",
+              "UseVariable": true,
+              "VariableName": "MaxLeaveDistance",
+              "CompareValue": 8
+            },
+            "ConditionMinDuration": 0.5,
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "HangUp",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByAIHangUp"
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "SubStateList": [
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "SelectState": {},
+            "EnterCondition": {
+              "$type": "RPG.GameCore.ST_ByDistanceToTarget",
+              "CompareType": "LessEqual",
+              "UseVariable": true,
+              "VariableName": "ApproachPlayerDistance",
+              "Inverse": true
+            },
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_MoveToTarget",
+                "MoveStance": "Run",
+                "Tolerance": 0.45,
+                "ForbidPreSteerWhenPathing": true,
+                "SkipStartTurn": true,
+                "RandomSlot": true,
+                "SlotRadiusMin": 0.5,
+                "SlotRadiusMax": 1,
+                "SlotAngle": 180,
+                "SlotSampleCount": 6
+              }
+            ],
+            "TransitionList": [
+              {
+                "TransitionToState": "Wait",
+                "Condition": {
+                  "$type": "RPG.GameCore.ST_ByDistanceToTarget",
+                  "CompareType": "LessEqual",
+                  "UseVariable": true,
+                  "VariableName": "ApproachPlayerDistance",
+                  "CompareValue": 1.5
+                },
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "MoveToPlayer"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "SelectState": {},
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": -1
+              },
+              {
+                "$type": "RPG.GameCore.ST_Side_SteerToTarget",
+                "TargetType": "LocalPlayer"
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnTick",
+                "TransitionToState": "RandomDecision",
+                "Condition": {
+                  "$type": "RPG.GameCore.ST_ByDistanceToTarget",
+                  "CompareType": "Greater",
+                  "UseVariable": true,
+                  "VariableName": "ApproachPlayerDistance",
+                  "CompareValue": 1.5
+                },
+                "ConditionMinDuration": 1,
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "Wait"
+          },
+          {
+            "$type": "RPG.GameCore.StateTreeStateConfig",
+            "SelectState": {},
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.ST_Main_Wait",
+                "Time": -1
+              }
+            ],
+            "TransitionList": [
+              {
+                "Trigger": "OnTick",
+                "TransitionToState": "Return",
+                "Condition": {
+                  "$type": "RPG.GameCore.ByAnd",
+                  "PredicateList": [
+                    {
+                      "$type": "RPG.GameCore.ST_ByDistanceToTarget",
+                      "TargetType": "GuardPosition",
+                      "CompareType": "Greater",
+                      "UseVariable": true,
+                      "VariableName": "RandomReturnDistance",
+                      "CompareValue": 5
+                    },
+                    {
+                      "$type": "RPG.GameCore.ByRandomChanceClientOnly",
+                      "Chance": {
+                        "IsDynamic": false,
+                        "FixedValue": {
+                          "Value": 0.5
+                        }
+                      }
+                    }
+                  ]
+                },
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              },
+              {
+                "Trigger": "OnTick",
+                "TransitionToState": "Approach",
+                "Condition": {
+                  "$type": "RPG.GameCore.ByAnd"
+                },
+                "BoolVariableList": [],
+                "FloatVariableList": []
+              }
+            ],
+            "Name": "RandomDecision"
+          }
+        ],
+        "Name": "Approach"
+      },
+      {
+        "$type": "RPG.GameCore.StateTreeStateConfig",
+        "SelectState": {},
+        "TaskList": [
+          {
+            "$type": "RPG.GameCore.ST_Main_MoveToPosition",
+            "PositionType": "LastGuardingPos",
+            "MoveStance": "Run",
+            "SkipStartTurn": true
+          }
+        ],
+        "TransitionList": [
+          {
+            "TransitionToState": "Patrol",
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          },
+          {
+            "Trigger": "OnTick",
+            "TransitionToState": "HangUp",
+            "Condition": {
+              "$type": "RPG.GameCore.ST_ByAIHangUp"
+            },
+            "BoolVariableList": [],
+            "FloatVariableList": []
+          }
+        ],
+        "Name": "Return"
+      }
+    ]
+  },
+  "OnDisable": {
+    "$type": "RPG.GameCore.TaskConfig"
+  },
+  "OnInit": {
+    "$type": "RPG.GameCore.TaskConfig"
+  }
+}

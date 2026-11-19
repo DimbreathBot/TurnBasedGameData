@@ -1,0 +1,127 @@
+{
+  "OnInitSequece": [],
+  "OnStartSequece": [
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.ListenTargetUseSkill",
+          "Owner": {
+            "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+          },
+          "Target": {
+            "$type": "RPG.GameCore.TargetFetchAdvLocalPlayer"
+          },
+          "ListenSkillType": [
+            "MazeSkill"
+          ],
+          "Distance": 1,
+          "ListenCallback": [
+            {
+              "$type": "RPG.GameCore.TriggerEntityEventV2",
+              "EventName": {
+                "Value": "MazeSkillUsed"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.AdvSetupCustomTaskTrigger",
+          "TriggerName": "MissionTrigger",
+          "OnEnter": [
+            {
+              "$type": "RPG.GameCore.PredicateTaskList",
+              "Predicate": {
+                "$type": "RPG.GameCore.ByAnd",
+                "PredicateList": [
+                  {
+                    "$type": "RPG.GameCore.ByCompareFloorCustomFloat",
+                    "Name": {
+                      "Value": "MazeSkillUsed"
+                    },
+                    "CompareValue": {
+                      "IsDynamic": false,
+                      "FixedValue": {
+                        "Value": 0
+                      }
+                    }
+                  },
+                  {
+                    "$type": "RPG.GameCore.ByCompareGroupState"
+                  }
+                ]
+              },
+              "SuccessTaskList": [
+                {
+                  "$type": "RPG.GameCore.TriggerGroupEvent",
+                  "EventName": {
+                    "Value": "UseMazeSkill"
+                  }
+                }
+              ]
+            }
+          ],
+          "DisableAfterTriggered": true
+        }
+      ]
+    },
+    {
+      "TaskList": [
+        {
+          "$type": "RPG.GameCore.WaitGroupEvent",
+          "EventName": {
+            "Value": "UseMazeSkill"
+          },
+          "OnEvent": [
+            {
+              "$type": "RPG.GameCore.ShowTutorialUI",
+              "ForceShowDialog": true
+            },
+            {
+              "$type": "RPG.GameCore.ShowGuideHintWithText",
+              "Block": true,
+              "TargetEvent": [
+                {
+                  "$type": "RPG.GameCore.TutorialLockControl",
+                  "Reset": true
+                },
+                {
+                  "$type": "RPG.GameCore.WaitTutorial",
+                  "Event": "UseMazeSkill",
+                  "Param": "1",
+                  "GoNextImmediately": false
+                }
+              ],
+              "NodeIDList": [
+                "MazeMainPage.MazeSkill"
+              ],
+              "GuideTextType": "InfoTip",
+              "GuideText": "TutorialTextmap_Avatar_1510_Hint01",
+              "GuideHintShowConfig": {},
+              "GuideTextShowConfig": {},
+              "GuideUIContextConfig": {
+                "Type": "MainPage"
+              },
+              "EnableClickInHintArea": true,
+              "EnableActionList": [
+                "Menu_MazeSkill"
+              ],
+              "EnableBattleOperationList": []
+            }
+          ],
+          "IsLoop": false
+        }
+      ]
+    }
+  ],
+  "Type": "EntityInstance",
+  "EntityEventList": [
+    {
+      "Name": "MazeSkillUsed",
+      "Description": "是否使用了秘技"
+    }
+  ]
+}
